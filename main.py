@@ -23,8 +23,6 @@ input_element = driver.find_element(By.CLASS_NAME, "gLFyf")
 input_element.clear()
 input_element.send_keys("tech with tim" + Keys.ENTER)
 
-
-
 time.sleep(10)
 
 driver.quit()
