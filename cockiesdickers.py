@@ -10,6 +10,8 @@ driver = webdriver.Chrome()  # Selenium Manager resuelve el driver
 
 driver.get("https://orteil.dashnet.org/cookieclicker/")
 
+time.sleep(60)
+
 cookie_id = "bigCookie"
 
 cookie = driver.find_element(By.ID, cookie_id)
