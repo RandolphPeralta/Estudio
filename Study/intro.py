@@ -9,4 +9,6 @@ def make_class(x):
     return Dog
 
 cls = make_class(10)
-print(cls)
+d = cls("Tim")
+print(d.name)
+d.print_value()
