@@ -1,46 +1,21 @@
-// Clase DetalleFactura (representa cada línea de la factura)
-public class DetalleFactura
+class Employee
 {
-    public string Descripcion { get; set; }
-    public int Cantidad { get; set; }
-    public decimal PrecioUnitario { get; set; }
-
-    public decimal Subtotal()
+    public Employee(string firstName, string lastName, int age, double payRate)
     {
-        return Cantidad * PrecioUnitario;
-    }
-}
-
-// Clase Factura
-public class Factura
-{
-    private List<DetalleFactura> detalles = new List<DetalleFactura>();
-
-    public void AgregarDetalle(DetalleFactura detalle)
-    {
-        detalles.Add(detalle);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.payRate = payRate;
     }
 
-    public decimal Total()
-    {
-        decimal total = 0;
-        foreach (var detalle in detalles)
-        {
-            total += detalle.Subtotal();
-        }
-        return total;
-    }
-}
+    protected string firstName;
+    protected string lastName;
+    protected int age;
+    protected double payRate;
 
-// Uso
-class Program
-{
-    static void Main()
+    public double CalculatePay(int hoursWorked)
     {
-        Factura factura = new Factura();
-        factura.AgregarDetalle(new DetalleFactura { Descripcion = "Producto A", Cantidad = 2, PrecioUnitario = 10.5m });
-        factura.AgregarDetalle(new DetalleFactura { Descripcion = "Producto B", Cantidad = 1, PrecioUnitario = 25.0m });
-
-        Console.WriteLine($"Total factura: {factura.Total()}");
+        // Calcular el pago aquí.
+        return (payRate * (double)hoursWorked);
     }
 }

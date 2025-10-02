@@ -13,8 +13,6 @@ void main()
     double dTotalPay;
 
     struct EMPLOYEE*pEmp;   
-    pEmp = (struct EMPLOYEE*)malloc
-    
-
+    pEmp = (struct EMPLOYEE*)malloc  
 
 }
