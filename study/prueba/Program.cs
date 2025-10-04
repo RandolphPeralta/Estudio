@@ -12,6 +12,7 @@
 //int[] numeros = {23, 45, 11, 156, 99 };
 //Console.WriteLine(numeros[0]);
 
-List<int> numeros = new List<int>{ 23, 45, 16, 37, 3, 99, 22 };
+//List<int> numeros = new List<int>{ 23, 45, 16, 37, 3, 99, 22 };
 //Console.WriteLine(numeros[0]);
-Console.WriteLine(string.Join(",", numeros));
+//Console.WriteLine(string.Join(",", numeros));
+
