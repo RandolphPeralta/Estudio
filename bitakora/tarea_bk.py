@@ -14,5 +14,6 @@ calculadora = Calculadora()
 
 #Ejemplo de uso
 numero1 = float(input("Ingrese su primer numero: "))
-numero2 = float(input("Ingrese su segundo numero: "))  
+numero2 = float(input("Ingrese su segundo numero: "))
+  
 print(calculadora.sumar(numero1, numero2))
