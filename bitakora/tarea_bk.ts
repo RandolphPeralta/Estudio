@@ -13,5 +13,6 @@ class Calculadora{
 const calculadora = new Calculadora();
 
 // Ejemplo de uso
+//const numero: number = input("Que numero desea");
 console.log(calculadora.sumar(5,3));
 console.log(calculadora.restar(10,4))
