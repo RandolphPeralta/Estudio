@@ -9,7 +9,7 @@ class Calculadora:
     def restar(self, num1: float, num2: float) -> float:
         return num1 - num2
     
-#Instancia concreta
+#Instancia concreta (objeto)
 calculadora = Calculadora()
 
 #Ejemplo de uso
