@@ -1,4 +1,3 @@
-//Diseño
 class Calculadora{
     sumar(number1: number, number2: number): number{
         return number1 + number2
@@ -9,7 +8,7 @@ class Calculadora{
     }
 }
 
-//Instancia concreta (objeto)
+
 const calculadora = new Calculadora();
 
 // Ejemplo de uso
