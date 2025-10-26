@@ -10,6 +10,6 @@ class Calculadora{
 
 const calculadora = new Calculadora();
 
-//const numero: number = input("Que numero desea");
+//const numero: number = input("Que numero desea"); TOCA IMPORTAR UNA BIBLIOTECA
 console.log(calculadora.sumar(5,3));
 console.log(calculadora.restar(10,4))
