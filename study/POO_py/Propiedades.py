@@ -10,6 +10,10 @@ class Persona:
     @nombre.setter
     def nombre(self, new_nombre):
         self.__nombre = new_nombre
+    
+    @nombre.deleter
+    def nombre(self):
+        del self.__nombre
 
 dalto = Persona("Lucas", 21)
 
@@ -20,3 +24,7 @@ dalto.nombre = "Pepe"
 
 nombre = dalto.nombre
 print(nombre)
+
+del dalto.nombre
+
+print("Aqui realizo el delete")
