@@ -1,0 +1,11 @@
+# Chatbot analizador de sentimiento
+#
+# En este proyecto, podrias desarrollar
+# un chatbot en python, que nos pida que le
+# digamos algo y tome eso que le decimos, 
+# analice el sentimiento y nos responda
+# cual es el sentimiento
+# 
+# Este proyecto te daria la oportunidad 
+# de trabajar con varios aspectos de la POO
+# modulos, API, analisis de datos, etc. 
