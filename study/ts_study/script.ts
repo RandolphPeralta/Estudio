@@ -1,5 +1,17 @@
-let arregloNumeros: number[] = [1,2,3,4,5,6]
+type Programador =  {
+    nombre: string,
+    tecnologias: string[]
+    tomaMate: boolean | null
+}
 
-let arregloTexto: string[] = ["HTML", "CSS", "JS"]
+let programador: Programador = {
+    nombre: "Sergio Cole",
+    tecnologias: ["React", "Angular", "Svelte"],
+    tomaMate: true
+}
 
-arregloTexto[0].indexOf("HTML")
+let programador2: Programador = {
+    nombre: "Fderico",
+    tecnologias: ["Html", "Cobol"],
+    tomaMate: null
+}
