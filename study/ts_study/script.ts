@@ -16,14 +16,16 @@ let dev: Programador = {
     tomaMate: true
 }
 
-let dev2: Programador = {
+let dev2 = {
     nombre: "Fderico",
     tecnologias: ["Html", "Cobol"],
-    tomaMate: null
+    tomaMate: null,
+    apellido: "Buenardo",
+    recibido: false
 }
 
 function enviarCurriculum(programador : Programador){ 
-    console.log('Este curriculum es de ${programador.nombre}')
+    console.log(`Este curriculum es de ${programador.nombre}`)
 }
 
 enviarCurriculum(dev)
