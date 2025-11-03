@@ -1,6 +1,4 @@
 //Encapsulamiento
-// Polimorfismo
-// Herencia
 
 interface IControlador {
     setData(): void
@@ -28,3 +26,13 @@ class Controlador implements IControlador, IDControlador {
 }
 
 const controlador: IControlador = new Controlador;
+
+
+// Polimorfismo
+
+
+
+
+
+
+// Herencia
