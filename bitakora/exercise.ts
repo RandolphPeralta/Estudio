@@ -1,4 +1,8 @@
-//Encapsulamiento
+// Encapsulamiento: Es la capacidad de ocultar
+// los procesos internos de un objto a sus usuarios
+// y proporcionar una interfaz solo para los miembros
+// que quieren que el cliente
+// tenga posibilidad de manipular directamente
 
 interface IControlador {
     setData(): void
@@ -27,12 +31,68 @@ class Controlador implements IControlador, IDControlador {
 
 const controlador: IControlador = new Controlador;
 
+// Polimorfismo: 
 
-// Polimorfismo
+abstract class Mago {
+    abstract ataque(): void
+    
+    pocionMagica(): number {
+        return 10;
+    }
+    //metodo base
+}
 
+interface AtaqueEspecial {
+    ataqueEspecial(): void
+}
 
+// abstract class Guerrero {
 
+// }
 
+class Elfo extends Mago implements AtaqueEspecial {
+    
+    ataque(): void {
+        // accion diferente
+    }
 
+    ataqueEspecial(): void {
+        // ataque especial
+    }
 
-// Herencia
+}
+
+class ElfoOscuro extends Mago {
+
+    ataque(): void{
+        // accion diferente
+    }
+}
+
+// Herencia - Composicion - Abstracciones
+
+// El problema del diamante es un mal ejemplo 
+// de diseño
+
+// class MyPersonalInfo {
+
+// }
+
+// class MyGuitarLessons extends MyPersonalInfo {
+
+// }
+
+// class MyUniversityLessons extends MyPersonalInfo{
+
+// }
+
+// abstract class Animal {
+
+// }
+
+// interface Acuatico extends Animal {}
+
+// interface Terrestre extends Animal {}
+
+// interface Mamiferos extends Terrestre {}
+
