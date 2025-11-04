@@ -26,6 +26,22 @@
 
 
 // Asignacion de suma
-var a = 23;
-a = a + 5;
-console.log(a);
+// var a = 23;
+// a += 5;
+// console.log(a);
+
+// Adiccion y resta
+// var totalVentas = 13567.34;
+// console.log(totalVentas);
+
+// totalVentas += 345.67;
+// // totalVentas -= 345.67;
+
+// console.log(totalVentas)
+
+//Multiplicacion
+var c = 23;
+
+c *= 2;
+
+console.log(c);
