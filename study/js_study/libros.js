@@ -24,3 +24,8 @@
 // numeroEstudiantes--;
 // console.log(numeroEstudiantes);
 
+
+// Asignacion de suma
+var a = 23;
+a = a + 5;
+console.log(a);
