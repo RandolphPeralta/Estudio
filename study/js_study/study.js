@@ -157,7 +157,17 @@
 // /*
 // El ultimo indice siempre es longitud - 1 porque comenzamos contrar desde 0
 // */
-// console.log(miCadena[miCadena.length - 2]);
+// console.log(miCadena[miCadena.length - 1]);
 
-//Notacion de corchetes de Derecha a Izquierda
+// Notacion de corchetes de Derecha a Izquierda
+var miCadena;
+/* El penultimo ínice es longitud -2 
+miCadena.length es 10. El penúltimo índice es 8
+// Cadena: J a v a s c r i pt
+// Inices: 0 1 2 3 4 5 6 7 8 9
+*/
+miCadena = "Javascript";
+n = 4;
+console.log(miCadena[miCadena.length - n]);
 
+// Palabras en Blanco
