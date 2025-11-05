@@ -160,14 +160,72 @@
 // console.log(miCadena[miCadena.length - 1]);
 
 // Notacion de corchetes de Derecha a Izquierda
-var miCadena;
-/* El penultimo ínice es longitud -2 
-miCadena.length es 10. El penúltimo índice es 8
-// Cadena: J a v a s c r i pt
-// Inices: 0 1 2 3 4 5 6 7 8 9
-*/
-miCadena = "Javascript";
-n = 4;
-console.log(miCadena[miCadena.length - n]);
+// var miCadena;
+// /* El penultimo ínice es longitud -2 
+// miCadena.length es 10. El penúltimo índice es 8
+// // Cadena: J a v a s c r i pt
+// // Inices: 0 1 2 3 4 5 6 7 8 9
+// */
+// miCadena = "Javascript";
+// n = 4;
+// console.log(miCadena[miCadena.length - n]);
 
 // Palabras en Blanco
+// var miSustantivo = "perro";
+// var miAdjetivo = "negro";
+// var miVerbo = "corrió";
+// var miAdverbio = "rápidamente";
+
+// /*  Concatena las cadenas para crear una cadena
+//     que muestre un mensaje.
+
+//     por ejemplo: El perro negro corrió rápidamente
+//     a la tienda. La bicileta pequeña voló a tienda
+//     lentamente
+// */
+
+// var palabrasEnBlanco = "El " + miSustantivo + " " + miAdjetivo + " " + miVerbo + " " + miAdverbio + " a la tienda"; 
+// console.log(palabrasEnBlanco);
+
+// Arreglos (array)
+// var miArreglo = ["Jhon", 24];
+// console.log(miArreglo);
+
+// var estudiantes = ["Nora", "Gino", "Emily", "Juan"];
+// console.log(estudiantes);
+
+// var notas = [95,67,89,56];
+// console.log(notas);
+
+// Arreglos Anidados
+// var listaDeEstudiantes = [["Nora",97],["Gino", 78]];
+// console.log(listaDeEstudiantes)
+
+// var listaDePrecios = [["Camisa", 5.67,"S134"], ["Celular", 250, "S356"], ["Zapatos", 36.7, "S678"]];
+// console.log(listaDePrecios);
+
+// var datos = [[3.4, 5.6, 3.2], [6.7, 4.5, 7.8], [5.6, 3.4, 7.8]];
+// console.log(datos);
+
+//Acceder a los elementos de un arreglo
+// var miArreglo = [10, 20, 30];
+
+// /*
+// Arreglo: [10, 20, 30]
+// índices:   0 , 1,  2
+// */
+
+// console.log(miArreglo[0]); // 10
+// console.log(miArreglo[1]); // 20
+// console.log(miArreglo[2]); // 30
+
+// var suma = miArreglo[0] + miArreglo[1] + miArreglo[2];
+// console.log(suma);
+
+// Modificar Elementos de un Arreglo
+// var miArreglo = [10, 20, 30];
+// miArreglo[1] = [1,2,3];
+
+// console.log(miArreglo);
+
+// Acceder a Arreglos Multidimensionales
