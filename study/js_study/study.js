@@ -93,3 +93,66 @@
  \f Salto de Página
  .......
 */
+
+// console.log("Estoy aprendiendo \'javascript\' ")   //Comilla Simple
+// console.log("Estoy aprendiendo  \"javascript\" ") //  \" Comilla Doble
+// console.log("Estoy aprendiendo \\ javascript") // \\ Barra invertida
+// console.log("Estoy aprndiendo \n javascript") // \n Linea nueva
+// console.log("Estoy aprendiendo  \r javascript") // \r Retorno de Carro
+// console.log("Estoy aprendiendo \t javascript") // \t Tabulación
+// console.log("Estoy aprendiendo \b javascript") //  \b Retroceso
+// console.log("Estoy aprendiendo \f javascript") // \f salto de pagina
+
+// // Concatenar Cadenas de Caracteres
+// var nombreCompleto = "Alan" + " " + "Turing";
+// console.log(nombreCompleto);
+
+// Construir cadenas con variables
+// var verbo = "programar";
+// var mensaje = "Estoy aprendiendo a " + verbo + "con freecodecamp";
+// console.log(mensaje);
+
+// Agregar variables a cadenas de caracteres
+// var mensajeCompleto = "Estoy aprendiendo a programar ";
+// var parteFinal = "con freecodecamp";
+
+// console.log(mensajeCompleto);
+
+// mensajeCompleto += parteFinal
+// console.log(mensajeCompleto);
+
+// Longitud de una cadena de caracteres
+// var miCadena;
+// miCadena = "¡Estoy aprendiendo a programar!";
+// console.log(miCadena.length);
+
+// Notacion de corchetes primer caracter
+// var lenguajeDeProgramacion = "Javascript";
+// /*
+// Cadena: J a v a s c r i pt
+// Inices: 0 1 2 3 4 56 7 8 9
+// */
+// console.log(lenguajeDeProgramacion[0]);
+
+// // Inmutabilidad de Cadenas de Caracteres
+// var miCadena = "Jola, mundo";
+// console.log(miCadena);
+// miCadena[0] = "H"; // Error: No es posible cambiar el caracter indiviual de un str
+
+// Notacion de Corchetes: nésimo Carácter
+// Cadena: J a v a s c r i pt
+// Inices: 0 1 2 3 4 5 6 7 8 9
+
+// var miCadena = "Javascript";
+// //console.log(miCadena[0]);
+// console.log(miCadena[1]); // Undefined
+// No recibe numeros negativos o decimales en el indice de caracter del str
+//.
+//.
+//.
+
+// Notacion de Corchetes:
+// Ultimo caracter
+
+
+
