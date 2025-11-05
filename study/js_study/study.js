@@ -153,6 +153,11 @@
 
 // Notacion de Corchetes:
 // Ultimo caracter
+// var miCadena = "Python";
+// /*
+// El ultimo indice siempre es longitud - 1 porque comenzamos contrar desde 0
+// */
+// console.log(miCadena[miCadena.length - 2]);
 
-
+//Notacion de corchetes de Derecha a Izquierda
 
