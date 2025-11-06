@@ -27,13 +27,41 @@
 //     return "Ryan Ray"
 // }
 
-const user = {
-    name: "ryan",
-    lastname: "ray",
-    age: 30,
-    showFullName() {
-        return "Ryan Ray"
+// const user = {
+//     name: "ryan",
+//     lastname: "ray",
+//     age: 30,
+//     showFullName() {
+//         return this.name + " " + this.lastname
+//     }
+// }
+
+// console.log(user.showFullName());
+
+// const account = {
+//     nombre: "12343212343234",
+//     amount: 100,
+//     deposit(quantity){
+//         this.amount = this.amount + quantity
+//     },
+//     withdraw(quantity){
+//         this.amount = this.amount - quantity
+//     }
+// }
+
+// account.deposit(400);
+// account.withdraw(100);
+// console.log(account);
+
+// Constructor
+function Person() {
+    this.name = ""
+    this.lastname = ""
+    this.age = 0
+    this.showFullNam = function () {
+        return `${this.name} ${this.lastname}`
     }
 }
 
-console.log(user.showFullName());
+const users2 = new Person()
+console.log(users2)
