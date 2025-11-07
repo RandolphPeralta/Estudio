@@ -54,14 +54,55 @@
 // console.log(account);
 
 // Constructor
-function Person() {
-    this.name = ""
-    this.lastname = ""
-    this.age = 0
-    this.showFullNam = function () {
-        return `${this.name} ${this.lastname}`
+// function Person() {
+//     this.name = ""
+//     this.lastname = ""
+//     this.age = 0
+//     this.showFullNam = function () {
+//         return `${this.name} ${this.lastname}`
+//     }
+// }
+
+// const users2 = new Person()
+// console.log(users2)
+
+// prototype
+
+// function Person(name, lastname){
+//     this.name = name
+//     this.lastname = lastname
+//     this.displayNone = function(){
+//         return `${this.name} ${this.lastname}`
+//     }
+// }
+
+// const john = new Person("John", "Mcmilian")
+// john.name = "Joo"
+// console.log(john.displayNone())
+
+// const mario = new Person("Mario", "Rossi")
+// console.log(mario.displayNone())
+
+// john.groot = function() {
+//     return `Hello I'am ${this.name}`
+// }
+
+// console.log(john)
+
+class Person {
+
+    constructor(name, lastname) {
+        this.name = name
+        this.lastname = lastname
+    }
+
+    greet() {
+    return `Hello i am ${this.name} ${this.lastname}`
     }
 }
 
-const users2 = new Person()
-console.log(users2)
+const user = new Person("John", "Ray");
+const user2 = new Person("Ryan", "Ray");
+
+console.log(user);
+console.log(user2);
