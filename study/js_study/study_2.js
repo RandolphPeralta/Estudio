@@ -158,27 +158,87 @@
 
 // company.sortEmployees() // Va a parecer un error
 
-function Company(name){
-    let employees = []
-    this.name = name
+// Encapsulamiento
 
-    this.getEmployees = function(){
-        return employees
-    }
+// function Company(name){
+//     let employees = []
+//     this.name = name
 
-    this.addEmployee = function(employee) {
-        employees.push(employee)
-    }
-}
+//     this.getEmployees = function(){
+//         return employees
+//     }
 
-const company = new Company("coca cola")
-const company2 = new Company("pepsi")
+//     this.addEmployee = function(employee) {
+//         employees.push(employee)
+//     }
+// }
 
-console.log(company)
-console.log(company2)
+// const company = new Company("coca cola")
+// const company2 = new Company("pepsi")
 
-company.addEmployee({name: "ryan"})
-company2.addEmployee({name: "joe"})
+// console.log(company)
+// console.log(company2)
 
-console.log(company.getEmployees())
-console.log(company2.getEmployees())
+// company.addEmployee({name: "ryan"})
+// company2.addEmployee({name: "joe"})
+
+// console.log(company.getEmployees())
+// console.log(company2.getEmployees())
+
+// Herencia
+
+// function Person(){
+//     this.name = ''
+//     this.lastname = ""
+// }
+
+// function Programmer(){
+//     this.name = ''
+//     this.lastname = ''
+//     this.language = ''
+// }
+
+// Programmer.prototype = new Person()
+
+// console.log(Programmer)
+// console.log(Person)
+
+// const person = new Person
+// person.name = "maria"
+// person.lastname = "perez"
+
+// console.log(person)
+
+// const programmer = new Programmer();
+// programmer.name = "ryan"
+// programmer.lastname = "ray"
+// programmer.language = "javascript"
+
+// console.log(programmer)
+
+// class Person {
+//     constructor(name,lastname){
+//         this.name = name
+//         this.lastname = lastname
+//         this.age = null
+//     }
+// }
+
+// class Programmer extends Person{
+//     constructor(language, name, lastname){
+//         super(name, lastname);
+//         this.language = language
+//     }
+// }
+
+// const person = new Person('Maria', 'Perez')
+
+// console.log(person)
+
+// const programmer = new Programmer('Joe', 'Mcmillan', 'Python')
+
+// console.log(programmer)
+
+// Polymorphis
+
+
