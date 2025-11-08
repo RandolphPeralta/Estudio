@@ -89,20 +89,60 @@
 
 // console.log(john)
 
-class Person {
+// class Person {
 
-    constructor(name, lastname) {
-        this.name = name
-        this.lastname = lastname
-    }
+//     constructor(name, lastname) {
+//         this.name = name
+//         this.lastname = lastname
+//     }
 
-    greet() {
-    return `Hello i am ${this.name} ${this.lastname}`
-    }
-}
+//     greet() {
+//     return `Hello i am ${this.name} ${this.lastname}`
+//     }
+// }
 
-const user = new Person("John", "Ray");
-const user2 = new Person("Ryan", "Ray");
+// const user = new Person("John", "Ray");
+// const user2 = new Person("Ryan", "Ray");
 
-console.log(user);
-console.log(user2);
+// console.log(user);
+// console.log(user2);
+
+
+// const company = {
+//     name: "fazt teach",
+//     employess: []
+// }
+
+// // Asociacion
+
+// class Person {
+//     constructor(name, lastname){
+//         this.name = name
+//         this.lasname = lastname
+//     }
+// }
+
+// const john = new Person("john", "say");
+// const maria = new Person("maria", "perez")
+
+// // asociation - relation
+// maria.parent = john
+
+// // agregation
+// company.employees.push(john);
+// company.employees.push(maria);
+
+// console.log(maria);
+// console.log(john)
+
+// composition
+
+// const person = {
+//     name: "ryan",
+//     lastname: "ray",
+//     address: {
+//         street: "123 bakeI street",
+//         city: "London",
+//         country: "unitd kingdom"
+//     }
+// }
