@@ -241,4 +241,17 @@
 
 // Polymorphis
 
+// oveloading - sobrecarga
 
+function countItems(x){
+    return x.toString().length
+}
+
+console.log(countItems(10000))
+console.log(countItems('Hola mundo'))
+
+function sum(x,y,z) {
+    return x + y+ z
+}
+
+console.log(sum(10,20, 30))
