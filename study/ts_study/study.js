@@ -1,13 +1,16 @@
+// Clase base
 var Persona = /** @class */ (function () {
     function Persona() {
         this.nombre = "";
-        this.apellido = "";
     }
-    Persona.prototype.getNombre = function (nombre) {
+    Persona.prototype.setNombre = function (nombre) {
+        this.nombre = nombre;
+    };
+    Persona.prototype.getNombre = function () {
         return this.nombre;
     };
     return Persona;
 }());
 var persona = new Persona;
-persona.getNombre("Randolph");
-console.log(persona.getNombre);
+persona.setNombre("Randolph");
+console.log(persona.getNombre());

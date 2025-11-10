@@ -1,9 +1,20 @@
+// Clase base
 class Persona {
-    nombre: string = ""
+  private nombre: string = "";
+
+  setNombre(nombre: string) {
+    this.nombre = nombre;
+  }
+
+  getNombre(): string {
+    return this.nombre;
+  }
 
 }
 
-const persona = new Persona()
+const persona = new Persona
 
+persona.setNombre("Randolph")
 
+console.log(persona.getNombre())
 
