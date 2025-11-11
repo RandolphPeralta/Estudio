@@ -13,10 +13,17 @@ class Estudiante:
         self.notas: list = att_notas
 
     def obtener_promedio(self):
-        pass
+        if not self.notas:
+            return 0
+        return sum(self.notas)/len(self.notas)
 
     def ver_info(self):
-        pass
+        promedio = self.obtener_promedio()
+        return (f"Identificacion: {self.identificacion}\n"
+                f"Nombre: {self.nombre}"
+                f"Edad: {self.edad}"
+                f"Semestre: {self.semestre}"
+                f"Promedio de Notas: {promedio:2f}")
 
 estudiantes: list[Estudiante] = []
 
@@ -35,6 +42,7 @@ while True:
         break
 
     if op == 1:
+        identificacion = input("Ingrese su ID: ")
         nombre = input("ingrese nombre: ")
         edad = int(input("Edad: "))
         semestre = float(input("Semestre: "))
@@ -43,7 +51,7 @@ while True:
         for i in range(3):
             notas.append(float(input(f"Ingrese la nota {i+1}: ")))
 
-        estudiante = Estudiante(nombre, edad, semestre, notas)
+        estudiante = Estudiante(identificacion, nombre, edad, semestre, notas)
 
         estudiantes.append(estudiante)
 
