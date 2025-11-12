@@ -1,16 +1,17 @@
-// Clase base
-var Persona = /** @class */ (function () {
-    function Persona() {
-        this.nombre = "";
-    }
-    Persona.prototype.setNombre = function (nombre) {
-        this.nombre = nombre;
-    };
-    Persona.prototype.getNombre = function () {
-        return this.nombre;
-    };
-    return Persona;
-}());
-var persona = new Persona;
-persona.setNombre("Randolph");
-console.log(persona.getNombre());
+function sum(a, b) {
+    return a + b;
+}
+var res = sum(2, 223);
+console.log(res);
+// type Beer = {
+//   name: string
+//   alcohol: number
+// }
+// function show(beer: Beer) : void{
+//   console.log(`info. ${beer.name} ${beer.alcohol}`)
+// }
+// const myBeer : Beer = {
+//   name: "delirium",
+//   alcohol: 7.5
+// }
+// myBeer.name = "Erdinger";

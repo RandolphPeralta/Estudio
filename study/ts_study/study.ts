@@ -1,20 +1,14 @@
-// Clase base
-class Persona {
-  private nombre: string = "";
+class Person {
+  nombre: string = ""
+  apellido: string = ""
+  edad: number = 0
+  genero: string = ""
 
-  setNombre(nombre: string) {
-    this.nombre = nombre;
+  Saludo(){
+    console.log("Saludo")
   }
-
-  getNombre(): string {
-    return this.nombre;
-  }
-
 }
 
-const persona = new Persona
+const person1 = new Person;
 
-persona.setNombre("Randolph")
-
-console.log(persona.getNombre())
-
+person1.nombre = "Randolph"
