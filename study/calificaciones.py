@@ -14,16 +14,12 @@ class Estudiante:
 
     def obtener_promedio(self):
         if not self.notas:
-            return 0
+            return 0 
         return sum(self.notas)/len(self.notas)
 
     def ver_info(self):
         promedio = self.obtener_promedio()
-        return (f"Identificacion: {self.identificacion}\n"
-                f"Nombre: {self.nombre}"
-                f"Edad: {self.edad}"
-                f"Semestre: {self.semestre}"
-                f"Promedio de Notas: {promedio:2f}")
+        print( (f"Identificacion: {self.identificacion} \n Nombre: {self.nombre}\n Edad: {self.edad}\n Semestre: {self.semestre}\n Promedio de Notas: {promedio}\n"))
 
 estudiantes: list[Estudiante] = []
 
