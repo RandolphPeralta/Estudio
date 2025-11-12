@@ -1,17 +1,20 @@
-function sum(a, b) {
-    return a + b;
-}
-var res = sum(2, 223);
-console.log(res);
-// type Beer = {
-//   name: string
-//   alcohol: number
-// }
-// function show(beer: Beer) : void{
-//   console.log(`info. ${beer.name} ${beer.alcohol}`)
-// }
-// const myBeer : Beer = {
-//   name: "delirium",
-//   alcohol: 7.5
-// }
-// myBeer.name = "Erdinger";
+var Calculadora = /** @class */ (function () {
+    function Calculadora() {
+    }
+    Calculadora.prototype.suma = function (a, b) {
+        return a + b;
+    };
+    Calculadora.prototype.resta = function (a, b) {
+        return a - b;
+    };
+    Calculadora.prototype.multiplicacion = function (a, b) {
+        return a * b;
+    };
+    Calculadora.prototype.division = function (a, b) {
+        return a / b;
+    };
+    return Calculadora;
+}());
+var calculadora = new Calculadora;
+var sumando = calculadora.suma(1, 2);
+console.log(sumando);

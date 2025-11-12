@@ -1,14 +1,23 @@
-class Person {
-  nombre: string = ""
-  apellido: string = ""
-  edad: number = 0
-  genero: string = ""
+class Calculadora {
+  suma(a:number, b:number){
+    return a+b
+  }
 
-  Saludo(){
-    console.log("Saludo")
+  resta(a:number, b:number){
+    return a-b
+  }
+
+  multiplicacion(a:number, b:number){
+    return a*b
+  }
+
+  division(a:number, b:number){
+    return a/b
   }
 }
 
-const person1 = new Person;
+const calculadora = new Calculadora;
 
-person1.nombre = "Randolph"
+const sumando = calculadora.suma(1,2)
+
+console.log(sumando);
