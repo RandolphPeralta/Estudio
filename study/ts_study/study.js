@@ -1,20 +1,13 @@
-var Calculadora = /** @class */ (function () {
-    function Calculadora() {
+var Libro = /** @class */ (function () {
+    function Libro(titulo, codigo, autor) {
+        this.titulo = "";
+        this.codigo = 0;
+        this.autor = "";
+        this.titulo = titulo;
+        this.codigo = codigo;
+        this.autor = autor;
     }
-    Calculadora.prototype.suma = function (a, b) {
-        return a + b;
-    };
-    Calculadora.prototype.resta = function (a, b) {
-        return a - b;
-    };
-    Calculadora.prototype.multiplicacion = function (a, b) {
-        return a * b;
-    };
-    Calculadora.prototype.division = function (a, b) {
-        return a / b;
-    };
-    return Calculadora;
+    return Libro;
 }());
-var calculadora = new Calculadora;
-var sumando = calculadora.suma(1, 2);
-console.log(sumando);
+var libro = new Libro("Cien año de soledad", 1, "Gabriel Marquez");
+console.log(libro);
