@@ -1,23 +1,29 @@
-class Calculadora {
-  suma(a:number, b:number){
-    return a+b
+class Libro {
+  public nombre: string = ""
+  public codigo: number = 0
+  public autor: string = ""
+  public categoria: string = ""
+  public prestado: boolean = false
+
+  prestadoLibro(){
+    return this.prestado = true
   }
 
-  resta(a:number, b:number){
-    return a-b
-  }
-
-  multiplicacion(a:number, b:number){
-    return a*b
-  }
-
-  division(a:number, b:number){
-    return a/b
+  libreLibro() {
+    return this.prestado
   }
 }
 
-const calculadora = new Calculadora;
+class Estudiante {
+  private nombre: string = ""
+  private grado: number = 0
 
-const sumando = calculadora.suma(1,2)
+  prestarLibro(){
+    
+  }
+}
 
-console.log(sumando);
+const libros = [Libro]
+
+
+
