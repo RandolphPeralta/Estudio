@@ -1,4 +1,4 @@
-// Interfaces modificadas para usar return en lugar de console.log
+// Interfaces
 interface Prestable {
     prestar(): void; 
     devolver(): void;
