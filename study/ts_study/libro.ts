@@ -1,7 +1,7 @@
 // Interfaces modificadas para usar return en lugar de console.log
 interface Prestable {
-    prestar(): void;  // Ahora retorna string en lugar de void
-    devolver(): void;  // Ahora retorna string en lugar de void
+    prestar(): void; 
+    devolver(): void;
     estaDisponible(): boolean;
 }
 
@@ -55,6 +55,10 @@ class Libro implements Prestable, Identificable {
     return this.titulo;
   }
 
+  getAutor(): string {
+    return this.autor
+  }
+
   prestar(): void {
     this.estado.prestar();
   }
@@ -69,16 +73,65 @@ class Libro implements Prestable, Identificable {
 }
 
 // Clase abstracta Usuario - base para herencia
-
 abstract class Usuario {
-    private nombre: string;
+  private nombre: string;  // ahora es PRIVATE
 
-    constructor(nombre:string){
-        this.nombre = nombre
-    }
+  constructor(nombre: string) {
+    this.nombre = nombre;
+  }
 
-    // Metodo polimorfismo
-    abstract mostrarInfo(): void;
+  // Getter para que las clases hijas puedan leer el nombre
+  public getNombre(): string {
+    return this.nombre;
+  }
+
+  abstract mostrarInfo(): void;
 }
 
-// Clase cliente que heredade usuario y aplica polimorfismo
+// Clase Cliente que hereda de Usuario y aplica polimorfismo
+class Cliente extends Usuario {
+  private prestamos: Libro[] = [];
+
+  mostrarInfo(): void {
+    console.log(
+      `👤 Cliente: ${this.getNombre()}, Libros prestados: ${this.prestamos.length}`
+    );
+  }
+
+  prestarLibro(libro: Libro): void {
+    if (libro.estaDisponible()) {
+      libro.prestar();
+      this.prestamos.push(libro);
+    } else {
+      console.log(
+        `⚠️ ${this.getNombre()} no puede prestar "${libro.getTitulo()}".`
+      );
+    }
+  }
+
+  devolverLibro(libro: Libro): void {
+    const index = this.prestamos.indexOf(libro);
+
+    if (index !== -1) {
+      libro.devolver();
+      this.prestamos.splice(index, 1);
+    } else {
+      console.log(
+        `⚠️ ${this.getNombre()} no tenía prestado "${libro.getTitulo()}".`
+      );
+    }
+  }
+}
+
+const libro1 = new Libro(1, "Cien Años de Soledad", "Gabo");
+const libro2 = new Libro(2, "El Principito", "Saint-Exupéry");
+
+const cliente = new Cliente("Randolph Peralta");
+
+cliente.mostrarInfo();
+
+cliente.prestarLibro(libro1);
+cliente.prestarLibro(libro2);
+cliente.devolverLibro(libro1);
+
+cliente.mostrarInfo();
