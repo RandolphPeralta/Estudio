@@ -39,16 +39,13 @@ interface Venta {
 
 class Cliente extends Usuario implements Compra {
     private listaropa: Ropa[] = []
-
-
-
+    
     comprar(ropa: Ropa): void{
         this.listaropa.push(ropa)
         console.log(`El cliente ${this.getNombre()} compro un ${ropa.getTipo()}`)
     }
 }
     
-
 const cliente = new Cliente()
 cliente.setNombre("Randolph")
 
