@@ -1,44 +1,49 @@
-// Interfaces
-interface Prestable {
-    prestar(): void; 
-    devolver(): void;
-    estaDisponible(): boolean;
+// =============================================================
+// 1. Interfaces
+// =============================================================
+interface IPrestable {
+  prestar(): void;
+  devolver(): void;
+  estaDisponible(): boolean;
 }
 
-interface Identificable {
-    getId(): number;
+interface IIdentificable {
+  getId(): number;
 }
 
-// Clase que aplica COMPOSICIÓN - modificada para usar return
+// =============================================================
+// 2. Clase que aplica COMPOSICIÓN (preferida sobre herencia)
+// =============================================================
 class EstadoPrestamo {
-    private disponible: boolean = true;
+  private disponible: boolean = true;
 
-    public prestar(): void {
-        if (this.disponible) {
-            this.disponible = false;
-            console.log("📕 El recurso ha sido prestado")
-        } else {
-            console.log("❌ El recurso no está disponible")
-        }
+  public prestar(): void {
+    if (this.disponible) {
+      this.disponible = false;
+      console.log("📕 El recurso ha sido prestado.");
+    } else {
+      console.log("❌ El recurso no está disponible.");
     }
+  }
 
-    public devolver(): void {
-        this.disponible = true;
-        console.log("📗 El recurso ha sido devuelto.");
-    }
+  public devolver(): void {
+    this.disponible = true;
+    console.log("📗 El recurso ha sido devuelto.");
+  }
 
-    public estaDisponible(): boolean {
-        return this.disponible;
-    }
+  public estaDisponible(): boolean {
+    return this.disponible;
+  }
 }
 
-// Clase Libro usando Composicion e interfaces
-
-class Libro implements Prestable, Identificable {
-    private id: number;
-    private titulo: string;
-    private autor: string;
-    private estado: EstadoPrestamo;
+// =============================================================
+// 3. Clase Libro usando COMPOSICIÓN e interfaces
+// =============================================================
+class Libro implements IPrestable, IIdentificable {
+  private id: number;
+  private titulo: string;
+  private autor: string;
+  private estado: EstadoPrestamo;
 
   constructor(id: number, titulo: string, autor: string) {
     this.id = id;
@@ -55,10 +60,6 @@ class Libro implements Prestable, Identificable {
     return this.titulo;
   }
 
-  getAutor(): string {
-    return this.autor
-  }
-
   prestar(): void {
     this.estado.prestar();
   }
@@ -72,29 +73,29 @@ class Libro implements Prestable, Identificable {
   }
 }
 
-// Clase abstracta Usuario - base para herencia
+// =============================================================
+// 4. Clase abstracta Usuario — base para herencia
+// =============================================================
 abstract class Usuario {
-  private nombre: string;  // ahora es PRIVATE
+  protected nombre: string;
 
   constructor(nombre: string) {
     this.nombre = nombre;
   }
 
-  // Getter para que las clases hijas puedan leer el nombre
-  public getNombre(): string {
-    return this.nombre;
-  }
-
+  // Método polimórfico
   abstract mostrarInfo(): void;
 }
 
-// Clase Cliente que hereda de Usuario y aplica polimorfismo
+// =============================================================
+// 5. Clase Cliente que hereda de Usuario y aplica POLIMORFISMO
+// =============================================================
 class Cliente extends Usuario {
   private prestamos: Libro[] = [];
 
   mostrarInfo(): void {
     console.log(
-      `👤 Cliente: ${this.getNombre()}, Libros prestados: ${this.prestamos.length}`
+      `👤 Cliente: ${this.nombre}, Libros prestados: ${this.prestamos.length}`
     );
   }
 
@@ -103,9 +104,7 @@ class Cliente extends Usuario {
       libro.prestar();
       this.prestamos.push(libro);
     } else {
-      console.log(
-        `⚠️ ${this.getNombre()} no puede prestar "${libro.getTitulo()}".`
-      );
+      console.log(`⚠️ ${this.nombre} no puede prestar "${libro.getTitulo()}".`);
     }
   }
 
@@ -116,13 +115,14 @@ class Cliente extends Usuario {
       libro.devolver();
       this.prestamos.splice(index, 1);
     } else {
-      console.log(
-        `⚠️ ${this.getNombre()} no tenía prestado "${libro.getTitulo()}".`
-      );
+      console.log(`⚠️ ${this.nombre} no tenía prestado "${libro.getTitulo()}".`);
     }
   }
 }
 
+// =============================================================
+// 6. Programa principal (ejemplo de uso)
+// =============================================================
 const libro1 = new Libro(1, "Cien Años de Soledad", "Gabo");
 const libro2 = new Libro(2, "El Principito", "Saint-Exupéry");
 

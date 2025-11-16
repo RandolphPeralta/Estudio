@@ -13,7 +13,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// Clase que aplica COMPOSICIÓN - modificada para usar return
+// =============================================================
+// 2. Clase que aplica COMPOSICIÓN (preferida sobre herencia)
+// =============================================================
 var EstadoPrestamo = /** @class */ (function () {
     function EstadoPrestamo() {
         this.disponible = true;
@@ -21,10 +23,10 @@ var EstadoPrestamo = /** @class */ (function () {
     EstadoPrestamo.prototype.prestar = function () {
         if (this.disponible) {
             this.disponible = false;
-            console.log("📕 El recurso ha sido prestado");
+            console.log("📕 El recurso ha sido prestado.");
         }
         else {
-            console.log("❌ El recurso no está disponible");
+            console.log("❌ El recurso no está disponible.");
         }
     };
     EstadoPrestamo.prototype.devolver = function () {
@@ -36,7 +38,9 @@ var EstadoPrestamo = /** @class */ (function () {
     };
     return EstadoPrestamo;
 }());
-// Clase Libro usando Composicion e interfaces
+// =============================================================
+// 3. Clase Libro usando COMPOSICIÓN e interfaces
+// =============================================================
 var Libro = /** @class */ (function () {
     function Libro(id, titulo, autor) {
         this.id = id;
@@ -61,18 +65,18 @@ var Libro = /** @class */ (function () {
     };
     return Libro;
 }());
-// Clase abstracta Usuario - base para herencia
+// =============================================================
+// 4. Clase abstracta Usuario — base para herencia
+// =============================================================
 var Usuario = /** @class */ (function () {
     function Usuario(nombre) {
         this.nombre = nombre;
     }
-    // Getter para que las clases hijas puedan leer el nombre
-    Usuario.prototype.getNombre = function () {
-        return this.nombre;
-    };
     return Usuario;
 }());
-// Clase Cliente que hereda de Usuario y aplica polimorfismo
+// =============================================================
+// 5. Clase Cliente que hereda de Usuario y aplica POLIMORFISMO
+// =============================================================
 var Cliente = /** @class */ (function (_super) {
     __extends(Cliente, _super);
     function Cliente() {
@@ -81,7 +85,7 @@ var Cliente = /** @class */ (function (_super) {
         return _this;
     }
     Cliente.prototype.mostrarInfo = function () {
-        console.log("\uD83D\uDC64 Cliente: ".concat(this.getNombre(), ", Libros prestados: ").concat(this.prestamos.length));
+        console.log("\uD83D\uDC64 Cliente: ".concat(this.nombre, ", Libros prestados: ").concat(this.prestamos.length));
     };
     Cliente.prototype.prestarLibro = function (libro) {
         if (libro.estaDisponible()) {
@@ -89,7 +93,7 @@ var Cliente = /** @class */ (function (_super) {
             this.prestamos.push(libro);
         }
         else {
-            console.log("\u26A0\uFE0F ".concat(this.getNombre(), " no puede prestar \"").concat(libro.getTitulo(), "\"."));
+            console.log("\u26A0\uFE0F ".concat(this.nombre, " no puede prestar \"").concat(libro.getTitulo(), "\"."));
         }
     };
     Cliente.prototype.devolverLibro = function (libro) {
@@ -99,11 +103,14 @@ var Cliente = /** @class */ (function (_super) {
             this.prestamos.splice(index, 1);
         }
         else {
-            console.log("\u26A0\uFE0F ".concat(this.getNombre(), " no ten\u00EDa prestado \"").concat(libro.getTitulo(), "\"."));
+            console.log("\u26A0\uFE0F ".concat(this.nombre, " no ten\u00EDa prestado \"").concat(libro.getTitulo(), "\"."));
         }
     };
     return Cliente;
 }(Usuario));
+// =============================================================
+// 6. Programa principal (ejemplo de uso)
+// =============================================================
 var libro1 = new Libro(1, "Cien Años de Soledad", "Gabo");
 var libro2 = new Libro(2, "El Principito", "Saint-Exupéry");
 var cliente = new Cliente("Randolph Peralta");
