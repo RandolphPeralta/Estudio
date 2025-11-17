@@ -9,7 +9,7 @@ class Animal {
 }
 
 class Dog extends Animal {
-     // Aqui sale error
+     // Aqui sale error cuando colocamos un tipo
 }
 
 const myAnimal: Animal = new Animal();
