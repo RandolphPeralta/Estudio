@@ -3,18 +3,17 @@ class Animal {
     private age = 10;
     protected identity = "111"
 
-    constructor(){}
-
     sayHi(){
         console.log("Grr", this.age)
     }
 }
 
 class Dog extends Animal {
-    //type: "Pastor Aleman"; // Aqui sale error
-    sayHi(){
-        this.identity;
-    }
+     // Aqui sale error
 }
 
 const myAnimal: Animal = new Animal();
+myAnimal.sayHi();
+
+const mnyDog: Dog = new Dog();
+mnyDog.name
