@@ -44,7 +44,7 @@ var Vehiculo = /** @class */ (function () {
         return this.marca;
     };
     Vehiculo.prototype.realizarMantenimiento = function () {
-        console.log("\uD83D\uDEE0\uFE0F Realizando mantenimiento al veh\u00EDculo ".concat(this.marca, "..."));
+        console.log("\uD83D\uDEE0\uFE0F Realizando mantenimiento al veh\u00EDculo ".concat(this.getId(), "..."));
     };
     return Vehiculo;
 }());
@@ -80,7 +80,7 @@ var auto = new Auto(1, "Toyota", motorAuto);
 var moto = new Moto(2, "Yamaha", motorMoto);
 auto.descripcion(); // Polimorfismo
 moto.descripcion(); // Polimorfismo
-auto.realizarMantenimiento();
-moto.realizarMantenimiento();
+// auto.realizarMantenimiento();
+// moto.realizarMantenimiento();
 motorAuto.encender();
 motorMoto.encender();

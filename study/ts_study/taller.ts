@@ -54,7 +54,7 @@ abstract class Vehiculo implements IMantenible, IIdentificable {
   abstract descripcion(): void;
 
   realizarMantenimiento(): void {
-    console.log(`🛠️ Realizando mantenimiento al vehículo ${this.marca}...`);
+    console.log(`🛠️ Realizando mantenimiento al vehículo ${this.getId()}...`);
   }
 }
 
@@ -85,8 +85,8 @@ const moto = new Moto(2, "Yamaha", motorMoto);
 auto.descripcion();            // Polimorfismo
 moto.descripcion();            // Polimorfismo
 
-auto.realizarMantenimiento();
-moto.realizarMantenimiento();
+// auto.realizarMantenimiento();
+// moto.realizarMantenimiento();
 
 motorAuto.encender();
 motorMoto.encender();
