@@ -1,93 +1,47 @@
-// // Interfaces (para dar mensajes)
+// Interfaces (para dar mensajes)
 
-// interface Acciones {
-//     mensaje(): string; // de cualquier tipo
-// }
-
-// // clase para uso de composicion
-
-// class Composicion {
-//     metodoComposicion1(){
-//         return `este es el metodo `
-//     }
-// }
-
-// // clase abstracta para usar la composicion con la clase anterior
-
-// abstract class ClaseAbstracta {
-//     private metodo0: Composicion;
-//     constructor(metodo0: Composicion){
-//         this.metodo0 = metodo0
-//     }
-
-//     getMetodo() {
-//         return `ESTE ES EL METODO DE COMPOSICION DE LA CLASE ABSTRACTA: ${this.metodo0.metodoComposicion1()}`
-//     }
-// }
-
-// // Clase para uso de diseño hacia el objeto
-
-// class Disenio extends ClaseAbstracta{
-//     getMetodo(): string {
-//         return `Hola `
-//     }
-//     }
-
-// =============================================================
-// 1. Interfaz que representa un mensaje
-// =============================================================
-interface IMensaje {
-  getContenido(): string;
-  getDestino(): string;
+interface Acciones {
+    mensaje(): string; // de cualquier tipo
 }
 
-// Implementación simple del mensaje
-class Mensaje implements IMensaje {
-  private contenido: string;
-  private destino: string;
+// clase para uso de composicion
 
-  constructor(contenido: string, destino: string) {
-    this.contenido = contenido;
-    this.destino = destino;
-  }
-
-  getContenido(): string {
-    return this.contenido;
-  }
-
-  getDestino(): string {
-    return this.destino;
-  }
+class Composicion {
+    metodoComposicion1(){
+        return `este es el metodo `
+    }
 }
 
-// =============================================================
-// 2. Clase Logger (COMPOSICIÓN: usada por los notificadores)
-// =============================================================
-class Logger {
-  log(msg: string): void {
-    console.log("📝 LOG:", msg);
-  }
+// clase abstracta para usar la composicion con la clase anterior
+
+abstract class ClaseAbstracta implements Acciones{
+    private metodo0: Composicion;
+    constructor(metodo0: Composicion){
+        this.metodo0 = metodo0
+    }
+
+    getMetodo(): string {
+        return `ESTE ES EL METODO DE COMPOSICION DE LA CLASE ABSTRACTA: ${this.metodo0.metodoComposicion1()}`
+    }
+
+    mensaje(): string{
+        return "Hola"
+    }
 }
 
-// =============================================================
-// 3. Clase abstracta Notificador (HERENCIA + POLIMORFISMO)
-// =============================================================
-abstract class Notificador {
-  protected logger: Logger; // COMPOSICIÓN
+// Clase para uso de diseño hacia el objeto
 
-  constructor(logger: Logger) {
-    this.logger = logger;
-  }
-
-  // Método polimórfico
-  abstract enviar(mensaje: IMensaje): void;
-
-  protected registrarEnvio(mensaje: IMensaje) {
-    this.logger.log(
-      `Mensaje enviado a ${mensaje.getDestino()} con contenido: "${mensaje.getContenido()}"`
-    );
-  }
+class Disenio extends ClaseAbstracta{
+    getdiseno(): string {
+        return this.getMetodo()   
+    }
 }
+    
+const argumento = new Composicion;
+const prueba = new Disenio(argumento)
+
+console.log(prueba.getdiseno());
+
 
 
 

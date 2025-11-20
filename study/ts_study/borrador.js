@@ -19,16 +19,17 @@ var Composicion = /** @class */ (function () {
     function Composicion() {
     }
     Composicion.prototype.metodoComposicion1 = function () {
-        return "Este es el metodo ";
+        return "este es el metodo ";
     };
     return Composicion;
 }());
+// clase abstracta para usar la composicion con la clase anterior
 var ClaseAbstracta = /** @class */ (function () {
-    function ClaseAbstracta(metodo1) {
-        this.metodo1 = metodo1;
+    function ClaseAbstracta(metodo0) {
+        this.metodo0 = metodo0;
     }
     ClaseAbstracta.prototype.getMetodo = function () {
-        return this.metodo1;
+        return "ESTE ES EL METODO DE COMPOSICION DE LA CLASE ABSTRACTA: ".concat(this.metodo0.metodoComposicion1());
     };
     return ClaseAbstracta;
 }());
@@ -36,18 +37,13 @@ var ClaseAbstracta = /** @class */ (function () {
 var Disenio = /** @class */ (function (_super) {
     __extends(Disenio, _super);
     function Disenio() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.nombre = "";
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Disenio.prototype.mensaje = function () {
-        return "Hola ".concat(this.nombre);
-    };
-    Disenio.prototype.setnombre = function (nombre) {
-        this.nombre = nombre;
-    };
-    Disenio.prototype.getMetodo = function () {
+    Disenio.prototype.getdiseno = function () {
         return this.getMetodo();
     };
     return Disenio;
 }(ClaseAbstracta));
+var argumento = new Composicion;
+var prueba = new Disenio(argumento);
+console.log(prueba.getdiseno());
