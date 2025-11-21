@@ -4,20 +4,18 @@ interface accion {
 }
 
 interface Estado{
-    prestado(): void;
+    estado(): void;
 }
 
-abstract class Libro implements Estado{
+class Libro{
     private titulo: string
     private autor: string
     private codigo: number
-    private estado: boolean 
 
     constructor (titulo: string, autor: string, codigo: number, estado: boolean){
         this.titulo = titulo
         this.autor = autor
         this.codigo = codigo
-        this.estado = estado
     }
 
     getTitulo(){
@@ -25,38 +23,30 @@ abstract class Libro implements Estado{
     }
 
     prestado(){
-        this.estado = true
-    }
-
-    getEstado(){
-        return this.estado
+        
     }
 }
 
 abstract class Usuario {
     private nombre: string
-    private oficio: string
 
-    constructor(nombre: string, oficio: string){
+    constructor(nombre: string){
         this.nombre = nombre
-        this.oficio = oficio
+
     }
 
     getNombre(){
         return this.nombre
     }
-
-    getOficio(){
-        return this.oficio
-    }
+    
 }
 
 class Estudiante extends Usuario implements accion{
 
     private LibrosPrestados: Libro[] = []
 
-    prestar(): string {
-        this.LibrosPrestados.push()
+    prestar(libro: Libro): string {
+        this.LibrosPrestados.push(libro)
         return `Libro prestado`
     }
 
@@ -64,7 +54,3 @@ class Estudiante extends Usuario implements accion{
         return  `Libro devuelto`
     }
 }
-
-const estudiante1 = new Estudiante("Randolph", "Estudiante")
-
-console.log(estudiante1.prestar()) 
