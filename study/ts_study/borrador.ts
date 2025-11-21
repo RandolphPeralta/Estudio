@@ -1,47 +1,70 @@
-// Interfaces (para dar mensajes)
-
-interface Acciones {
-    mensaje(): string; // de cualquier tipo
+interface accion {
+    prestar(libro: Libro): string;
+    devolver(libro: Libro): string;
 }
 
-// clase para uso de composicion
+interface Estado{
+    prestado(): void;
+}
 
-class Composicion {
-    metodoComposicion1(){
-        return `este es el metodo `
+abstract class Libro implements Estado{
+    private titulo: string
+    private autor: string
+    private codigo: number
+    private estado: boolean 
+
+    constructor (titulo: string, autor: string, codigo: number, estado: boolean){
+        this.titulo = titulo
+        this.autor = autor
+        this.codigo = codigo
+        this.estado = estado
+    }
+
+    getTitulo(){
+        return this.titulo
+    }
+
+    prestado(){
+        this.estado = true
+    }
+
+    getEstado(){
+        return this.estado
     }
 }
 
-// clase abstracta para usar la composicion con la clase anterior
+abstract class Usuario {
+    private nombre: string
+    private oficio: string
 
-abstract class ClaseAbstracta implements Acciones{
-    private metodo0: Composicion;
-    constructor(metodo0: Composicion){
-        this.metodo0 = metodo0
+    constructor(nombre: string, oficio: string){
+        this.nombre = nombre
+        this.oficio = oficio
     }
 
-    getMetodo(): string {
-        return `ESTE ES EL METODO DE COMPOSICION DE LA CLASE ABSTRACTA: ${this.metodo0.metodoComposicion1()}`
+    getNombre(){
+        return this.nombre
     }
 
-    mensaje(): string{
-        return "Hola"
+    getOficio(){
+        return this.oficio
+    }
+}
+
+class Estudiante extends Usuario implements accion{
+
+    private LibrosPrestados: Libro[] = []
+
+    prestar(): string {
+        this.LibrosPrestados.push()
+        return `Libro prestado`
+    }
+
+    devolver(): string{
+        return  `Libro devuelto`
     }
 }
 
-// Clase para uso de diseño hacia el objeto
+const estudiante1 = new Estudiante("Randolph", "Estudiante")
 
-class Disenio extends ClaseAbstracta{
-    getdiseno(): string {
-        return this.getMetodo()   
-    }
-}
-    
-const argumento = new Composicion;
-const prueba = new Disenio(argumento)
-
-console.log(prueba.getdiseno());
-
-
-
-
+console.log(estudiante1.prestar()) 

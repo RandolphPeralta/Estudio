@@ -1,4 +1,3 @@
-// Interfaces (para dar mensajes)
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,36 +13,45 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// clase para uso de composicion
-var Composicion = /** @class */ (function () {
-    function Composicion() {
+var Libro = /** @class */ (function () {
+    function Libro(titulo, autor, codigo) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.codigo = codigo;
     }
-    Composicion.prototype.metodoComposicion1 = function () {
-        return "este es el metodo ";
+    Libro.prototype.prestado = function () {
+        return true;
     };
-    return Composicion;
+    return Libro;
 }());
-// clase abstracta para usar la composicion con la clase anterior
-var ClaseAbstracta = /** @class */ (function () {
-    function ClaseAbstracta(metodo0) {
-        this.metodo0 = metodo0;
+var Usuario = /** @class */ (function () {
+    function Usuario(nombre, oficio) {
+        this.nombre = nombre;
+        this.oficio = oficio;
     }
-    ClaseAbstracta.prototype.getMetodo = function () {
-        return "ESTE ES EL METODO DE COMPOSICION DE LA CLASE ABSTRACTA: ".concat(this.metodo0.metodoComposicion1());
+    Usuario.prototype.getNombre = function () {
+        return this.nombre;
     };
-    return ClaseAbstracta;
+    Usuario.prototype.getOficio = function () {
+        return this.oficio;
+    };
+    return Usuario;
 }());
-// Clase para uso de diseño hacia el objeto
-var Disenio = /** @class */ (function (_super) {
-    __extends(Disenio, _super);
-    function Disenio() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var Estudiante = /** @class */ (function (_super) {
+    __extends(Estudiante, _super);
+    function Estudiante() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.LibrosPrestados = [];
+        return _this;
     }
-    Disenio.prototype.getdiseno = function () {
-        return this.getMetodo();
+    Estudiante.prototype.prestar = function () {
+        this.LibrosPrestados.push();
+        return "Libro prestado";
     };
-    return Disenio;
-}(ClaseAbstracta));
-var argumento = new Composicion;
-var prueba = new Disenio(argumento);
-console.log(prueba.getdiseno());
+    Estudiante.prototype.devolver = function () {
+        return "Libro devuelto";
+    };
+    return Estudiante;
+}(Usuario));
+var estudiante1 = new Estudiante("Randolph", "Estudiante");
+console.log(estudiante1.getNombre());
