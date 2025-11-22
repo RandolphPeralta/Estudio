@@ -1,56 +1,62 @@
-interface accion {
-    prestar(libro: Libro): string;
-    devolver(libro: Libro): string;
+// 1. interface 
+
+interface IPrestable {
+    prestar(): void;
+    devolver(): void;
+    disponibilidad(): void;
 }
 
-interface Estado{
-    estado(): void;
+// 2. abstract clase disponibilidad
+
+class Disponible {
+    private disponible: boolean = true
 }
 
-class Libro{
+// 3. Clase diseño del libro
+
+class Libro implements IPrestable{
     private titulo: string
     private autor: string
     private codigo: number
+    private disponible: Disponible
 
-    constructor (titulo: string, autor: string, codigo: number, estado: boolean){
+    constructor(titulo:string, autor: string, codigo:number, disponible: Disponible){
         this.titulo = titulo
         this.autor = autor
         this.codigo = codigo
+        this.disponible = new Disponible()
     }
 
-    getTitulo(){
-        return this.titulo
+    prestar(): void{
+        // this.disponible = false
     }
 
-    prestado(){
+    devolver(): void{
+        //this.disponible = true
+    }
+
+    disponibilidad(): void {
         
     }
 }
 
+// 3. abstract Clase de Usuario
+
 abstract class Usuario {
     private nombre: string
 
-    constructor(nombre: string){
+    constructor (nombre: string){
         this.nombre = nombre
-
     }
-
-    getNombre(){
-        return this.nombre
-    }
-    
 }
 
-class Estudiante extends Usuario implements accion{
+// 4. clase de estudiante
 
-    private LibrosPrestados: Libro[] = []
+class Estudiante {
+    private LibroPrestado: Libro[] = []
 
-    prestar(libro: Libro): string {
-        this.LibrosPrestados.push(libro)
-        return `Libro prestado`
-    }
-
-    devolver(): string{
-        return  `Libro devuelto`
+    PrestarLibro(libro: Libro){
+            this.LibroPrestado.push(libro)
+        
     }
 }
