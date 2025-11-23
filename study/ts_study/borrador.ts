@@ -113,8 +113,6 @@ const cliente = new Estudiante("Randolph Peralta");
 
 cliente.mostrarInfo();
 
-libro1.estaDisponible();
-
 // cliente.prestarLibro(libro1);
 // cliente.prestarLibro(libro2);
 // cliente.devolverLibro(libro1);
