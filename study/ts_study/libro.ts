@@ -52,23 +52,23 @@ class Libro implements IPrestable, IIdentificable {
     this.estado = new EstadoPrestamo(); // COMPOSICIÓN
   }
 
-  getId(): number {
+  public getId(): number {
     return this.id;
   }
 
-  getTitulo(): string {
+  public getTitulo(): string {
     return this.titulo;
   }
 
-  prestar(): void {
+  public prestar(): void {
     this.estado.prestar();
   }
 
-  devolver(): void {
+  public devolver(): void {
     this.estado.devolver();
   }
 
-  estaDisponible(): boolean {
+  public estaDisponible(): boolean {
     return this.estado.estaDisponible();
   }
 }
@@ -77,14 +77,17 @@ class Libro implements IPrestable, IIdentificable {
 // 4. Clase abstracta Usuario — base para herencia
 // =============================================================
 abstract class Usuario {
-  protected nombre: string;
+  private nombre: string; // AHORA PRIVATE
 
   constructor(nombre: string) {
     this.nombre = nombre;
   }
 
-  // Método polimórfico
-  abstract mostrarInfo(): void;
+  // Encapsulamiento mediante getter
+  public getNombre(): string {
+    return this.nombre;
+  }
+
 }
 
 // =============================================================
@@ -93,29 +96,29 @@ abstract class Usuario {
 class Cliente extends Usuario {
   private prestamos: Libro[] = [];
 
-  mostrarInfo(): void {
+  public mostrarInfo(): void {
     console.log(
-      `👤 Cliente: ${this.nombre}, Libros prestados: ${this.prestamos.length}`
+      `👤 Cliente: ${this.getNombre()}, Libros prestados: ${this.prestamos.length}`
     );
   }
 
-  prestarLibro(libro: Libro): void {
+  public prestarLibro(libro: Libro): void {
     if (libro.estaDisponible()) {
       libro.prestar();
       this.prestamos.push(libro);
     } else {
-      console.log(`⚠️ ${this.nombre} no puede prestar "${libro.getTitulo()}".`);
+      console.log(`⚠️ ${this.getNombre()} no puede prestar "${libro.getTitulo()}".`);
     }
   }
 
-  devolverLibro(libro: Libro): void {
+  public devolverLibro(libro: Libro): void {
     const index = this.prestamos.indexOf(libro);
 
     if (index !== -1) {
       libro.devolver();
       this.prestamos.splice(index, 1);
     } else {
-      console.log(`⚠️ ${this.nombre} no tenía prestado "${libro.getTitulo()}".`);
+      console.log(`⚠️ ${this.getNombre()} no tenía prestado "${libro.getTitulo()}".`);
     }
   }
 }
