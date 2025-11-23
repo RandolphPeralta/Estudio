@@ -109,9 +109,11 @@ class Estudiante extends Usuario{
 const libro1 = new Libro("Cien Años de Soledad", "Gabo",1);
 // const libro2 = new Libro( "El Principito", "Saint-Exupéry",2);
 
-// const cliente = new Estudiante("Randolph Peralta");
+const cliente = new Estudiante("Randolph Peralta");
 
-// cliente.mostrarInfo();
+cliente.mostrarInfo();
+
+libro1.estaDisponible();
 
 // cliente.prestarLibro(libro1);
 // cliente.prestarLibro(libro2);
