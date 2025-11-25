@@ -13,33 +13,55 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Animal = /** @class */ (function () {
-    function Animal(nombre) {
+// =====================================================
+// Clase abstracta
+// =====================================================
+var Usuario = /** @class */ (function () {
+    function Usuario(nombre, apellido) {
         this.nombre = nombre;
+        this.apellido = apellido;
+        this.rol = "";
+        this.salud = 100;
     }
-    return Animal;
+    Usuario.prototype.setRol = function (rol) {
+        this.rol = rol;
+    };
+    Usuario.prototype.getRol = function () {
+        return this.rol;
+    };
+    return Usuario;
 }());
-var Perro = /** @class */ (function (_super) {
-    __extends(Perro, _super);
-    function Perro() {
-        return _super !== null && _super.apply(this, arguments) || this;
+// =====================================================
+// Clases hijas
+// =====================================================
+var Mago = /** @class */ (function (_super) {
+    __extends(Mago, _super);
+    function Mago() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        // Se asigna automáticamente sin usar el constructor
+        _this.surol = _this.setRol("Mago");
+        return _this;
     }
-    Perro.prototype.sonido = function () {
-        console.log("Waw");
-    };
-    return Perro;
-}(Animal));
-var Gato = /** @class */ (function (_super) {
-    __extends(Gato, _super);
-    function Gato() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    Mago.prototype.Atacar = function () { };
+    Mago.prototype.Defender = function () { };
+    return Mago;
+}(Usuario));
+var Guerrero = /** @class */ (function (_super) {
+    __extends(Guerrero, _super);
+    function Guerrero() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        // Igual aquí, sin tocar constructor
+        _this.surol = _this.setRol("Guerrero");
+        return _this;
     }
-    Gato.prototype.sonido = function () {
-        console.log("Miaw");
-    };
-    return Gato;
-}(Animal));
-var perro = new Perro("Toby");
-var gato = new Gato("Don");
-// perro.sonido()
-gato.sonido();
+    Guerrero.prototype.Atacar = function () { };
+    Guerrero.prototype.Defender = function () { };
+    return Guerrero;
+}(Usuario));
+// =====================================================
+// Ejemplo de uso
+// =====================================================
+var conan = new Guerrero("Conan", "Barbaro");
+var merlin = new Mago("Merlin", "Ambrosius");
+console.log(conan.getRol()); // "guerrero"
+//console.log(merlin.getRol()); // "mago"
