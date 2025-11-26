@@ -2,7 +2,7 @@
 
 interface Empleado {
     getNombre(): string;
-    getSalario(): number;
+    getEdad(): number;
     mostrarDetalles(): void;
 }
 
@@ -19,7 +19,7 @@ abstract class Persona implements Empleado {
         return this.nombre
     }
 
-    getSalario(): number {
+    getEdad(): number {
         return this.edad
     }
 
@@ -28,6 +28,48 @@ abstract class Persona implements Empleado {
     }
 }
 
+class EmpleadoFijo extends Persona {
+    private salario: number = 0;
+    private salarioHora: number = 0;
+
+    public setSalario(salario: number): void {
+        this.salario = salario
+    }
+
+    public getSalario(): number {
+        return this.salario
+    }
+}
+
 class EmpleadoTemporal extends Persona {
-    
+    private duracionContrato: number = 0; // meses → también SIN constructor
+    private salariohora: number = 0;
+    private horasTrabajdas: number = 0;
+
+    setSalarioHora(salariohora: number){
+        this.salariohora = salariohora
+    }
+
+    setHorasTrabajadas(horasTrabajdas: number){
+        this.horasTrabajdas = horasTrabajdas
+    }
+
+    setDuracionContrato(meses: number): void {
+        this.duracionContrato = meses;
+    }
+
+    getDuracionContrato(): number {
+        return this.duracionContrato;
+    }
+
+    mostrarDetalles(): void {
+        console.log(
+            `Empleado Temporal: ${this.getNombre()} | Edad: ${this.getEdad()} | Contrato: ${this.duracionContrato} meses`
+        );
+    }
+}
+
+
+class Departamento {
+
 }
