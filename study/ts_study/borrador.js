@@ -1,3 +1,4 @@
+// Sistema de gestion de empleados
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -13,55 +14,81 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// =====================================================
-// Clase abstracta
-// =====================================================
-var Usuario = /** @class */ (function () {
-    function Usuario(nombre, apellido) {
+var Empleado = /** @class */ (function () {
+    function Empleado(nombre, edad) {
         this.nombre = nombre;
-        this.apellido = apellido;
-        this.rol = "";
-        this.salud = 100;
+        this.edad = edad;
     }
-    Usuario.prototype.setRol = function (rol) {
-        this.rol = rol;
+    Empleado.prototype.getNombre = function () {
+        return this.nombre;
     };
-    Usuario.prototype.getRol = function () {
-        return this.rol;
+    Empleado.prototype.getEdad = function () {
+        return this.edad;
     };
-    return Usuario;
+    Empleado.prototype.mostrarDetalles = function () {
+        console.log("Empleado: ".concat(this.nombre, " - Edad: ").concat(this.edad));
+    };
+    return Empleado;
 }());
-// =====================================================
-// Clases hijas
-// =====================================================
-var Mago = /** @class */ (function (_super) {
-    __extends(Mago, _super);
-    function Mago() {
+var EmpleadoFijo = /** @class */ (function (_super) {
+    __extends(EmpleadoFijo, _super);
+    function EmpleadoFijo() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        // Se asigna automáticamente sin usar el constructor
-        _this.surol = _this.setRol("Mago");
+        _this.salario = 0;
+        _this.salarioHora = 0;
         return _this;
     }
-    Mago.prototype.Atacar = function () { };
-    Mago.prototype.Defender = function () { };
-    return Mago;
-}(Usuario));
-var Guerrero = /** @class */ (function (_super) {
-    __extends(Guerrero, _super);
-    function Guerrero() {
+    EmpleadoFijo.prototype.setSalario = function (salario) {
+        this.salario = salario;
+    };
+    EmpleadoFijo.prototype.getSalario = function () {
+        return this.salario;
+    };
+    return EmpleadoFijo;
+}(Empleado));
+var EmpleadoTemporal = /** @class */ (function (_super) {
+    __extends(EmpleadoTemporal, _super);
+    function EmpleadoTemporal() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        // Igual aquí, sin tocar constructor
-        _this.surol = _this.setRol("Guerrero");
+        _this.duracionContrato = 0; // meses → también SIN constructor
+        _this.salariohora = 0;
+        _this.horasTrabajdas = 0;
         return _this;
     }
-    Guerrero.prototype.Atacar = function () { };
-    Guerrero.prototype.Defender = function () { };
-    return Guerrero;
-}(Usuario));
-// =====================================================
-// Ejemplo de uso
-// =====================================================
-var conan = new Guerrero("Conan", "Barbaro");
-var merlin = new Mago("Merlin", "Ambrosius");
-console.log(conan.getRol()); // "guerrero"
-//console.log(merlin.getRol()); // "mago"
+    EmpleadoTemporal.prototype.setSalarioHora = function (salariohora) {
+        this.salariohora = salariohora;
+    };
+    EmpleadoTemporal.prototype.setHorasTrabajadas = function (horasTrabajdas) {
+        this.horasTrabajdas = horasTrabajdas;
+    };
+    EmpleadoTemporal.prototype.getSalario = function () {
+        return this.salariohora * this.horasTrabajdas;
+    };
+    EmpleadoTemporal.prototype.mostrarDetalles = function () {
+        console.log("Trabajador Temporal: ".concat(this.getNombre(), " | Edad: ").concat(this.getEdad(), " | Contrato: ").concat(this.duracionContrato, " meses"));
+    };
+    return EmpleadoTemporal;
+}(Empleado));
+var Departamento = /** @class */ (function () {
+    function Departamento() {
+        this.empleados = [];
+    }
+    Departamento.prototype.agregarEmpleado = function (empleado) {
+        if (!this.empleados) {
+            this.empleados = [];
+        }
+        this.empleados.push(empleado);
+    };
+    Departamento.prototype.mostrarDepartamento = function () {
+        this.empleados.forEach(function (emp) { return emp.mostrarDetalles(); });
+    };
+    return Departamento;
+}());
+var empleadofijo1 = new EmpleadoFijo("Randolph", 30);
+var empleadofijo2 = new EmpleadoFijo("Sara", 24);
+empleadofijo1.setSalario(1000);
+//empleadofijo1.mostrarDetalles()
+var departamento1 = new Departamento();
+departamento1.agregarEmpleado(empleadofijo1);
+departamento1.agregarEmpleado(empleadofijo2);
+departamento1.mostrarDepartamento();
