@@ -44,6 +44,9 @@ var EmpleadoFijo = /** @class */ (function (_super) {
     EmpleadoFijo.prototype.getSalario = function () {
         return this.salario;
     };
+    EmpleadoFijo.prototype.mostrarDetalles = function () {
+        console.log("Trabajador Fijo: ".concat(this.getNombre(), " | Edad: ").concat(this.getEdad(), " | Salario: $ ").concat(this.getSalario()));
+    };
     return EmpleadoFijo;
 }(Empleado));
 var EmpleadoTemporal = /** @class */ (function (_super) {
@@ -52,17 +55,23 @@ var EmpleadoTemporal = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.duracionContrato = 0; // meses → también SIN constructor
         _this.salariohora = 0;
-        _this.horasTrabajdas = 0;
+        _this.horasTrabajadas = 0;
         return _this;
     }
     EmpleadoTemporal.prototype.setSalarioHora = function (salariohora) {
         this.salariohora = salariohora;
     };
-    EmpleadoTemporal.prototype.setHorasTrabajadas = function (horasTrabajdas) {
-        this.horasTrabajdas = horasTrabajdas;
+    EmpleadoTemporal.prototype.setHorasTrabajadas = function (horasTrabajadas) {
+        this.horasTrabajadas = horasTrabajadas;
     };
     EmpleadoTemporal.prototype.getSalario = function () {
-        return this.salariohora * this.horasTrabajdas;
+        return this.salariohora * this.horasTrabajadas;
+    };
+    EmpleadoTemporal.prototype.setContrato = function (duracionContrato) {
+        this.duracionContrato = duracionContrato;
+    };
+    EmpleadoTemporal.prototype.getContrato = function () {
+        return this.duracionContrato;
     };
     EmpleadoTemporal.prototype.mostrarDetalles = function () {
         console.log("Trabajador Temporal: ".concat(this.getNombre(), " | Edad: ").concat(this.getEdad(), " | Contrato: ").concat(this.duracionContrato, " meses"));
@@ -74,9 +83,6 @@ var Departamento = /** @class */ (function () {
         this.empleados = [];
     }
     Departamento.prototype.agregarEmpleado = function (empleado) {
-        if (!this.empleados) {
-            this.empleados = [];
-        }
         this.empleados.push(empleado);
     };
     Departamento.prototype.mostrarDepartamento = function () {
@@ -85,10 +91,8 @@ var Departamento = /** @class */ (function () {
     return Departamento;
 }());
 var empleadofijo1 = new EmpleadoFijo("Randolph", 30);
-var empleadofijo2 = new EmpleadoFijo("Sara", 24);
 empleadofijo1.setSalario(1000);
-//empleadofijo1.mostrarDetalles()
+// empleadofijo1.mostrarDetalles()
 var departamento1 = new Departamento();
 departamento1.agregarEmpleado(empleadofijo1);
-departamento1.agregarEmpleado(empleadofijo2);
 departamento1.mostrarDepartamento();

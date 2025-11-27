@@ -1,0 +1,102 @@
+// Sistema de gestion de empleados
+
+interface Trabajador {
+    getNombre(): string;
+    getEdad(): number;
+    mostrarDetalles(): void;
+}
+
+abstract class Empleado implements Trabajador {
+    private nombre: string;
+    private edad: number;
+
+    constructor(nombre: string, edad: number){
+        this.nombre = nombre
+        this.edad = edad
+    }
+    
+    public getNombre(): string {
+        return this.nombre
+    }
+
+    public getEdad(): number {
+        return this.edad
+    }
+
+    public mostrarDetalles(): void {
+       console.log(`Empleado: ${this.nombre} - Edad: ${this.edad}`)
+    }
+}
+
+class EmpleadoFijo extends Empleado {
+    private salario: number = 0;
+    private salarioHora: number = 0;
+
+    public setSalario(salario: number): void {
+        this.salario = salario
+    }
+
+    public getSalario(): number {
+        return this.salario
+    }
+
+    public mostrarDetalles(): void {
+        console.log(
+            `Trabajador Fijo: ${this.getNombre()} | Edad: ${this.getEdad()} | Salario: $ ${this.getSalario()}`
+        );
+    }
+}
+
+class EmpleadoTemporal extends Empleado {
+    private duracionContrato: number = 0; // meses → también SIN constructor
+    private salariohora: number = 0;
+    private horasTrabajadas: number = 0;
+
+    public setSalarioHora(salariohora: number){
+        this.salariohora = salariohora
+    }
+
+    public setHorasTrabajadas(horasTrabajadas: number){
+        this.horasTrabajadas = horasTrabajadas
+    }
+
+    public getSalario(): number {
+        return this.salariohora * this.horasTrabajadas
+    }
+
+    public setContrato(duracionContrato: number){
+        this.duracionContrato = duracionContrato
+    }
+
+    public getContrato(){
+        return this.duracionContrato
+    }
+
+    public mostrarDetalles(): void {
+        console.log(
+            `Trabajador Temporal: ${this.getNombre()} | Edad: ${this.getEdad()} | Contrato: ${this.duracionContrato} meses`
+        );
+    }
+}
+
+class Departamento {
+    private empleados: Empleado[] = [];
+
+    public agregarEmpleado(empleado: Empleado): void {
+        this.empleados.push(empleado)
+    }
+
+    public mostrarDepartamento(): void {
+        this.empleados.forEach(emp => emp.mostrarDetalles());
+    }
+
+}
+
+const empleadofijo1 = new EmpleadoFijo("Randolph", 30)
+empleadofijo1.setSalario(1000)
+// empleadofijo1.mostrarDetalles()
+
+const departamento1 = new Departamento()
+
+departamento1.agregarEmpleado(empleadofijo1)
+departamento1.mostrarDepartamento()
