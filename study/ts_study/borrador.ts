@@ -1,83 +1,62 @@
-// 1. INTERFAZ: contrato para cualquier vehículo
-interface IVehiculo {
-    encender(): void;
-    apagar(): void;
-    mover(): void;
+// 1. INTERFAZ: contrato para cualquier método de pago
+interface IPago {
+    procesar(monto: number): void;
 }
 
 // 2. CLASE ABSTRACTA: define estructura común
-abstract class VehiculoBase {
-    // Encapsulamiento: atributos privados
-    private marca: string;
-    private modelo: string;
+abstract class MetodoPagoBase implements IPago {
+    // Encapsulamiento: atributo privado
+    private titular: string;
 
-    constructor(marca: string, modelo: string) {
-        this.marca = marca;
-        this.modelo = modelo;
+    constructor(titular: string) {
+        this.titular = titular;
     }
 
-    protected getInfo(): string {
-        return `${this.marca} ${this.modelo}`;
+    protected getTitular(): string {
+        return this.titular;
+    }
+
+    // Método abstracto: cada hijo debe implementarlo
+    abstract procesar(monto: number): void;
+}
+
+// 3. HERENCIA + POLIMORFISMO: distintos métodos de pago
+class TarjetaCredito extends MetodoPagoBase {
+    procesar(monto: number): void {
+        console.log(`💳 Pago de $${monto} con tarjeta de ${this.getTitular()}`);
     }
 }
 
-// 3. HERENCIA + POLIMORFISMO: distintos tipos de vehículos
-class Auto extends VehiculoBase implements IVehiculo {
-    encender(): void {
-        console.log(`🚗 El auto ${this.getInfo()} está encendido`);
-    }
-    apagar(): void {
-        console.log(`🚗 El auto ${this.getInfo()} está apagado`);
-    }
-    mover(): void {
-        console.log(`🚗 El auto ${this.getInfo()} está en movimiento`);
+class PayPal extends MetodoPagoBase {
+    procesar(monto: number): void {
+        console.log(`🌐 Pago de $${monto} vía PayPal de ${this.getTitular()}`);
     }
 }
 
-class Moto extends VehiculoBase implements IVehiculo {
-    encender(): void {
-        console.log(`🏍️ La moto ${this.getInfo()} está encendida`);
-    }
-    apagar(): void {
-        console.log(`🏍️ La moto ${this.getInfo()} está apagada`);
-    }
-    mover(): void {
-        console.log(`🏍️ La moto ${this.getInfo()} está rodando`);
+class TransferenciaBancaria extends MetodoPagoBase {
+    procesar(monto: number): void {
+        console.log(`🏦 Transferencia de $${monto} desde la cuenta de ${this.getTitular()}`);
     }
 }
 
-class Camion extends VehiculoBase implements IVehiculo {
-    encender(): void {
-        console.log(`🚚 El camión ${this.getInfo()} está encendido`);
-    }
-    apagar(): void {
-        console.log(`🚚 El camión ${this.getInfo()} está apagado`);
-    }
-    mover(): void {
-        console.log(`🚚 El camión ${this.getInfo()} está transportando carga`);
-    }
-}
+// 4. COMPOSICIÓN: gestor que usa métodos de pago, no hereda de ellos
+class GestorPagos {
+    private metodo: IPago;
 
-// 4. COMPOSICIÓN: gestor que usa vehículos, no hereda de ellos
-class GestorVehiculos {
-    private vehiculo: IVehiculo;
-
-    constructor(vehiculo: IVehiculo) {
-        this.vehiculo = vehiculo;
+    constructor(metodo: IPago) {
+        this.metodo = metodo;
     }
 
-    public operar(): void {
-        this.vehiculo.encender();
-        this.vehiculo.mover();
-        this.vehiculo.apagar();
+    public ejecutarPago(monto: number): void {
+        this.metodo.procesar(monto);
     }
 }
 
 // 5. USO DEL SISTEMA
-const auto = new GestorVehiculos(new Auto("Toyota", "Corolla"));
-const moto = new GestorVehiculos(new Moto("Yamaha", "R3"));
-const camion = new GestorVehiculos(new Camion("Volvo", "FH16"));
+const pagoTarjeta = new GestorPagos(new TarjetaCredito("Randolph"));
+const pagoPayPal = new GestorPagos(new PayPal("Randolph"));
+const pagoTransferencia = new GestorPagos(new TransferenciaBancaria("Randolph"));
 
-auto.operar();
-moto.operar();
-camion.operar();
+pagoTarjeta.ejecutarPago(150);
+pagoPayPal.ejecutarPago(200);
+pagoTransferencia.ejecutarPago(500);
