@@ -14,17 +14,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var Usuario = /** @class */ (function () {
-    function Usuario() {
-        this.nombre = "";
+    function Usuario(nombre) {
         this.altura = 0;
         this.peso = 0;
         this.edad = 0;
+        this.nombre = nombre;
     }
     Usuario.prototype.getNombre = function () {
         return this.nombre;
-    };
-    Usuario.prototype.setNombre = function (nombre) {
-        this.nombre = nombre;
     };
     return Usuario;
 }());
@@ -53,10 +50,14 @@ var Cliente = /** @class */ (function (_super) {
         this.listaropa.push(ropa);
         console.log("El cliente ".concat(this.getNombre(), " compro un ").concat(ropa.getTipo()));
     };
+    Cliente.prototype.getlistaRopa = function () {
+        return this.listaropa;
+    };
     return Cliente;
 }(Usuario));
-var cliente = new Cliente();
-cliente.setNombre("Randolph");
+var cliente = new Cliente("Randolph");
+cliente.getNombre();
 var ropa = new Ropa();
 ropa.setTipo("Sueter");
 cliente.comprar(ropa);
+console.log(cliente.getlistaRopa());

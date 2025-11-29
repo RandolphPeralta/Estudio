@@ -1,16 +1,25 @@
+interface Compra {
+    comprar(ropa: Ropa): void;    
+}
+
+interface Venta {
+    verder(ropa: Ropa): void;
+}
+
 abstract class Usuario {
-    private nombre:string = ""
+    private nombre:string
     private altura:number = 0
     private peso: number = 0
     private edad: number = 0
+
+    constructor(nombre: string){
+        this.nombre = nombre
+    }
 
     getNombre(){
         return this.nombre
     }
 
-    setNombre(nombre: string){
-        this.nombre = nombre
-    }
 }
 
 class Ropa {
@@ -27,16 +36,6 @@ class Ropa {
     }
 }
 
-interface Compra {
-    comprar(ropa: Ropa): void;
-    
-}
-
-interface Venta {
-    verder(ropa: Ropa): void;
-}
-
-
 class Cliente extends Usuario implements Compra {
     private listaropa: Ropa[] = []
     
@@ -44,13 +43,18 @@ class Cliente extends Usuario implements Compra {
         this.listaropa.push(ropa)
         console.log(`El cliente ${this.getNombre()} compro un ${ropa.getTipo()}`)
     }
+
+    getlistaRopa(){
+       return this.listaropa
+    }
 }
     
-const cliente = new Cliente()
-cliente.setNombre("Randolph")
+const cliente = new Cliente("Randolph")
+cliente.getNombre()
 
 const ropa = new Ropa()
 ropa.setTipo("Sueter")
 
 cliente.comprar(ropa)
 
+console.log(cliente.getlistaRopa())

@@ -14,81 +14,60 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 // 2. CLASE ABSTRACTA: define estructura común
-var VehiculoBase = /** @class */ (function () {
-    function VehiculoBase(marca, modelo) {
-        this.marca = marca;
-        this.modelo = modelo;
+var MetodoPagoBase = /** @class */ (function () {
+    function MetodoPagoBase(titular) {
+        this.titular = titular;
     }
-    VehiculoBase.prototype.getInfo = function () {
-        return "".concat(this.marca, " ").concat(this.modelo);
+    MetodoPagoBase.prototype.getTitular = function () {
+        return this.titular;
     };
-    return VehiculoBase;
+    return MetodoPagoBase;
 }());
-// 3. HERENCIA + POLIMORFISMO: distintos tipos de vehículos
-var Auto = /** @class */ (function (_super) {
-    __extends(Auto, _super);
-    function Auto() {
+// 3. HERENCIA + POLIMORFISMO: distintos métodos de pago
+var TarjetaCredito = /** @class */ (function (_super) {
+    __extends(TarjetaCredito, _super);
+    function TarjetaCredito() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Auto.prototype.encender = function () {
-        console.log("\uD83D\uDE97 El auto ".concat(this.getInfo(), " est\u00E1 encendido"));
+    TarjetaCredito.prototype.procesar = function (monto) {
+        console.log("\uD83D\uDCB3 Pago de $".concat(monto, " con tarjeta de ").concat(this.getTitular()));
     };
-    Auto.prototype.apagar = function () {
-        console.log("\uD83D\uDE97 El auto ".concat(this.getInfo(), " est\u00E1 apagado"));
-    };
-    Auto.prototype.mover = function () {
-        console.log("\uD83D\uDE97 El auto ".concat(this.getInfo(), " est\u00E1 en movimiento"));
-    };
-    return Auto;
-}(VehiculoBase));
-var Moto = /** @class */ (function (_super) {
-    __extends(Moto, _super);
-    function Moto() {
+    return TarjetaCredito;
+}(MetodoPagoBase));
+var PayPal = /** @class */ (function (_super) {
+    __extends(PayPal, _super);
+    function PayPal() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Moto.prototype.encender = function () {
-        console.log("\uD83C\uDFCD\uFE0F La moto ".concat(this.getInfo(), " est\u00E1 encendida"));
+    PayPal.prototype.procesar = function (monto) {
+        console.log("\uD83C\uDF10 Pago de $".concat(monto, " v\u00EDa PayPal de ").concat(this.getTitular()));
     };
-    Moto.prototype.apagar = function () {
-        console.log("\uD83C\uDFCD\uFE0F La moto ".concat(this.getInfo(), " est\u00E1 apagada"));
-    };
-    Moto.prototype.mover = function () {
-        console.log("\uD83C\uDFCD\uFE0F La moto ".concat(this.getInfo(), " est\u00E1 rodando"));
-    };
-    return Moto;
-}(VehiculoBase));
-var Camion = /** @class */ (function (_super) {
-    __extends(Camion, _super);
-    function Camion() {
+    return PayPal;
+}(MetodoPagoBase));
+var TransferenciaBancaria = /** @class */ (function (_super) {
+    __extends(TransferenciaBancaria, _super);
+    function TransferenciaBancaria() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Camion.prototype.encender = function () {
-        console.log("\uD83D\uDE9A El cami\u00F3n ".concat(this.getInfo(), " est\u00E1 encendido"));
+    TransferenciaBancaria.prototype.procesar = function (monto) {
+        console.log("\uD83C\uDFE6 Transferencia de $".concat(monto, " desde la cuenta de ").concat(this.getTitular()));
     };
-    Camion.prototype.apagar = function () {
-        console.log("\uD83D\uDE9A El cami\u00F3n ".concat(this.getInfo(), " est\u00E1 apagado"));
-    };
-    Camion.prototype.mover = function () {
-        console.log("\uD83D\uDE9A El cami\u00F3n ".concat(this.getInfo(), " est\u00E1 transportando carga"));
-    };
-    return Camion;
-}(VehiculoBase));
-// 4. COMPOSICIÓN: gestor que usa vehículos, no hereda de ellos
-var GestorVehiculos = /** @class */ (function () {
-    function GestorVehiculos(vehiculo) {
-        this.vehiculo = vehiculo;
+    return TransferenciaBancaria;
+}(MetodoPagoBase));
+// 4. COMPOSICIÓN: gestor que usa métodos de pago, no hereda de ellos
+var GestorPagos = /** @class */ (function () {
+    function GestorPagos(metodo) {
+        this.metodo = metodo;
     }
-    GestorVehiculos.prototype.operar = function () {
-        this.vehiculo.encender();
-        this.vehiculo.mover();
-        this.vehiculo.apagar();
+    GestorPagos.prototype.ejecutarPago = function (monto) {
+        this.metodo.procesar(monto);
     };
-    return GestorVehiculos;
+    return GestorPagos;
 }());
 // 5. USO DEL SISTEMA
-var auto = new GestorVehiculos(new Auto("Toyota", "Corolla"));
-var moto = new GestorVehiculos(new Moto("Yamaha", "R3"));
-var camion = new GestorVehiculos(new Camion("Volvo", "FH16"));
-auto.operar();
-moto.operar();
-camion.operar();
+var pagoTarjeta = new GestorPagos(new TarjetaCredito("Randolph"));
+var pagoPayPal = new GestorPagos(new PayPal("Randolph"));
+var pagoTransferencia = new GestorPagos(new TransferenciaBancaria("Randolph"));
+pagoTarjeta.ejecutarPago(150);
+pagoPayPal.ejecutarPago(200);
+pagoTransferencia.ejecutarPago(500);
