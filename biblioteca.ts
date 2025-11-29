@@ -111,5 +111,3 @@ biblioteca.agregarEstudiante(estudiante1)
 
 
 biblioteca.prestarLibro(estudiante1, libro1)
-
-biblioteca.mostrarLibros()
