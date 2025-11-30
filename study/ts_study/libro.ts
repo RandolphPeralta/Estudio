@@ -1,6 +1,6 @@
-// =============================================================
+
 // 1. Interfaces
-// =============================================================
+
 interface IPrestable {
   prestar(): void;
   devolver(): void;
@@ -11,10 +11,8 @@ interface IIdentificable {
   getId(): number;
 }
 
-// =============================================================
 // 2. Clase que aplica COMPOSICIÓN (preferida sobre herencia)
-// =============================================================
-class EstadoPrestamo {
+class EstadoPrestamo implements IPrestable {
   private disponible: boolean = true;
 
   public prestar(): void {
@@ -36,9 +34,7 @@ class EstadoPrestamo {
   }
 }
 
-// =============================================================
 // 3. Clase Libro usando COMPOSICIÓN e interfaces
-// =============================================================
 class Libro implements IPrestable, IIdentificable {
   private id: number;
   private titulo: string;
@@ -73,9 +69,7 @@ class Libro implements IPrestable, IIdentificable {
   }
 }
 
-// =============================================================
 // 4. Clase abstracta Usuario — base para herencia
-// =============================================================
 abstract class Usuario {
   private nombre: string; // AHORA PRIVATE
 
