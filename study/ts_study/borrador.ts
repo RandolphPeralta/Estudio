@@ -1,62 +1,113 @@
-// 1. INTERFAZ: contrato para cualquier método de pago
-interface IPago {
-    procesar(monto: number): void;
+// 1. Intrfaces
+
+interface IIdentificable {
+    getId(): number;
 }
 
-// 2. CLASE ABSTRACTA: define estructura común
-abstract class MetodoPagoBase implements IPago {
-    // Encapsulamiento: atributo privado
-    private titular: string;
-
-    constructor(titular: string) {
-        this.titular = titular;
-    }
-
-    protected getTitular(): string {
-        return this.titular;
-    }
-
-    // Método abstracto: cada hijo debe implementarlo
-    abstract procesar(monto: number): void;
+interface IMonitorizable {
+    revisarEstado(): void;
 }
 
-// 3. HERENCIA + POLIMORFISMO: distintos métodos de pago
-class TarjetaCredito extends MetodoPagoBase {
-    procesar(monto: number): void {
-        console.log(`💳 Pago de $${monto} con tarjeta de ${this.getTitular()}`);
-    }
-}
+// 2. Clase SensorVital - Composicion
 
-class PayPal extends MetodoPagoBase {
-    procesar(monto: number): void {
-        console.log(`🌐 Pago de $${monto} vía PayPal de ${this.getTitular()}`);
+class SensorVital {
+    private frecuenciaCardiaca: number;
+
+    constructor(frecuenciaInicial:  number){
+        this.frecuenciaCardiaca = frecuenciaInicial
+    }
+
+    public actualizarFrecuencia(nuevaFrecuencia: number): void {
+        this.frecuenciaCardiaca = nuevaFrecuencia
+    }
+
+    public obtenerFrecuencia(): number {
+        return this.frecuenciaCardiaca
     }
 }
 
-class TransferenciaBancaria extends MetodoPagoBase {
-    procesar(monto: number): void {
-        console.log(`🏦 Transferencia de $${monto} desde la cuenta de ${this.getTitular()}`);
+// 3. Clase abstracta Animal - Base para herencia
+
+abstract class Animal implements IIdentificable, IMonitorizable {
+    private id: number;
+    private nombre: string;
+    private sensor: SensorVital;
+
+    constructor(id: number, nombre: string, sensor: SensorVital){
+        this.id = id;
+        this.nombre = nombre;
+        this.sensor = sensor;
+    }
+
+    public getId(): number{
+        return this.id;
+    }
+
+    public getNombre(): string {
+        return this.nombre
+    }
+
+    public getSensor(): SensorVital {
+        return this.sensor;
+    }
+
+    abstract hacerSonido(): void;
+
+    public revisarEstado(): void {
+        console.log(`Estadp de ${this.getNombre()} - Frecuencia cardiaca: ${this.sensor.obtenerFrecuencia()}`)
     }
 }
 
-// 4. COMPOSICIÓN: gestor que usa métodos de pago, no hereda de ellos
-class GestorPagos {
-    private metodo: IPago;
+// 4. Clases Especificas (polimorfismo + herencia)
 
-    constructor(metodo: IPago) {
-        this.metodo = metodo;
-    }
-
-    public ejecutarPago(monto: number): void {
-        this.metodo.procesar(monto);
+class Leon extends Animal{
+    public hacerSonido(): void {
+        console.log(`${this.getNombre()} ruge fuertemente`)
     }
 }
 
-// 5. USO DEL SISTEMA
-const pagoTarjeta = new GestorPagos(new TarjetaCredito("Randolph"));
-const pagoPayPal = new GestorPagos(new PayPal("Randolph"));
-const pagoTransferencia = new GestorPagos(new TransferenciaBancaria("Randolph"));
+class Elefante extends Animal {
+    public hacerSonido(): void {
+        console.log(`${this.getNombre()} trompetea con fuerza`)
+    }
+}
 
-pagoTarjeta.ejecutarPago(150);
-pagoPayPal.ejecutarPago(200);
-pagoTransferencia.ejecutarPago(500);
+// 5. Clase Zoologico - Composicion Fuerte
+
+class Zoologico {
+    private animales: Animal[] = [];
+
+    public agregarAnimal(animal: Animal): void {
+        this.animales.push(animal);
+    }
+
+    public mostrarSonidos(): void {
+        this.animales.forEach((animal => animal.hacerSonido()));
+    }
+
+    public revisarAnimales(): void {
+        this.animales.forEach((animal => animal.revisarEstado()));
+    }
+}
+
+// =============================================================
+// 6. Programa principal
+// =============================================================
+const sensorLeon = new SensorVital(80);
+const sensorElefante = new SensorVital(55);
+
+const leon = new Leon(1, "Simba", sensorLeon);
+const elefante = new Elefante(2, "Dumbo", sensorElefante);
+
+const zoo = new Zoologico();
+zoo.agregarAnimal(leon);
+zoo.agregarAnimal(elefante);
+
+zoo.mostrarSonidos();
+zoo.revisarAnimales();
+
+// Cambiamos frecuencias (simulando cambios de salud)
+sensorLeon.actualizarFrecuencia(90);
+sensorElefante.actualizarFrecuencia(60);
+
+zoo.revisarAnimales();
