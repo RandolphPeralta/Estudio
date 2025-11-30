@@ -1,4 +1,3 @@
-
 // 1. Interfaces
 
 interface IPrestable {
@@ -16,17 +15,11 @@ class EstadoPrestamo implements IPrestable {
   private disponible: boolean = true;
 
   public prestar(): void {
-    if (this.disponible) {
       this.disponible = false;
-      console.log("📕 El recurso ha sido prestado.");
-    } else {
-      console.log("❌ El recurso no está disponible.");
-    }
   }
 
   public devolver(): void {
     this.disponible = true;
-    console.log("📗 El recurso ha sido devuelto.");
   }
 
   public estaDisponible(): boolean {
