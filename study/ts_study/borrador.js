@@ -57,7 +57,6 @@ var Cliente = /** @class */ (function (_super) {
         return _this;
     }
     Cliente.prototype.mostrarInfo = function () {
-        //Mostrar la informacion del libro
     };
     Cliente.prototype.prestarLibro = function (libro) {
         if (libro.estaDisponible()) {
@@ -95,14 +94,40 @@ var Bibliotecario = /** @class */ (function (_super) {
     return Bibliotecario;
 }(Usuario));
 //--------------------------------------------------------------
+// Clase consumidora o app
+var App = /** @class */ (function () {
+    function App(bibliotecario, cliente) {
+        this.bibliotecario = bibliotecario;
+        this.cliente = cliente;
+    }
+    App.prototype.iniciar = function () {
+        this.mostrarDisponibles();
+        this.mostrarPrestados();
+    };
+    App.prototype.mostrarDisponibles = function () {
+        var disponibles = this.bibliotecario.obtenerDisponibles();
+        console.log("📘 Libros disponibles:");
+        disponibles.forEach(function (libro) {
+            console.log("- ".concat(libro.getTitulo(), " (").concat(libro.getAutor(), ")"));
+        });
+    };
+    App.prototype.mostrarPrestados = function () {
+        var prestados = this.bibliotecario.obtenerPrestados();
+        console.log("📕 Libros prestados:");
+        prestados.forEach(function (libro) {
+            console.log("- ".concat(libro.getTitulo(), " (").concat(libro.getAutor(), ")"));
+        });
+    };
+    return App;
+}());
 var libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
 var libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
 var libro3 = new Libro(3, "El Quijote", "Cervantes");
 var catalogo1 = [libro1, libro2, libro3];
 var bibliotecario = new Bibliotecario("Ana", catalogo1);
 var cliente = new Cliente("Randolph");
-cliente.prestarLibro(libro2);
-console.log("Disponibles:");
-console.log(bibliotecario.obtenerDisponibles()); //.map(l => l.getTitulo()));
-console.log("Prestados:");
-console.log(bibliotecario.obtenerPrestados()); //.map(l => l.getTitulo()));
+cliente.prestarLibro(libro2); // presta Harry Potter
+// Crear la app
+var app = new App(bibliotecario, cliente);
+// Iniciar
+app.iniciar();

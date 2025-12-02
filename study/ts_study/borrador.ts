@@ -140,4 +140,20 @@ class App {
 }
 
 
+const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
+const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
+const libro3 = new Libro(3, "El Quijote", "Cervantes");
+
+const catalogo1 = [libro1, libro2, libro3];
+
+const bibliotecario = new Bibliotecario("Ana", catalogo1);
+
+const cliente = new Cliente("Randolph");
+cliente.prestarLibro(libro2); // presta Harry Potter
+
+// Crear la app
+const app = new App(bibliotecario, cliente);
+
+// Iniciar
+app.iniciar();
 
