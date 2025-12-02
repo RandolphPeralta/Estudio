@@ -58,7 +58,6 @@ class Cliente extends Usuario {
   private prestamos: Libro[] = [];
 
   public mostrarInfo(): void {
-    //Mostrar la informacion del cliente
   }
 
   public prestarLibro(libro: Libro): void {
@@ -104,22 +103,41 @@ class Bibliotecario extends Usuario {
 
 
 //--------------------------------------------------------------
+// Clase consumidora o app
 
-const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
-const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
-const libro3 = new Libro(3, "El Quijote", "Cervantes");
 
-const catalogo1 = [libro1, libro2, libro3]
+class App {
+  private bibliotecario: Bibliotecario;
+  private cliente: Cliente;
 
-const bibliotecario = new Bibliotecario("Ana", catalogo1);
+  constructor(bibliotecario: Bibliotecario, cliente: Cliente) {
+    this.bibliotecario = bibliotecario;
+    this.cliente = cliente;
+  }
 
-const cliente = new Cliente("Randolph");
-cliente.prestarLibro(libro2);
+  public iniciar(): void {
+    this.mostrarDisponibles();
+    this.mostrarPrestados();
+  }
 
-console.log("Disponibles:");
-console.log(bibliotecario.obtenerDisponibles())//.map(l => l.getTitulo()));
+  private mostrarDisponibles(): void {
+    const disponibles = this.bibliotecario.obtenerDisponibles();
+    console.log("📘 Libros disponibles:");
 
-console.log("Prestados:");
-console.log(bibliotecario.obtenerPrestados())//.map(l => l.getTitulo()));
+    disponibles.forEach(libro => {
+      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`);
+    });
+  }
+
+  private mostrarPrestados(): void {
+    const prestados = this.bibliotecario.obtenerPrestados();
+    console.log("📕 Libros prestados:");
+
+    prestados.forEach(libro => {
+      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`);
+    });
+  }
+}
+
 
 
