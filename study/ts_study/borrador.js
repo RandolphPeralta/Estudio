@@ -13,61 +13,96 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// 2. CLASE ABSTRACTA: define estructura común
-var MetodoPagoBase = /** @class */ (function () {
-    function MetodoPagoBase(titular) {
-        this.titular = titular;
+var Libro = /** @class */ (function () {
+    function Libro(id, titulo, autor) {
+        this.disponible = true;
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = autor;
     }
-    MetodoPagoBase.prototype.getTitular = function () {
-        return this.titular;
+    Libro.prototype.getId = function () {
+        return this.id;
     };
-    return MetodoPagoBase;
+    Libro.prototype.getTitulo = function () {
+        return this.titulo;
+    };
+    Libro.prototype.getAutor = function () {
+        return this.autor;
+    };
+    Libro.prototype.prestar = function () {
+        this.disponible = false;
+    };
+    Libro.prototype.devolver = function () {
+        this.disponible = true;
+    };
+    Libro.prototype.estaDisponible = function () {
+        return this.disponible;
+    };
+    return Libro;
 }());
-// 3. HERENCIA + POLIMORFISMO: distintos métodos de pago
-var TarjetaCredito = /** @class */ (function (_super) {
-    __extends(TarjetaCredito, _super);
-    function TarjetaCredito() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var Usuario = /** @class */ (function () {
+    function Usuario(nombre) {
+        this.nombre = nombre;
     }
-    TarjetaCredito.prototype.procesar = function (monto) {
-        console.log("\uD83D\uDCB3 Pago de $".concat(monto, " con tarjeta de ").concat(this.getTitular()));
+    Usuario.prototype.getNombre = function () {
+        return this.nombre;
     };
-    return TarjetaCredito;
-}(MetodoPagoBase));
-var PayPal = /** @class */ (function (_super) {
-    __extends(PayPal, _super);
-    function PayPal() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    PayPal.prototype.procesar = function (monto) {
-        console.log("\uD83C\uDF10 Pago de $".concat(monto, " v\u00EDa PayPal de ").concat(this.getTitular()));
-    };
-    return PayPal;
-}(MetodoPagoBase));
-var TransferenciaBancaria = /** @class */ (function (_super) {
-    __extends(TransferenciaBancaria, _super);
-    function TransferenciaBancaria() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    TransferenciaBancaria.prototype.procesar = function (monto) {
-        console.log("\uD83C\uDFE6 Transferencia de $".concat(monto, " desde la cuenta de ").concat(this.getTitular()));
-    };
-    return TransferenciaBancaria;
-}(MetodoPagoBase));
-// 4. COMPOSICIÓN: gestor que usa métodos de pago, no hereda de ellos
-var GestorPagos = /** @class */ (function () {
-    function GestorPagos(metodo) {
-        this.metodo = metodo;
-    }
-    GestorPagos.prototype.ejecutarPago = function (monto) {
-        this.metodo.procesar(monto);
-    };
-    return GestorPagos;
+    return Usuario;
 }());
-// 5. USO DEL SISTEMA
-var pagoTarjeta = new GestorPagos(new TarjetaCredito("Randolph"));
-var pagoPayPal = new GestorPagos(new PayPal("Randolph"));
-var pagoTransferencia = new GestorPagos(new TransferenciaBancaria("Randolph"));
-pagoTarjeta.ejecutarPago(150);
-pagoPayPal.ejecutarPago(200);
-pagoTransferencia.ejecutarPago(500);
+var Cliente = /** @class */ (function (_super) {
+    __extends(Cliente, _super);
+    function Cliente() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.prestamos = [];
+        return _this;
+    }
+    Cliente.prototype.mostrarInfo = function () {
+        //Mostrar la informacion del libro
+    };
+    Cliente.prototype.prestarLibro = function (libro) {
+        if (libro.estaDisponible()) {
+            libro.prestar();
+            this.prestamos.push(libro);
+        }
+        else {
+        }
+    };
+    Cliente.prototype.devolverLibro = function (libro) {
+        var index = this.prestamos.indexOf(libro);
+        if (index !== -1) {
+            libro.devolver();
+            this.prestamos.splice(index, 1);
+        }
+        else {
+        }
+    };
+    return Cliente;
+}(Usuario));
+var Bibliotecario = /** @class */ (function (_super) {
+    __extends(Bibliotecario, _super);
+    function Bibliotecario(nombre, catalogo) {
+        var _this = _super.call(this, nombre) || this;
+        _this.catalogo = [];
+        _this.catalogo = catalogo;
+        return _this;
+    }
+    Bibliotecario.prototype.obtenerDisponibles = function () {
+        return this.catalogo.filter(function (libro) { return libro.estaDisponible(); });
+    };
+    Bibliotecario.prototype.obtenerPrestados = function () {
+        return this.catalogo.filter(function (libro) { return !libro.estaDisponible(); });
+    };
+    return Bibliotecario;
+}(Usuario));
+//--------------------------------------------------------------
+var libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
+var libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
+var libro3 = new Libro(3, "El Quijote", "Cervantes");
+var catalogo1 = [libro1, libro2, libro3];
+var bibliotecario = new Bibliotecario("Ana", catalogo1);
+var cliente = new Cliente("Randolph");
+cliente.prestarLibro(libro2);
+console.log("Disponibles:");
+console.log(bibliotecario.obtenerDisponibles()); //.map(l => l.getTitulo()));
+console.log("Prestados:");
+console.log(bibliotecario.obtenerPrestados()); //.map(l => l.getTitulo()));

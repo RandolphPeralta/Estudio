@@ -58,15 +58,16 @@ class Cliente extends Usuario {
   private prestamos: Libro[] = [];
 
   public mostrarInfo(): void {
-    //console.log(`👤 Cliente: ${this.getNombre()}, Libros prestados: ${this.prestamos.length}`);
+    //Mostrar la informacion del cliente
   }
 
   public prestarLibro(libro: Libro): void {
     if (libro.estaDisponible()) {
       libro.prestar();
       this.prestamos.push(libro);
+
     } else {
-      //console.log(`⚠️ ${this.getNombre()} no puede prestar "${libro.getTitulo()}".`);
+
     }
   }
 
@@ -77,26 +78,48 @@ class Cliente extends Usuario {
     if (index !== -1) {
       libro.devolver();
       this.prestamos.splice(index, 1);
-    } else {
-      //console.log(`⚠️ ${this.getNombre()} no tenía prestado "${libro.getTitulo()}".`);
-    }
+
+    } 
+    else {
+          }
   }
 }
 
-class Bibliotecario extends Usuario{
-  
+class Bibliotecario extends Usuario {
+  private catalogo: Libro[] = [];
+
+  constructor(nombre: string, catalogo: Libro[]) {
+    super(nombre);
+    this.catalogo = catalogo;
+  }
+
+  public obtenerDisponibles(): Libro[] {
+    return this.catalogo.filter(libro => libro.estaDisponible());
+  }
+
+  public obtenerPrestados(): Libro[] {
+    return this.catalogo.filter(libro => !libro.estaDisponible());
+  }
 }
 
 
-const libro1 = new Libro(1, "Cien Años de Soledad", "Gabo");
-const libro2 = new Libro(2, "El Principito", "Saint-Exupéry");
+//--------------------------------------------------------------
 
-const cliente = new Cliente("Randolph Peralta");
+const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
+const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
+const libro3 = new Libro(3, "El Quijote", "Cervantes");
 
-cliente.mostrarInfo();
+const catalogo1 = [libro1, libro2, libro3]
 
-cliente.prestarLibro(libro1);
+const bibliotecario = new Bibliotecario("Ana", catalogo1);
+
+const cliente = new Cliente("Randolph");
 cliente.prestarLibro(libro2);
-cliente.devolverLibro(libro1);
 
-cliente.mostrarInfo();
+console.log("Disponibles:");
+console.log(bibliotecario.obtenerDisponibles())//.map(l => l.getTitulo()));
+
+console.log("Prestados:");
+console.log(bibliotecario.obtenerPrestados())//.map(l => l.getTitulo()));
+
+
