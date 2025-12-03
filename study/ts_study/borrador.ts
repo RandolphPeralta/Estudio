@@ -87,9 +87,8 @@ class Cliente extends Usuario {
 class Bibliotecario extends Usuario {
   private catalogo: Libro[] = [];
 
-  constructor(nombre: string, catalogo: Libro[]) {
-    super(nombre);
-    this.catalogo = catalogo;
+  public setCatalogo(libros: Libro[]): void {
+    this.catalogo = libros;
   }
 
   public obtenerDisponibles(): Libro[] {
@@ -101,18 +100,19 @@ class Bibliotecario extends Usuario {
   }
 }
 
-
 //--------------------------------------------------------------
 // Clase consumidora o app
 
-
 class App {
-  private bibliotecario: Bibliotecario;
-  private cliente: Cliente;
+  private bibliotecario!: Bibliotecario;
+  private cliente!: Cliente;
 
-  constructor(bibliotecario: Bibliotecario, cliente: Cliente) {
-    this.bibliotecario = bibliotecario;
-    this.cliente = cliente;
+  public setBibliotecario(b: Bibliotecario): void {
+    this.bibliotecario = b;
+  }
+
+  public setCliente(c: Cliente): void {
+    this.cliente = c;
   }
 
   public iniciar(): void {
@@ -123,37 +123,34 @@ class App {
   private mostrarDisponibles(): void {
     const disponibles = this.bibliotecario.obtenerDisponibles();
     console.log("📘 Libros disponibles:");
-
-    disponibles.forEach(libro => {
-      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`);
-    });
+    disponibles.forEach(libro =>
+      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`)
+    );
   }
 
   private mostrarPrestados(): void {
     const prestados = this.bibliotecario.obtenerPrestados();
     console.log("📕 Libros prestados:");
-
-    prestados.forEach(libro => {
-      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`);
-    });
+    prestados.forEach(libro =>
+      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`)
+    );
   }
 }
 
+//----------------------------------------------------
 
 const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
 const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
 const libro3 = new Libro(3, "El Quijote", "Cervantes");
 
-const catalogo1 = [libro1, libro2, libro3];
-
-const bibliotecario = new Bibliotecario("Ana", catalogo1);
+const bibliotecario = new Bibliotecario("Ana");
+bibliotecario.setCatalogo([libro1, libro2, libro3]);
 
 const cliente = new Cliente("Randolph");
 cliente.prestarLibro(libro2); // presta Harry Potter
 
-// Crear la app
-const app = new App(bibliotecario, cliente);
+const app = new App();
+app.setBibliotecario(bibliotecario);
+app.setCliente(cliente);
 
-// Iniciar
 app.iniciar();
-
