@@ -64,10 +64,7 @@ class Cliente extends Usuario {
     if (libro.estaDisponible()) {
       libro.prestar();
       this.prestamos.push(libro);
-
-    } else {
-
-    }
+    } 
   }
 
   public devolverLibro(libro: Libro): void {
@@ -77,10 +74,7 @@ class Cliente extends Usuario {
     if (index !== -1) {
       libro.devolver();
       this.prestamos.splice(index, 1);
-
     } 
-    else {
-          }
   }
 }
 
