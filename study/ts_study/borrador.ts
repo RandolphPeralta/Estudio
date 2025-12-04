@@ -1,10 +1,14 @@
-interface IIdentificable {
+interface IIdentificableLibro {
   getId(): number;
   getTitulo(): string;
   getAutor(): string;
 }
 
-class Libro implements IIdentificable {
+interface IIdentificableUsuario {
+  getNombre(): string;
+}
+
+class Libro implements IIdentificableLibro {
   private id: number;
   private titulo: string;
   private autor: string;
@@ -41,7 +45,7 @@ class Libro implements IIdentificable {
   }
 }
 
-abstract class Usuario {
+abstract class Usuario implements IIdentificableUsuario{
   private nombre: string; 
 
   constructor(nombre: string) {
@@ -137,14 +141,14 @@ const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
 const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
 const libro3 = new Libro(3, "El Quijote", "Cervantes");
 
-const bibliotecario = new Bibliotecario("Ana");
-bibliotecario.setCatalogo([libro1, libro2, libro3]);
+const bibliotecario1 = new Bibliotecario("Ana");
+bibliotecario1.setCatalogo([libro1, libro2, libro3]);
 
-const cliente = new Cliente("Randolph");
-cliente.prestarLibro(libro2); // presta Harry Potter
+const cliente1 = new Cliente("Randolph");
+cliente1.prestarLibro(libro2); // presta Harry Potter
 
 const app = new App();
-app.setBibliotecario(bibliotecario);
-app.setCliente(cliente);
+app.setBibliotecario(bibliotecario1);
+app.setCliente(cliente1);
 
 app.iniciar();
