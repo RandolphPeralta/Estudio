@@ -13,40 +13,12 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// =============================================================
-// 2. Clase que aplica COMPOSICIÓN (preferida sobre herencia)
-// =============================================================
-var EstadoPrestamo = /** @class */ (function () {
-    function EstadoPrestamo() {
-        this.disponible = true;
-    }
-    EstadoPrestamo.prototype.prestar = function () {
-        if (this.disponible) {
-            this.disponible = false;
-            console.log("📕 El recurso ha sido prestado.");
-        }
-        else {
-            console.log("❌ El recurso no está disponible.");
-        }
-    };
-    EstadoPrestamo.prototype.devolver = function () {
-        this.disponible = true;
-        console.log("📗 El recurso ha sido devuelto.");
-    };
-    EstadoPrestamo.prototype.estaDisponible = function () {
-        return this.disponible;
-    };
-    return EstadoPrestamo;
-}());
-// =============================================================
-// 3. Clase Libro usando COMPOSICIÓN e interfaces
-// =============================================================
 var Libro = /** @class */ (function () {
     function Libro(id, titulo, autor) {
+        this.disponible = true;
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
-        this.estado = new EstadoPrestamo(); // COMPOSICIÓN
     }
     Libro.prototype.getId = function () {
         return this.id;
@@ -54,29 +26,29 @@ var Libro = /** @class */ (function () {
     Libro.prototype.getTitulo = function () {
         return this.titulo;
     };
+    Libro.prototype.getAutor = function () {
+        return this.autor;
+    };
     Libro.prototype.prestar = function () {
-        this.estado.prestar();
+        this.disponible = false;
     };
     Libro.prototype.devolver = function () {
-        this.estado.devolver();
+        this.disponible = true;
     };
     Libro.prototype.estaDisponible = function () {
-        return this.estado.estaDisponible();
+        return this.disponible;
     };
     return Libro;
 }());
-// =============================================================
-// 4. Clase abstracta Usuario — base para herencia
-// =============================================================
 var Usuario = /** @class */ (function () {
     function Usuario(nombre) {
         this.nombre = nombre;
     }
+    Usuario.prototype.getNombre = function () {
+        return this.nombre;
+    };
     return Usuario;
 }());
-// =============================================================
-// 5. Clase Cliente que hereda de Usuario y aplica POLIMORFISMO
-// =============================================================
 var Cliente = /** @class */ (function (_super) {
     __extends(Cliente, _super);
     function Cliente() {
@@ -85,15 +57,11 @@ var Cliente = /** @class */ (function (_super) {
         return _this;
     }
     Cliente.prototype.mostrarInfo = function () {
-        console.log("\uD83D\uDC64 Cliente: ".concat(this.nombre, ", Libros prestados: ").concat(this.prestamos.length));
     };
     Cliente.prototype.prestarLibro = function (libro) {
         if (libro.estaDisponible()) {
             libro.prestar();
             this.prestamos.push(libro);
-        }
-        else {
-            console.log("\u26A0\uFE0F ".concat(this.nombre, " no puede prestar \"").concat(libro.getTitulo(), "\"."));
         }
     };
     Cliente.prototype.devolverLibro = function (libro) {
@@ -102,20 +70,69 @@ var Cliente = /** @class */ (function (_super) {
             libro.devolver();
             this.prestamos.splice(index, 1);
         }
-        else {
-            console.log("\u26A0\uFE0F ".concat(this.nombre, " no ten\u00EDa prestado \"").concat(libro.getTitulo(), "\"."));
-        }
     };
     return Cliente;
 }(Usuario));
-// =============================================================
-// 6. Programa principal (ejemplo de uso)
-// =============================================================
-var libro1 = new Libro(1, "Cien Años de Soledad", "Gabo");
-var libro2 = new Libro(2, "El Principito", "Saint-Exupéry");
-var cliente = new Cliente("Randolph Peralta");
-cliente.mostrarInfo();
-cliente.prestarLibro(libro1);
-cliente.prestarLibro(libro2);
-cliente.devolverLibro(libro1);
-cliente.mostrarInfo();
+var Bibliotecario = /** @class */ (function (_super) {
+    __extends(Bibliotecario, _super);
+    function Bibliotecario() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.catalogo = [];
+        return _this;
+    }
+    Bibliotecario.prototype.setCatalogo = function (libros) {
+        this.catalogo = libros;
+    };
+    Bibliotecario.prototype.obtenerDisponibles = function () {
+        return this.catalogo.filter(function (libro) { return libro.estaDisponible(); });
+    };
+    Bibliotecario.prototype.obtenerPrestados = function () {
+        return this.catalogo.filter(function (libro) { return !libro.estaDisponible(); });
+    };
+    return Bibliotecario;
+}(Usuario));
+//--------------------------------------------------------------
+// Clase consumidora o app
+var App = /** @class */ (function () {
+    function App() {
+    }
+    App.prototype.setBibliotecario = function (b) {
+        this.bibliotecario = b;
+    };
+    App.prototype.setCliente = function (c) {
+        this.cliente = c;
+    };
+    // private bibliotecario: Bibliotecario = new Bibliotecario();
+    // private cliente: Cliente = new Cliente();
+    App.prototype.iniciar = function () {
+        this.mostrarDisponibles();
+        this.mostrarPrestados();
+    };
+    App.prototype.mostrarDisponibles = function () {
+        var disponibles = this.bibliotecario.obtenerDisponibles();
+        console.log("📘 Libros disponibles:");
+        disponibles.forEach(function (libro) {
+            return console.log("- ".concat(libro.getTitulo(), " (").concat(libro.getAutor(), ")"));
+        });
+    };
+    App.prototype.mostrarPrestados = function () {
+        var prestados = this.bibliotecario.obtenerPrestados();
+        console.log("📕 Libros prestados:");
+        prestados.forEach(function (libro) {
+            return console.log("- ".concat(libro.getTitulo(), " (").concat(libro.getAutor(), ")"));
+        });
+    };
+    return App;
+}());
+//----------------------------------------------------
+// const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
+// const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
+// const libro3 = new Libro(3, "El Quijote", "Cervantes");
+// const bibliotecario1 = new Bibliotecario("Ana");
+// bibliotecario1.setCatalogo([libro1, libro2, libro3]);
+// const cliente1 = new Cliente("Randolph");
+// cliente1.prestarLibro(libro2); // presta Harry Potter
+// const app = new App();
+// app.setBibliotecario(bibliotecario1);
+// app.setCliente(cliente1);
+// app.iniciar();

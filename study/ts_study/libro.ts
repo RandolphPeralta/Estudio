@@ -1,44 +1,23 @@
-// 1. Interfaces
-
-interface IPrestable {
-  prestar(): void;
-  devolver(): void;
-  estaDisponible(): boolean;
-}
-
-interface IIdentificable {
+interface IIdentificableLibro {
   getId(): number;
+  getTitulo(): string;
+  getAutor(): string;
 }
 
-// 2. Clase que aplica COMPOSICIÓN (preferida sobre herencia)
-class EstadoPrestamo implements IPrestable {
-  private disponible: boolean = true;
-
-  public prestar(): void {
-      this.disponible = false;
-  }
-
-  public devolver(): void {
-    this.disponible = true;
-  }
-
-  public estaDisponible(): boolean {
-    return this.disponible;
-  }
+interface IIdentificableUsuario {
+  getNombre(): string;
 }
 
-// 3. Clase Libro usando COMPOSICIÓN e interfaces
-class Libro implements IPrestable, IIdentificable {
+class Libro implements IIdentificableLibro {
   private id: number;
   private titulo: string;
   private autor: string;
-  private estado: EstadoPrestamo;
+  private disponible: boolean = true;
 
   constructor(id: number, titulo: string, autor: string) {
     this.id = id;
     this.titulo = titulo;
     this.autor = autor;
-    this.estado = new EstadoPrestamo(); // COMPOSICIÓN
   }
 
   public getId(): number {
@@ -49,79 +28,131 @@ class Libro implements IPrestable, IIdentificable {
     return this.titulo;
   }
 
+  public getAutor(): string {
+    return this.autor;
+  }
+
   public prestar(): void {
-    this.estado.prestar();
+      this.disponible = false;
   }
 
   public devolver(): void {
-    this.estado.devolver();
+      this.disponible = true;
   }
 
   public estaDisponible(): boolean {
-    return this.estado.estaDisponible();
+    return this.disponible;
   }
 }
 
-// 4. Clase abstracta Usuario — base para herencia
-abstract class Usuario {
-  private nombre: string; // AHORA PRIVATE
+abstract class Usuario implements IIdentificableUsuario{
+  private nombre: string; 
 
   constructor(nombre: string) {
     this.nombre = nombre;
   }
 
-  // Encapsulamiento mediante getter
   public getNombre(): string {
     return this.nombre;
   }
 
 }
 
-// =============================================================
-// 5. Clase Cliente que hereda de Usuario y aplica POLIMORFISMO
-// =============================================================
 class Cliente extends Usuario {
   private prestamos: Libro[] = [];
 
   public mostrarInfo(): void {
-    console.log(
-      `👤 Cliente: ${this.getNombre()}, Libros prestados: ${this.prestamos.length}`
-    );
   }
 
   public prestarLibro(libro: Libro): void {
     if (libro.estaDisponible()) {
       libro.prestar();
       this.prestamos.push(libro);
-    } else {
-      console.log(`⚠️ ${this.getNombre()} no puede prestar "${libro.getTitulo()}".`);
-    }
+    } 
   }
 
   public devolverLibro(libro: Libro): void {
+    
     const index = this.prestamos.indexOf(libro);
 
     if (index !== -1) {
       libro.devolver();
       this.prestamos.splice(index, 1);
-    } else {
-      console.log(`⚠️ ${this.getNombre()} no tenía prestado "${libro.getTitulo()}".`);
-    }
+    } 
   }
 }
 
-// =============================================================
-// 6. Programa principal (ejemplo de uso)
-// =============================================================
-const libro1 = new Libro(1, "Cien Años de Soledad", "Gabo");
-const libro2 = new Libro(2, "El Principito", "Saint-Exupéry");
+class Bibliotecario extends Usuario {
+  private catalogo: Libro[] = [];
 
-const cliente = new Cliente("Randolph Peralta");
+  public setCatalogo(libros: Libro[]): void {
+    this.catalogo = libros;
+  }
 
-cliente.mostrarInfo();
+  public obtenerDisponibles(): Libro[] {
+    return this.catalogo.filter(libro => libro.estaDisponible());
+  }
 
-cliente.prestarLibro(libro1);
-cliente.prestarLibro(libro2);
-cliente.devolverLibro(libro1);
+  public obtenerPrestados(): Libro[] {
+    return this.catalogo.filter(libro => !libro.estaDisponible());
+  }
+}
 
-cliente.mostrarInfo();
+//--------------------------------------------------------------
+// Clase consumidora o app
+
+class App {
+
+  private bibliotecario!: Bibliotecario;
+  private cliente!: Cliente;
+
+  public setBibliotecario(b: Bibliotecario): void {
+    this.bibliotecario = b;
+  }
+
+  public setCliente(c: Cliente): void {
+    this.cliente = c;
+  }
+
+  // private bibliotecario: Bibliotecario = new Bibliotecario();
+  // private cliente: Cliente = new Cliente();
+
+  public iniciar(): void {
+    this.mostrarDisponibles();
+    this.mostrarPrestados();
+  }
+
+  private mostrarDisponibles(): void {
+    const disponibles = this.bibliotecario.obtenerDisponibles();
+    console.log("📘 Libros disponibles:");
+    disponibles.forEach(libro =>
+      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`)
+    );
+  }
+
+  private mostrarPrestados(): void {
+    const prestados = this.bibliotecario.obtenerPrestados();
+    console.log("📕 Libros prestados:");
+    prestados.forEach(libro =>
+      console.log(`- ${libro.getTitulo()} (${libro.getAutor()})`)
+    );
+  }
+}
+
+//----------------------------------------------------
+
+// const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
+// const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
+// const libro3 = new Libro(3, "El Quijote", "Cervantes");
+
+// const bibliotecario1 = new Bibliotecario("Ana");
+// bibliotecario1.setCatalogo([libro1, libro2, libro3]);
+
+// const cliente1 = new Cliente("Randolph");
+// cliente1.prestarLibro(libro2); // presta Harry Potter
+
+// const app = new App();
+// app.setBibliotecario(bibliotecario1);
+// app.setCliente(cliente1);
+
+// app.iniciar();
