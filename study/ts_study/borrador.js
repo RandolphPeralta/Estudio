@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -13,6 +14,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+Object.defineProperty(exports, "__esModule", { value: true });
+var readline = require("readline");
 var Libro = /** @class */ (function () {
     function Libro(id, titulo, autor) {
         this.disponible = true;
@@ -56,14 +59,10 @@ var Cliente = /** @class */ (function (_super) {
         _this.prestamos = [];
         return _this;
     }
-    Cliente.prototype.mostrarInfo = function () {
-    };
     Cliente.prototype.prestarLibro = function (libro) {
         if (libro.estaDisponible()) {
             libro.prestar();
             this.prestamos.push(libro);
-        }
-        else {
         }
     };
     Cliente.prototype.devolverLibro = function (libro) {
@@ -72,62 +71,174 @@ var Cliente = /** @class */ (function (_super) {
             libro.devolver();
             this.prestamos.splice(index, 1);
         }
-        else {
-        }
     };
     return Cliente;
 }(Usuario));
 var Bibliotecario = /** @class */ (function (_super) {
     __extends(Bibliotecario, _super);
-    function Bibliotecario(nombre, catalogo) {
-        var _this = _super.call(this, nombre) || this;
+    function Bibliotecario() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.catalogo = [];
-        _this.catalogo = catalogo;
         return _this;
     }
+    Bibliotecario.prototype.setCatalogo = function (libros) {
+        this.catalogo = libros;
+    };
     Bibliotecario.prototype.obtenerDisponibles = function () {
-        return this.catalogo.filter(function (libro) { return libro.estaDisponible(); });
+        return this.catalogo.filter(function (l) { return l.estaDisponible(); });
     };
     Bibliotecario.prototype.obtenerPrestados = function () {
-        return this.catalogo.filter(function (libro) { return !libro.estaDisponible(); });
+        return this.catalogo.filter(function (l) { return !l.estaDisponible(); });
+    };
+    Bibliotecario.prototype.getCatalogo = function () {
+        return this.catalogo;
     };
     return Bibliotecario;
 }(Usuario));
-//--------------------------------------------------------------
-// Clase consumidora o app
 var App = /** @class */ (function () {
-    function App(bibliotecario, cliente) {
-        this.bibliotecario = bibliotecario;
-        this.cliente = cliente;
+    function App() {
+        this.rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
     }
+    App.prototype.setBibliotecario = function (b) {
+        this.bibliotecario = b;
+    };
+    App.prototype.setCliente = function (c) {
+        this.cliente = c;
+    };
     App.prototype.iniciar = function () {
-        this.mostrarDisponibles();
-        this.mostrarPrestados();
+        var _this = this;
+        console.clear();
+        console.log("📚 SISTEMA DE BIBLIOTECA");
+        this.rl.question("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ", function (resp) {
+            if (resp === "1")
+                _this.menuCliente();
+            else if (resp === "2")
+                _this.menuBibliotecario();
+            else
+                _this.cerrar("Opción no válida.");
+        });
+    };
+    App.prototype.menuCliente = function () {
+        var _this = this;
+        console.clear();
+        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre()));
+        console.log("1. Ver libros disponibles");
+        console.log("2. Prestar libro");
+        console.log("3. Devolver libro");
+        console.log("4. Salir");
+        this.rl.question("👉 Selecciona una opción: ", function (op) {
+            switch (op) {
+                case "1":
+                    _this.mostrarDisponibles();
+                    return _this.pausa(function () { return _this.menuCliente(); });
+                case "2":
+                    return _this.opcionPrestar();
+                case "3":
+                    return _this.opcionDevolver();
+                case "4":
+                    return _this.cerrar("👋 Saliendo...");
+                default:
+                    return _this.menuCliente();
+            }
+        });
+    };
+    App.prototype.menuBibliotecario = function () {
+        var _this = this;
+        console.clear();
+        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre()));
+        console.log("1. Ver libros disponibles");
+        console.log("2. Ver libros prestados");
+        console.log("3. Salir");
+        this.rl.question("👉 Selecciona una opción: ", function (op) {
+            switch (op) {
+                case "1":
+                    _this.mostrarDisponibles();
+                    return _this.pausa(function () { return _this.menuBibliotecario(); });
+                case "2":
+                    _this.mostrarPrestados();
+                    return _this.pausa(function () { return _this.menuBibliotecario(); });
+                case "3":
+                    return _this.cerrar("👋 Saliendo...");
+                default:
+                    return _this.menuBibliotecario();
+            }
+        });
+    };
+    App.prototype.opcionPrestar = function () {
+        var _this = this;
+        var disponibles = this.bibliotecario.obtenerDisponibles();
+        if (disponibles.length === 0) {
+            console.log("❌ No hay libros disponibles");
+            return this.pausa(function () { return _this.menuCliente(); });
+        }
+        console.log("\n📘 Libros disponibles para prestar:");
+        disponibles.forEach(function (l) { return console.log("".concat(l.getId(), ". ").concat(l.getTitulo())); });
+        this.rl.question("👉 Ingresa el ID del libro a prestar: ", function (id) {
+            var libro = disponibles.find(function (l) { return l.getId() === Number(id); });
+            if (!libro) {
+                console.log("❌ ID no válido.");
+            }
+            else {
+                _this.cliente.prestarLibro(libro);
+                console.log("\u2714 Has prestado: ".concat(libro.getTitulo()));
+            }
+            _this.pausa(function () { return _this.menuCliente(); });
+        });
+    };
+    App.prototype.opcionDevolver = function () {
+        var _this = this;
+        var prestados = this.bibliotecario.obtenerPrestados()
+            .filter(function (l) { return !l.estaDisponible(); });
+        if (prestados.length === 0) {
+            console.log("❌ No tienes libros prestados.");
+            return this.pausa(function () { return _this.menuCliente(); });
+        }
+        console.log("\n📕 Libros prestados:");
+        prestados.forEach(function (l) { return console.log("".concat(l.getId(), ". ").concat(l.getTitulo())); });
+        this.rl.question("👉 Ingresa el ID del libro a devolver: ", function (id) {
+            var libro = prestados.find(function (l) { return l.getId() === Number(id); });
+            if (!libro) {
+                console.log("❌ ID no válido.");
+            }
+            else {
+                _this.cliente.devolverLibro(libro);
+                console.log("\u2714 Has devuelto: ".concat(libro.getTitulo()));
+            }
+            _this.pausa(function () { return _this.menuCliente(); });
+        });
     };
     App.prototype.mostrarDisponibles = function () {
         var disponibles = this.bibliotecario.obtenerDisponibles();
         console.log("📘 Libros disponibles:");
-        disponibles.forEach(function (libro) {
-            console.log("- ".concat(libro.getTitulo(), " (").concat(libro.getAutor(), ")"));
-        });
+        disponibles.forEach(function (l) { return console.log("- ".concat(l.getTitulo(), " (").concat(l.getAutor(), ")")); });
     };
     App.prototype.mostrarPrestados = function () {
         var prestados = this.bibliotecario.obtenerPrestados();
         console.log("📕 Libros prestados:");
-        prestados.forEach(function (libro) {
-            console.log("- ".concat(libro.getTitulo(), " (").concat(libro.getAutor(), ")"));
-        });
+        prestados.forEach(function (l) { return console.log("- ".concat(l.getTitulo(), " (").concat(l.getAutor(), ")")); });
+    };
+    App.prototype.pausa = function (callback) {
+        this.rl.question("\nPresiona ENTER para continuar...", function () { return callback(); });
+    };
+    App.prototype.cerrar = function (msg) {
+        console.log(msg);
+        this.rl.close();
     };
     return App;
 }());
+//--------------------------------------------------------------
+// OBJETOS Y EJECUCIÓN
+//--------------------------------------------------------------
 var libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
 var libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
 var libro3 = new Libro(3, "El Quijote", "Cervantes");
-var catalogo1 = [libro1, libro2, libro3];
-var bibliotecario = new Bibliotecario("Ana", catalogo1);
-var cliente = new Cliente("Randolph");
-cliente.prestarLibro(libro2); // presta Harry Potter
-// Crear la app
-var app = new App(bibliotecario, cliente);
-// Iniciar
+var bibliotecario1 = new Bibliotecario("Ana");
+bibliotecario1.setCatalogo([libro1, libro2, libro3]);
+var cliente1 = new Cliente("Randolph");
+var app = new App();
+app.setBibliotecario(bibliotecario1);
+app.setCliente(cliente1);
 app.iniciar();
