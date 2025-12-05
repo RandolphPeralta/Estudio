@@ -110,7 +110,6 @@ var App = /** @class */ (function () {
     };
     App.prototype.iniciar = function () {
         var _this = this;
-        console.clear();
         console.log("📚 SISTEMA DE BIBLIOTECA");
         this.rl.question("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ", function (resp) {
             if (resp === "1")
@@ -229,9 +228,6 @@ var App = /** @class */ (function () {
     };
     return App;
 }());
-//--------------------------------------------------------------
-// OBJETOS Y EJECUCIÓN
-//--------------------------------------------------------------
 var libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
 var libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
 var libro3 = new Libro(3, "El Quijote", "Cervantes");

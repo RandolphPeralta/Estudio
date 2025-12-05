@@ -116,7 +116,6 @@ class App {
   }
 
   public iniciar(): void {
-    console.clear();
     console.log("📚 SISTEMA DE BIBLIOTECA");
     this.rl.question("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ", (resp) => {
       if (resp === "1") this.menuCliente();
@@ -154,7 +153,8 @@ class App {
     console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}`);
     console.log("1. Ver libros disponibles");
     console.log("2. Ver libros prestados");
-    console.log("3. Salir");
+    console.log("3. Agregar libro al catálogo");
+    console.log("4. Salir");
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
@@ -164,6 +164,8 @@ class App {
           this.mostrarPrestados();
           return this.pausa(() => this.menuBibliotecario());
         case "3":
+          return this.opcionAgregarLibro();
+        case "4":
           return this.cerrar("👋 Saliendo...");
         default:
           return this.menuBibliotecario();
@@ -218,6 +220,30 @@ class App {
     });
   }
 
+  private opcionAgregarLibro(): void {
+    console.log("📗 Agregar libro al catálogo");
+
+    this.rl.question("👉 Ingresa el ID del libro: ", (idInput) => {
+      const id = Number(idInput);
+
+      this.rl.question("👉 Ingresa el título del libro: ", (titulo) => {
+
+        this.rl.question("👉 Ingresa el autor del libro: ", (autor) => {
+
+          const nuevoLibro = new Libro(id, titulo, autor);
+
+          const catalogo = this.bibliotecario.getCatalogo();
+          catalogo.push(nuevoLibro);
+          this.bibliotecario.setCatalogo(catalogo);
+
+          console.log(`✔ Libro añadido: ${titulo} (${autor})`);
+
+          this.pausa(() => this.menuBibliotecario());
+        });
+      });
+    });
+  }
+
   private mostrarDisponibles(): void {
     const disponibles = this.bibliotecario.obtenerDisponibles();
     console.log("📘 Libros disponibles:");
@@ -240,9 +266,7 @@ class App {
   }
 }
 
-//--------------------------------------------------------------
-// OBJETOS Y EJECUCIÓN
-//--------------------------------------------------------------
+
 
 const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
 const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
