@@ -146,11 +146,7 @@ class App {
 
   private menuBibliotecario(): void {
     console.clear();
-    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}`);
-    console.log("1. Ver libros disponibles");
-    console.log("2. Ver libros prestados");
-    console.log("3. Agregar libro al catálogo");
-    console.log("4. Salir");
+    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al catálogo\n4. Salir`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":

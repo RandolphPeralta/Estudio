@@ -143,11 +143,7 @@ var App = /** @class */ (function () {
     App.prototype.menuBibliotecario = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre()));
-        console.log("1. Ver libros disponibles");
-        console.log("2. Ver libros prestados");
-        console.log("3. Agregar libro al catálogo");
-        console.log("4. Salir");
+        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre(), "\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al cat\u00E1logo\n4. Salir"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
