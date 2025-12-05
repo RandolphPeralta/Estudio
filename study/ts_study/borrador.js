@@ -123,11 +123,7 @@ var App = /** @class */ (function () {
     App.prototype.menuCliente = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre()));
-        console.log("1. Ver libros disponibles");
-        console.log("2. Prestar libro");
-        console.log("3. Devolver libro");
-        console.log("4. Salir");
+        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre(), "\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -150,7 +146,8 @@ var App = /** @class */ (function () {
         console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre()));
         console.log("1. Ver libros disponibles");
         console.log("2. Ver libros prestados");
-        console.log("3. Salir");
+        console.log("3. Agregar libro al catálogo");
+        console.log("4. Salir");
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -160,6 +157,8 @@ var App = /** @class */ (function () {
                     _this.mostrarPrestados();
                     return _this.pausa(function () { return _this.menuBibliotecario(); });
                 case "3":
+                    return _this.opcionAgregarLibro();
+                case "4":
                     return _this.cerrar("👋 Saliendo...");
                 default:
                     return _this.menuBibliotecario();
@@ -207,6 +206,23 @@ var App = /** @class */ (function () {
                 console.log("\u2714 Has devuelto: ".concat(libro.getTitulo()));
             }
             _this.pausa(function () { return _this.menuCliente(); });
+        });
+    };
+    App.prototype.opcionAgregarLibro = function () {
+        var _this = this;
+        console.log("📗 Agregar libro al catálogo");
+        this.rl.question("👉 Ingresa el ID del libro: ", function (idInput) {
+            var id = Number(idInput);
+            _this.rl.question("👉 Ingresa el título del libro: ", function (titulo) {
+                _this.rl.question("👉 Ingresa el autor del libro: ", function (autor) {
+                    var nuevoLibro = new Libro(id, titulo, autor);
+                    var catalogo = _this.bibliotecario.getCatalogo();
+                    catalogo.push(nuevoLibro);
+                    _this.bibliotecario.setCatalogo(catalogo);
+                    console.log("\u2714 Libro a\u00F1adido: ".concat(titulo, " (").concat(autor, ")"));
+                    _this.pausa(function () { return _this.menuBibliotecario(); });
+                });
+            });
         });
     };
     App.prototype.mostrarDisponibles = function () {

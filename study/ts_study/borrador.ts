@@ -126,11 +126,7 @@ class App {
 
   private menuCliente(): void {
     console.clear();
-    console.log(`👤 Cliente: ${this.cliente.getNombre()}`);
-    console.log("1. Ver libros disponibles");
-    console.log("2. Prestar libro");
-    console.log("3. Devolver libro");
-    console.log("4. Salir");
+    console.log(`👤 Cliente: ${this.cliente.getNombre()}\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
