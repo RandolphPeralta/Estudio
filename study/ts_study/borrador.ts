@@ -134,7 +134,7 @@ class App {
 
   private menuCliente(): void {
     console.clear();
-    console.log(`👤 Cliente: ${this.cliente.getNombre()}\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir\n5. Cambiar/Crear Cliente`);
+    console.log(`👤 Cliente: ${this.cliente.getNombre()}\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Cambiar/Crear Cliente\n5. Salir`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
@@ -145,9 +145,10 @@ class App {
         case "3":
           return this.opcionDevolver();
         case "4":
-          return this.cerrar("👋 Saliendo...");
-        case "5":
           return this.opcionCambiarCliente();
+        case "5":
+          return this.cerrar("👋 Saliendo...");
+        
 
         default:
           return this.menuCliente();
@@ -157,7 +158,7 @@ class App {
 
   private menuBibliotecario(): void {
     console.clear();
-    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al catálogo\n4. Salir\n5. Cambiar/Crear Bibliotecario`);
+    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al catálogo\n4. Cambiar/Crear Bibliotecario\n5. Salir`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
@@ -169,10 +170,10 @@ class App {
         case "3":
           return this.opcionAgregarLibro();
         case "4":
-          return this.cerrar("👋 Saliendo...");
-        case "5":
           return this.opcionCambiarBibliotecario();
-
+        case "5":
+          return this.cerrar("👋 Saliendo...");
+        
         default:
           return this.menuBibliotecario();
 
@@ -254,7 +255,6 @@ class App {
   private opcionCambiarCliente(): void {
   this.rl.question("👉 Ingresa el nombre del nuevo cliente: ", (nombre) => {
 
-    // Verificar si ya existe
     const existente = this.clientes.find(c => c.getNombre() === nombre);
 
     if (existente) {

@@ -128,7 +128,7 @@ var App = /** @class */ (function () {
     App.prototype.menuCliente = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre(), "\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir\n5. Cambiar/Crear Cliente"));
+        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre(), "\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Cambiar/Crear Cliente\n5. Salir"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -139,9 +139,9 @@ var App = /** @class */ (function () {
                 case "3":
                     return _this.opcionDevolver();
                 case "4":
-                    return _this.cerrar("👋 Saliendo...");
-                case "5":
                     return _this.opcionCambiarCliente();
+                case "5":
+                    return _this.cerrar("👋 Saliendo...");
                 default:
                     return _this.menuCliente();
             }
@@ -150,7 +150,7 @@ var App = /** @class */ (function () {
     App.prototype.menuBibliotecario = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre(), "\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al cat\u00E1logo\n4. Salir\n5. Cambiar/Crear Bibliotecario"));
+        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre(), "\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al cat\u00E1logo\n4. Cambiar/Crear Bibliotecario\n5. Salir"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -162,9 +162,9 @@ var App = /** @class */ (function () {
                 case "3":
                     return _this.opcionAgregarLibro();
                 case "4":
-                    return _this.cerrar("👋 Saliendo...");
-                case "5":
                     return _this.opcionCambiarBibliotecario();
+                case "5":
+                    return _this.cerrar("👋 Saliendo...");
                 default:
                     return _this.menuBibliotecario();
             }
