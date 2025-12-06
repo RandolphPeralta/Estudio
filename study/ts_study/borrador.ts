@@ -57,6 +57,10 @@ abstract class Usuario implements IIdentificableUsuario {
   public getNombre(): string {
     return this.nombre;
   }
+
+  public setNombre(nombre:string){
+    this.nombre = nombre
+  }
 }
 
 class Cliente extends Usuario {
@@ -102,6 +106,10 @@ class App {
   private bibliotecario!: Bibliotecario;
   private cliente!: Cliente;
 
+  private clientes: Cliente[] = [];
+  private bibliotecarios: Bibliotecario[] = [];
+
+
   private rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -126,7 +134,7 @@ class App {
 
   private menuCliente(): void {
     console.clear();
-    console.log(`👤 Cliente: ${this.cliente.getNombre()}\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir`);
+    console.log(`👤 Cliente: ${this.cliente.getNombre()}\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir\n5. Cambiar/Crear Cliente`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
@@ -138,6 +146,9 @@ class App {
           return this.opcionDevolver();
         case "4":
           return this.cerrar("👋 Saliendo...");
+        case "5":
+          return this.opcionCambiarCliente();
+
         default:
           return this.menuCliente();
       }
@@ -146,7 +157,7 @@ class App {
 
   private menuBibliotecario(): void {
     console.clear();
-    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al catálogo\n4. Salir`);
+    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al catálogo\n4. Salir\n5. Cambiar/Crear Bibliotecario`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
@@ -159,8 +170,12 @@ class App {
           return this.opcionAgregarLibro();
         case "4":
           return this.cerrar("👋 Saliendo...");
+        case "5":
+          return this.opcionCambiarBibliotecario();
+
         default:
           return this.menuBibliotecario();
+
       }
     });
   }
@@ -236,6 +251,46 @@ class App {
     });
   }
 
+  private opcionCambiarCliente(): void {
+  this.rl.question("👉 Ingresa el nombre del nuevo cliente: ", (nombre) => {
+
+    // Verificar si ya existe
+    const existente = this.clientes.find(c => c.getNombre() === nombre);
+
+    if (existente) {
+      console.log(`✔ Cliente existente seleccionado: ${nombre}`);
+      this.cliente = existente;
+    } else {
+      const nuevo = new Cliente(nombre);
+      this.clientes.push(nuevo);
+      this.cliente = nuevo;
+      console.log(`✔ Cliente creado: ${nombre}`);
+    }
+
+    this.pausa(() => this.menuCliente());
+  });
+  }
+
+  private opcionCambiarBibliotecario(): void {
+  this.rl.question("👉 Ingresa el nombre del nuevo bibliotecario: ", (nombre) => {
+
+    const existente = this.bibliotecarios.find(b => b.getNombre() === nombre);
+
+    if (existente) {
+      console.log(`✔ Bibliotecario existente seleccionado: ${nombre}`);
+      this.bibliotecario = existente;
+    } else {
+      const nuevo = new Bibliotecario(nombre);
+      nuevo.setCatalogo(this.bibliotecario.getCatalogo());
+      this.bibliotecarios.push(nuevo);
+      this.bibliotecario = nuevo;
+      console.log(`✔ Bibliotecario creado: ${nombre}`);
+    }
+
+    this.pausa(() => this.menuBibliotecario());
+  });
+  }
+
   private mostrarDisponibles(): void {
     const disponibles = this.bibliotecario.obtenerDisponibles();
     console.log("📘 Libros disponibles:");
@@ -257,8 +312,6 @@ class App {
     this.rl.close();
   }
 }
-
-
 
 const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
 const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");

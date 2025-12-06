@@ -50,6 +50,9 @@ var Usuario = /** @class */ (function () {
     Usuario.prototype.getNombre = function () {
         return this.nombre;
     };
+    Usuario.prototype.setNombre = function (nombre) {
+        this.nombre = nombre;
+    };
     return Usuario;
 }());
 var Cliente = /** @class */ (function (_super) {
@@ -97,6 +100,8 @@ var Bibliotecario = /** @class */ (function (_super) {
 }(Usuario));
 var App = /** @class */ (function () {
     function App() {
+        this.clientes = [];
+        this.bibliotecarios = [];
         this.rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
@@ -123,7 +128,7 @@ var App = /** @class */ (function () {
     App.prototype.menuCliente = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre(), "\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir"));
+        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre(), "\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Salir\n5. Cambiar/Crear Cliente"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -135,6 +140,8 @@ var App = /** @class */ (function () {
                     return _this.opcionDevolver();
                 case "4":
                     return _this.cerrar("👋 Saliendo...");
+                case "5":
+                    return _this.opcionCambiarCliente();
                 default:
                     return _this.menuCliente();
             }
@@ -143,7 +150,7 @@ var App = /** @class */ (function () {
     App.prototype.menuBibliotecario = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre(), "\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al cat\u00E1logo\n4. Salir"));
+        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre(), "\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al cat\u00E1logo\n4. Salir\n5. Cambiar/Crear Bibliotecario"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -156,6 +163,8 @@ var App = /** @class */ (function () {
                     return _this.opcionAgregarLibro();
                 case "4":
                     return _this.cerrar("👋 Saliendo...");
+                case "5":
+                    return _this.opcionCambiarBibliotecario();
                 default:
                     return _this.menuBibliotecario();
             }
@@ -219,6 +228,42 @@ var App = /** @class */ (function () {
                     _this.pausa(function () { return _this.menuBibliotecario(); });
                 });
             });
+        });
+    };
+    App.prototype.opcionCambiarCliente = function () {
+        var _this = this;
+        this.rl.question("👉 Ingresa el nombre del nuevo cliente: ", function (nombre) {
+            // Verificar si ya existe
+            var existente = _this.clientes.find(function (c) { return c.getNombre() === nombre; });
+            if (existente) {
+                console.log("\u2714 Cliente existente seleccionado: ".concat(nombre));
+                _this.cliente = existente;
+            }
+            else {
+                var nuevo = new Cliente(nombre);
+                _this.clientes.push(nuevo);
+                _this.cliente = nuevo;
+                console.log("\u2714 Cliente creado: ".concat(nombre));
+            }
+            _this.pausa(function () { return _this.menuCliente(); });
+        });
+    };
+    App.prototype.opcionCambiarBibliotecario = function () {
+        var _this = this;
+        this.rl.question("👉 Ingresa el nombre del nuevo bibliotecario: ", function (nombre) {
+            var existente = _this.bibliotecarios.find(function (b) { return b.getNombre() === nombre; });
+            if (existente) {
+                console.log("\u2714 Bibliotecario existente seleccionado: ".concat(nombre));
+                _this.bibliotecario = existente;
+            }
+            else {
+                var nuevo = new Bibliotecario(nombre);
+                nuevo.setCatalogo(_this.bibliotecario.getCatalogo());
+                _this.bibliotecarios.push(nuevo);
+                _this.bibliotecario = nuevo;
+                console.log("\u2714 Bibliotecario creado: ".concat(nombre));
+            }
+            _this.pausa(function () { return _this.menuBibliotecario(); });
         });
     };
     App.prototype.mostrarDisponibles = function () {
