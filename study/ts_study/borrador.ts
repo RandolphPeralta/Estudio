@@ -58,10 +58,6 @@ abstract class Usuario implements IIdentificableUsuario {
   public getNombre(): string {
     return this.nombre;
   }
-
-  public setNombre(nombre:string){
-    this.nombre = nombre
-  }
 }
 
 class Cliente extends Usuario {
@@ -121,12 +117,12 @@ class App {
 
     if (resp === "1") {
       console.log("\n👤 Antes de continuar, debes identificarte como Cliente.");
-      return this.opcionCambiarCliente();
+      return this.opcionCambiaroCrearCliente();
     }
 
     if (resp === "2") {
       console.log("\n📘 Antes de continuar, debes identificarte como Bibliotecario.");
-      return this.opcionCambiarBibliotecario();
+      return this.opcionCambiaroCrearBibliotecario();
     }
 
     return this.cerrar("Opción no válida.");
@@ -154,7 +150,7 @@ class App {
       case "3":
         return this.opcionDevolver();
       case "4":
-        return this.opcionCambiarCliente();
+        return this.opcionCambiaroCrearCliente();
       case "5":
         return this.iniciar();
       case "6":
@@ -188,7 +184,7 @@ class App {
       case "3":
         return this.opcionAgregarLibro();
       case "4":
-        return this.opcionCambiarBibliotecario();
+        return this.opcionCambiaroCrearBibliotecario();
       case "5":
         return this.iniciar();
       case "6":
@@ -266,7 +262,7 @@ class App {
     return this.menuBibliotecario();
   }
 
-  private opcionCambiarCliente(): void {
+  private opcionCambiaroCrearCliente(): void {
     const nombre = this.prompt("👉 Ingresa el nombre del nuevo cliente: ");
 
     const existente = this.clientes.find(c => c.getNombre() === nombre);
@@ -285,7 +281,7 @@ class App {
     return this.menuCliente();
   }
 
-  private opcionCambiarBibliotecario(): void {
+  private opcionCambiaroCrearBibliotecario(): void {
     const nombre = this.prompt("👉 Ingresa el nombre del nuevo bibliotecario: ");
 
     const existente = this.bibliotecarios.find(b => b.getNombre() === nombre);
