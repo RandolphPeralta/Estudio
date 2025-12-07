@@ -102,9 +102,11 @@ class Bibliotecario extends Usuario {
   }
 }
 
+//------------------------------------------------------------------
+
 class App {
-  private bibliotecario!: Bibliotecario;
-  private cliente!: Cliente;
+  private bibliotecario: Bibliotecario = new Bibliotecario("Sin asignar");
+  private cliente: Cliente = new Cliente("Sin asignar");
 
   private clientes: Cliente[] = [];
   private bibliotecarios: Bibliotecario[] = [];
@@ -124,17 +126,27 @@ class App {
   }
 
   public iniciar(): void {
-    console.log("📚 SISTEMA DE BIBLIOTECA");
-    this.rl.question("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ", (resp) => {
-      if (resp === "1") this.menuCliente();
-      else if (resp === "2") this.menuBibliotecario();
-      else this.cerrar("Opción no válida.");
+  console.clear();
+  console.log("📚 SISTEMA DE BIBLIOTECA");
+  this.rl.question("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ", (resp) => {
+
+    if (resp === "1") {
+      console.log("\n👤 Antes de continuar, debes identificarte como Cliente.");
+      return this.opcionCambiarCliente();
+    }
+
+    if (resp === "2") {
+      console.log("\n📘 Antes de continuar, debes identificarte como Bibliotecario.");
+      return this.opcionCambiarBibliotecario();
+    }
+
+    return this.cerrar("Opción no válida.");
     });
   }
-
+  
   private menuCliente(): void {
     console.clear();
-    console.log(`👤 Cliente: ${this.cliente.getNombre()}\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Cambiar/Crear Cliente\n5. Salir`);
+    console.log(`👤 Cliente: ${this.cliente.getNombre()}\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Cambiar/Crear Cliente\n5. Volver al menu inicio\n6. Salir`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
@@ -147,8 +159,9 @@ class App {
         case "4":
           return this.opcionCambiarCliente();
         case "5":
+          return this.iniciar();
+        case "6":
           return this.cerrar("👋 Saliendo...");
-        
 
         default:
           return this.menuCliente();
@@ -158,7 +171,7 @@ class App {
 
   private menuBibliotecario(): void {
     console.clear();
-    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al catálogo\n4. Cambiar/Crear Bibliotecario\n5. Salir`);
+    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al catálogo\n4. Cambiar/Crear Bibliotecario\n5. Volver a inicio\n6. Salir`);
     this.rl.question("👉 Selecciona una opción: ", (op) => {
       switch (op) {
         case "1":
@@ -172,6 +185,8 @@ class App {
         case "4":
           return this.opcionCambiarBibliotecario();
         case "5":
+          return this.iniciar();
+        case "6":
           return this.cerrar("👋 Saliendo...");
         
         default:
@@ -313,17 +328,17 @@ class App {
   }
 }
 
-const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
-const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
-const libro3 = new Libro(3, "El Quijote", "Cervantes");
+// const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
+// const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
+// const libro3 = new Libro(3, "El Quijote", "Cervantes");
 
-const bibliotecario1 = new Bibliotecario("Ana");
-bibliotecario1.setCatalogo([libro1, libro2, libro3]);
+// const bibliotecario1 = new Bibliotecario("Ana");
+// bibliotecario1.setCatalogo([libro1, libro2, libro3]);
 
-const cliente1 = new Cliente("Randolph");
+// const cliente1 = new Cliente("Randolph");
 
 const app = new App();
-app.setBibliotecario(bibliotecario1);
-app.setCliente(cliente1);
+// app.setBibliotecario(bibliotecario1);
+// app.setCliente(cliente1);
 
 app.iniciar();

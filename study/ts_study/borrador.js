@@ -98,8 +98,11 @@ var Bibliotecario = /** @class */ (function (_super) {
     };
     return Bibliotecario;
 }(Usuario));
+//------------------------------------------------------------------
 var App = /** @class */ (function () {
     function App() {
+        this.bibliotecario = new Bibliotecario("Sin asignar");
+        this.cliente = new Cliente("Sin asignar");
         this.clientes = [];
         this.bibliotecarios = [];
         this.rl = readline.createInterface({
@@ -115,20 +118,24 @@ var App = /** @class */ (function () {
     };
     App.prototype.iniciar = function () {
         var _this = this;
+        console.clear();
         console.log("📚 SISTEMA DE BIBLIOTECA");
         this.rl.question("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ", function (resp) {
-            if (resp === "1")
-                _this.menuCliente();
-            else if (resp === "2")
-                _this.menuBibliotecario();
-            else
-                _this.cerrar("Opción no válida.");
+            if (resp === "1") {
+                console.log("\n👤 Antes de continuar, debes identificarte como Cliente.");
+                return _this.opcionCambiarCliente();
+            }
+            if (resp === "2") {
+                console.log("\n📘 Antes de continuar, debes identificarte como Bibliotecario.");
+                return _this.opcionCambiarBibliotecario();
+            }
+            return _this.cerrar("Opción no válida.");
         });
     };
     App.prototype.menuCliente = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre(), "\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Cambiar/Crear Cliente\n5. Salir"));
+        console.log("\uD83D\uDC64 Cliente: ".concat(this.cliente.getNombre(), "\n1. Ver libros disponibles\n2. Prestar libro\n3. Devolver libro\n4. Cambiar/Crear Cliente\n5. Volver al menu inicio\n6. Salir"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -141,6 +148,8 @@ var App = /** @class */ (function () {
                 case "4":
                     return _this.opcionCambiarCliente();
                 case "5":
+                    return _this.iniciar();
+                case "6":
                     return _this.cerrar("👋 Saliendo...");
                 default:
                     return _this.menuCliente();
@@ -150,7 +159,7 @@ var App = /** @class */ (function () {
     App.prototype.menuBibliotecario = function () {
         var _this = this;
         console.clear();
-        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre(), "\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al cat\u00E1logo\n4. Cambiar/Crear Bibliotecario\n5. Salir"));
+        console.log("\uD83D\uDCD8 Bibliotecario: ".concat(this.bibliotecario.getNombre(), "\n1. Ver libros disponibles\n2. Ver libros prestados\n3. Agregar libro al cat\u00E1logo\n4. Cambiar/Crear Bibliotecario\n5. Volver a inicio\n6. Salir"));
         this.rl.question("👉 Selecciona una opción: ", function (op) {
             switch (op) {
                 case "1":
@@ -164,6 +173,8 @@ var App = /** @class */ (function () {
                 case "4":
                     return _this.opcionCambiarBibliotecario();
                 case "5":
+                    return _this.iniciar();
+                case "6":
                     return _this.cerrar("👋 Saliendo...");
                 default:
                     return _this.menuBibliotecario();
@@ -233,7 +244,6 @@ var App = /** @class */ (function () {
     App.prototype.opcionCambiarCliente = function () {
         var _this = this;
         this.rl.question("👉 Ingresa el nombre del nuevo cliente: ", function (nombre) {
-            // Verificar si ya existe
             var existente = _this.clientes.find(function (c) { return c.getNombre() === nombre; });
             if (existente) {
                 console.log("\u2714 Cliente existente seleccionado: ".concat(nombre));
@@ -285,13 +295,13 @@ var App = /** @class */ (function () {
     };
     return App;
 }());
-var libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
-var libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
-var libro3 = new Libro(3, "El Quijote", "Cervantes");
-var bibliotecario1 = new Bibliotecario("Ana");
-bibliotecario1.setCatalogo([libro1, libro2, libro3]);
-var cliente1 = new Cliente("Randolph");
+// const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
+// const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
+// const libro3 = new Libro(3, "El Quijote", "Cervantes");
+// const bibliotecario1 = new Bibliotecario("Ana");
+// bibliotecario1.setCatalogo([libro1, libro2, libro3]);
+// const cliente1 = new Cliente("Randolph");
 var app = new App();
-app.setBibliotecario(bibliotecario1);
-app.setCliente(cliente1);
+// app.setBibliotecario(bibliotecario1);
+// app.setCliente(cliente1);
 app.iniciar();
