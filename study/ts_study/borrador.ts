@@ -1,17 +1,4 @@
-import * as promptSync from "prompt-sync";
-const prompt = (promptSync as any)();
-
-interface IIdentificableLibro {
-  getId(): number;
-  getTitulo(): string;
-  getAutor(): string;
-}
-
-interface IIdentificableUsuario {
-  getNombre(): string;
-}
-
-class Libro implements IIdentificableLibro {
+class Libro {
   private id: number;
   private titulo: string;
   private autor: string;
@@ -23,16 +10,8 @@ class Libro implements IIdentificableLibro {
     this.autor = autor;
   }
 
-  public getId(): number {
-    return this.id;
-  }
-
-  public getTitulo(): string {
-    return this.titulo;
-  }
-
-  public getAutor(): string {
-    return this.autor;
+  public obtenerInfo(): string{
+    return `Id: ${this.id}, Titulo: ${this.titulo}, Autor: ${this.autor}`
   }
 
   public prestar(): void {
@@ -48,15 +27,10 @@ class Libro implements IIdentificableLibro {
   }
 }
 
-abstract class Usuario implements IIdentificableUsuario {
+abstract class Usuario {
   private nombre: string;
-
   constructor(nombre: string) {
     this.nombre = nombre;
-  }
-
-  public getNombre(): string {
-    return this.nombre;
   }
 }
 
@@ -101,227 +75,230 @@ class Bibliotecario extends Usuario {
 
 //------------------------------------------------------------------
 
-class App {
-  private bibliotecario: Bibliotecario = new Bibliotecario("Sin asignar");
-  private cliente: Cliente = new Cliente("Sin asignar");
+// import * as promptSync from "prompt-sync";
+// const prompt = (promptSync as any)();
 
-  private clientes: Cliente[] = [];
-  private bibliotecarios: Bibliotecario[] = [];
+// class App {
+//   private bibliotecario: Bibliotecario = new Bibliotecario("Sin asignar");
+//   private cliente: Cliente = new Cliente("Sin asignar");
 
-  private prompt = prompt;
+//   private clientes: Cliente[] = [];
+//   private bibliotecarios: Bibliotecario[] = [];
 
-  public iniciar(): void {
-    console.clear();
-    console.log("📚 SISTEMA DE BIBLIOTECA");
-    const resp = this.prompt("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ");
+//   private prompt = prompt;
 
-    if (resp === "1") {
-      console.log("\n👤 Antes de continuar, debes identificarte como Cliente.");
-      return this.opcionCambiaroCrearCliente();
-    }
+//   public iniciar(): void {
+//     console.clear();
+//     console.log("📚 SISTEMA DE BIBLIOTECA");
+//     const resp = this.prompt("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ");
 
-    if (resp === "2") {
-      console.log("\n📘 Antes de continuar, debes identificarte como Bibliotecario.");
-      return this.opcionCambiaroCrearBibliotecario();
-    }
+//     if (resp === "1") {
+//       console.log("\n👤 Antes de continuar, debes identificarte como Cliente.");
+//       return this.opcionCambiaroCrearCliente();
+//     }
 
-    return this.cerrar("Opción no válida.");
-  }
+//     if (resp === "2") {
+//       console.log("\n📘 Antes de continuar, debes identificarte como Bibliotecario.");
+//       return this.opcionCambiaroCrearBibliotecario();
+//     }
 
-  private menuCliente(): void {
-    console.clear();
-    console.log(`👤 Cliente: ${this.cliente.getNombre()}
-1. Ver libros disponibles
-2. Prestar libro
-3. Devolver libro
-4. Cambiar/Crear Cliente
-5. Volver al menú inicio
-6. Salir`);
+//     return this.cerrar("Opción no válida.");
+//   }
 
-    const op = this.prompt("👉 Selecciona una opción: ");
+//   private menuCliente(): void {
+//     console.clear();
+//     console.log(`👤 Cliente: ${this.cliente.getNombre()}
+// 1. Ver libros disponibles
+// 2. Prestar libro
+// 3. Devolver libro
+// 4. Cambiar/Crear Cliente
+// 5. Volver al menú inicio
+// 6. Salir`);
 
-    switch (op) {
-      case "1":
-        this.mostrarDisponibles();
-        this.pausa();
-        return this.menuCliente();
-      case "2":
-        return this.opcionPrestar();
-      case "3":
-        return this.opcionDevolver();
-      case "4":
-        return this.opcionCambiaroCrearCliente();
-      case "5":
-        return this.iniciar();
-      case "6":
-        return this.cerrar("👋 Saliendo...");
-      default:
-        return this.menuCliente();
-    }
-  }
+//     const op = this.prompt("👉 Selecciona una opción: ");
 
-  private menuBibliotecario(): void {
-    console.clear();
-    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}
-1. Ver libros disponibles
-2. Ver libros prestados
-3. Agregar libro al catálogo
-4. Cambiar/Crear Bibliotecario
-5. Volver a inicio
-6. Salir`);
+//     switch (op) {
+//       case "1":
+//         this.mostrarDisponibles();
+//         this.pausa();
+//         return this.menuCliente();
+//       case "2":
+//         return this.opcionPrestar();
+//       case "3":
+//         return this.opcionDevolver();
+//       case "4":
+//         return this.opcionCambiaroCrearCliente();
+//       case "5":
+//         return this.iniciar();
+//       case "6":
+//         return this.cerrar("👋 Saliendo...");
+//       default:
+//         return this.menuCliente();
+//     }
+//   }
 
-    const op = this.prompt("👉 Selecciona una opción: ");
+//   private menuBibliotecario(): void {
+//     console.clear();
+//     console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}
+// 1. Ver libros disponibles
+// 2. Ver libros prestados
+// 3. Agregar libro al catálogo
+// 4. Cambiar/Crear Bibliotecario
+// 5. Volver a inicio
+// 6. Salir`);
 
-    switch (op) {
-      case "1":
-        this.mostrarDisponibles();
-        this.pausa();
-        return this.menuBibliotecario();
-      case "2":
-        this.mostrarPrestados();
-        this.pausa();
-        return this.menuBibliotecario();
-      case "3":
-        return this.opcionAgregarLibro();
-      case "4":
-        return this.opcionCambiaroCrearBibliotecario();
-      case "5":
-        return this.iniciar();
-      case "6":
-        return this.cerrar("👋 Saliendo...");
-      default:
-        return this.menuBibliotecario();
-    }
-  }
+//     const op = this.prompt("👉 Selecciona una opción: ");
 
-  private opcionPrestar(): void {
-    const disponibles = this.bibliotecario.obtenerDisponibles();
-    if (disponibles.length === 0) {
-      console.log("❌ No hay libros disponibles");
-      this.pausa();
-      return this.menuCliente();
-    }
+//     switch (op) {
+//       case "1":
+//         this.mostrarDisponibles();
+//         this.pausa();
+//         return this.menuBibliotecario();
+//       case "2":
+//         this.mostrarPrestados();
+//         this.pausa();
+//         return this.menuBibliotecario();
+//       case "3":
+//         return this.opcionAgregarLibro();
+//       case "4":
+//         return this.opcionCambiaroCrearBibliotecario();
+//       case "5":
+//         return this.iniciar();
+//       case "6":
+//         return this.cerrar("👋 Saliendo...");
+//       default:
+//         return this.menuBibliotecario();
+//     }
+//   }
 
-    console.log("\n📘 Libros disponibles:");
-    disponibles.forEach(l => console.log(`${l.getId()}. ${l.getTitulo()}`));
+//   private opcionPrestar(): void {
+//     const disponibles = this.bibliotecario.obtenerDisponibles();
+//     if (disponibles.length === 0) {
+//       console.log("❌ No hay libros disponibles");
+//       this.pausa();
+//       return this.menuCliente();
+//     }
 
-    const id = Number(this.prompt("👉 Ingresa el ID del libro a prestar: "));
-    const libro = disponibles.find(l => l.getId() === id);
+//     console.log("\n📘 Libros disponibles:");
+//     disponibles.forEach(l => console.log(`${l.getId()}. ${l.getTitulo()}`));
 
-    if (!libro) console.log("❌ ID no válido.");
-    else {
-      this.cliente.prestarLibro(libro);
-      console.log(`✔ Has prestado: ${libro.getTitulo()}`);
-    }
+//     const id = Number(this.prompt("👉 Ingresa el ID del libro a prestar: "));
+//     const libro = disponibles.find(l => l.getId() === id);
 
-    this.pausa();
-    return this.menuCliente();
-  }
+//     if (!libro) console.log("❌ ID no válido.");
+//     else {
+//       this.cliente.prestarLibro(libro);
+//       console.log(`✔ Has prestado: ${libro.getTitulo()}`);
+//     }
 
-  private opcionDevolver(): void {
-    const prestados = this.bibliotecario.obtenerPrestados();
+//     this.pausa();
+//     return this.menuCliente();
+//   }
 
-    if (prestados.length === 0) {
-      console.log("❌ No tienes libros prestados.");
-      this.pausa();
-      return this.menuCliente();
-    }
+//   private opcionDevolver(): void {
+//     const prestados = this.bibliotecario.obtenerPrestados();
 
-    console.log("\n📕 Libros prestados:");
-    prestados.forEach(l => console.log(`${l.getId()}. ${l.getTitulo()}`));
+//     if (prestados.length === 0) {
+//       console.log("❌ No tienes libros prestados.");
+//       this.pausa();
+//       return this.menuCliente();
+//     }
 
-    const id = Number(this.prompt("👉 Ingresa el ID del libro a devolver: "));
-    const libro = prestados.find(l => l.getId() === id);
+//     console.log("\n📕 Libros prestados:");
+//     prestados.forEach(l => console.log(`${l.getId()}. ${l.getTitulo()}`));
 
-    if (!libro) console.log("❌ ID no válido.");
-    else {
-      this.cliente.devolverLibro(libro);
-      console.log(`✔ Has devuelto: ${libro.getTitulo()}`);
-    }
+//     const id = Number(this.prompt("👉 Ingresa el ID del libro a devolver: "));
+//     const libro = prestados.find(l => l.getId() === id);
 
-    this.pausa();
-    return this.menuCliente();
-  }
+//     if (!libro) console.log("❌ ID no válido.");
+//     else {
+//       this.cliente.devolverLibro(libro);
+//       console.log(`✔ Has devuelto: ${libro.getTitulo()}`);
+//     }
 
-  private opcionAgregarLibro(): void {
-    console.log("📗 Agregar libro al catálogo");
+//     this.pausa();
+//     return this.menuCliente();
+//   }
 
-    const id = Number(this.prompt("👉 Ingresa el ID del libro: "));
-    const titulo = this.prompt("👉 Ingresa el título del libro: ");
-    const autor = this.prompt("👉 Ingresa el autor del libro: ");
+//   private opcionAgregarLibro(): void {
+//     console.log("📗 Agregar libro al catálogo");
 
-    const nuevoLibro = new Libro(id, titulo, autor);
+//     const id = Number(this.prompt("👉 Ingresa el ID del libro: "));
+//     const titulo = this.prompt("👉 Ingresa el título del libro: ");
+//     const autor = this.prompt("👉 Ingresa el autor del libro: ");
 
-    const catalogo = this.bibliotecario.getCatalogo();
-    catalogo.push(nuevoLibro);
-    this.bibliotecario.setCatalogo(catalogo);
+//     const nuevoLibro = new Libro(id, titulo, autor);
 
-    console.log(`✔ Libro añadido: ${titulo} (${autor})`);
+//     const catalogo = this.bibliotecario.getCatalogo();
+//     catalogo.push(nuevoLibro);
+//     this.bibliotecario.setCatalogo(catalogo);
 
-    this.pausa();
-    return this.menuBibliotecario();
-  }
+//     console.log(`✔ Libro añadido: ${titulo} (${autor})`);
 
-  private opcionCambiaroCrearCliente(): void {
-    const nombre = this.prompt("👉 Ingresa el nombre del nuevo cliente: ");
+//     this.pausa();
+//     return this.menuBibliotecario();
+//   }
 
-    const existente = this.clientes.find(c => c.getNombre() === nombre);
+//   private opcionCambiaroCrearCliente(): void {
+//     const nombre = this.prompt("👉 Ingresa el nombre del nuevo cliente: ");
 
-    if (existente) {
-      console.log(`✔ Cliente existente seleccionado: ${nombre}`);
-      this.cliente = existente;
-    } else {
-      const nuevo = new Cliente(nombre);
-      this.clientes.push(nuevo);
-      this.cliente = nuevo;
-      console.log(`✔ Cliente creado: ${nombre}`);
-    }
+//     const existente = this.clientes.find(c => c.getNombre() === nombre);
 
-    this.pausa();
-    return this.menuCliente();
-  }
+//     if (existente) {
+//       console.log(`✔ Cliente existente seleccionado: ${nombre}`);
+//       this.cliente = existente;
+//     } else {
+//       const nuevo = new Cliente(nombre);
+//       this.clientes.push(nuevo);
+//       this.cliente = nuevo;
+//       console.log(`✔ Cliente creado: ${nombre}`);
+//     }
 
-  private opcionCambiaroCrearBibliotecario(): void {
-    const nombre = this.prompt("👉 Ingresa el nombre del nuevo bibliotecario: ");
+//     this.pausa();
+//     return this.menuCliente();
+//   }
 
-    const existente = this.bibliotecarios.find(b => b.getNombre() === nombre);
+//   private opcionCambiaroCrearBibliotecario(): void {
+//     const nombre = this.prompt("👉 Ingresa el nombre del nuevo bibliotecario: ");
 
-    if (existente) {
-      console.log(`✔ Bibliotecario existente seleccionado: ${nombre}`);
-      this.bibliotecario = existente;
-    } else {
-      const nuevo = new Bibliotecario(nombre);
-      nuevo.setCatalogo(this.bibliotecario.getCatalogo());
-      this.bibliotecarios.push(nuevo);
-      this.bibliotecario = nuevo;
-      console.log(`✔ Bibliotecario creado: ${nombre}`);
-    }
+//     const existente = this.bibliotecarios.find(b => b.getNombre() === nombre);
 
-    this.pausa();
-    return this.menuBibliotecario();
-  }
+//     if (existente) {
+//       console.log(`✔ Bibliotecario existente seleccionado: ${nombre}`);
+//       this.bibliotecario = existente;
+//     } else {
+//       const nuevo = new Bibliotecario(nombre);
+//       nuevo.setCatalogo(this.bibliotecario.getCatalogo());
+//       this.bibliotecarios.push(nuevo);
+//       this.bibliotecario = nuevo;
+//       console.log(`✔ Bibliotecario creado: ${nombre}`);
+//     }
 
-  private mostrarDisponibles(): void {
-    const disponibles = this.bibliotecario.obtenerDisponibles();
-    console.log("📘 Libros disponibles:");
-    disponibles.forEach(l => console.log(`- ${l.getTitulo()} (${l.getAutor()})`));
-  }
+//     this.pausa();
+//     return this.menuBibliotecario();
+//   }
 
-  private mostrarPrestados(): void {
-    const prestados = this.bibliotecario.obtenerPrestados();
-    console.log("📕 Libros prestados:");
-    prestados.forEach(l => console.log(`- ${l.getTitulo()} (${l.getAutor()})`));
-  }
+//   private mostrarDisponibles(): void {
+//     const disponibles = this.bibliotecario.obtenerDisponibles();
+//     console.log("📘 Libros disponibles:");
+//     disponibles.forEach(l => console.log(`- ${l.getTitulo()} (${l.getAutor()})`));
+//   }
 
-  private pausa(): void {
-    this.prompt("\nPresiona ENTER para continuar...");
-  }
+//   private mostrarPrestados(): void {
+//     const prestados = this.bibliotecario.obtenerPrestados();
+//     console.log("📕 Libros prestados:");
+//     prestados.forEach(l => console.log(`- ${l.getTitulo()} (${l.getAutor()})`));
+//   }
 
-  private cerrar(msg: string): void {
-    console.log(msg);
-    process.exit(0);
-  }
-}
+//   private pausa(): void {
+//     this.prompt("\nPresiona ENTER para continuar...");
+//   }
+
+//   private cerrar(msg: string): void {
+//     console.log(msg);
+//     process.exit(0);
+//   }
+// }
 
 
 // const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
@@ -333,8 +310,8 @@ class App {
 
 // const cliente1 = new Cliente("Randolph");
 
-const app = new App();
+// const app = new App();
 // app.setBibliotecario(bibliotecario1);
 // app.setCliente(cliente1);
 
-app.iniciar();
+// app.iniciar();

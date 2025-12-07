@@ -15,8 +15,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var prompt_sync_1 = require("prompt-sync");
-var prompt = (0, prompt_sync_1.default)();
+var promptSync = require("prompt-sync");
+var prompt = promptSync();
 var Libro = /** @class */ (function () {
     function Libro(id, titulo, autor) {
         this.disponible = true;
@@ -50,9 +50,6 @@ var Usuario = /** @class */ (function () {
     }
     Usuario.prototype.getNombre = function () {
         return this.nombre;
-    };
-    Usuario.prototype.setNombre = function (nombre) {
-        this.nombre = nombre;
     };
     return Usuario;
 }());
@@ -106,7 +103,7 @@ var App = /** @class */ (function () {
         this.cliente = new Cliente("Sin asignar");
         this.clientes = [];
         this.bibliotecarios = [];
-        this.prompt = prompt; // 🔥 reemplazo de readline
+        this.prompt = prompt;
     }
     App.prototype.iniciar = function () {
         console.clear();
@@ -114,11 +111,11 @@ var App = /** @class */ (function () {
         var resp = this.prompt("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ");
         if (resp === "1") {
             console.log("\n👤 Antes de continuar, debes identificarte como Cliente.");
-            return this.opcionCambiarCliente();
+            return this.opcionCambiaroCrearCliente();
         }
         if (resp === "2") {
             console.log("\n📘 Antes de continuar, debes identificarte como Bibliotecario.");
-            return this.opcionCambiarBibliotecario();
+            return this.opcionCambiaroCrearBibliotecario();
         }
         return this.cerrar("Opción no válida.");
     };
@@ -136,7 +133,7 @@ var App = /** @class */ (function () {
             case "3":
                 return this.opcionDevolver();
             case "4":
-                return this.opcionCambiarCliente();
+                return this.opcionCambiaroCrearCliente();
             case "5":
                 return this.iniciar();
             case "6":
@@ -161,7 +158,7 @@ var App = /** @class */ (function () {
             case "3":
                 return this.opcionAgregarLibro();
             case "4":
-                return this.opcionCambiarBibliotecario();
+                return this.opcionCambiaroCrearBibliotecario();
             case "5":
                 return this.iniciar();
             case "6":
@@ -223,7 +220,7 @@ var App = /** @class */ (function () {
         this.pausa();
         return this.menuBibliotecario();
     };
-    App.prototype.opcionCambiarCliente = function () {
+    App.prototype.opcionCambiaroCrearCliente = function () {
         var nombre = this.prompt("👉 Ingresa el nombre del nuevo cliente: ");
         var existente = this.clientes.find(function (c) { return c.getNombre() === nombre; });
         if (existente) {
@@ -239,7 +236,7 @@ var App = /** @class */ (function () {
         this.pausa();
         return this.menuCliente();
     };
-    App.prototype.opcionCambiarBibliotecario = function () {
+    App.prototype.opcionCambiaroCrearBibliotecario = function () {
         var nombre = this.prompt("👉 Ingresa el nombre del nuevo bibliotecario: ");
         var existente = this.bibliotecarios.find(function (b) { return b.getNombre() === nombre; });
         if (existente) {
