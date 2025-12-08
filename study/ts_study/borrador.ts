@@ -1,14 +1,17 @@
+import * as promptSync from "prompt-sync";
+const prompt = (promptSync as any)();
+
 abstract class Database {
-  abstract create<T>(data: T): void
+  abstract create<T>(data: T): any
 }
 
 class MSQL extends Database{
   create<T>(data: T){
-    //
+    return data
   }
 }
 
-//------------------------------
+//----------------------------------------
 
 interface IPrestable {
   prestar(): void;
@@ -41,19 +44,21 @@ class Libro implements IPrestable{
   }
 }
 
-abstract class Identificacion {
-  private nombre: string;
+abstract class Usuario {
   private cedula: string;
+  private nombre: string;
+  private edad: number;
   private nacionalidad: string;
 
-  constructor(nombre: string, cedula: string, nacionalidad: string){
-    this.nombre = nombre
+  constructor(cedula: string, nombre: string, edad: number, nacionalidad: string){
     this.cedula = cedula
+    this.nombre = nombre
+    this.edad = edad
     this.nacionalidad = nacionalidad
   }
 }
 
-class CPrestable {
+class Estudiante extends Usuario{
   prestamos: Libro[] = [];
 
   public prestarLibro(libro: Libro): void {
@@ -70,16 +75,18 @@ class CPrestable {
       this.prestamos.splice(index, 1);
     }
   }
+
 }
 
-class Estudiante extends Identificacion{}
+class Profesor extends Estudiante{
 
-class Profesor extends Identificacion{}
+}
 
-class Directivo extends Identificacion{}
+class Directivo extends Profesor{
 
+}
 
-class Bibliotecario extends Identificacion{
+class Bibliotecario extends Usuario{
   private catalogo: Libro[] = [];
 
   public setCatalogo(libros: Libro[]): void {
@@ -99,20 +106,48 @@ class Bibliotecario extends Identificacion{
   }
 }
 
-
 //------------------------------------------------------------------
 
-// import * as promptSync from "prompt-sync";
-// const prompt = (promptSync as any)();
+class App {
+  private prompt = prompt;
 
-// class App {
+  public iniciar(): void {
+     console.clear();
+     console.log("📚 SISTEMA DE BIBLIOTECA");
+     const resp = this.prompt("Bienvenido al sistema de biblioteca, por favor registre dando su cedula o TI, nombre, nacionalidad");
+  }
+
+  private opcionCambiaroCrearEstudiante(): void {
+    const cedula = this.prompt("👉 Ingresa la cedula del estudiante: ");
+    const nombre = this.prompt("👉 Ingresa el nombre del estudiante: ");
+    const edad = this.prompt("👉 Ingresa la edad del estudiante: ");
+    const nacionalidad = this.prompt("👉 Ingresa la nacionalidad del estudiante: ");
+
+//     return this.cerrar("Opción no válida.");
+
+//     const existente = this.clientes.find(c => c.getNombre() === nombre);
+
+//     if (existente) {
+//       console.log(`✔ Cliente existente seleccionado: ${nombre}`);
+//       this.cliente = existente;
+//     } else {
+//       const nuevo = new Cliente(nombre);
+//       this.clientes.push(nuevo);
+//       this.cliente = nuevo;
+//       console.log(`✔ Cliente creado: ${nombre}`);
+//     }
+
+//     this.pausa();
+//     return this.menuCliente();
+   }
+
+}
+
 //   private bibliotecario: Bibliotecario = new Bibliotecario("Sin asignar");
 //   private cliente: Cliente = new Cliente("Sin asignar");
 
 //   private clientes: Cliente[] = [];
 //   private bibliotecarios: Bibliotecario[] = [];
-
-//   private prompt = prompt;
 
 //   public iniciar(): void {
 //     console.clear();
