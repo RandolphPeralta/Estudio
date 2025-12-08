@@ -1,4 +1,22 @@
-class Libro {
+abstract class Database {
+  abstract create<T>(data: T): void
+}
+
+class MSQL extends Database{
+  create<T>(data: T){
+    //
+  }
+}
+
+//------------------------------
+
+interface IPrestable {
+  prestar(): void;
+  devolver(): void;
+  estaDisponible(): boolean;
+}
+
+class Libro implements IPrestable{
   private id: number;
   private titulo: string;
   private autor: string;
@@ -8,10 +26,6 @@ class Libro {
     this.id = id;
     this.titulo = titulo;
     this.autor = autor;
-  }
-
-  public obtenerInfo(): string{
-    return `Id: ${this.id}, Titulo: ${this.titulo}, Autor: ${this.autor}`
   }
 
   public prestar(): void {
@@ -27,22 +41,27 @@ class Libro {
   }
 }
 
-abstract class Usuario {
+abstract class Identificacion {
   private nombre: string;
-  constructor(nombre: string) {
-    this.nombre = nombre;
+  private cedula: string;
+  private nacionalidad: string;
+
+  constructor(nombre: string, cedula: string, nacionalidad: string){
+    this.nombre = nombre
+    this.cedula = cedula
+    this.nacionalidad = nacionalidad
   }
 }
 
-class Cliente extends Usuario {
-  private prestamos: Libro[] = [];
+class CPrestable {
+  prestamos: Libro[] = [];
 
   public prestarLibro(libro: Libro): void {
     if (libro.estaDisponible()) {
-      libro.prestar()
-      this.prestamos.push(libro) 
-    }
-  }
+        libro.prestar();
+        this.prestamos.push(libro);
+        }
+      }
 
   public devolverLibro(libro: Libro): void {
     const index = this.prestamos.indexOf(libro);
@@ -53,7 +72,14 @@ class Cliente extends Usuario {
   }
 }
 
-class Bibliotecario extends Usuario {
+class Estudiante extends Identificacion{}
+
+class Profesor extends Identificacion{}
+
+class Directivo extends Identificacion{}
+
+
+class Bibliotecario extends Identificacion{
   private catalogo: Libro[] = [];
 
   public setCatalogo(libros: Libro[]): void {
@@ -72,6 +98,7 @@ class Bibliotecario extends Usuario {
     return this.catalogo;
   }
 }
+
 
 //------------------------------------------------------------------
 
