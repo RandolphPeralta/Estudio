@@ -2,11 +2,19 @@
 // Escribiendo el programa
 // Quiero un programa de sistema de gestion de biblioteca
 // Que primero me registre en el programa
-// Que ingrese si soy estudiante, profesor  o directivo, para prestar, devolver, reservar, mostrar disponibilidad, y ver si no esta sancionado
-//  o bibliotecario (empleado) para mostrar el registro de prestados, reservados, disponibles
+// Que ingrese si soy estudiante, profesor  o directivo, para prestar, devolver, reservar, y ver si no esta sancionado
+// o bibliotecario (empleado) para mostrar el registro de prestados, reservados, disponibles
+// Para el libro mostrar la disponibilidad
 
 interface SistemaRegistroBiblioteca {
-  registro<T>(data: T): void;
+  registro(): void;
+}
+
+interface Iprestable {
+  prestar(): void;
+  devolver(): void;
+  reservar(): void;
+  Disponibilidad(): void;
 }
 
 class Estudiante implements SistemaRegistroBiblioteca {
@@ -29,6 +37,6 @@ class Directivo implements SistemaRegistroBiblioteca {
 
 class Bibliotecario implements SistemaRegistroBiblioteca {
   registro(){
-    //
+    // registro de bibliotecario
   }
 }
