@@ -6,22 +6,19 @@
 // o bibliotecario (empleado) para mostrar el registro de prestados, reservados, disponibles
 // Para el libro mostrar la disponibilidad
 
-interface SistemaRegistroBiblioteca {
+interface Acciones {
   registro(): void;
-}
-
-type Iprestable = {
   prestar(): void;
   devolver(): void;
   reservar(): void;
 }
 
-class Estudiante implements SistemaRegistroBiblioteca, Iprestable {
+class Estudiante implements Acciones {
   registro(){
   // registro de estudiante
   }
 
-  prestar(){
+  prestar(): void {
     // prestar como estudiante
   }
 
@@ -34,20 +31,42 @@ class Estudiante implements SistemaRegistroBiblioteca, Iprestable {
   }
 }
 
-class Profesor implements SistemaRegistroBiblioteca{
+class Profesor implements Acciones{
   registro(){
     // registro de profesor
   }
+
+  prestar(): void{
+    // prestar como profesor
+  }
+
+  devolver(): void {
+    // devolver como profesor
+  }
+
+  reservar(): void {
+    // reservar como profesor
+  }
 }
 
-class Directivo implements SistemaRegistroBiblioteca {
+class Directivo implements Acciones {
   registro(){
     // registro directivo
   }
+
+  prestar(): void{
+    // prestar como directivo
+  }
+
+  devolver(): void {
+    // devolver como directivo
+  }
+
+  reservar(): void {
+    // reservar como directivo
+  }
 }
 
-class Bibliotecario implements SistemaRegistroBiblioteca {
-  registro(){
-    // registro de bibliotecario
-  }
+class Bibliotecario {
+
 }
