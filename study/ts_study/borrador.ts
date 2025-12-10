@@ -10,16 +10,27 @@ interface SistemaRegistroBiblioteca {
   registro(): void;
 }
 
-interface Iprestable {
+type Iprestable = {
   prestar(): void;
   devolver(): void;
   reservar(): void;
-  Disponibilidad(): void;
 }
 
-class Estudiante implements SistemaRegistroBiblioteca {
+class Estudiante implements SistemaRegistroBiblioteca, Iprestable {
   registro(){
   // registro de estudiante
+  }
+
+  prestar(){
+    // prestar como estudiante
+  }
+
+  devolver(): void {
+    // devolver como estudiante
+  }
+
+  reservar(): void {
+    // reservar como estudiante
   }
 }
 
