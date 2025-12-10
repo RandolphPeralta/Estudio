@@ -7,64 +7,24 @@
 // Para el libro mostrar la disponibilidad
 
 interface Acciones {
-  registro(): void;
-  prestar(): void;
-  devolver(): void;
-  reservar(): void;
+  registro<T>(data: T): boolean;
+  prestar<T>(data: T): void;
+  devolver<T>(data: T): void;
+  reservar<T>(data: T): void;
 }
 
-class Estudiante implements Acciones {
-  registro(){
-  // registro de estudiante
-  }
+// interface RegistroBiblioteca {}
 
-  prestar(): void {
-    // prestar como estudiante
-  }
-
-  devolver(): void {
-    // devolver como estudiante
-  }
-
-  reservar(): void {
-    // reservar como estudiante
-  }
+class Estudiante {
+  
 }
 
-class Profesor implements Acciones{
-  registro(){
-    // registro de profesor
-  }
-
-  prestar(): void{
-    // prestar como profesor
-  }
-
-  devolver(): void {
-    // devolver como profesor
-  }
-
-  reservar(): void {
-    // reservar como profesor
-  }
+class Profesor {
+ 
 }
 
-class Directivo implements Acciones {
-  registro(){
-    // registro directivo
-  }
+class Directivo {
 
-  prestar(): void{
-    // prestar como directivo
-  }
-
-  devolver(): void {
-    // devolver como directivo
-  }
-
-  reservar(): void {
-    // reservar como directivo
-  }
 }
 
 class Bibliotecario {
