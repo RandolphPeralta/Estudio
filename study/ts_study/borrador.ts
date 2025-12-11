@@ -13,9 +13,9 @@ interface RegistroBiblioteca {
 }
 
 interface IAccionesCliente{
-  prestar<T>(id: number, data: T): void;
-  devolver<T>(id: number, data: T): void;
-  reservar<T>(id: number, data: T): void;
+  prestar<T>(data: T): void;
+  devolver<T>(data: T): void;
+  reservar<T>(data: T): void;
 }
 
 interface IAccionesBibliotecario{
@@ -24,54 +24,46 @@ interface IAccionesBibliotecario{
   reservados(): void;
 }
 
-class Estudiante implements RegistroBiblioteca {
-  registro<Usuario>(data: Usuario): boolean {
-    return true
-  }
-}
-
-class Profesor {
- registro<Usuario>(data: Usuario): boolean {
-    return true
-  }
-}
-
-class Directivo {
-registro<Usuario>(data: Usuario): boolean {
-    return true
-  }
-}
-
-class Bibliotecario {
-registro<Usuario>(data: Usuario): boolean {
-    return true
-  }
-}
-
-// Modelo 
-
-class Usuario {
+class Cliente implements IAccionesCliente{
   constructor(
     private nombre: string, 
     private edad: number, 
     private nacionalidad: string)
-    {
-    this.nombre = nombre
-    this.edad = edad
-    this.nacionalidad = nacionalidad
-  }
+    { }
+
+    private prestamos: Array<any> = []
+
+    prestar<T>(data: T): void {
+      // prestar
+    }
+
+    devolver<T>(data: T): void {
+      // devolver
+    }
+
+    reservar<T>(data: T): void {
+      // reservar
+    }
 }
 
-class Libro{
-  constructor(
-    private id: number,
-    private titulo: string,
-    private autor: string)
-    {
-    this.id = id 
-    this.titulo = titulo
-    this.autor = autor
-  }
+class Estudiante extends Cliente{
+}
+
+class Profesor extends Cliente{
+}
+
+class Directivo extends Cliente{
+}
+
+class Bibliotecario {
+}
+
+// Modelo de guardado
+
+type Libro = {
+  id: number;
+  titulo: string;
+  autor: string;
 }
 
 // Clase consumo
