@@ -4,8 +4,11 @@
 // Que primero me registre en el programa
 // Que ingrese si soy estudiante, profesor  o directivo, para prestar, devolver, reservar
 // o bibliotecario (empleado) para mostrar el registro de prestados, reservados, disponibles
-// Para el libro mostrar la disponibilidad
+// Para el data mostrar la disponibilidad
 // Codigo: 
+
+import * as promptSync from "prompt-sync";
+const prompt = (promptSync as any)();
 
 // Interfaces
 interface RegistroBiblioteca {
@@ -24,25 +27,28 @@ interface IAccionesBibliotecario{
   reservados(): void;
 }
 
-class Cliente implements IAccionesCliente{
-  constructor(
-    private nombre: string, 
-    private edad: number, 
-    private nacionalidad: string)
-    { }
+// Detalle de implementacion
+class Cliente implements IAccionesCliente, RegistroBiblioteca{
+  
+  public prestamos: Array<any> = []
 
-    private prestamos: Array<any> = []
+  registro<T>(data: T): boolean {
+    return true
+  }
 
-    prestar<T>(data: T): void {
-      // prestar
+  prestar<T>(data: T): void {
+    this.prestamos.push(data)
+  }
+
+  devolver<T>(data: T): void {
+    const index = this.prestamos.indexOf(data);
+    if (index !== -1) {
+      this.prestamos.splice(index, 1);
     }
+  }
 
-    devolver<T>(data: T): void {
-      // devolver
-    }
-
-    reservar<T>(data: T): void {
-      // reservar
+  reservar<T>(data: T): void {
+      // reservar 
     }
 }
 
@@ -55,19 +61,67 @@ class Profesor extends Cliente{
 class Directivo extends Cliente{
 }
 
-class Bibliotecario {
+class Bibliotecario implements IAccionesBibliotecario, RegistroBiblioteca{
+  registro<T>(data: T): boolean {
+    return true
+  }
+
+  prestados(): void {
+    
+  }
+
+  disponibles(): void {
+    
+  }
+
+  reservados(): void {
+    
+  }
 }
 
 // Modelo de guardado
 
-type Libro = {
+type libro = {
   id: number;
   titulo: string;
   autor: string;
+  disponible: boolean
+}
+
+type Usuario = {
+  nombre: string;
+  edad: number
+  nacionalidad: string
 }
 
 // Clase consumo
 
 class App {
 
+  constructor(private estudiante: Estudiante, private profesor: Profesor, private directivo: Directivo, private bibliotecario: Bibliotecario){}
+
+  run(): void {
+    console.log("Sistema de biblioteca")
+    // Registro
+    const usuario: Usuario = {
+      nombre: "Randolph",
+      edad: 30,
+      nacionalidad: "Colombiano"
+    }
+    const estudiante = new Estudiante()
+    estudiante.registro(usuario)
+    
+    // Ejemplo del objeto 
+    // const libro: libro = {
+    //   id: 1,
+    //   titulo: "Juego de tronos",
+    //   autor: "George R.R Martin",
+    //   disponible: true
+    // }
+
+    // if (true){
+    //   this.estudiante.prestar(libro)
+    //   console.log(this.estudiante.prestamos)
+    // }
+  }
 }
