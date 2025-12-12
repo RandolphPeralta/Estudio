@@ -1,3 +1,4 @@
+"use strict";
 // Praticar la abstracion de como realizar un sistema de biblioteca
 // Escribiendo el programa
 // Quiero un programa de sistema de gestion de biblioteca
@@ -21,6 +22,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+Object.defineProperty(exports, "__esModule", { value: true });
+var promptSync = require("prompt-sync");
+var prompt = promptSync();
 // Detalle de implementacion
 var Cliente = /** @class */ (function () {
     function Cliente() {
@@ -80,14 +84,31 @@ var Bibliotecario = /** @class */ (function () {
 }());
 // Clase consumo
 var App = /** @class */ (function () {
-    function App(estudiante, profesor, directivo, bibliotecario) {
-        this.estudiante = estudiante;
-        this.profesor = profesor;
-        this.directivo = directivo;
-        this.bibliotecario = bibliotecario;
+    function App() {
     }
+    //private estudiantes!: Estudiante[]
     App.prototype.run = function () {
         console.log("Sistema de biblioteca");
+        // Registro
+        console.log("Registrese}");
+        var nombre = prompt("👉 Ingresa su nombre : ");
+        var edad = prompt("👉 Ingresa su edad: ");
+        var nacionalidad = prompt("👉 Ingresa su nacionalidad: ");
+        var puesto = prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo, (4) Bibliotecario: ");
+        // Despues de esta opcion se crean los objetos
+        var usuario = {
+            nombre: nombre,
+            edad: edad,
+            nacionalidad: nacionalidad
+        };
+        var estudiante = new Estudiante();
+        // const profesor = new Profesor()
+        // const directivo = new Directivo()
+        // const bibliotecario = new Bibliotecario
+        estudiante.registro(usuario);
+        // profesor.registro(usuario)
+        // directivo.registro(usuario)
+        // bibliotecario.registro(usuario)
         // Ejemplo del objeto 
         var libro = {
             id: 1,
@@ -96,11 +117,21 @@ var App = /** @class */ (function () {
             disponible: true
         };
         if (true) {
-            this.estudiante.prestar(libro);
-            console.log(this.estudiante.prestamos);
+            estudiante.prestar(libro);
+            //console.log(this.estudiante.prestamos)
+            libro.disponible = false;
+            console.log("El libro ".concat(libro.titulo, " fue prestado"));
+        }
+        if (false) {
+            estudiante.devolver(libro);
+            libro.disponible = true;
+            console.log("El libro ".concat(libro.titulo, " fue devuelto"));
+        }
+        if (true) {
+            console.log(estudiante.prestamos);
         }
     };
     return App;
 }());
-// const biblioteca = new App()
-// biblioteca.run()
+var app = new App();
+app.run();

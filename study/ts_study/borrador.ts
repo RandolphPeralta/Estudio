@@ -22,7 +22,7 @@ interface IAccionesCliente{
 }
 
 interface IAccionesBibliotecario{
-  prestados(): void;
+  prestados(): Array<any>;
   disponibles(): void;
   reservados(): void;
 }
@@ -62,12 +62,14 @@ class Directivo extends Cliente{
 }
 
 class Bibliotecario implements IAccionesBibliotecario, RegistroBiblioteca{
+  private catalogo: Array<any> = []
+  
   registro<T>(data: T): boolean {
     return true
   }
 
-  prestados(): void {
-    
+  prestados(): Array<any> {
+    return this.catalogo
   }
 
   disponibles(): void {
@@ -97,31 +99,100 @@ type Usuario = {
 // Clase consumo
 
 class App {
-
-  constructor(private estudiante: Estudiante, private profesor: Profesor, private directivo: Directivo, private bibliotecario: Bibliotecario){}
+  // private estudiantes!: Estudiante[]
+   public catalogo!: libro[]
 
   run(): void {
-    console.log("Sistema de biblioteca")
+    console.log("📚 Bienvenio al Sistema de biblioteca")
     // Registro
+    console.log(`Registrese: `);
+    const name: string = prompt("👉 Ingresa su nombre : ");
+    const age: number = prompt("👉 Ingresa su edad: ");
+    const nacionality: string = prompt("👉 Ingresa su nacionalidad: ");
+
     const usuario: Usuario = {
-      nombre: "Randolph",
-      edad: 30,
-      nacionalidad: "Colombiano"
+      nombre: name,
+      edad: age,
+      nacionalidad: nacionality
     }
+
+    const puesto: number = prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo, (4) Bibliotecario: ");
+    // Despues de esta opcion se crean los objetos y sus funcionalides
+    switch(puesto){
+      case 1:
+        const estudiante = new Estudiante()
+        estudiante.registro(usuario)
+        
+      case 2:
+        const profesor = new Profesor()
+        profesor.registro(usuario)
+        
+      case 3:
+        const directivo = new Directivo()
+        directivo.registro(usuario)
+
+      case 4:
+        const bibliotecario = new Bibliotecario
+        bibliotecario.registro(usuario)
+
+        // La funciones para bibliotecario
+    }
+
+    const accioncliente: number = prompt("Que desea:\n1. Ver libros disponibles \n2. Prestar\n3. Devolver\n4. Reservar");
+
+    switch(accioncliente){
+      case 1:
+        this.catalogo
+      case 2:
+    } 
+
+    function prestar(){
+
+    }
+
     const estudiante = new Estudiante()
+    // const profesor = new Profesor()
+    // const directivo = new Directivo()
+    // const bibliotecario = new Bibliotecario
     estudiante.registro(usuario)
+    // profesor.registro(usuario)
+    // directivo.registro(usuario)
+    // bibliotecario.registro(usuario)
     
     // Ejemplo del objeto 
-    // const libro: libro = {
-    //   id: 1,
-    //   titulo: "Juego de tronos",
-    //   autor: "George R.R Martin",
-    //   disponible: true
-    // }
 
-    // if (true){
-    //   this.estudiante.prestar(libro)
-    //   console.log(this.estudiante.prestamos)
-    // }
+    console.log(`Ingrese el libro al catalogo: `);
+    const ide: number = prompt("👉 Ingresa su id : ")
+    const title: string = prompt("👉 Ingresa su titulo : ");
+    const author: string = prompt("👉 Ingresa su autor: ");
+    //const disponible: string = prompt("👉 Ingresa su nacionalidad: ");
+    
+    const libro: libro = {
+       id: ide,
+       titulo: title,
+       autor: author,
+       disponible: true
+     }
+
+    // prestar
+    //  if (true){
+    //    estudiante.prestar(libro)
+    //    libro.disponible = false
+    //    console.log(`El libro ${libro.titulo} fue prestado`)
+    //  }
+    
+    //  if (false){
+    //   estudiante.devolver(libro)
+    //   libro.disponible = true
+    //   console.log(`El libro ${libro.titulo} fue devuelto`)
+    //  }
+    
+    // prestamos
+    //  if (true){
+    //   console.log(estudiante.prestamos)
+    //  }
   }
 }
+
+const app = new App()
+app.run()
