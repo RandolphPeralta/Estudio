@@ -70,11 +70,13 @@ var Directivo = /** @class */ (function (_super) {
 }(Cliente));
 var Bibliotecario = /** @class */ (function () {
     function Bibliotecario() {
+        this.catalogo = [];
     }
     Bibliotecario.prototype.registro = function (data) {
         return true;
     };
     Bibliotecario.prototype.prestados = function () {
+        return this.catalogo;
     };
     Bibliotecario.prototype.disponibles = function () {
     };
@@ -85,22 +87,64 @@ var Bibliotecario = /** @class */ (function () {
 // Clase consumo
 var App = /** @class */ (function () {
     function App() {
+        // private estudiantes!: Estudiante[]
+        this.catalogo = [];
     }
-    //private estudiantes!: Estudiante[]
     App.prototype.run = function () {
-        console.log("Sistema de biblioteca");
+        console.log("📚 Bienvenio al Sistema de biblioteca");
         // Registro
-        console.log("Registrese}");
-        var nombre = prompt("👉 Ingresa su nombre : ");
-        var edad = prompt("👉 Ingresa su edad: ");
-        var nacionalidad = prompt("👉 Ingresa su nacionalidad: ");
-        var puesto = prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo, (4) Bibliotecario: ");
-        // Despues de esta opcion se crean los objetos
+        console.log("Registrese: ");
+        var name = prompt("👉 Ingresa su nombre : ");
+        var age = prompt("👉 Ingresa su edad: ");
+        var nacionality = prompt("👉 Ingresa su nacionalidad: ");
         var usuario = {
-            nombre: nombre,
-            edad: edad,
-            nacionalidad: nacionalidad
+            nombre: name,
+            edad: age,
+            nacionalidad: nacionality
         };
+        var libro1 = {
+            id: 1,
+            titulo: "Juego de tronos",
+            autor: "George R.R Martin",
+            disponible: true
+        };
+        var libro2 = {
+            id: 2,
+            titulo: "Harry Potter",
+            autor: "J. K. Rowling",
+            disponible: true
+        };
+        var libro3 = {
+            id: 3,
+            titulo: "Don Quijote",
+            autor: "J. K. Rowling",
+            disponible: true
+        };
+        this.catalogo.push(libro1);
+        var puesto = prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo, (4) Bibliotecario: ");
+        // Despues de esta opcion se crean los objetos y sus funcionalides
+        switch (puesto) {
+            case 1:
+                var estudiante_1 = new Estudiante();
+                estudiante_1.registro(usuario);
+            case 2:
+                var profesor = new Profesor();
+                profesor.registro(usuario);
+            case 3:
+                var directivo = new Directivo();
+                directivo.registro(usuario);
+            case 4:
+                var bibliotecario = new Bibliotecario;
+                bibliotecario.registro(usuario);
+            // La funciones para bibliotecario
+        }
+        var accion = prompt("Desea: (0) Ver libros(1) Prestar, (2) Devolver, (3) Reservar");
+        switch (accion) {
+            case 0:
+                console.log(this.catalogo);
+        }
+        function prestar() {
+        }
         var estudiante = new Estudiante();
         // const profesor = new Profesor()
         // const directivo = new Directivo()
@@ -110,26 +154,32 @@ var App = /** @class */ (function () {
         // directivo.registro(usuario)
         // bibliotecario.registro(usuario)
         // Ejemplo del objeto 
-        var libro = {
-            id: 1,
-            titulo: "Juego de tronos",
-            autor: "George R.R Martin",
-            disponible: true
-        };
-        if (true) {
-            estudiante.prestar(libro);
-            //console.log(this.estudiante.prestamos)
-            libro.disponible = false;
-            console.log("El libro ".concat(libro.titulo, " fue prestado"));
-        }
-        if (false) {
-            estudiante.devolver(libro);
-            libro.disponible = true;
-            console.log("El libro ".concat(libro.titulo, " fue devuelto"));
-        }
-        if (true) {
-            console.log(estudiante.prestamos);
-        }
+        // console.log(`Ingrese el libro al catalogo: `);
+        // const ide: number = prompt("👉 Ingresa su id : ")
+        // const title: string = prompt("👉 Ingresa su titulo : ");
+        // const author: string = prompt("👉 Ingresa su autor: ");
+        //const disponible: string = prompt("👉 Ingresa su nacionalidad: ");
+        // const libro: libro = {
+        //    id: ide,
+        //    titulo: title,
+        //    autor: author,
+        //    disponible: true
+        //  }
+        // prestar
+        //  if (true){
+        //    estudiante.prestar(libro)
+        //    libro.disponible = false
+        //    console.log(`El libro ${libro.titulo} fue prestado`)
+        //  }
+        //  if (false){
+        //   estudiante.devolver(libro)
+        //   libro.disponible = true
+        //   console.log(`El libro ${libro.titulo} fue devuelto`)
+        //  }
+        // prestamos
+        //  if (true){
+        //   console.log(estudiante.prestamos)
+        //  }
     };
     return App;
 }());

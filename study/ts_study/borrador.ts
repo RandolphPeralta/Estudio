@@ -99,8 +99,9 @@ type Usuario = {
 // Clase consumo
 
 class App {
+  
   // private estudiantes!: Estudiante[]
-   public catalogo!: libro[]
+   public catalogo: libro[] = []
 
   run(): void {
     console.log("📚 Bienvenio al Sistema de biblioteca")
@@ -116,13 +117,36 @@ class App {
       nacionalidad: nacionality
     }
 
+    const libro1: libro = {
+       id: 1,
+       titulo: "Juego de tronos",
+       autor: "George R.R Martin",
+       disponible: true
+     }
+
+     const libro2: libro = {
+       id: 2,
+       titulo: "Harry Potter",
+       autor: "J. K. Rowling",
+       disponible: true
+     }
+
+     const libro3: libro = {
+       id: 3,
+       titulo: "Don Quijote",
+       autor: "J. K. Rowling",
+       disponible: true
+     }
+
+     this.catalogo.push(libro1)
+
     const puesto: number = prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo, (4) Bibliotecario: ");
     // Despues de esta opcion se crean los objetos y sus funcionalides
     switch(puesto){
       case 1:
         const estudiante = new Estudiante()
         estudiante.registro(usuario)
-        
+
       case 2:
         const profesor = new Profesor()
         profesor.registro(usuario)
@@ -135,16 +159,14 @@ class App {
         const bibliotecario = new Bibliotecario
         bibliotecario.registro(usuario)
 
-        // La funciones para bibliotecario
+         // La funciones para bibliotecario
     }
 
-    const accioncliente: number = prompt("Que desea:\n1. Ver libros disponibles \n2. Prestar\n3. Devolver\n4. Reservar");
-
-    switch(accioncliente){
-      case 1:
-        this.catalogo
-      case 2:
-    } 
+    const accion: number = prompt("Desea: (0) Ver libros(1) Prestar, (2) Devolver, (3) Reservar");
+        switch(accion){
+          case 0:
+            console.log(this.catalogo)
+        }
 
     function prestar(){
 
@@ -161,18 +183,18 @@ class App {
     
     // Ejemplo del objeto 
 
-    console.log(`Ingrese el libro al catalogo: `);
-    const ide: number = prompt("👉 Ingresa su id : ")
-    const title: string = prompt("👉 Ingresa su titulo : ");
-    const author: string = prompt("👉 Ingresa su autor: ");
+    // console.log(`Ingrese el libro al catalogo: `);
+    // const ide: number = prompt("👉 Ingresa su id : ")
+    // const title: string = prompt("👉 Ingresa su titulo : ");
+    // const author: string = prompt("👉 Ingresa su autor: ");
     //const disponible: string = prompt("👉 Ingresa su nacionalidad: ");
     
-    const libro: libro = {
-       id: ide,
-       titulo: title,
-       autor: author,
-       disponible: true
-     }
+    // const libro: libro = {
+    //    id: ide,
+    //    titulo: title,
+    //    autor: author,
+    //    disponible: true
+    //  }
 
     // prestar
     //  if (true){
