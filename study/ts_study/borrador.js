@@ -68,22 +68,6 @@ var Directivo = /** @class */ (function (_super) {
     }
     return Directivo;
 }(Cliente));
-var Bibliotecario = /** @class */ (function () {
-    function Bibliotecario() {
-        this.catalogo = [];
-    }
-    Bibliotecario.prototype.registro = function (data) {
-        return true;
-    };
-    Bibliotecario.prototype.prestados = function () {
-        return this.catalogo;
-    };
-    Bibliotecario.prototype.disponibles = function () {
-    };
-    Bibliotecario.prototype.reservados = function () {
-    };
-    return Bibliotecario;
-}());
 // Clase consumo
 var App = /** @class */ (function () {
     function App() {
@@ -94,9 +78,9 @@ var App = /** @class */ (function () {
         console.log("📚 Bienvenio al Sistema de biblioteca");
         // Registro
         console.log("Registrese: ");
-        var name = prompt("👉 Ingresa su nombre : ");
-        var age = prompt("👉 Ingresa su edad: ");
-        var nacionality = prompt("👉 Ingresa su nacionalidad: ");
+        var name = String(prompt("👉 Ingresa su nombre : "));
+        var age = Number(prompt("👉 Ingresa su edad: "));
+        var nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
         var usuario = {
             nombre: name,
             edad: age,
@@ -120,68 +104,77 @@ var App = /** @class */ (function () {
             autor: "J. K. Rowling",
             disponible: true
         };
-        this.catalogo.push(libro1);
-        var puesto = prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo, (4) Bibliotecario: ");
+        this.catalogo.push(libro1, libro2, libro3);
+        var puesto = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
         // Despues de esta opcion se crean los objetos y sus funcionalides
         switch (puesto) {
-            case 1:
-                var estudiante_1 = new Estudiante();
-                estudiante_1.registro(usuario);
-            case 2:
+            case 1: {
+                var estudiante = new Estudiante();
+                estudiante.registro(usuario);
+                var accion = Number(prompt("Desea: (0) Ver libros (1) Prestar, (2) Devolver, (3) Reservar: "));
+                switch (accion) {
+                    case 0:
+                        console.log(this.catalogo);
+                        break;
+                    case 1:
+                        console.log("Aquí prestaría un libro…");
+                        break;
+                    case 2:
+                        console.log("Aquí devolvería un libro…");
+                        break;
+                    case 3:
+                        console.log("Aquí reservaría un libro…");
+                        break;
+                    default:
+                        console.log("Acción no válida");
+                        break;
+                }
+                break;
+            }
+            case 2: {
                 var profesor = new Profesor();
                 profesor.registro(usuario);
-            case 3:
+                break;
+            }
+            case 3: {
                 var directivo = new Directivo();
                 directivo.registro(usuario);
-            case 4:
-                var bibliotecario = new Bibliotecario;
-                bibliotecario.registro(usuario);
-            // La funciones para bibliotecario
+                break;
+            }
+            default: {
+                console.log("Puesto no válido");
+                break;
+            }
         }
-        var accion = prompt("Desea: (0) Ver libros(1) Prestar, (2) Devolver, (3) Reservar");
-        switch (accion) {
-            case 0:
-                console.log(this.catalogo);
-        }
-        function prestar() {
-        }
-        var estudiante = new Estudiante();
-        // const profesor = new Profesor()
-        // const directivo = new Directivo()
-        // const bibliotecario = new Bibliotecario
-        estudiante.registro(usuario);
-        // profesor.registro(usuario)
-        // directivo.registro(usuario)
-        // bibliotecario.registro(usuario)
-        // Ejemplo del objeto 
-        // console.log(`Ingrese el libro al catalogo: `);
-        // const ide: number = prompt("👉 Ingresa su id : ")
-        // const title: string = prompt("👉 Ingresa su titulo : ");
-        // const author: string = prompt("👉 Ingresa su autor: ");
-        //const disponible: string = prompt("👉 Ingresa su nacionalidad: ");
-        // const libro: libro = {
-        //    id: ide,
-        //    titulo: title,
-        //    autor: author,
-        //    disponible: true
-        //  }
-        // prestar
-        //  if (true){
-        //    estudiante.prestar(libro)
-        //    libro.disponible = false
-        //    console.log(`El libro ${libro.titulo} fue prestado`)
-        //  }
-        //  if (false){
-        //   estudiante.devolver(libro)
-        //   libro.disponible = true
-        //   console.log(`El libro ${libro.titulo} fue devuelto`)
-        //  }
-        // prestamos
-        //  if (true){
-        //   console.log(estudiante.prestamos)
-        //  }
     };
     return App;
 }());
 var app = new App();
 app.run();
+// Ejemplo del objeto 
+// console.log(`Ingrese el libro al catalogo: `);
+// const ide: number = prompt("👉 Ingresa su id : ")
+// const title: string = prompt("👉 Ingresa su titulo : ");
+// const author: string = prompt("👉 Ingresa su autor: ");
+//const disponible: string = prompt("👉 Ingresa su nacionalidad: ");
+// const libro: libro = {
+//    id: ide,
+//    titulo: title,
+//    autor: author,
+//    disponible: true
+//  }
+// prestar
+//  if (true){
+//    estudiante.prestar(libro)
+//    libro.disponible = false
+//    console.log(`El libro ${libro.titulo} fue prestado`)
+//  }
+//  if (false){
+//   estudiante.devolver(libro)
+//   libro.disponible = true
+//   console.log(`El libro ${libro.titulo} fue devuelto`)
+//  }
+// prestamos
+//  if (true){
+//   console.log(estudiante.prestamos)
+//  }

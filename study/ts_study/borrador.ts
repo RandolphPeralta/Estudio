@@ -21,12 +21,6 @@ interface IAccionesCliente{
   reservar<T>(data: T): void;
 }
 
-interface IAccionesBibliotecario{
-  prestados(): Array<any>;
-  disponibles(): void;
-  reservados(): void;
-}
-
 // Detalle de implementacion
 class Cliente implements IAccionesCliente, RegistroBiblioteca{
   
@@ -61,25 +55,6 @@ class Profesor extends Cliente{
 class Directivo extends Cliente{
 }
 
-class Bibliotecario implements IAccionesBibliotecario, RegistroBiblioteca{
-  private catalogo: Array<any> = []
-  
-  registro<T>(data: T): boolean {
-    return true
-  }
-
-  prestados(): Array<any> {
-    return this.catalogo
-  }
-
-  disponibles(): void {
-    
-  }
-
-  reservados(): void {
-    
-  }
-}
 
 // Modelo de guardado
 
@@ -107,9 +82,9 @@ class App {
     console.log("📚 Bienvenio al Sistema de biblioteca")
     // Registro
     console.log(`Registrese: `);
-    const name: string = prompt("👉 Ingresa su nombre : ");
-    const age: number = prompt("👉 Ingresa su edad: ");
-    const nacionality: string = prompt("👉 Ingresa su nacionalidad: ");
+    const name= String(prompt("👉 Ingresa su nombre : "));
+    const age = Number(prompt("👉 Ingresa su edad: "));
+    const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
 
     const usuario: Usuario = {
       nombre: name,
@@ -138,50 +113,72 @@ class App {
        disponible: true
      }
 
-     this.catalogo.push(libro1)
+     this.catalogo.push(libro1, libro2, libro3)
 
-    const puesto: number = prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo, (4) Bibliotecario: ");
+    const puesto = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
     // Despues de esta opcion se crean los objetos y sus funcionalides
-    switch(puesto){
-      case 1:
-        const estudiante = new Estudiante()
-        estudiante.registro(usuario)
+    switch (puesto) {
+      case 1: {
+      const estudiante = new Estudiante();
+      estudiante.registro(usuario);
 
-      case 2:
-        const profesor = new Profesor()
-        profesor.registro(usuario)
-        
-      case 3:
-        const directivo = new Directivo()
-        directivo.registro(usuario)
+      const accion: number = Number(
+        prompt("Desea: (0) Ver libros (1) Prestar, (2) Devolver, (3) Reservar: ")
+        );
 
-      case 4:
-        const bibliotecario = new Bibliotecario
-        bibliotecario.registro(usuario)
-
-         // La funciones para bibliotecario
-    }
-
-    const accion: number = prompt("Desea: (0) Ver libros(1) Prestar, (2) Devolver, (3) Reservar");
-        switch(accion){
+        switch (accion) {
           case 0:
-            console.log(this.catalogo)
+          console.log(this.catalogo);
+          break;
+
+          case 1:
+          //    estudiante.prestar(libro)
+          //    libro.disponible = false
+          //    console.log(`El libro ${libro.titulo} fue prestado`);
+          break;
+
+          case 2:
+          console.log("Aquí devolvería un libro…");
+          break;
+
+          case 3:
+          console.log("Aquí reservaría un libro…");
+          break;
+
+          default:
+          console.log("Acción no válida");
+          break;
+          }
+
+        break;
         }
 
-    function prestar(){
-
+    case 2: {
+      const profesor = new Profesor();
+      profesor.registro(usuario);
+      break;
     }
 
-    const estudiante = new Estudiante()
-    // const profesor = new Profesor()
-    // const directivo = new Directivo()
-    // const bibliotecario = new Bibliotecario
-    estudiante.registro(usuario)
-    // profesor.registro(usuario)
-    // directivo.registro(usuario)
-    // bibliotecario.registro(usuario)
-    
-    // Ejemplo del objeto 
+    case 3: {
+      const directivo = new Directivo();
+      directivo.registro(usuario);
+      break;
+    }
+
+    default:{
+      console.log("Puesto no válido");
+      break;
+    }
+    }
+
+
+  }
+}
+
+const app = new App()
+app.run()
+
+ // Ejemplo del objeto 
 
     // console.log(`Ingrese el libro al catalogo: `);
     // const ide: number = prompt("👉 Ingresa su id : ")
@@ -213,8 +210,3 @@ class App {
     //  if (true){
     //   console.log(estudiante.prestamos)
     //  }
-  }
-}
-
-const app = new App()
-app.run()
