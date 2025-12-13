@@ -3,7 +3,8 @@
 // Escribiendo el programa
 // Quiero un programa de sistema de gestion de biblioteca
 // Que primero me registre en el programa
-// Que ingrese si soy estudiante, profesor  o directivo, para prestar, devolver, reservar
+// Que ingrese si soy estudiante, profesor, para prestar, devolver, reservar
+// O directivo para manejar el inventario de la biblioteca
 
 // Codigo: 
 import * as promptSync from "prompt-sync";
@@ -75,9 +76,13 @@ class Profesor implements IAcciones{
 }
 
 class Directivo {
-  
-}
+  agregar<T>(item: T): void {}
 
+  eliminar<T>(item: T): void {}
+
+  actualizar<T>(item: T): void {}
+
+}
 
 // Modelo de guardado
 
@@ -93,7 +98,7 @@ type EstudianteInfo = {
   identificacion: string
   edad: number
   nacionalidad: string
-  curso: string
+  grado: string
 }
 
 type ProfesorInfo = {
@@ -106,17 +111,28 @@ type ProfesorInfo = {
 
 // Clase consumo
 
-// class App {
-//   // private estudiantes!: Estudiante[]
-//    private catalogo: libro[] = []
+class App {
+   // private estudiantes!: Estudiante[]
+  private catalogo: libro[] = []
 
-//   run(): void {
-//     console.log("📚 Bienvenio al Sistema de biblioteca")
+   run(): void {
+     console.log("📚 Bienvenio al Sistema de biblioteca")
 
-//     console.log(`Registrese: `);
-//     const name= String(prompt("👉 Ingresa su nombre : "));
-//     const age = Number(prompt("👉 Ingresa su edad: "));
-//     const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
+     console.log(`Registrese: `);
+     const name= String(prompt("👉 Ingresa su nombre : "));
+     const identification = String(prompt("👉 Ingresa su identificacion : "));
+     const age = Number(prompt("👉 Ingresa su edad: "));
+     const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
+     const position = (prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "))
+     switch(position){
+
+     }
+     const degree = String(prompt("👉 Que grado cursas: "))
+     const course = String(prompt("👉 Que curso estas dictando: "))
+   }
+
+}
+
 
 //     const usuario: Usuario = {
 //       nombre: name,
