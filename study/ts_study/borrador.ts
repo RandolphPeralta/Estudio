@@ -1,12 +1,11 @@
-// Praticar la abstracion de como realizar un sistema de biblioteca
+// Praticar la abstracion de como realizar un sistema de prestamos en la biblioteca
+
 // Escribiendo el programa
 // Quiero un programa de sistema de gestion de biblioteca
 // Que primero me registre en el programa
 // Que ingrese si soy estudiante, profesor  o directivo, para prestar, devolver, reservar
-// o bibliotecario (empleado) para mostrar el registro de prestados, reservados, disponibles
-// Para el data mostrar la disponibilidad
-// Codigo: 
 
+// Codigo: 
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
@@ -23,7 +22,8 @@ interface IAccionesCliente{
 
 // Detalle de implementacion
 class Cliente implements IAccionesCliente, RegistroBiblioteca{
-  
+
+  public reservas: Array<any> = [];
   public prestamos: Array<any> = []
 
   registro<T>(data: T): boolean {
@@ -42,17 +42,20 @@ class Cliente implements IAccionesCliente, RegistroBiblioteca{
   }
 
   reservar<T>(data: T): void {
-      // reservar 
-    }
+    this.reservas.push(data);
+  }
 }
 
 class Estudiante extends Cliente{
+
 }
 
 class Profesor extends Cliente{
+
 }
 
 class Directivo extends Cliente{
+  
 }
 
 
@@ -67,20 +70,32 @@ type libro = {
 
 type Usuario = {
   nombre: string;
+  // identificacion: string
   edad: number
   nacionalidad: string
+}
+
+type EstudianteInfo = {
+  grado: number
+}
+
+type ProfesorInfo = {
+  cursos: Array<any>
+}
+
+type DirectivoInfo = {
+  cargo: "Secretaria" | "Coordinador" | "Rector";
 }
 
 // Clase consumo
 
 class App {
-  
   // private estudiantes!: Estudiante[]
-   public catalogo: libro[] = []
+   private catalogo: libro[] = []
 
   run(): void {
     console.log("📚 Bienvenio al Sistema de biblioteca")
-    // Registro
+
     console.log(`Registrese: `);
     const name= String(prompt("👉 Ingresa su nombre : "));
     const age = Number(prompt("👉 Ingresa su edad: "));
@@ -113,72 +128,154 @@ class App {
        disponible: true
      }
 
-     this.catalogo.push(libro1, libro2, libro3)
+    this.catalogo.push(libro1, libro2, libro3)
 
     const puesto = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
-    // Despues de esta opcion se crean los objetos y sus funcionalides
+
+    let cliente: Cliente;
+
     switch (puesto) {
-      case 1: {
-      const estudiante = new Estudiante();
-      estudiante.registro(usuario);
-
-      const accion: number = Number(
-        prompt("Desea: (0) Ver libros (1) Prestar, (2) Devolver, (3) Reservar: ")
-        );
-
-        switch (accion) {
-          case 0:
-          console.log(this.catalogo);
-          break;
-
-          case 1:
-          //    estudiante.prestar(libro)
-          //    libro.disponible = false
-          //    console.log(`El libro ${libro.titulo} fue prestado`);
-          break;
-
-          case 2:
-          console.log("Aquí devolvería un libro…");
-          break;
-
-          case 3:
-          console.log("Aquí reservaría un libro…");
-          break;
-
-          default:
-          console.log("Acción no válida");
-          break;
-          }
-
+      case 1:
+        cliente = new Estudiante();
         break;
-        }
 
-    case 2: {
-      const profesor = new Profesor();
-      profesor.registro(usuario);
-      break;
+      case 2:
+        cliente = new Profesor();
+        break;
+
+      case 3:
+        cliente = new Directivo();
+        break;
+
+      default:
+        console.log("Puesto no válido");
+        return;
+      }
+
+      cliente.registro(usuario);
+      this.menuAcciones(cliente);
+
+}
+
+private menuAcciones(cliente: Cliente): void {
+  let salir = false;
+
+  while (!salir) {
+    const accion = Number(prompt("\nDesea: (0) Ver libros (1) Prestar (2) Devolver (3) Reservar (4) Salir: "));
+
+    switch (accion) {
+      case 0:
+        console.log(this.catalogo);
+        this.pausa();
+        break;
+
+      case 1:
+        this.prestarLibro(cliente);
+        this.pausa();
+        break;
+
+      case 2:
+        this.devolverLibro(cliente);
+        this.pausa();
+        break;
+
+      case 3:
+        this.reservarLibro(cliente);
+        this.pausa();
+        break;
+
+      case 4:
+        console.log("👋 Gracias por usar el sistema de biblioteca");
+        salir = true;
+        break;
+
+      default:
+        console.log("❌ Acción no válida");
+        break;
     }
-
-    case 3: {
-      const directivo = new Directivo();
-      directivo.registro(usuario);
-      break;
-    }
-
-    default:{
-      console.log("Puesto no válido");
-      break;
-    }
-    }
-
-
   }
+}
+
+private prestarLibro(cliente: Cliente): void {
+  console.log("📚 Catálogo de libros:");
+  this.catalogo.forEach(lib => console.log(`${lib.id} - ${lib.titulo} (${lib.disponible ? "Disponible" : "Prestado"})`));
+
+  const busqueda = String(prompt("👉 Ingresa el título o autor del libro que deseas prestar: ")).toLowerCase();
+
+  const libro = this.catalogo.find(
+    l => l.titulo.toLowerCase().includes(busqueda) || l.autor.toLowerCase().includes(busqueda));
+
+  if (!libro) {
+    console.log("❌ No se encontró ningún libro.");
+    return;
+  }
+
+  if (!libro.disponible) {
+    console.log("❌ El libro ya está prestado.");
+    return;
+  }
+
+  cliente.prestar(libro);
+  libro.disponible = false;
+
+  console.log(`📘 El libro "${libro.titulo}" fue prestado exitosamente.`);
+}
+
+private devolverLibro(cliente: Cliente): void {
+  if (cliente.prestamos.length === 0) {
+    console.log("❌ No tienes libros prestados.");
+    return;
+  }
+
+  console.log("📕 Libros prestados:");
+  cliente.prestamos.forEach((lib, index) => console.log(`${index + 1} - ${lib.titulo} (${lib.autor})`));
+
+  const opcion = Number(prompt("👉 Ingresa el número del libro a devolver (0 para cancelar): "));
+
+  if (opcion === 0) return;
+
+  const index = opcion - 1;
+  if (index < 0 || index >= cliente.prestamos.length) {
+    console.log("❌ Opción inválida.");
+    return;
+  }
+
+  const libro = cliente.prestamos[index];
+  cliente.devolver(libro);
+  libro.disponible = true;
+
+  console.log(`📗 El libro "${libro.titulo}" fue devuelto correctamente.`);
+}
+
+private reservarLibro(cliente: Cliente): void {
+  const busqueda = String(prompt("👉 Ingresa el título o autor del libro a reservar: ")).toLowerCase();
+
+  const libro = this.catalogo.find(l => l.titulo.toLowerCase().includes(busqueda) || l.autor.toLowerCase().includes(busqueda));
+
+  if (!libro) {
+    console.log("❌ Libro no encontrado.");
+    return;
+  }
+
+  if (libro.disponible) {
+    console.log("📌 Libro reservado.");
+    cliente.reservar(libro);
+    return 
+  }
+
+  console.log("📌 El libro está disponible, no requiere reserva.");
+}
+
+private pausa(): void {
+    prompt("\nPresiona ENTER para continuar...");
+  }
+
 }
 
 const app = new App()
 app.run()
 
- // Ejemplo del objeto 
+ // Ejemplo del objeto a crear del bibliotecario
 
     // console.log(`Ingrese el libro al catalogo: `);
     // const ide: number = prompt("👉 Ingresa su id : ")
@@ -191,19 +288,6 @@ app.run()
     //    titulo: title,
     //    autor: author,
     //    disponible: true
-    //  }
-
-    // prestar
-    //  if (true){
-    //    estudiante.prestar(libro)
-    //    libro.disponible = false
-    //    console.log(`El libro ${libro.titulo} fue prestado`)
-    //  }
-    
-    //  if (false){
-    //   estudiante.devolver(libro)
-    //   libro.disponible = true
-    //   console.log(`El libro ${libro.titulo} fue devuelto`)
     //  }
     
     // prestamos
