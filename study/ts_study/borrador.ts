@@ -11,15 +11,24 @@ import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
 // Interfaces
-interface IAcciones {
+interface IRegistro{
   registro<T>(data: T): boolean;
+}
+
+interface IAcciones {
   prestar<T>(data: T): void;
   devolver<T>(data: T): void;
   reservar<T>(data: T): void;
 }
 
+interface IInventario {
+  agregar<T>(item: T): void;
+  eliminar<T>(item: T): void;
+}
+
 // Detalle de implementacion
-class Estudiante implements IAcciones{
+class Estudiante implements IAcciones, IRegistro{
+
   public reservas: Array<any> = [];
   public prestamos: Array<any> = []
 
@@ -47,7 +56,8 @@ class Estudiante implements IAcciones{
   }
 }
 
-class Profesor implements IAcciones{
+class Profesor implements IAcciones, IRegistro{
+
   public reservas: Array<any> = [];
   public prestamos: Array<any> = []
 
@@ -75,13 +85,24 @@ class Profesor implements IAcciones{
   }
 }
 
-class Directivo {
-  agregar<T>(item: T): void {}
+class Directivo implements IInventario, IRegistro {
 
-  eliminar<T>(item: T): void {}
+  constructor(private inventario: Array<any> = []){}
+  
+  registro<T>(data: T): boolean {
+    return true
+  }
 
-  actualizar<T>(item: T): void {}
+  agregar<T>(item: T): void {
+    this.inventario.push(item);
+  }
 
+  eliminar<T>(item: T): void {
+    const index = this.inventario.indexOf(item);
+    if (index !== -1) {
+      this.inventario.splice(index, 1);
+    }
+  }
 }
 
 // Modelo de guardado
@@ -109,30 +130,235 @@ type ProfesorInfo = {
   curso: string
 }
 
+type DirectivoInfo = {
+  nombre: string;
+  identificacion: string
+  edad: number
+  nacionalidad: string
+  puesto: string
+}
+
 // Clase consumo
+
+const libro1: libro = {
+        id: 1,
+        titulo: "Juego de tronos",
+        autor: "George R.R Martin",
+        disponible: true
+      }
+
+const libro2: libro = {
+       id: 2,
+        titulo: "Harry Potter",
+        autor: "J. K. Rowling",
+        disponible: true
+      }
+
+const libro3: libro = {
+       id: 3,
+       titulo: "Don Quijote",
+       autor: "J. K. Rowling",
+        disponible: true
+     }
 
 class App {
    // private estudiantes!: Estudiante[]
   private catalogo: libro[] = []
 
    run(): void {
+     this.catalogo.push(libro1, libro2, libro3)
+
      console.log("📚 Bienvenio al Sistema de biblioteca")
 
      console.log(`Registrese: `);
-     const name= String(prompt("👉 Ingresa su nombre : "));
+     const name = String(prompt("👉 Ingresa su nombre : "));
      const identification = String(prompt("👉 Ingresa su identificacion : "));
      const age = Number(prompt("👉 Ingresa su edad: "));
      const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
-     const position = (prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "))
-     switch(position){
+     const position = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
 
+      
+     let usuario: any;
+
+     switch(position){
+      
+        case 1: {
+        const degree = String(prompt("👉 Grado: "));
+
+        const data: EstudianteInfo = {
+          nombre: name,
+          identificacion: identification,
+          edad: age,
+          nacionalidad: nacionality,
+          grado: degree
+          };
+
+          usuario = new Estudiante()
+          usuario.registro(data)
+          break
+        }
+          
+        case 2: {
+          const course = String(prompt("👉 Que curso estas dictando: "));
+
+          const data: ProfesorInfo = {
+          nombre: name,
+          identificacion: identification,
+          edad: age,
+          nacionalidad: nacionality,
+          curso: course
+          };
+
+          usuario = new Profesor()
+          usuario.registro(data)
+          break
+        }
+
+        case 3: {
+          const job =  String(prompt("👉 Que puesto de trabajo ocupa: "));
+
+          const data: DirectivoInfo = {
+          nombre: name,
+          identificacion: identification,
+          edad: age,
+          nacionalidad: nacionality,
+          puesto: job
+          };
+
+          usuario = new Directivo()
+          usuario.registro(data)
+          break
+        }
      }
-     const degree = String(prompt("👉 Que grado cursas: "))
-     const course = String(prompt("👉 Que curso estas dictando: "))
-   }
+
+    function esAcciones(obj: any): obj is IAcciones {
+      return (typeof obj?.prestar === "function" && typeof obj?.devolver === "function" && typeof obj?.reservar === "function");}
+
+    if (esAcciones(usuario)) {
+
+    let opcion = Number(prompt("👉 (1) Prestar libro, (2) Devolver libro, (3) Reservar libro: "));
+
+    switch (opcion) {
+
+      case 1: {
+        console.log("📚 Libros disponibles:");
+        this.catalogo.forEach(l => 
+          {if (l.disponible) {console.log(`${l.id}. ${l.titulo}`);}});
+
+            const idLibro = Number(prompt("👉 ID del libro: "));
+            const libro = this.catalogo.find(l => l.id === idLibro && l.disponible);
+
+        if (!libro) {console.log("❌ Libro no disponible");
+          break;
+          }
+
+          usuario.prestar(libro);
+          libro.disponible = false;
+
+          console.log("✅ Libro prestado");
+          break;
+          }
+
+        case 2: {
+        const idLibro = Number(prompt("👉 ID del libro a devolver: "));
+        const libro = this.catalogo.find(l => l.id === idLibro);
+
+        if (!libro) {
+          console.log("❌ Libro no encontrado");
+          break;}
+
+        usuario.devolver(libro);
+        libro.disponible = true;
+
+        console.log("📘 Libro devuelto");
+        break;
+          }
+
+        case 3: {
+          const idLibro = Number(prompt("👉 ID del libro a reservar: "));
+          const libro = this.catalogo.find(l => l.id === idLibro);
+
+        if (!libro) {
+          console.log("❌ Libro no encontrado");
+          break;
+          }
+
+        usuario.reservar(libro);
+        console.log("📌 Libro reservado");
+        break;
+        }
+      }
+    }
+ 
+  }
+  
+
 
 }
 
+const app = new App
+app.run()
+
+
+// private menuAcciones(usuario: Estudiante| Profesor | Directivo): void {
+//   let salir = false;
+
+//   while (!salir) {
+//     const accion = Number(prompt("\nDesea: (0) Ver libros (1) Prestar (2) Devolver (3) Reservar (4) Salir: "));
+
+//     switch (accion) {
+//       case 0:
+//         console.log(this.catalogo);
+//         this.pausa();
+//         break;
+
+//        case 1:
+//         this.prestarLibro(cliente);
+//         this.pausa();
+//          break;
+
+//        case 2:
+//         this.devolverLibro(cliente);
+//         this.pausa();
+//         break;
+
+//        case 3:
+//          this.reservarLibro(cliente);
+//          this.pausa();
+//          break;
+
+//        case 4:
+//          console.log("👋 Gracias por usar el sistema de biblioteca");
+//           salir = true;
+//           break;
+
+//        default:
+//          console.log("❌ Acción no válida");
+//          break;
+//      }
+//    }
+
+// const directivo = new Directivo(this.catalogo)
+
+//      directivo.agregar({
+//       id: 1,
+//       titulo: "Clean Code",
+//       autor: "Robert C. Martin",
+//       disponible: true
+//       });
+
+//       console.log(this.catalogo);
+  
+
+
+// const estudiante: EstudianteInfo = {
+//        nombre: name,
+//        identificacion: identification,
+//        edad: age,
+//        nacionalidad: nacionality,
+//        grado: degree
+
+//      }
 
 //     const usuario: Usuario = {
 //       nombre: name,
