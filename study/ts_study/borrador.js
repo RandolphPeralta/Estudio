@@ -227,3 +227,12 @@ app.run();
 //  if (true){
 //   console.log(estudiante.prestamos)
 //  }
+// type EstudianteInfo = {
+//   grado: number
+// }
+// type ProfesorInfo = {
+//   cursos: Array<any>
+// }
+// type DirectivoInfo = {
+//   cargo: "Secretaria" | "Coordinador" | "Rector";
+// }
