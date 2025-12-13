@@ -40,7 +40,9 @@ class Estudiante implements IAcciones{
   }
 
   reservar<T>(data: T): void {
-    this.reservas.push(data);
+    if  (this.reservas.length <= 3){
+      this.reservas.push(data);
+    } 
   }
 }
 
@@ -53,7 +55,9 @@ class Profesor implements IAcciones{
   }
 
   prestar<T>(data: T): void {
-    this.prestamos.push(data)
+    if (this.prestamos.length <= 5){
+      this.prestamos.push(data)
+    }
   }
 
   devolver<T>(data: T): void {
@@ -64,7 +68,9 @@ class Profesor implements IAcciones{
   }
 
   reservar<T>(data: T): void {
-    this.reservas.push(data);
+    if  (this.reservas.length <= 5){
+      this.reservas.push(data);
+    } 
   }
 }
 
@@ -82,11 +88,20 @@ type libro = {
   disponible: boolean
 }
 
-type Usuario = {
+type EstudianteInfo = {
   nombre: string;
-  // identificacion: string
+  identificacion: string
   edad: number
   nacionalidad: string
+  curso: string
+}
+
+type ProfesorInfo = {
+  nombre: string;
+  identificacion: string
+  edad: number
+  nacionalidad: string
+  curso: string
 }
 
 // Clase consumo
