@@ -10,7 +10,6 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-
 interface IRegistro {
   registro<T>(data: T): boolean;
 }
@@ -76,7 +75,6 @@ class Profesor implements IAcciones, IRegistro {
     this.prestamos.push(data);
     return true;
   }
-
 
   devolver<T>(data: T): void {
     const index = this.prestamos.indexOf(data);
