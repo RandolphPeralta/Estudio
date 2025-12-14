@@ -82,30 +82,30 @@ var Directivo = /** @class */ (function () {
     return Directivo;
 }());
 // Clase consumo
+var libro1 = {
+    id: 1,
+    titulo: "Juego de tronos",
+    autor: "George R.R Martin",
+    disponible: true
+};
+var libro2 = {
+    id: 2,
+    titulo: "Harry Potter",
+    autor: "J. K. Rowling",
+    disponible: true
+};
+var libro3 = {
+    id: 3,
+    titulo: "Don Quijote",
+    autor: "J. K. Rowling",
+    disponible: true
+};
 var App = /** @class */ (function () {
     function App() {
         // private estudiantes!: Estudiante[]
         this.catalogo = [];
     }
     App.prototype.run = function () {
-        var libro1 = {
-            id: 1,
-            titulo: "Juego de tronos",
-            autor: "George R.R Martin",
-            disponible: true
-        };
-        var libro2 = {
-            id: 2,
-            titulo: "Harry Potter",
-            autor: "J. K. Rowling",
-            disponible: true
-        };
-        var libro3 = {
-            id: 3,
-            titulo: "Don Quijote",
-            autor: "J. K. Rowling",
-            disponible: true
-        };
         this.catalogo.push(libro1, libro2, libro3);
         console.log("📚 Bienvenio al Sistema de biblioteca");
         console.log("Registrese: ");
@@ -127,6 +127,7 @@ var App = /** @class */ (function () {
                 };
                 usuario = new Estudiante();
                 usuario.registro(data);
+                this.menuAcciones(usuario);
                 break;
             }
             case 2: {
@@ -140,6 +141,7 @@ var App = /** @class */ (function () {
                 };
                 usuario = new Profesor();
                 usuario.registro(data);
+                this.menuAcciones(usuario);
                 break;
             }
             case 3: {
@@ -153,56 +155,90 @@ var App = /** @class */ (function () {
                 };
                 usuario = new Directivo();
                 usuario.registro(data);
+                this.menuInventario(usuario);
                 break;
             }
         }
-        function esAcciones(obj) {
-            return (typeof (obj === null || obj === void 0 ? void 0 : obj.prestar) === "function" && typeof (obj === null || obj === void 0 ? void 0 : obj.devolver) === "function" && typeof (obj === null || obj === void 0 ? void 0 : obj.reservar) === "function");
+    };
+    App.prototype.menuAcciones = function (usuario) {
+        var opcion = Number(prompt("👉 (1) Prestar libro, (2) Devolver libro, (3) Reservar libro: "));
+        switch (opcion) {
+            case 1: {
+                console.log("📚 Libros disponibles:");
+                this.catalogo.forEach(function (l) {
+                    if (l.disponible)
+                        console.log("".concat(l.id, ". ").concat(l.titulo));
+                });
+                var idLibro_1 = Number(prompt("👉 ID del libro: "));
+                var libro = this.catalogo.find(function (l) { return l.id === idLibro_1 && l.disponible; });
+                if (!libro) {
+                    console.log("❌ Libro no disponible");
+                    return;
+                }
+                usuario.prestar(libro);
+                libro.disponible = false;
+                console.log("✅ Libro prestado");
+                break;
+            }
+            case 2: {
+                var idLibro_2 = Number(prompt("👉 ID del libro a devolver: "));
+                var libro = this.catalogo.find(function (l) { return l.id === idLibro_2; });
+                if (!libro) {
+                    console.log("❌ Libro no encontrado");
+                    return;
+                }
+                usuario.devolver(libro);
+                libro.disponible = true;
+                console.log("📘 Libro devuelto");
+                break;
+            }
+            case 3: {
+                var idLibro_3 = Number(prompt("👉 ID del libro a reservar: "));
+                var libro = this.catalogo.find(function (l) { return l.id === idLibro_3; });
+                if (!libro) {
+                    console.log("❌ Libro no encontrado");
+                    return;
+                }
+                usuario.reservar(libro);
+                console.log("📌 Libro reservado");
+                break;
+            }
         }
-        if (esAcciones(usuario)) {
-            var opcion = Number(prompt("👉 (1) Prestar libro, (2) Devolver libro, (3) Reservar libro: "));
-            switch (opcion) {
-                case 1: {
-                    console.log("📚 Libros disponibles:");
-                    this.catalogo.forEach(function (l) {
-                        if (l.disponible) {
-                            console.log("".concat(l.id, ". ").concat(l.titulo));
-                        }
-                    });
-                    var idLibro_1 = Number(prompt("👉 ID del libro: "));
-                    var libro = this.catalogo.find(function (l) { return l.id === idLibro_1 && l.disponible; });
-                    if (!libro) {
-                        console.log("❌ Libro no disponible");
-                        break;
-                    }
-                    usuario.prestar(libro);
-                    libro.disponible = false;
-                    console.log("✅ Libro prestado");
-                    break;
+    };
+    App.prototype.menuInventario = function (usuario) {
+        var opcion = Number(prompt("👉 (1) Agregar libro, (2) Eliminar libro, (3) Ver catalogo: "));
+        switch (opcion) {
+            case 1: {
+                var id = Number(prompt("👉 ID del libro: "));
+                var titulo = String(prompt("👉 Titulo: "));
+                var autor = String(prompt("👉 Autor: "));
+                var nuevoLibro = {
+                    id: id,
+                    titulo: titulo,
+                    autor: autor,
+                    disponible: true
+                };
+                usuario.agregar(nuevoLibro);
+                console.log("✅ Libro agregado");
+                break;
+            }
+            case 2: {
+                var idLibro_4 = Number(prompt("👉 ID del libro a eliminar: "));
+                var libroEliminar = this.catalogo.find(function (l) { return l.id === idLibro_4; });
+                if (!libroEliminar) {
+                    console.log("❌ Libro no encontrado");
+                    return;
                 }
-                case 2: {
-                    var idLibro_2 = Number(prompt("👉 ID del libro a devolver: "));
-                    var libro = this.catalogo.find(function (l) { return l.id === idLibro_2; });
-                    if (!libro) {
-                        console.log("❌ Libro no encontrado");
-                        break;
-                    }
-                    usuario.devolver(libro);
-                    libro.disponible = true;
-                    console.log("📘 Libro devuelto");
-                    break;
-                }
-                case 3: {
-                    var idLibro_3 = Number(prompt("👉 ID del libro a reservar: "));
-                    var libro = this.catalogo.find(function (l) { return l.id === idLibro_3; });
-                    if (!libro) {
-                        console.log("❌ Libro no encontrado");
-                        break;
-                    }
-                    usuario.reservar(libro);
-                    console.log("📌 Libro reservado");
-                    break;
-                }
+                usuario.eliminar(libroEliminar);
+                console.log("🗑️ Libro eliminado");
+                break;
+            }
+            case 3: {
+                console.log("📚 Catalogo actual:");
+                this.catalogo.forEach(function (l) {
+                    return console.log("".concat(l.id, ". ").concat(l.titulo, " - ").concat(l.autor));
+                });
+                break;
             }
         }
     };

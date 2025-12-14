@@ -30,7 +30,7 @@ interface IInventario {
 class Estudiante implements IAcciones, IRegistro{
 
   public reservas: Array<any> = [];
-  public prestamos: Array<any> = []
+  public prestamos: Array<any> = [];
 
   registro<T>(data: T): boolean {
     return true
@@ -176,7 +176,6 @@ class App {
      const age = Number(prompt("👉 Ingresa su edad: "));
      const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
      const position = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
-
       
      let usuario: any;
 
@@ -195,6 +194,7 @@ class App {
 
           usuario = new Estudiante()
           usuario.registro(data)
+          this.menuAcciones(usuario as IAcciones);
           break
         }
           
@@ -211,6 +211,7 @@ class App {
 
           usuario = new Profesor()
           usuario.registro(data)
+          this.menuAcciones(usuario as IAcciones);
           break
         }
 
@@ -227,71 +228,118 @@ class App {
 
           usuario = new Directivo()
           usuario.registro(data)
+          this.menuInventario(usuario as IInventario);
           break
         }
      }
 
-    function esAcciones(obj: any): obj is IAcciones {
-      return (typeof obj?.prestar === "function" && typeof obj?.devolver === "function" && typeof obj?.reservar === "function");}
+}
 
-    if (esAcciones(usuario)) {
+private menuAcciones(usuario: IAcciones): void {
 
-    let opcion = Number(prompt("👉 (1) Prestar libro, (2) Devolver libro, (3) Reservar libro: "));
+  const opcion = Number(prompt("👉 (1) Prestar libro, (2) Devolver libro, (3) Reservar libro: "));
 
-    switch (opcion) {
+  switch (opcion) {
 
-      case 1: {
-        console.log("📚 Libros disponibles:");
-        this.catalogo.forEach(l => 
-          {if (l.disponible) {console.log(`${l.id}. ${l.titulo}`);}});
+    case 1: {
+      console.log("📚 Libros disponibles:");
+      this.catalogo.forEach(l => {
+        if (l.disponible) console.log(`${l.id}. ${l.titulo}`);
+      });
 
-            const idLibro = Number(prompt("👉 ID del libro: "));
-            const libro = this.catalogo.find(l => l.id === idLibro && l.disponible);
+      const idLibro = Number(prompt("👉 ID del libro: "));
+      const libro = this.catalogo.find(l => l.id === idLibro && l.disponible);
 
-        if (!libro) {console.log("❌ Libro no disponible");
-          break;
-          }
-
-          usuario.prestar(libro);
-          libro.disponible = false;
-
-          console.log("✅ Libro prestado");
-          break;
-          }
-
-        case 2: {
-        const idLibro = Number(prompt("👉 ID del libro a devolver: "));
-        const libro = this.catalogo.find(l => l.id === idLibro);
-
-        if (!libro) {
-          console.log("❌ Libro no encontrado");
-          break;}
-
-        usuario.devolver(libro);
-        libro.disponible = true;
-
-        console.log("📘 Libro devuelto");
-        break;
-          }
-
-        case 3: {
-          const idLibro = Number(prompt("👉 ID del libro a reservar: "));
-          const libro = this.catalogo.find(l => l.id === idLibro);
-
-        if (!libro) {
-          console.log("❌ Libro no encontrado");
-          break;
-          }
-
-        usuario.reservar(libro);
-        console.log("📌 Libro reservado");
-        break;
-        }
+      if (!libro) {
+        console.log("❌ Libro no disponible");
+        return;
       }
+
+      usuario.prestar(libro);
+      libro.disponible = false;
+      console.log("✅ Libro prestado");
+      break;
     }
- 
+
+    case 2: {
+      const idLibro = Number(prompt("👉 ID del libro a devolver: "));
+      const libro = this.catalogo.find(l => l.id === idLibro);
+
+      if (!libro) {
+        console.log("❌ Libro no encontrado");
+        return;
+      }
+
+      usuario.devolver(libro);
+      libro.disponible = true;
+      console.log("📘 Libro devuelto");
+      break;
+    }
+
+    case 3: {
+      const idLibro = Number(prompt("👉 ID del libro a reservar: "));
+      const libro = this.catalogo.find(l => l.id === idLibro);
+
+      if (!libro) {
+        console.log("❌ Libro no encontrado");
+        return;
+      }
+
+      usuario.reservar(libro);
+      console.log("📌 Libro reservado");
+      break;
+    }
   }
-  
+}
+
+private menuInventario(usuario: IInventario): void {
+
+  const opcion = Number(
+    prompt("👉 (1) Agregar libro, (2) Eliminar libro, (3) Ver catalogo: ")
+  );
+
+  switch (opcion) {
+
+    case 1: {
+      const id = Number(prompt("👉 ID del libro: "));
+      const titulo = String(prompt("👉 Titulo: "));
+      const autor = String(prompt("👉 Autor: "));
+
+      const nuevoLibro: libro = {
+        id,
+        titulo,
+        autor,
+        disponible: true
+      };
+
+      usuario.agregar(nuevoLibro);
+      console.log("✅ Libro agregado");
+      break;
+    }
+
+    case 2: {
+      const idLibro = Number(prompt("👉 ID del libro a eliminar: "));
+      const libroEliminar = this.catalogo.find(l => l.id === idLibro);
+
+      if (!libroEliminar) {
+        console.log("❌ Libro no encontrado");
+        return;
+      }
+
+      usuario.eliminar(libroEliminar);
+      console.log("🗑️ Libro eliminado");
+      break;
+    }
+
+    case 3: {
+      console.log("📚 Catalogo actual:");
+      this.catalogo.forEach(l =>
+        console.log(`${l.id}. ${l.titulo} - ${l.autor}`)
+      );
+      break;
+    }
+  }
+}
 
 
 }
