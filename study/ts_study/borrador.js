@@ -119,7 +119,8 @@ var App = /** @class */ (function () {
         var continuar = true;
         while (continuar) {
             console.log("\n📚 Sistema de Biblioteca");
-            var opcion = Number(prompt("1. Registrar usuario\n0. Salir\n👉 Selecione una opción: "));
+            console.log("1. Registrar usuario\n0. Salir");
+            var opcion = Number(prompt("👉 Selecione una opción: "));
             switch (opcion) {
                 case 1:
                     this.registrarUsuario();
@@ -313,5 +314,5 @@ var App = /** @class */ (function () {
     };
     return App;
 }());
-var app = new App;
+var app = new App();
 app.run();
