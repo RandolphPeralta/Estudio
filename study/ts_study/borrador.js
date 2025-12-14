@@ -63,7 +63,7 @@ var Profesor = /** @class */ (function () {
         }
     };
     Profesor.prototype.reservar = function (data) {
-        if (this.reservas.length <= 2) {
+        if (this.reservas.length <= 3) {
             this.reservas.push(data);
         }
     };
@@ -109,13 +109,19 @@ var libro3 = {
     autor: "J. K. Rowling",
     disponible: true
 };
+var libro4 = {
+    id: 4,
+    titulo: "Cien años de soledad",
+    autor: "Gabriel García Márquez",
+    disponible: true
+};
 var App = /** @class */ (function () {
     function App() {
         this.usuariosRegistrados = [];
         this.catalogo = [];
     }
     App.prototype.run = function () {
-        this.catalogo.push(libro1, libro2, libro3);
+        this.catalogo.push(libro1, libro2, libro3, libro4);
         var continuar = true;
         while (continuar) {
             console.log("\n📚 Sistema de Biblioteca");
