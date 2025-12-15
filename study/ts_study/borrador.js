@@ -1,16 +1,5 @@
 "use strict";
 // Praticar la abstracion de como realizar un sistema de prestamos en la biblioteca
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // Escribiendo el programa
 // Quiero un programa de sistema de gestion de biblioteca
@@ -333,7 +322,12 @@ var App = /** @class */ (function () {
                     var libroActual = this_2.catalogo[index];
                     var nuevoTitulo = String(prompt("\uD83D\uDC49 Nuevo t\u00EDtulo (".concat(libroActual.titulo, "): ")));
                     var nuevoAutor = String(prompt("\uD83D\uDC49 Nuevo autor (".concat(libroActual.autor, "): ")));
-                    var libroActualizado = __assign(__assign({}, libroActual), { titulo: nuevoTitulo || libroActual.titulo, autor: nuevoAutor || libroActual.autor });
+                    var libroActualizado = {
+                        id: libroActual.id,
+                        titulo: nuevoTitulo || libroActual.titulo,
+                        autor: nuevoAutor || libroActual.autor,
+                        disponible: libroActual.disponible
+                    };
                     this_2.catalogo[index] = libroActualizado;
                     usuario.actualizar(libroActualizado);
                     console.log("✏️ Libro actualizado correctamente");

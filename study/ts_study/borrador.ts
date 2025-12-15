@@ -172,7 +172,7 @@ const libro2: libro = {
 const libro3: libro = {
   id: 3,
   titulo: "Don Quijote",
-  autor: "J. K. Rowling",
+  autor: "Cervantes",
   disponible: true
 }
 
@@ -183,13 +183,20 @@ const libro4: libro = {
   disponible: true
 }
 
+const libro5: libro = {
+  id: 5,
+  titulo: "Orgullo y prejuicio",
+  autor: "Jane Austen",
+  disponible: true
+}
+
 class App {
   private usuariosRegistrados: string[] = [];
   private catalogo: libro[] = []
 
   run(): void {
 
-    this.catalogo.push(libro1, libro2, libro3, libro4);
+    this.catalogo.push(libro1, libro2, libro3, libro4, libro5);
 
     let continuar = true;
 
@@ -296,7 +303,7 @@ private registrarUsuario(): void {
     this.usuariosRegistrados.push(identification);
 }
 
-  private menuAcciones(usuario: IAcciones): void {
+private menuAcciones(usuario: IAcciones): void {
 
     let continuar = true;
 
@@ -358,6 +365,7 @@ private registrarUsuario(): void {
           }
 
           usuario.reservar(libro);
+          libro.disponible = false;
           console.log("📌 Libro reservado");
           break;
         }
@@ -372,7 +380,7 @@ private registrarUsuario(): void {
     }
   }
 
-  private menuInventario(usuario: IInventario): void {
+private menuInventario(usuario: IInventario): void {
 
     let continuar = true;
 
@@ -445,10 +453,11 @@ private registrarUsuario(): void {
           const nuevoAutor = String(prompt(`👉 Nuevo autor (${libroActual.autor}): `));
 
           const libroActualizado: libro = {
-            ...libroActual,  // TOCA QUITAR ESOS DOS PUNTOS
+            id: libroActual.id,
             titulo: nuevoTitulo || libroActual.titulo,
-            autor: nuevoAutor || libroActual.autor
-                };
+            autor: nuevoAutor || libroActual.autor,
+            disponible: libroActual.disponible
+          };
 
           this.catalogo[index] = libroActualizado;
 
