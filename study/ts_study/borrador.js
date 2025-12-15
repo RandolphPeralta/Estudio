@@ -1,5 +1,16 @@
 "use strict";
 // Praticar la abstracion de como realizar un sistema de prestamos en la biblioteca
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // Escribiendo el programa
 // Quiero un programa de sistema de gestion de biblioteca
@@ -86,6 +97,12 @@ var Directivo = /** @class */ (function () {
         var index = this.inventario.indexOf(item);
         if (index !== -1) {
             this.inventario.splice(index, 1);
+        }
+    };
+    Directivo.prototype.actualizar = function (item) {
+        var index = this.inventario.findIndex(function (i) { return i === item; });
+        if (index !== -1) {
+            this.inventario[index] = item;
         }
     };
     return Directivo;
@@ -268,7 +285,7 @@ var App = /** @class */ (function () {
     App.prototype.menuInventario = function (usuario) {
         var continuar = true;
         var _loop_2 = function () {
-            var opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (0) Salir: "));
+            var opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (4) Actualizar (0) Salir: "));
             switch (opcion) {
                 case 1: {
                     var id_1 = Number(prompt("👉 ID del libro: "));
@@ -306,6 +323,22 @@ var App = /** @class */ (function () {
                     console.log("📚 Catálogo:");
                     this_2.catalogo.forEach(function (l) { return console.log("".concat(l.id, ". ").concat(l.titulo, " - ").concat(l.autor)); });
                     break;
+                case 4: {
+                    var idLibro_5 = Number(prompt("👉 ID del libro a actualizar: "));
+                    var index = this_2.catalogo.findIndex(function (l) { return l.id === idLibro_5; });
+                    if (index === -1) {
+                        console.log("❌ Libro no encontrado");
+                        break;
+                    }
+                    var libroActual = this_2.catalogo[index];
+                    var nuevoTitulo = String(prompt("\uD83D\uDC49 Nuevo t\u00EDtulo (".concat(libroActual.titulo, "): ")));
+                    var nuevoAutor = String(prompt("\uD83D\uDC49 Nuevo autor (".concat(libroActual.autor, "): ")));
+                    var libroActualizado = __assign(__assign({}, libroActual), { titulo: nuevoTitulo || libroActual.titulo, autor: nuevoAutor || libroActual.autor });
+                    this_2.catalogo[index] = libroActualizado;
+                    usuario.actualizar(libroActualizado);
+                    console.log("✏️ Libro actualizado correctamente");
+                    break;
+                }
                 case 0:
                     continuar = false;
                     break;

@@ -23,6 +23,7 @@ interface IAcciones {
 interface IInventario {
   agregar<T>(item: T): void;
   eliminar<T>(item: T): void;
+  actualizar<T>(item: T): void;
 }
 
 class Estudiante implements IAcciones, IRegistro {
@@ -109,6 +110,12 @@ class Directivo implements IInventario, IRegistro {
     if (index !== -1) {
       this.inventario.splice(index, 1);
     }
+  }
+
+  actualizar<T>(item: T): void {
+    const index = this.inventario.findIndex(i => i === item);
+    if (index !== -1) {
+      this.inventario[index] = item;}
   }
 }
 
@@ -209,7 +216,7 @@ class App {
     }
   }
 
-  private registrarUsuario(): void {
+private registrarUsuario(): void {
 
     console.log("📝 Registro de usuario");
 
@@ -287,7 +294,7 @@ class App {
     }
 
     this.usuariosRegistrados.push(identification);
-  }
+}
 
   private menuAcciones(usuario: IAcciones): void {
 
@@ -371,7 +378,7 @@ class App {
 
     while (continuar) {
 
-      const opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (0) Salir: "));
+      const opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (4) Actualizar (0) Salir: "));
 
       switch (opcion) {
 
@@ -422,6 +429,35 @@ class App {
           this.catalogo.forEach(l => console.log(`${l.id}. ${l.titulo} - ${l.autor}`)
           );
           break;
+        
+        case 4: {
+          const idLibro = Number(prompt("👉 ID del libro a actualizar: "));
+          const index = this.catalogo.findIndex(l => l.id === idLibro);
+
+          if (index === -1) {
+            console.log("❌ Libro no encontrado");
+            break;
+            }
+
+          const libroActual = this.catalogo[index];
+
+          const nuevoTitulo = String(prompt(`👉 Nuevo título (${libroActual.titulo}): `));
+          const nuevoAutor = String(prompt(`👉 Nuevo autor (${libroActual.autor}): `));
+
+          const libroActualizado: libro = {
+            ...libroActual,
+            titulo: nuevoTitulo || libroActual.titulo,
+            autor: nuevoAutor || libroActual.autor
+                };
+
+          this.catalogo[index] = libroActualizado;
+
+          usuario.actualizar(libroActualizado);
+
+          console.log("✏️ Libro actualizado correctamente");
+          break;
+        }
+
 
         case 0:
           continuar = false;
