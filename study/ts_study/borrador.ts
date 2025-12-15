@@ -445,7 +445,7 @@ private registrarUsuario(): void {
           const nuevoAutor = String(prompt(`👉 Nuevo autor (${libroActual.autor}): `));
 
           const libroActualizado: libro = {
-            ...libroActual,
+            ...libroActual,  // TOCA QUITAR ESOS DOS PUNTOS
             titulo: nuevoTitulo || libroActual.titulo,
             autor: nuevoAutor || libroActual.autor
                 };
