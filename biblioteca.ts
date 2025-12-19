@@ -1,340 +1,483 @@
+// Praticar la abstracion de como realizar un sistema de prestamos en la biblioteca
+
+// Escribiendo el programa
+// Quiero un programa de sistema de gestion de biblioteca
+// Que primero me registre en el programa
+// Que ingrese si soy estudiante, profesor, para prestar, devolver, reservar
+// O directivo para manejar el inventario de la biblioteca
+
+// Codigo: 
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-interface IIdentificableLibro {
-  getId(): number;
-  getTitulo(): string;
-  getAutor(): string;
+interface IRegistro {
+  registro<T>(data: T): boolean;
 }
 
-interface IIdentificableUsuario {
-  getNombre(): string;
+interface IAcciones {
+  prestar<T>(data: T): boolean;
+  devolver<T>(data: T): void;
+  reservar<T>(data: T): void;
 }
 
-class Libro implements IIdentificableLibro {
-  private id: number;
-  private titulo: string;
-  private autor: string;
-  private disponible: boolean = true;
-
-  constructor(id: number, titulo: string, autor: string) {
-    this.id = id;
-    this.titulo = titulo;
-    this.autor = autor;
-  }
-
-  public getId(): number {
-    return this.id;
-  }
-
-  public getTitulo(): string {
-    return this.titulo;
-  }
-
-  public getAutor(): string {
-    return this.autor;
-  }
-
-  public prestar(): void {
-    this.disponible = false;
-  }
-
-  public devolver(): void {
-    this.disponible = true;
-  }
-
-  public estaDisponible(): boolean {
-    return this.disponible;
-  }
+interface IInventario {
+  agregar<T>(item: T): void;
+  eliminar<T>(item: T): void;
+  actualizar<T>(item: T): void;
 }
 
-abstract class Usuario implements IIdentificableUsuario {
-  private nombre: string;
+class Estudiante implements IAcciones, IRegistro {
+  private informacion: Array<any> = []
+  public reservas: Array<any> = [];
+  public prestamos: Array<any> = [];
 
-  constructor(nombre: string) {
-    this.nombre = nombre;
+  registro<T>(data: T): boolean {
+    this.informacion.push(data)
+    return true
   }
 
-  public getNombre(): string {
-    return this.nombre;
-  }
-}
-
-class Cliente extends Usuario {
-  private prestamos: Libro[] = [];
-
-  public prestarLibro(libro: Libro): void {
-    if (libro.estaDisponible()) {
-      libro.prestar()
-      this.prestamos.push(libro) 
+  prestar<T>(data: T): boolean {
+    if (this.prestamos.length >= 2) {
+      return false;
     }
+    this.prestamos.push(data);
+    return true;
   }
 
-  public devolverLibro(libro: Libro): void {
-    const index = this.prestamos.indexOf(libro);
+  devolver<T>(data: T): void {
+    const index = this.prestamos.indexOf(data);
     if (index !== -1) {
-      libro.devolver();
       this.prestamos.splice(index, 1);
     }
   }
-}
 
-class Bibliotecario extends Usuario {
-  private catalogo: Libro[] = [];
-
-  public setCatalogo(libros: Libro[]): void {
-    this.catalogo = libros;
-  }
-
-  public obtenerDisponibles(): Libro[] {
-    return this.catalogo.filter(l => l.estaDisponible());
-  }
-
-  public obtenerPrestados(): Libro[] {
-    return this.catalogo.filter(l => !l.estaDisponible());
-  }
-
-  public getCatalogo(): Libro[] {
-    return this.catalogo;
+  reservar<T>(data: T): void {
+    if (this.reservas.length <= 2) {
+      this.reservas.push(data);
+    }
   }
 }
 
-//------------------------------------------------------------------
+class Profesor implements IAcciones, IRegistro {
+
+  private informacion: Array<any> = []
+  public reservas: Array<any> = [];
+  public prestamos: Array<any> = []
+
+  registro<T>(data: T): boolean {
+    this.informacion.push(data)
+    return true
+  }
+
+  prestar<T>(data: T): boolean {
+    if (this.prestamos.length >= 3) {
+      return false;
+    }
+    this.prestamos.push(data);
+    return true;
+  }
+
+  devolver<T>(data: T): void {
+    const index = this.prestamos.indexOf(data);
+    if (index !== -1) {
+      this.prestamos.splice(index, 1);
+    }
+  }
+
+  reservar<T>(data: T): void {
+    if (this.reservas.length <= 3) {
+      this.reservas.push(data);
+    }
+  }
+}
+
+class Directivo implements IInventario, IRegistro {
+  private informacion: Array<any> = []
+
+  constructor(private inventario: Array<any> = []) { }
+
+  registro<T>(data: T): boolean {
+    this.informacion.push(data)
+    return true
+  }
+
+  agregar<T>(item: T): void {
+    this.inventario.push(item);
+  }
+
+  eliminar<T>(item: T): void {
+    const index = this.inventario.indexOf(item);
+    if (index !== -1) {
+      this.inventario.splice(index, 1);
+    }
+  }
+
+  actualizar<T>(item: T): void {
+    const index = this.inventario.findIndex(i => i === item);
+    if (index !== -1) {
+      this.inventario[index] = item;}
+  }
+}
+
+type libro = {
+  id: number;
+  titulo: string;
+  autor: string;
+  disponible: boolean
+}
+
+type EstudianteInfo = {
+  nombre: string;
+  identificacion: string
+  genero: string
+  edad: number
+  nacionalidad: string
+  grado: string
+}
+
+type ProfesorInfo = {
+  nombre: string;
+  identificacion: string
+  genero: string
+  edad: number
+  nacionalidad: string
+  curso: string
+}
+
+type DirectivoInfo = {
+  nombre: string;
+  identificacion: string
+  genero: string
+  edad: number
+  nacionalidad: string
+  puesto: string
+}
+
+//--------------------------------------------------
+
+const libro1: libro = {
+  id: 1,
+  titulo: "Juego de tronos",
+  autor: "George R.R Martin",
+  disponible: true
+}
+
+const libro2: libro = {
+  id: 2,
+  titulo: "Harry Potter",
+  autor: "J. K. Rowling",
+  disponible: true
+}
+
+const libro3: libro = {
+  id: 3,
+  titulo: "Don Quijote",
+  autor: "Cervantes",
+  disponible: true
+}
+
+const libro4: libro = {
+  id: 4,
+  titulo: "Cien años de soledad",
+  autor: "Gabriel García Márquez",
+  disponible: true
+}
+
+const libro5: libro = {
+  id: 5,
+  titulo: "Orgullo y prejuicio",
+  autor: "Jane Austen",
+  disponible: true
+}
 
 class App {
-  private bibliotecario: Bibliotecario = new Bibliotecario("Sin asignar");
-  private cliente: Cliente = new Cliente("Sin asignar");
+  private usuariosRegistrados: string[] = [];
+  private catalogo: libro[] = []
 
-  private clientes: Cliente[] = [];
-  private bibliotecarios: Bibliotecario[] = [];
+  run(): void {
 
-  private prompt = prompt;
+    this.catalogo.push(libro1, libro2, libro3, libro4, libro5);
 
-  public iniciar(): void {
-    console.clear();
-    console.log("📚 SISTEMA DE BIBLIOTECA");
-    const resp = this.prompt("¿Quién eres? (1) Cliente  (2) Bibliotecario 👉 ");
+    let continuar = true;
 
-    if (resp === "1") {
-      console.log("\n👤 Antes de continuar, debes identificarte como Cliente.");
-      return this.opcionCambiaroCrearCliente();
+    while (continuar) {
+
+      console.log("\n📚 Sistema de Biblioteca");
+      console.log("1. Registrar usuario\n0. Salir")
+
+      const opcion = Number(prompt("👉 Selecione una opción: "));
+
+      switch (opcion) {
+        case 1:
+          this.registrarUsuario();
+          break;
+
+        case 0:
+          continuar = false;
+          console.log("👋 Gracias por usar el sistema");
+          break;
+
+        default:
+          console.log("❌ Opción inválida");
+      }
     }
-
-    if (resp === "2") {
-      console.log("\n📘 Antes de continuar, debes identificarte como Bibliotecario.");
-      return this.opcionCambiaroCrearBibliotecario();
-    }
-
-    return this.cerrar("Opción no válida.");
   }
 
-  private menuCliente(): void {
-    console.clear();
-    console.log(`👤 Cliente: ${this.cliente.getNombre()}
-1. Ver libros disponibles
-2. Prestar libro
-3. Devolver libro
-4. Cambiar/Crear Cliente
-5. Volver al menú inicio
-6. Salir`);
+private registrarUsuario(): void {
 
-    const op = this.prompt("👉 Selecciona una opción: ");
+    console.log("📝 Registro de usuario");
 
-    switch (op) {
-      case "1":
-        this.mostrarDisponibles();
-        this.pausa();
-        return this.menuCliente();
-      case "2":
-        return this.opcionPrestar();
-      case "3":
-        return this.opcionDevolver();
-      case "4":
-        return this.opcionCambiaroCrearCliente();
-      case "5":
-        return this.iniciar();
-      case "6":
-        return this.cerrar("👋 Saliendo...");
+    const name = String(prompt("👉 Ingresa su nombre : "));
+    const identification = String(prompt("👉 Ingresa su identificacion : "));
+    const gender = String(prompt("👉 Ingresa su genero : "));
+    const age = Number(prompt("👉 Ingresa su edad: "));
+    const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
+    const position = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
+
+    let usuario: any;
+    if (this.usuariosRegistrados.includes(identification)) {
+      console.log("❌ Usuario ya registrado");
+      return;
+    }
+
+    switch (position) {
+
+      case 1: {
+        const degree = String(prompt("👉 Grado: "));
+
+        const data: EstudianteInfo = {
+          nombre: name,
+          identificacion: identification,
+          genero: gender,
+          edad: age,
+          nacionalidad: nacionality,
+          grado: degree
+        };
+
+        usuario = new Estudiante();
+        usuario.registro(data);
+        this.menuAcciones(usuario);
+        break;
+      }
+
+      case 2: {
+        const course = String(prompt("👉 Que curso estas dictando: "));
+
+        const data: ProfesorInfo = {
+          nombre: name,
+          identificacion: identification,
+          genero: gender,
+          edad: age,
+          nacionalidad: nacionality,
+          curso: course
+        };
+
+        usuario = new Profesor();
+        usuario.registro(data);
+        this.menuAcciones(usuario);
+        break;
+      }
+
+      case 3: {
+        const job = String(prompt("👉 Que puesto de trabajo ocupa: "));
+
+        const data: DirectivoInfo = {
+          nombre: name,
+          identificacion: identification,
+          genero: gender,
+          edad: age,
+          nacionalidad: nacionality,
+          puesto: job
+        };
+
+        usuario = new Directivo();
+        usuario.registro(data);
+        this.menuInventario(usuario);
+        break;
+      }
+
       default:
-        return this.menuCliente();
+        console.log("❌ Opción inválida");
+    }
+
+    this.usuariosRegistrados.push(identification);
+}
+
+private menuAcciones(usuario: IAcciones): void {
+
+    let continuar = true;
+
+    while (continuar) {
+
+      const opcion = Number(prompt("👉 (1) Prestar (2) Devolver (3) Reservar (0) Salir: "));
+
+      switch (opcion) {
+
+        case 1: {
+          console.log("📚 Libros disponibles:");
+          this.catalogo.forEach(l => {
+            if (l.disponible) console.log(`${l.id}. ${l.titulo}`);
+          });
+
+          const idLibro = Number(prompt("👉 ID del libro: "));
+          const libro = this.catalogo.find(l => l.id === idLibro && l.disponible);
+
+          if (!libro) {
+            console.log("❌ Libro no disponible");
+            break;
+          }
+
+          const prestado = usuario.prestar(libro);
+
+          if (!prestado) {
+            console.log("❌ Has alcanzado el límite de préstamos");
+            break;
+          }
+
+          libro.disponible = false;
+          console.log("✅ Libro prestado");
+
+          break;
+        }
+
+        case 2: {
+          const idLibro = Number(prompt("👉 ID del libro a devolver: "));
+          const libro = this.catalogo.find(l => l.id === idLibro);
+
+          if (!libro) {
+            console.log("❌ Libro no encontrado");
+            break;
+          }
+
+          usuario.devolver(libro);
+          libro.disponible = true;
+          console.log("📘 Libro devuelto");
+          break;
+        }
+
+        case 3: {
+          const idLibro = Number(prompt("👉 ID del libro a reservar: "));
+          const libro = this.catalogo.find(l => l.id === idLibro);
+
+          if (!libro) {
+            console.log("❌ Libro no encontrado");
+            break;
+          }
+
+          usuario.reservar(libro);
+          libro.disponible = false;
+          console.log("📌 Libro reservado");
+          break;
+        }
+
+        case 0:
+          continuar = false;
+          break;
+
+        default:
+          console.log("❌ Opción inválida");
+      }
     }
   }
 
-  private menuBibliotecario(): void {
-    console.clear();
-    console.log(`📘 Bibliotecario: ${this.bibliotecario.getNombre()}
-1. Ver libros disponibles
-2. Ver libros prestados
-3. Agregar libro al catálogo
-4. Cambiar/Crear Bibliotecario
-5. Volver a inicio
-6. Salir`);
+private menuInventario(usuario: IInventario): void {
 
-    const op = this.prompt("👉 Selecciona una opción: ");
+    let continuar = true;
 
-    switch (op) {
-      case "1":
-        this.mostrarDisponibles();
-        this.pausa();
-        return this.menuBibliotecario();
-      case "2":
-        this.mostrarPrestados();
-        this.pausa();
-        return this.menuBibliotecario();
-      case "3":
-        return this.opcionAgregarLibro();
-      case "4":
-        return this.opcionCambiaroCrearBibliotecario();
-      case "5":
-        return this.iniciar();
-      case "6":
-        return this.cerrar("👋 Saliendo...");
-      default:
-        return this.menuBibliotecario();
+    while (continuar) {
+
+      const opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (4) Actualizar (0) Salir: "));
+
+      switch (opcion) {
+
+        case 1: {
+          const id = Number(prompt("👉 ID del libro: "));
+
+          if (this.catalogo.some(l => l.id === id)) {
+            console.log("❌ Ya existe un libro con ese ID");
+            break;
+          }
+
+          const titulo = String(prompt("👉 Titulo: "));
+          const autor = String(prompt("👉 Autor: "));
+
+          const nuevoLibro: libro = {
+            id,
+            titulo,
+            autor,
+            disponible: true
+          };
+
+          this.catalogo.push(nuevoLibro);
+          usuario.agregar(nuevoLibro);
+
+          console.log("✅ Libro agregado");
+          break;
+        }
+
+        case 2: {
+          const idLibro = Number(prompt("👉 ID del libro a eliminar: "));
+          const index = this.catalogo.findIndex(l => l.id === idLibro);
+
+          if (index === -1) {
+            console.log("❌ Libro no encontrado");
+            break;
+          }
+
+          const libro = this.catalogo[index];
+          usuario.eliminar(libro);
+          this.catalogo.splice(index, 1);
+
+          console.log("🗑️ Libro eliminado");
+          break;
+        }
+
+        case 3:
+          console.log("📚 Catálogo:");
+          this.catalogo.forEach(l => console.log(`${l.id}. ${l.titulo} - ${l.autor}`)
+          );
+          break;
+        
+        case 4: {
+          const idLibro = Number(prompt("👉 ID del libro a actualizar: "));
+          const index = this.catalogo.findIndex(l => l.id === idLibro);
+
+          if (index === -1) {
+            console.log("❌ Libro no encontrado");
+            break;
+            }
+
+          const libroActual = this.catalogo[index];
+
+          const nuevoTitulo = String(prompt(`👉 Nuevo título (${libroActual.titulo}): `));
+          const nuevoAutor = String(prompt(`👉 Nuevo autor (${libroActual.autor}): `));
+
+          const libroActualizado: libro = {
+            id: libroActual.id,
+            titulo: nuevoTitulo || libroActual.titulo,
+            autor: nuevoAutor || libroActual.autor,
+            disponible: libroActual.disponible
+          };
+
+          this.catalogo[index] = libroActualizado;
+
+          usuario.actualizar(libroActualizado);
+
+          console.log("✏️ Libro actualizado correctamente");
+          break;
+        }
+
+
+        case 0:
+          continuar = false;
+          break;
+
+        default:
+          console.log("❌ Opción inválida");
+      }
     }
-  }
-
-  private opcionPrestar(): void {
-    const disponibles = this.bibliotecario.obtenerDisponibles();
-    if (disponibles.length === 0) {
-      console.log("❌ No hay libros disponibles");
-      this.pausa();
-      return this.menuCliente();
-    }
-
-    console.log("\n📘 Libros disponibles:");
-    disponibles.forEach(l => console.log(`${l.getId()}. ${l.getTitulo()}`));
-
-    const id = Number(this.prompt("👉 Ingresa el ID del libro a prestar: "));
-    const libro = disponibles.find(l => l.getId() === id);
-
-    if (!libro) console.log("❌ ID no válido.");
-    else {
-      this.cliente.prestarLibro(libro);
-      console.log(`✔ Has prestado: ${libro.getTitulo()}`);
-    }
-
-    this.pausa();
-    return this.menuCliente();
-  }
-
-  private opcionDevolver(): void {
-    const prestados = this.bibliotecario.obtenerPrestados();
-
-    if (prestados.length === 0) {
-      console.log("❌ No tienes libros prestados.");
-      this.pausa();
-      return this.menuCliente();
-    }
-
-    console.log("\n📕 Libros prestados:");
-    prestados.forEach(l => console.log(`${l.getId()}. ${l.getTitulo()}`));
-
-    const id = Number(this.prompt("👉 Ingresa el ID del libro a devolver: "));
-    const libro = prestados.find(l => l.getId() === id);
-
-    if (!libro) console.log("❌ ID no válido.");
-    else {
-      this.cliente.devolverLibro(libro);
-      console.log(`✔ Has devuelto: ${libro.getTitulo()}`);
-    }
-
-    this.pausa();
-    return this.menuCliente();
-  }
-
-  private opcionAgregarLibro(): void {
-    console.log("📗 Agregar libro al catálogo");
-
-    const id = Number(this.prompt("👉 Ingresa el ID del libro: "));
-    const titulo = this.prompt("👉 Ingresa el título del libro: ");
-    const autor = this.prompt("👉 Ingresa el autor del libro: ");
-
-    const nuevoLibro = new Libro(id, titulo, autor);
-
-    const catalogo = this.bibliotecario.getCatalogo();
-    catalogo.push(nuevoLibro);
-    this.bibliotecario.setCatalogo(catalogo);
-
-    console.log(`✔ Libro añadido: ${titulo} (${autor})`);
-
-    this.pausa();
-    return this.menuBibliotecario();
-  }
-
-  private opcionCambiaroCrearCliente(): void {
-    const nombre = this.prompt("👉 Ingresa el nombre del nuevo cliente: ");
-
-    const existente = this.clientes.find(c => c.getNombre() === nombre);
-
-    if (existente) {
-      console.log(`✔ Cliente existente seleccionado: ${nombre}`);
-      this.cliente = existente;
-    } else {
-      const nuevo = new Cliente(nombre);
-      this.clientes.push(nuevo);
-      this.cliente = nuevo;
-      console.log(`✔ Cliente creado: ${nombre}`);
-    }
-
-    this.pausa();
-    return this.menuCliente();
-  }
-
-  private opcionCambiaroCrearBibliotecario(): void {
-    const nombre = this.prompt("👉 Ingresa el nombre del nuevo bibliotecario: ");
-
-    const existente = this.bibliotecarios.find(b => b.getNombre() === nombre);
-
-    if (existente) {
-      console.log(`✔ Bibliotecario existente seleccionado: ${nombre}`);
-      this.bibliotecario = existente;
-    } else {
-      const nuevo = new Bibliotecario(nombre);
-      nuevo.setCatalogo(this.bibliotecario.getCatalogo());
-      this.bibliotecarios.push(nuevo);
-      this.bibliotecario = nuevo;
-      console.log(`✔ Bibliotecario creado: ${nombre}`);
-    }
-
-    this.pausa();
-    return this.menuBibliotecario();
-  }
-
-  private mostrarDisponibles(): void {
-    const disponibles = this.bibliotecario.obtenerDisponibles();
-    console.log("📘 Libros disponibles:");
-    disponibles.forEach(l => console.log(`- ${l.getTitulo()} (${l.getAutor()})`));
-  }
-
-  private mostrarPrestados(): void {
-    const prestados = this.bibliotecario.obtenerPrestados();
-    console.log("📕 Libros prestados:");
-    prestados.forEach(l => console.log(`- ${l.getTitulo()} (${l.getAutor()})`));
-  }
-
-  private pausa(): void {
-    this.prompt("\nPresiona ENTER para continuar...");
-  }
-
-  private cerrar(msg: string): void {
-    console.log(msg);
-    process.exit(0);
   }
 }
 
-
-// const libro1 = new Libro(1, "Clean Code", "Robert C. Martin");
-// const libro2 = new Libro(2, "Harry Potter", "J. K. Rowling");
-// const libro3 = new Libro(3, "El Quijote", "Cervantes");
-
-// const bibliotecario1 = new Bibliotecario("Ana");
-// bibliotecario1.setCatalogo([libro1, libro2, libro3]);
-
-// const cliente1 = new Cliente("Randolph");
-
 const app = new App();
-// app.setBibliotecario(bibliotecario1);
-// app.setCliente(cliente1);
-
-app.iniciar();
+app.run()
