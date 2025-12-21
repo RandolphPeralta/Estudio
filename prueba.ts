@@ -40,36 +40,36 @@ add(5,5)
 
 // In guard
 
- class Banana {
-    isTasty(): boolean {
-        return true
-    }
-}
+// class Banana {
+//     isTasty(): boolean {
+//         return true
+//     }
+// }
 
-class Apple {
-    isJuicy(): boolean {
-        return true
-    }
-}
+// class Apple {
+//     isJuicy(): boolean {
+//         return true
+//     }
+// }
 
-type Fruit = Banana | Apple;
+// type Fruit = Banana | Apple;
 
-function buyFruit(fruit: Fruit): number{
-    let price = 0;
+// function buyFruit(fruit: Fruit): number{
+//     let price = 0;
 
-    if ('isTasty' in fruit){
-        price = fruit.isTasty() ? 5: 10;
-    }
+//     if ('isTasty' in fruit){
+//         price = fruit.isTasty() ? 5: 10;
+//     }
 
-    if ('isJuicy' in fruit){
-        price = fruit.isJuicy() ? 5: 10;
-    }
+//     if ('isJuicy' in fruit){
+//         price = fruit.isJuicy() ? 5: 10;
+//     }
 
-    return price
-}
+//     return price
+// }
 
-const apple = new Apple();
-buyFruit(apple)
+// const apple = new Apple();
+// buyFruit(apple)
 
 // Quality narrowing
 
@@ -83,3 +83,35 @@ function getValue(a: number | string, b: string){
 
 // User-defined guards
 
+class Banana {
+    isTasty(): boolean {
+        return true
+    }
+}
+
+class Apple {
+    isJuicy(): boolean {
+        return true
+    }
+}
+
+type Fruit = Banana | Apple;
+
+function isBanana(fruit: Fruit): fruit is Banana{
+    return fruit instanceof Banana;
+}
+
+function buyFruit(fruit: Fruit): number{
+    let price = 0;
+
+    if (isBanana(fruit)){
+        price = fruit.isTasty() ? 5: 10;
+    } else {
+        price = fruit.isJuicy() ? 5: 10;
+    }
+
+    return price
+}
+
+const apple = new Apple();
+buyFruit(apple)
