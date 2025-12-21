@@ -9,3 +9,36 @@ function add(a: alphanumeric, b: alphanumeric ){
 }
 
 add(5,5)
+
+// instanceof guard
+
+class Banana {
+    isTasty(): boolean {
+        return true
+    }
+}
+
+class Apple {
+    isJuicy(): boolean {
+        return true
+    }
+}
+
+type Fruit = Banana | Apple;
+
+function buyFruit(fruit: Fruit): number{
+    let price = 0;
+
+    if (fruit instanceof Banana){
+        price = fruit.isTasty() ? 5: 10;
+    }
+    return price
+}
+
+const apple = new Apple();
+buyFruit(apple)
+
+// In guard
+
+
+
