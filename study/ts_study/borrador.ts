@@ -190,294 +190,294 @@ const libro5: libro = {
   disponible: true
 }
 
-class App {
-  private usuariosRegistrados: string[] = [];
-  private catalogo: libro[] = []
+// class App {
+//   private usuariosRegistrados: string[] = [];
+//   private catalogo: libro[] = []
 
-  run(): void {
+//   run(): void {
 
-    this.catalogo.push(libro1, libro2, libro3, libro4, libro5);
+//     this.catalogo.push(libro1, libro2, libro3, libro4, libro5);
 
-    let continuar = true;
+//     let continuar = true;
 
-    while (continuar) {
+//     while (continuar) {
 
-      console.log("\n📚 Sistema de Biblioteca");
-      console.log("1. Registrar usuario\n0. Salir")
+//       console.log("\n📚 Sistema de Biblioteca");
+//       console.log("1. Registrar usuario\n0. Salir")
 
-      const opcion = Number(prompt("👉 Selecione una opción: "));
+//       const opcion = Number(prompt("👉 Selecione una opción: "));
 
-      switch (opcion) {
-        case 1:
-          this.registrarUsuario();
-          break;
+//       switch (opcion) {
+//         case 1:
+//           this.registrarUsuario();
+//           break;
 
-        case 0:
-          continuar = false;
-          console.log("👋 Gracias por usar el sistema");
-          break;
+//         case 0:
+//           continuar = false;
+//           console.log("👋 Gracias por usar el sistema");
+//           break;
 
-        default:
-          console.log("❌ Opción inválida");
-      }
-    }
-  }
+//         default:
+//           console.log("❌ Opción inválida");
+//       }
+//     }
+//   }
 
-private registrarUsuario(): void {
+// private registrarUsuario(): void {
 
-    console.log("📝 Registro de usuario");
+//     console.log("📝 Registro de usuario");
 
-    const name = String(prompt("👉 Ingresa su nombre : "));
-    const identification = String(prompt("👉 Ingresa su identificacion : "));
-    const gender = String(prompt("👉 Ingresa su genero : "));
-    const age = Number(prompt("👉 Ingresa su edad: "));
-    const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
-    const position = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
+//     const name = String(prompt("👉 Ingresa su nombre : "));
+//     const identification = String(prompt("👉 Ingresa su identificacion : "));
+//     const gender = String(prompt("👉 Ingresa su genero : "));
+//     const age = Number(prompt("👉 Ingresa su edad: "));
+//     const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
+//     const position = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
 
-    let usuario: any;
-    if (this.usuariosRegistrados.includes(identification)) {
-      console.log("❌ Usuario ya registrado");
-      return;
-    }
+//     let usuario: any;
+//     if (this.usuariosRegistrados.includes(identification)) {
+//       console.log("❌ Usuario ya registrado");
+//       return;
+//     }
 
-    switch (position) {
+//     switch (position) {
 
-      case 1: {
-        const degree = String(prompt("👉 Grado: "));
+//       case 1: {
+//         const degree = String(prompt("👉 Grado: "));
 
-        const data: EstudianteInfo = {
-          nombre: name,
-          identificacion: identification,
-          genero: gender,
-          edad: age,
-          nacionalidad: nacionality,
-          grado: degree
-        };
+//         const data: EstudianteInfo = {
+//           nombre: name,
+//           identificacion: identification,
+//           genero: gender,
+//           edad: age,
+//           nacionalidad: nacionality,
+//           grado: degree
+//         };
 
-        usuario = new Estudiante();
-        usuario.registro(data);
-        this.menuAcciones(usuario);
-        break;
-      }
+//         usuario = new Estudiante();
+//         usuario.registro(data);
+//         this.menuAcciones(usuario);
+//         break;
+//       }
 
-      case 2: {
-        const course = String(prompt("👉 Que curso estas dictando: "));
+//       case 2: {
+//         const course = String(prompt("👉 Que curso estas dictando: "));
 
-        const data: ProfesorInfo = {
-          nombre: name,
-          identificacion: identification,
-          genero: gender,
-          edad: age,
-          nacionalidad: nacionality,
-          curso: course
-        };
+//         const data: ProfesorInfo = {
+//           nombre: name,
+//           identificacion: identification,
+//           genero: gender,
+//           edad: age,
+//           nacionalidad: nacionality,
+//           curso: course
+//         };
 
-        usuario = new Profesor();
-        usuario.registro(data);
-        this.menuAcciones(usuario);
-        break;
-      }
+//         usuario = new Profesor();
+//         usuario.registro(data);
+//         this.menuAcciones(usuario);
+//         break;
+//       }
 
-      case 3: {
-        const job = String(prompt("👉 Que puesto de trabajo ocupa: "));
+//       case 3: {
+//         const job = String(prompt("👉 Que puesto de trabajo ocupa: "));
 
-        const data: DirectivoInfo = {
-          nombre: name,
-          identificacion: identification,
-          genero: gender,
-          edad: age,
-          nacionalidad: nacionality,
-          puesto: job
-        };
+//         const data: DirectivoInfo = {
+//           nombre: name,
+//           identificacion: identification,
+//           genero: gender,
+//           edad: age,
+//           nacionalidad: nacionality,
+//           puesto: job
+//         };
 
-        usuario = new Directivo();
-        usuario.registro(data);
-        this.menuInventario(usuario);
-        break;
-      }
+//         usuario = new Directivo();
+//         usuario.registro(data);
+//         this.menuInventario(usuario);
+//         break;
+//       }
 
-      default:
-        console.log("❌ Opción inválida");
-    }
+//       default:
+//         console.log("❌ Opción inválida");
+//     }
 
-    this.usuariosRegistrados.push(identification);
-}
+//     this.usuariosRegistrados.push(identification);
+// }
 
-private menuAcciones(usuario: IAcciones): void {
+// private menuAcciones(usuario: IAcciones): void {
 
-    let continuar = true;
+//     let continuar = true;
 
-    while (continuar) {
+//     while (continuar) {
 
-      const opcion = Number(prompt("👉 (1) Prestar (2) Devolver (3) Reservar (0) Salir: "));
+//       const opcion = Number(prompt("👉 (1) Prestar (2) Devolver (3) Reservar (0) Salir: "));
 
-      switch (opcion) {
+//       switch (opcion) {
 
-        case 1: {
-          console.log("📚 Libros disponibles:");
-          this.catalogo.forEach(l => {
-            if (l.disponible) console.log(`${l.id}. ${l.titulo}`);
-          });
+//         case 1: {
+//           console.log("📚 Libros disponibles:");
+//           this.catalogo.forEach(l => {
+//             if (l.disponible) console.log(`${l.id}. ${l.titulo}`);
+//           });
 
-          const idLibro = Number(prompt("👉 ID del libro: "));
-          const libro = this.catalogo.find(l => l.id === idLibro && l.disponible);
+//           const idLibro = Number(prompt("👉 ID del libro: "));
+//           const libro = this.catalogo.find(l => l.id === idLibro && l.disponible);
 
-          if (!libro) {
-            console.log("❌ Libro no disponible");
-            break;
-          }
+//           if (!libro) {
+//             console.log("❌ Libro no disponible");
+//             break;
+//           }
 
-          const prestado = usuario.prestar(libro);
+//           const prestado = usuario.prestar(libro);
 
-          if (!prestado) {
-            console.log("❌ Has alcanzado el límite de préstamos");
-            break;
-          }
+//           if (!prestado) {
+//             console.log("❌ Has alcanzado el límite de préstamos");
+//             break;
+//           }
 
-          libro.disponible = false;
-          console.log("✅ Libro prestado");
+//           libro.disponible = false;
+//           console.log("✅ Libro prestado");
 
-          break;
-        }
+//           break;
+//         }
 
-        case 2: {
-          const idLibro = Number(prompt("👉 ID del libro a devolver: "));
-          const libro = this.catalogo.find(l => l.id === idLibro);
+//         case 2: {
+//           const idLibro = Number(prompt("👉 ID del libro a devolver: "));
+//           const libro = this.catalogo.find(l => l.id === idLibro);
 
-          if (!libro) {
-            console.log("❌ Libro no encontrado");
-            break;
-          }
+//           if (!libro) {
+//             console.log("❌ Libro no encontrado");
+//             break;
+//           }
 
-          usuario.devolver(libro);
-          libro.disponible = true;
-          console.log("📘 Libro devuelto");
-          break;
-        }
+//           usuario.devolver(libro);
+//           libro.disponible = true;
+//           console.log("📘 Libro devuelto");
+//           break;
+//         }
 
-        case 3: {
-          const idLibro = Number(prompt("👉 ID del libro a reservar: "));
-          const libro = this.catalogo.find(l => l.id === idLibro);
+//         case 3: {
+//           const idLibro = Number(prompt("👉 ID del libro a reservar: "));
+//           const libro = this.catalogo.find(l => l.id === idLibro);
 
-          if (!libro) {
-            console.log("❌ Libro no encontrado");
-            break;
-          }
+//           if (!libro) {
+//             console.log("❌ Libro no encontrado");
+//             break;
+//           }
 
-          usuario.reservar(libro);
-          libro.disponible = false;
-          console.log("📌 Libro reservado");
-          break;
-        }
+//           usuario.reservar(libro);
+//           libro.disponible = false;
+//           console.log("📌 Libro reservado");
+//           break;
+//         }
 
-        case 0:
-          continuar = false;
-          break;
+//         case 0:
+//           continuar = false;
+//           break;
 
-        default:
-          console.log("❌ Opción inválida");
-      }
-    }
-  }
+//         default:
+//           console.log("❌ Opción inválida");
+//       }
+//     }
+//   }
 
-private menuInventario(usuario: IInventario): void {
+// private menuInventario(usuario: IInventario): void {
 
-    let continuar = true;
+//     let continuar = true;
 
-    while (continuar) {
+//     while (continuar) {
 
-      const opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (4) Actualizar (0) Salir: "));
+//       const opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (4) Actualizar (0) Salir: "));
 
-      switch (opcion) {
+//       switch (opcion) {
 
-        case 1: {
-          const id = Number(prompt("👉 ID del libro: "));
+//         case 1: {
+//           const id = Number(prompt("👉 ID del libro: "));
 
-          if (this.catalogo.some(l => l.id === id)) {
-            console.log("❌ Ya existe un libro con ese ID");
-            break;
-          }
+//           if (this.catalogo.some(l => l.id === id)) {
+//             console.log("❌ Ya existe un libro con ese ID");
+//             break;
+//           }
 
-          const titulo = String(prompt("👉 Titulo: "));
-          const autor = String(prompt("👉 Autor: "));
+//           const titulo = String(prompt("👉 Titulo: "));
+//           const autor = String(prompt("👉 Autor: "));
 
-          const nuevoLibro: libro = {
-            id,
-            titulo,
-            autor,
-            disponible: true
-          };
+//           const nuevoLibro: libro = {
+//             id,
+//             titulo,
+//             autor,
+//             disponible: true
+//           };
 
-          this.catalogo.push(nuevoLibro);
-          usuario.agregar(nuevoLibro);
+//           this.catalogo.push(nuevoLibro);
+//           usuario.agregar(nuevoLibro);
 
-          console.log("✅ Libro agregado");
-          break;
-        }
+//           console.log("✅ Libro agregado");
+//           break;
+//         }
 
-        case 2: {
-          const idLibro = Number(prompt("👉 ID del libro a eliminar: "));
-          const index = this.catalogo.findIndex(l => l.id === idLibro);
+//         case 2: {
+//           const idLibro = Number(prompt("👉 ID del libro a eliminar: "));
+//           const index = this.catalogo.findIndex(l => l.id === idLibro);
 
-          if (index === -1) {
-            console.log("❌ Libro no encontrado");
-            break;
-          }
+//           if (index === -1) {
+//             console.log("❌ Libro no encontrado");
+//             break;
+//           }
 
-          const libro = this.catalogo[index];
-          usuario.eliminar(libro);
-          this.catalogo.splice(index, 1);
+//           const libro = this.catalogo[index];
+//           usuario.eliminar(libro);
+//           this.catalogo.splice(index, 1);
 
-          console.log("🗑️ Libro eliminado");
-          break;
-        }
+//           console.log("🗑️ Libro eliminado");
+//           break;
+//         }
 
-        case 3:
-          console.log("📚 Catálogo:");
-          this.catalogo.forEach(l => console.log(`${l.id}. ${l.titulo} - ${l.autor}`)
-          );
-          break;
+//         case 3:
+//           console.log("📚 Catálogo:");
+//           this.catalogo.forEach(l => console.log(`${l.id}. ${l.titulo} - ${l.autor}`)
+//           );
+//           break;
         
-        case 4: {
-          const idLibro = Number(prompt("👉 ID del libro a actualizar: "));
-          const index = this.catalogo.findIndex(l => l.id === idLibro);
+//         case 4: {
+//           const idLibro = Number(prompt("👉 ID del libro a actualizar: "));
+//           const index = this.catalogo.findIndex(l => l.id === idLibro);
 
-          if (index === -1) {
-            console.log("❌ Libro no encontrado");
-            break;
-            }
+//           if (index === -1) {
+//             console.log("❌ Libro no encontrado");
+//             break;
+//             }
 
-          const libroActual = this.catalogo[index];
+//           const libroActual = this.catalogo[index];
 
-          const nuevoTitulo = String(prompt(`👉 Nuevo título (${libroActual.titulo}): `));
-          const nuevoAutor = String(prompt(`👉 Nuevo autor (${libroActual.autor}): `));
+//           const nuevoTitulo = String(prompt(`👉 Nuevo título (${libroActual.titulo}): `));
+//           const nuevoAutor = String(prompt(`👉 Nuevo autor (${libroActual.autor}): `));
 
-          const libroActualizado: libro = {
-            id: libroActual.id,
-            titulo: nuevoTitulo || libroActual.titulo,
-            autor: nuevoAutor || libroActual.autor,
-            disponible: libroActual.disponible
-          };
+//           const libroActualizado: libro = {
+//             id: libroActual.id,
+//             titulo: nuevoTitulo || libroActual.titulo,
+//             autor: nuevoAutor || libroActual.autor,
+//             disponible: libroActual.disponible
+//           };
 
-          this.catalogo[index] = libroActualizado;
+//           this.catalogo[index] = libroActualizado;
 
-          usuario.actualizar(libroActualizado);
+//           usuario.actualizar(libroActualizado);
 
-          console.log("✏️ Libro actualizado correctamente");
-          break;
-        }
+//           console.log("✏️ Libro actualizado correctamente");
+//           break;
+//         }
 
 
-        case 0:
-          continuar = false;
-          break;
+//         case 0:
+//           continuar = false;
+//           break;
 
-        default:
-          console.log("❌ Opción inválida");
-      }
-    }
-  }
-}
+//         default:
+//           console.log("❌ Opción inválida");
+//       }
+//     }
+//   }
+// }
 
-const app = new App();
-app.run()
+// const app = new App();
+// app.run()
