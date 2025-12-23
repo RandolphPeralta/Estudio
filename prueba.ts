@@ -74,7 +74,7 @@ type Libro = {
   id: number;
   titulo: string;
   autor: string;
-  disponible: boolean
+  disponible: true
 }
 
 type Estudiante = {
@@ -92,8 +92,13 @@ type Profesor = {
 class ServicioLibro{
     constructor(private memoria: AccionMemoria<Libro>){}
     
-    register(){
-
+    register(id: number, titulo: string, autor: string): void {
+      const libro: Libro = {
+        id,
+        titulo,
+        autor,
+        disponible: true
+      }
     }
 }
 
