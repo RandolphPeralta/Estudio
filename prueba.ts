@@ -207,13 +207,14 @@ class MenuAccion {
         console.log(this.servicioCliente.getAll());
         break;
 
-      
       case MenuOpcion.ACTUALIZAR_ESTUDIANTE:
         this.actualizarEstudiante()
 
       case MenuOpcion.REGISTRAR_LIBRO:
         this.registrarLibro();
         break;
+      
+      case MenuOpcion.ELIMINAR_LIBRO:
 
       case MenuOpcion.VER_LIBROS:
         console.log(this.servicioLibro.getAll());
@@ -253,15 +254,6 @@ class MenuAccion {
     console.log("Estudiante Eliminado")
   }
 
-  private registrarLibro() {
-    const id = String(prompt("ID Libro: "));
-    const titulo = String(prompt("Título: "));
-    const autor = String(prompt("Autor: "));
-
-    this.servicioLibro.register(id, titulo, autor);
-    console.log("Libro registrado");
-  }
-
   private actualizarEstudiante() {
     const id = String(prompt("ID: "));
     const nombre = String(prompt("Nombre: "));
@@ -272,12 +264,26 @@ class MenuAccion {
     console.log("Estudiante actualizado");
   }
 
+  private registrarLibro() {
+    const id = String(prompt("ID Libro: "));
+    const titulo = String(prompt("Título: "));
+    const autor = String(prompt("Autor: "));
+
+    this.servicioLibro.register(id, titulo, autor);
+    console.log("Libro registrado");
+  }
+
   private prestarLibro() {
     const idLibro = String(prompt("ID Libro: "));
     const idEstudiante = String(prompt("ID Estudiante: "));
 
     const ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
     console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
+  }
+
+  private elmiminarLibro(){
+    const idLibro = String(prompt("ID Libro: "));
+    this.servicioLibro.delete(idLibro)
   }
 
   private devolverLibro() {
