@@ -169,6 +169,14 @@ class ServicioPrestamo {
   }
 }
 
+class MenuOpcion{
+ // EN ESTA CLASE SE COLOCA LAS OPCIONES PARA ACTIVAR LAS FUNIONES
+}
+
+class MenuAccion{
+ // EN ESTA CLASE LAS ACCIONES PARA QUE LOS REALICE
+}
+
 class ConsoleView{
   mensaje(){
     console.log("Bienvenido al Sistema de Biblioteca que desea:")
