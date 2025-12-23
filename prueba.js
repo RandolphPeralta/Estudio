@@ -1,28 +1,4 @@
 // Praticar la abstracion de como realizar un sistema de prestamos en la repositoriobiblioteca
-var Cliente = /** @class */ (function () {
-    function Cliente() {
-        this.informacion = [];
-        this.prestamos = [];
-    }
-    Cliente.prototype.registro = function (data) {
-        this.informacion.push(data);
-        return true;
-    };
-    Cliente.prototype.prestar = function (veces, data) {
-        if (this.prestamos.length >= veces) {
-            return false;
-        }
-        this.prestamos.push(data);
-        return true;
-    };
-    Cliente.prototype.devolver = function (data) {
-        var index = this.prestamos.indexOf(data);
-        if (index !== -1) {
-            this.prestamos.splice(index, 1);
-        }
-    };
-    return Cliente;
-}());
 var RepositoriodeMemoria = /** @class */ (function () {
     function RepositoriodeMemoria() {
         this.memoria = [];
@@ -30,8 +6,8 @@ var RepositoriodeMemoria = /** @class */ (function () {
     RepositoriodeMemoria.prototype.guardar = function (some) {
         this.memoria.push(some);
     };
-    RepositoriodeMemoria.prototype.eliminar = function (some) {
-        var index = this.memoria.findIndex(function (item) { return item.id === some; });
+    RepositoriodeMemoria.prototype.eliminar = function (id) {
+        var index = this.memoria.findIndex(function (item) { return item.id === id; });
         if (index !== -1) {
             this.memoria.splice(index, 1);
         }
@@ -79,22 +55,22 @@ var ServicioEstudiante = /** @class */ (function () {
     function ServicioEstudiante(memoria) {
         this.memoria = memoria;
     }
-    ServicioEstudiante.prototype.register = function (nombre, identificacion, grado) {
-        var estudiante = { nombre: nombre, identificacion: identificacion, grado: grado };
+    ServicioEstudiante.prototype.register = function (id, nombre, identificacion, grado) {
+        var estudiante = { id: id, nombre: nombre, identificacion: identificacion, grado: grado };
         this.memoria.guardar(estudiante);
         return estudiante;
     };
-    ServicioEstudiante.prototype.delete = function (identificacion) {
-        var id = identificacion;
+    ServicioEstudiante.prototype.delete = function (id) {
         this.memoria.eliminar(id);
     };
-    ServicioEstudiante.prototype.update = function (identificacion, nombre, grado) {
+    ServicioEstudiante.prototype.update = function (id, nombre, identificacion, grado) {
         var estudiantes = this.memoria.mostrar();
-        var estudianteExistente = estudiantes.find(function (l) { return l.identificacion === identificacion; });
+        var estudianteExistente = estudiantes.find(function (l) { return l.id === id; });
         if (!estudianteExistente) {
             return;
         }
         estudianteExistente.nombre = nombre;
+        estudianteExistente.identificacion = identificacion;
         estudianteExistente.grado = grado;
         this.memoria.actualizar(estudianteExistente);
     };
@@ -104,27 +80,95 @@ var ServicioEstudiante = /** @class */ (function () {
     return ServicioEstudiante;
 }());
 var ServicioPrestamo = /** @class */ (function () {
-    function ServicioPrestamo() {
+    function ServicioPrestamo(servicioLibro, servicioEstudiante) {
+        this.servicioLibro = servicioLibro;
+        this.servicioEstudiante = servicioEstudiante;
+        this.prestamos = [];
     }
+    ServicioPrestamo.prototype.prestarLibro = function (idLibro, idEstudiante) {
+        var libros = this.servicioLibro.getAll();
+        var estudiantes = this.servicioEstudiante.getAll();
+        var libro = libros.find(function (l) { return l.id === idLibro; });
+        if (!libro || !libro.disponible)
+            return false;
+        var estudiante = estudiantes.find(function (e) { return e.id === idEstudiante; });
+        if (!estudiante)
+            return false;
+        libro.disponible = false;
+        this.prestamos.push({
+            idLibro: idLibro,
+            idEstudiante: idEstudiante
+        });
+        return true;
+    };
+    ServicioPrestamo.prototype.devolverLibro = function (idLibro) {
+        var prestamoIndex = this.prestamos.findIndex(function (p) { return p.idLibro === idLibro; });
+        if (prestamoIndex === -1)
+            return false;
+        var libros = this.servicioLibro.getAll();
+        var libro = libros.find(function (l) { return l.id === idLibro; });
+        if (!libro)
+            return false;
+        libro.disponible = true;
+        this.prestamos.splice(prestamoIndex, 1);
+        return true;
+    };
+    ServicioPrestamo.prototype.getAll = function () {
+        return this.prestamos;
+    };
     return ServicioPrestamo;
 }());
+var ConsoleView = /** @class */ (function () {
+    function ConsoleView() {
+    }
+    ConsoleView.prototype.mensaje = function () {
+        console.log("Bienvenido al Sistema de Biblioteca que desea:");
+        console.log("\n1. Registrar Estudiante,\n2. Eliminar Estudiante,\n3. Ver Estudiantes,\n4. Actualizar Estudiante");
+        console.log("\n5. Registrar Libro,\n6. Eliminar Libro,\n7. Ver Libros,\n8. Actualizar Libros");
+        console.log("\n9. Prestar Libro\n10. Devolver Libro");
+    };
+    return ConsoleView;
+}());
+var consola = new ConsoleView();
+consola.mensaje();
+//--------------------------------
+//PROBANDO LOS PRESTAMOS
+// const repoLibro = new RepositoriodeMemoria<Libro>();
+// const repoEstudiante = new RepositoriodeMemoria<Estudiante>();
+// const servicioLibro = new ServicioLibro(repoLibro);
+// const servicioEstudiante = new ServicioEstudiante(repoEstudiante);
+// const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioEstudiante);
+// servicioLibro.register("L1", "1984", "Orwell");
+// servicioLibro.register("L2", "Harry Potter", "J. K. Rowling")
+// servicioEstudiante.register("E1", "Juan", "123", "11");
+// // SI SE PUEDE PRESTAR
+// console.log(servicioPrestamo.prestarLibro("L1", "E1")); // true
+// console.log(servicioPrestamo.prestarLibro("L2", "E1")); // TRUE
+// console.log(servicioPrestamo.devolverLibro("L1"));      // true
+// console.log(servicioPrestamo.getAll());
 //---------------------------------------
 // PROBANDO POR LOS ESTUDIANTES
-var repositorioestudiante = new RepositoriodeMemoria;
-var servicioestudiante = new ServicioEstudiante(repositorioestudiante);
-servicioestudiante.register("Sara", "1132456789", "11");
-servicioestudiante.register("Laura", "12356789", "11");
-servicioestudiante.delete("12356789");
-console.log(servicioestudiante.getAll());
+//const repositorioestudiante = new RepositoriodeMemoria<Estudiante>
+//const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
+//servicioestudiante.register("1","Sara","1132456789","11")
+//servicioestudiante.register("2","Laura","12356789","11")
+//YA SE PUEDE ELMINAR POR ID
+//servicioestudiante.delete("2")
+//console.log(servicioestudiante.getAll())
+// YA SE PUEDE ACTUALIZAR POR EL ID
+//servicioestudiante.update("2","Laura","1235678964573","11")
+//console.log(servicioestudiante.getAll())
+//-----------------------------------------
 //PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
 //const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
 //const serviciolibro = new ServicioLibro(repositoriobiblioteca)
+// YA SE PUEDE REGISTRAR
 //serviciolibro.register("1", "IT", "Sthephen King")
 //console.log(repositoriobiblioteca.mostrar())
 //YA SE PUEDE ELMINAR POR ID
 //serviciolibro.delete("1")
 //console.log(repositoriobiblioteca.mostrar())
-// ESTAMOS BUSCANDO ACTUALIZAR POR EL ID
+// YA SE PUEDE ACTUALIZAR POR EL ID
 //serviciolibro.update("1", "IT (Edición Especial)", "Stephen King")
 //console.log(serviciolibro.getAll())
 // ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO
@@ -188,3 +232,9 @@ console.log(servicioestudiante.getAll());
 //   disponible: true
 // }
 // const Libros = [libro1, libro2, libro3, libro4, libro5]
+// type Profesor = {
+//   id: string
+//   nombre: string;
+//   identificacion: string
+//   curso: string
+// }

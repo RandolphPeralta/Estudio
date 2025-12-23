@@ -5,45 +5,11 @@
 // Que ingrese para registrar estudiante, para prestar, devolver
 // O para manejar el INVENTARIO
 
-interface IRegistro<T> {
-  registro(data: any): boolean;
-}
-
-interface IPrestamo<T> {
-  prestar(veces: number, data: any): boolean;
-  devolver(data: any): void;
-}
-
 interface IAccionMemoria<T>{
     guardar(some: T): void;
-    eliminar(some: T): void;
+    eliminar(id: T): void;
     actualizar(some: T): void;
     mostrar(): T[]
-}
-
-class Cliente<T> implements IPrestamo<T>, IRegistro<T> {
-   private informacion: Array<any> = []
-   public prestamos: Array<any> = [];
-
-   registro<T>(data: T): boolean {
-     this.informacion.push(data)
-     return true
-   }
-
-   prestar<T>(veces: number, data: T): boolean {
-     if (this.prestamos.length >= veces) {
-       return false;
-     }
-     this.prestamos.push(data);
-     return true;
-   }
-
-   devolver<T>(data: T): void {
-     const index = this.prestamos.indexOf(data);
-     if (index !== -1) {
-       this.prestamos.splice(index, 1);
-     }
-   }
 }
 
 class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
@@ -53,9 +19,10 @@ class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
         this.memoria.push(some)
     }
 
-    eliminar(some: any) {
+    eliminar(id: any) 
+    {
       const index = this.memoria.findIndex(
-        (item: any) => item.id === some
+        (item: any) => item.id === id
           );
 
       if (index !== -1) {
@@ -73,26 +40,21 @@ class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
       }
 }
 
+// ---------------------------------------------
 type Libro = {
   id: string;
   titulo: string;
   autor: string;
-  disponible: true
+  disponible: boolean
 }
 
 type Estudiante = {
+  id: string
   nombre: string;
   identificacion: string
   grado: string
 }
 
-type Profesor = {
-  nombre: string;
-  identificacion: string
-  curso: string
-}
-
-// ESTA CLASE ES PARA EL INVENTARIO DE LOS LIBROS
 class ServicioLibro{
     constructor(private memoria: RepositoriodeMemoria<Libro>){}
     
@@ -125,30 +87,29 @@ class ServicioLibro{
     }
 }
 
-
 class ServicioEstudiante {
   constructor(private memoria: RepositoriodeMemoria<Estudiante>){}
 
-  register(nombre: string, identificacion: string, grado: string): Estudiante {
-      const estudiante: Estudiante = {nombre,identificacion,grado}
+  register(id: string, nombre: string, identificacion: string, grado: string): Estudiante {
+      const estudiante: Estudiante = {id, nombre,identificacion,grado}
       this.memoria.guardar(estudiante)
       return estudiante
     }
 
-  delete(identificacion: string): void{
-      const id = identificacion
+  delete(id: string): void{
       this.memoria.eliminar(id)
     }
 
-  update(identificacion: string, nombre: string, grado: string): void {
+  update(id: string, nombre: string, identificacion: string, grado: string): void {
     const estudiantes = this.memoria.mostrar();
-    const estudianteExistente = estudiantes.find(l => l.identificacion === identificacion);
+    const estudianteExistente = estudiantes.find(l => l.id === id);
 
     if (!estudianteExistente) {
       return;
       }
-
+    
     estudianteExistente.nombre = nombre;
+    estudianteExistente.identificacion = identificacion
     estudianteExistente.grado = grado;
 
     this.memoria.actualizar(estudianteExistente);
@@ -159,39 +120,117 @@ class ServicioEstudiante {
     }
 }
 
-
 class ServicioPrestamo {
-  // ACA EN ESTA CLASE VAMOS A ESCRIBIR PARA LOS PRESTAMOS Y DEVOLUCIONES, VER QUE LIBROS HAY DISPONIBLES Y CUALES NO
+  prestamos: Array<any> = [];
+
+  constructor(
+    private servicioLibro: ServicioLibro,
+    private servicioCliente: ServicioEstudiante 
+  ) {}
+
+  prestarLibro(idLibro: string, idCliente: string): boolean {
+  const libros = this.servicioLibro.getAll();
+  const clientes = this.servicioCliente.getAll();
+
+  const libro = libros.find(l => l.id === idLibro);
+  if (!libro || !libro.disponible) return false;
+
+  const cliente = clientes.find(e => e.id === idCliente);
+  if (!cliente) return false;
+
+  libro.disponible = false
+
+  this.prestamos.push({
+    idLibro,
+    idCliente
+  });
+
+  return true;
+  }
+
+  devolverLibro(idLibro: string): boolean {
+  const prestamoIndex = this.prestamos.findIndex(p => p.idLibro === idLibro);
+
+  if (prestamoIndex === -1) return false;
+
+  const libros = this.servicioLibro.getAll();
+  const libro = libros.find(l => l.id === idLibro);
+
+  if (!libro) return false;
+
+  libro.disponible = true;
+  this.prestamos.splice(prestamoIndex, 1);
+
+  return true;
+  }
+
+  getAll(){
+    return this.prestamos
+  }
 }
+
+class ConsoleView{
+  mensaje(){
+    console.log("Bienvenido al Sistema de Biblioteca que desea:")
+    console.log("\n1. Registrar Estudiante,\n2. Eliminar Estudiante,\n3. Ver Estudiantes,\n4. Actualizar Estudiante")
+    console.log("\n5. Registrar Libro,\n6. Eliminar Libro,\n7. Ver Libros,\n8. Actualizar Libros")
+    console.log("\n9. Prestar Libro\n10. Devolver Libro")
+  }
+}
+
+//--------------------------------
+//PROBANDO LOS PRESTAMOS
+
+// const repoLibro = new RepositoriodeMemoria<Libro>();
+// const repoEstudiante = new RepositoriodeMemoria<Estudiante>();
+
+// const servicioLibro = new ServicioLibro(repoLibro);
+// const servicioCliente = new ServicioEstudiante(repoEstudiante);
+
+// const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
+
+// servicioLibro.register("L1", "1984", "Orwell");
+// servicioLibro.register("L2", "Harry Potter", "J. K. Rowling")
+// servicioCliente.register("E1", "Juan", "123", "11");
+
+// // SI SE PUEDE PRESTAR
+// console.log(servicioPrestamo.prestarLibro("L1", "E1")); // true
+// console.log(servicioPrestamo.prestarLibro("L2", "E1")); // TRUE
+// console.log(servicioPrestamo.devolverLibro("L1"));      // true
+
+// console.log(servicioPrestamo.getAll());
+
 
 //---------------------------------------
 // PROBANDO POR LOS ESTUDIANTES
-const repositorioestudiante = new RepositoriodeMemoria<Estudiante>
-const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
+//const repositorioestudiante = new RepositoriodeMemoria<Estudiante>
+//const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
 
-servicioestudiante.register("Sara","1132456789","11")
-servicioestudiante.register("Laura","12356789","11")
+//servicioestudiante.register("1","Sara","1132456789","11")
+//servicioestudiante.register("2","Laura","12356789","11")
 
-servicioestudiante.delete("12356789")
-console.log(servicioestudiante.getAll())
+//YA SE PUEDE ELMINAR POR ID
+//servicioestudiante.delete("2")
+//console.log(servicioestudiante.getAll())
 
+// YA SE PUEDE ACTUALIZAR POR EL ID
+//servicioestudiante.update("2","Laura","1235678964573","11")
+//console.log(servicioestudiante.getAll())
 
+//-----------------------------------------
 //PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
 //const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
 //const serviciolibro = new ServicioLibro(repositoriobiblioteca)
 
+// YA SE PUEDE REGISTRAR
 //serviciolibro.register("1", "IT", "Sthephen King")
 //console.log(repositoriobiblioteca.mostrar())
-
-
-
-
 
 //YA SE PUEDE ELMINAR POR ID
 //serviciolibro.delete("1")
 //console.log(repositoriobiblioteca.mostrar())
 
-// ESTAMOS BUSCANDO ACTUALIZAR POR EL ID
+// YA SE PUEDE ACTUALIZAR POR EL ID
 //serviciolibro.update("1", "IT (Edición Especial)", "Stephen King")
 //console.log(serviciolibro.getAll())
 
@@ -279,3 +318,9 @@ console.log(servicioestudiante.getAll())
 
 // const Libros = [libro1, libro2, libro3, libro4, libro5]
 
+// type Profesor = {
+//   id: string
+//   nombre: string;
+//   identificacion: string
+//   curso: string
+// }
