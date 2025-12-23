@@ -169,12 +169,122 @@ class ServicioPrestamo {
   }
 }
 
-class MenuOpcion{
- // EN ESTA CLASE SE COLOCA LAS OPCIONES PARA ACTIVAR LAS FUNIONES
+class MenuOpcion {
+  static REGISTRAR_ESTUDIANTE = 1;
+  static ELIMINAR_ESTUDIANTE = 2;
+  static VER_ESTUDIANTES = 3;
+  static ACTUALIZAR_ESTUDIANTE = 4;
+
+  static REGISTRAR_LIBRO = 5;
+  static ELIMINAR_LIBRO = 6;
+  static VER_LIBROS = 7;
+  static ACTUALIZAR_LIBRO = 8;
+
+  static PRESTAR_LIBRO = 9;
+  static DEVOLVER_LIBRO = 10;
+
+  static SALIR = 0;
 }
 
-class MenuAccion{
- // EN ESTA CLASE LAS ACCIONES PARA QUE LOS REALICE
+
+class MenuAccion {
+  constructor(
+    private servicioCliente: ServicioEstudiante,
+    private servicioLibro: ServicioLibro,
+    private servicioPrestamo: ServicioPrestamo
+  ) {}
+
+  ejecutar(opcion: number): boolean {
+    switch (opcion) {
+      case MenuOpcion.REGISTRAR_ESTUDIANTE:
+        this.registrarEstudiante();
+        break;
+      
+      case MenuOpcion.ELIMINAR_ESTUDIANTE:
+        this.eliminarEstudiante();
+
+      case MenuOpcion.VER_ESTUDIANTES:
+        console.log(this.servicioCliente.getAll());
+        break;
+
+      
+      case MenuOpcion.ACTUALIZAR_ESTUDIANTE:
+        this.actualizarEstudiante()
+
+      case MenuOpcion.REGISTRAR_LIBRO:
+        this.registrarLibro();
+        break;
+
+      case MenuOpcion.VER_LIBROS:
+        console.log(this.servicioLibro.getAll());
+        break;
+
+      case MenuOpcion.PRESTAR_LIBRO:
+        this.prestarLibro();
+        break;
+
+      case MenuOpcion.DEVOLVER_LIBRO:
+        this.devolverLibro();
+        break;
+
+      case MenuOpcion.SALIR:
+        return false;
+
+      default:
+        console.log("Opción inválida");
+    }
+
+    return true;
+  }
+
+  private registrarEstudiante() {
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const identificacion = String(prompt("Identificación: "));
+    const grado = String(prompt("Grado: "));
+
+    this.servicioCliente.register(id, nombre, identificacion, grado);
+    console.log("Estudiante registrado");
+  }
+
+  private eliminarEstudiante(){
+    const id = String(prompt("ID: "));
+    this.servicioCliente.delete(id)
+    console.log("Estudiante Eliminado")
+  }
+
+  private registrarLibro() {
+    const id = String(prompt("ID Libro: "));
+    const titulo = String(prompt("Título: "));
+    const autor = String(prompt("Autor: "));
+
+    this.servicioLibro.register(id, titulo, autor);
+    console.log("Libro registrado");
+  }
+
+  private actualizarEstudiante() {
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const identificacion = String(prompt("Identificación: "));
+    const grado = String(prompt("Grado: "));
+
+    this.servicioCliente.update(id, nombre, identificacion, grado);
+    console.log("Estudiante actualizado");
+  }
+
+  private prestarLibro() {
+    const idLibro = String(prompt("ID Libro: "));
+    const idEstudiante = String(prompt("ID Estudiante: "));
+
+    const ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
+    console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
+  }
+
+  private devolverLibro() {
+    const idLibro = String(prompt("ID Libro: "));
+    const ok = this.servicioPrestamo.devolverLibro(idLibro);
+    console.log(ok ? "Libro devuelto" : "No se pudo devolver");
+  }
 }
 
 class ConsoleView{
