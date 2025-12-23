@@ -36,10 +36,10 @@ var RepositoriodeMemoria = /** @class */ (function () {
             this.memoria.splice(index, 1);
         }
     };
-    RepositoriodeMemoria.prototype.actualizar = function (criterio, nuevo) {
-        var index = this.memoria.findIndex(criterio);
+    RepositoriodeMemoria.prototype.actualizar = function (some) {
+        var index = this.memoria.findIndex(function (i) { return i === some; });
         if (index !== -1) {
-            this.memoria[index] = nuevo;
+            this.memoria[index] = some;
         }
     };
     RepositoriodeMemoria.prototype.mostrar = function () {
@@ -47,17 +47,13 @@ var RepositoriodeMemoria = /** @class */ (function () {
     };
     return RepositoriodeMemoria;
 }());
+// ESTA CLASE ES PARA EL INVENTARIO DE LOS LIBROS
 var ServicioLibro = /** @class */ (function () {
     function ServicioLibro(memoria) {
         this.memoria = memoria;
     }
     ServicioLibro.prototype.register = function (id, titulo, autor) {
-        var libro = {
-            id: id,
-            titulo: titulo,
-            autor: autor,
-            disponible: true
-        };
+        var libro = { id: id, titulo: titulo, autor: autor, disponible: true };
         this.memoria.guardar(libro);
         return libro;
     };
@@ -65,46 +61,72 @@ var ServicioLibro = /** @class */ (function () {
         this.memoria.eliminar(id);
     };
     ServicioLibro.prototype.update = function (id, titulo, autor) {
-        var libro = {
-            id: id,
-            titulo: titulo,
-            autor: autor,
-            disponible: true
-        };
-        this.memoria.actualizar(id, libro);
+        var libros = this.memoria.mostrar();
+        var libroExistente = libros.find(function (l) { return l.id === id; });
+        if (!libroExistente) {
+            return;
+        }
+        libroExistente.titulo = titulo;
+        libroExistente.autor = autor;
+        this.memoria.actualizar(libroExistente);
     };
     ServicioLibro.prototype.getAll = function () {
-        this.memoria.mostrar();
+        return this.memoria.mostrar();
     };
     return ServicioLibro;
 }());
+var ServicioEstudiante = /** @class */ (function () {
+    function ServicioEstudiante(memoria) {
+        this.memoria = memoria;
+    }
+    ServicioEstudiante.prototype.register = function (nombre, identificacion, grado) {
+        var estudiante = { nombre: nombre, identificacion: identificacion, grado: grado };
+        this.memoria.guardar(estudiante);
+        return estudiante;
+    };
+    ServicioEstudiante.prototype.delete = function (identificacion) {
+        var id = identificacion;
+        this.memoria.eliminar(id);
+    };
+    ServicioEstudiante.prototype.update = function (identificacion, nombre, grado) {
+        var estudiantes = this.memoria.mostrar();
+        var estudianteExistente = estudiantes.find(function (l) { return l.identificacion === identificacion; });
+        if (!estudianteExistente) {
+            return;
+        }
+        estudianteExistente.nombre = nombre;
+        estudianteExistente.grado = grado;
+        this.memoria.actualizar(estudianteExistente);
+    };
+    ServicioEstudiante.prototype.getAll = function () {
+        return this.memoria.mostrar();
+    };
+    return ServicioEstudiante;
+}());
+var ServicioPrestamo = /** @class */ (function () {
+    function ServicioPrestamo() {
+    }
+    return ServicioPrestamo;
+}());
 //---------------------------------------
-var estudiante = new Cliente;
-var profesor = new Cliente;
+// PROBANDO POR LOS ESTUDIANTES
+var repositorioestudiante = new RepositoriodeMemoria;
+var servicioestudiante = new ServicioEstudiante(repositorioestudiante);
+servicioestudiante.register("Sara", "1132456789", "11");
+servicioestudiante.register("Laura", "12356789", "11");
+servicioestudiante.delete("12356789");
+console.log(servicioestudiante.getAll());
+//PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
 //const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
 //const serviciolibro = new ServicioLibro(repositoriobiblioteca)
-//serviciolibro.register(1, "IT", "Sthephen King")
+//serviciolibro.register("1", "IT", "Sthephen King")
 //console.log(repositoriobiblioteca.mostrar())
-//serviciolibro.update(1, "IT (Edición Especial)", "Stephen King")
+//YA SE PUEDE ELMINAR POR ID
+//serviciolibro.delete("1")
+//console.log(repositoriobiblioteca.mostrar())
+// ESTAMOS BUSCANDO ACTUALIZAR POR EL ID
+//serviciolibro.update("1", "IT (Edición Especial)", "Stephen King")
 //console.log(serviciolibro.getAll())
-var repoLibros = new RepositoriodeMemoria();
-repoLibros.guardar({
-    id: 1,
-    titulo: "IT",
-    autor: "Stephen King",
-    disponible: true
-});
-repoLibros.actualizar(function (libro) { return libro.id === 1; }, {
-    id: 1,
-    titulo: "IT (Edición Especial)",
-    autor: "Stephen King",
-    disponible: true
-});
-console.log(repoLibros.mostrar());
-//serviciolibro.delete(1)
-//console.log(repositoriobiblioteca.mostrar())
-//repositoriobiblioteca.guardar(libro1)
-//console.log(repositoriobiblioteca.mostrar())
 // ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO
 //class ServicioLibro {
 //    constructor(private memoria: RepositoriodeMemoria<Libro>)
@@ -130,6 +152,11 @@ console.log(repoLibros.mostrar());
 // book.available = true;
 //  this.repository.update(book)}
 //    }
+// actualizar(criterio: (item: T) => boolean, nuevo: T): void {
+//     const index = this.memoria.findIndex(criterio);
+//     if (index !== -1) {
+//       this.memoria[index] = nuevo;}
+//       }
 // const libro1: Libro = {
 //   id: 1,
 //   titulo: "Juego de tronos",

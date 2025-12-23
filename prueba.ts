@@ -3,7 +3,7 @@
 // Escribiendo el programa
 // Quiero un programa de sistema de gestion de repositoriobiblioteca
 // Que ingrese para registrar estudiante, para prestar, devolver
-// O para manejar el inventario de la repositoriobiblioteca
+// O para manejar el INVENTARIO
 
 interface IRegistro<T> {
   registro(data: any): boolean;
@@ -17,8 +17,8 @@ interface IPrestamo<T> {
 interface IAccionMemoria<T>{
     guardar(some: T): void;
     eliminar(some: T): void;
-    actualizar(id: any, some: T): void;
-    //Mostrar(): T[]
+    actualizar(some: T): void;
+    mostrar(): T[]
 }
 
 class Cliente<T> implements IPrestamo<T>, IRegistro<T> {
@@ -49,7 +49,7 @@ class Cliente<T> implements IPrestamo<T>, IRegistro<T> {
 class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
     private memoria: T[] = []
 
-    guardar(some: any) {
+    guardar<T>(some: any) {
         this.memoria.push(some)
     }
 
@@ -62,12 +62,11 @@ class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
         this.memoria.splice(index, 1);
       }}
 
-    actualizar(criterio: (item: T) => boolean, nuevo: T): void {
-    const index = this.memoria.findIndex(criterio);
-
-    if (index !== -1) {
-      this.memoria[index] = nuevo;}
-      }
+    actualizar(some: T): void {
+      const index = this.memoria.findIndex(i => i === some);
+      if (index !== -1) {
+        this.memoria[index] = some;}
+    }
 
     mostrar(){
         return this.memoria
@@ -75,7 +74,7 @@ class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
 }
 
 type Libro = {
-  id: number;
+  id: string;
   titulo: string;
   autor: string;
   disponible: true
@@ -93,80 +92,111 @@ type Profesor = {
   curso: string
 }
 
+// ESTA CLASE ES PARA EL INVENTARIO DE LOS LIBROS
 class ServicioLibro{
     constructor(private memoria: RepositoriodeMemoria<Libro>){}
     
-    register(id: number, titulo: string, autor: string): Libro {
-      const libro: Libro = {
-        id,
-        titulo,
-        autor,
-        disponible: true
-      }
+    register(id: string, titulo: string, autor: string): Libro {
+      const libro: Libro = {id,titulo,autor,disponible: true}
       this.memoria.guardar(libro)
       return libro
     }
 
-    delete(id: number): void{
+    delete(id: string): void{
       this.memoria.eliminar(id)
     }
 
-    update(id: any, titulo:string, autor: string): void{
-      const libro: Libro = {
-        id,
-        titulo,
-        autor,
-        disponible: true
+    update(id: string, titulo: string, autor: string): void {
+    const libros = this.memoria.mostrar();
+    const libroExistente = libros.find(l => l.id === id);
+
+    if (!libroExistente) {
+      return;
       }
-      this.memoria.actualizar(id, libro)
-    }
+
+    libroExistente.titulo = titulo;
+    libroExistente.autor = autor;
+
+    this.memoria.actualizar(libroExistente);
+  }
 
     getAll(){
-      this.memoria.mostrar()
+      return this.memoria.mostrar()
     }
 }
 
 
+class ServicioEstudiante {
+  constructor(private memoria: RepositoriodeMemoria<Estudiante>){}
+
+  register(nombre: string, identificacion: string, grado: string): Estudiante {
+      const estudiante: Estudiante = {nombre,identificacion,grado}
+      this.memoria.guardar(estudiante)
+      return estudiante
+    }
+
+  delete(identificacion: string): void{
+      const id = identificacion
+      this.memoria.eliminar(id)
+    }
+
+  update(identificacion: string, nombre: string, grado: string): void {
+    const estudiantes = this.memoria.mostrar();
+    const estudianteExistente = estudiantes.find(l => l.identificacion === identificacion);
+
+    if (!estudianteExistente) {
+      return;
+      }
+
+    estudianteExistente.nombre = nombre;
+    estudianteExistente.grado = grado;
+
+    this.memoria.actualizar(estudianteExistente);
+  }
+
+    getAll(){
+      return this.memoria.mostrar()
+    }
+}
+
+
+class ServicioPrestamo {
+  // ACA EN ESTA CLASE VAMOS A ESCRIBIR PARA LOS PRESTAMOS Y DEVOLUCIONES, VER QUE LIBROS HAY DISPONIBLES Y CUALES NO
+}
+
 //---------------------------------------
-const estudiante = new Cliente<Estudiante>
-const profesor = new Cliente<Profesor>
+// PROBANDO POR LOS ESTUDIANTES
+const repositorioestudiante = new RepositoriodeMemoria<Estudiante>
+const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
 
+servicioestudiante.register("Sara","1132456789","11")
+servicioestudiante.register("Laura","12356789","11")
+
+servicioestudiante.delete("12356789")
+console.log(servicioestudiante.getAll())
+
+
+//PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
 //const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
-
 //const serviciolibro = new ServicioLibro(repositoriobiblioteca)
-//serviciolibro.register(1, "IT", "Sthephen King")
+
+//serviciolibro.register("1", "IT", "Sthephen King")
 //console.log(repositoriobiblioteca.mostrar())
 
-//serviciolibro.update(1, "IT (Edición Especial)", "Stephen King")
+
+
+
+
+//YA SE PUEDE ELMINAR POR ID
+//serviciolibro.delete("1")
+//console.log(repositoriobiblioteca.mostrar())
+
+// ESTAMOS BUSCANDO ACTUALIZAR POR EL ID
+//serviciolibro.update("1", "IT (Edición Especial)", "Stephen King")
 //console.log(serviciolibro.getAll())
 
-const repoLibros = new RepositoriodeMemoria<Libro>();
-
-repoLibros.guardar({
-  id: 1,
-  titulo: "IT",
-  autor: "Stephen King",
-  disponible: true
-});
-
-repoLibros.actualizar(
-  libro => libro.id === 1,
-  {
-    id: 1,
-    titulo: "IT (Edición Especial)",
-    autor: "Stephen King",
-    disponible: true
-  }
-);
-
-console.log(repoLibros.mostrar());
-
-//serviciolibro.delete(1)
-//console.log(repositoriobiblioteca.mostrar())
 
 
-//repositoriobiblioteca.guardar(libro1)
-//console.log(repositoriobiblioteca.mostrar())
 
 // ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO
 
@@ -203,6 +233,13 @@ console.log(repoLibros.mostrar());
     
 
 //    }
+
+// actualizar(criterio: (item: T) => boolean, nuevo: T): void {
+//     const index = this.memoria.findIndex(criterio);
+
+//     if (index !== -1) {
+//       this.memoria[index] = nuevo;}
+//       }
 
 
 // const libro1: Libro = {
