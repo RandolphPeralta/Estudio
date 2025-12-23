@@ -34,13 +34,12 @@ var RepositoriodeMemoria = /** @class */ (function () {
         var index = this.memoria.findIndex(function (item) { return item.id === some; });
         if (index !== -1) {
             this.memoria.splice(index, 1);
-            console.log("Eliminado");
         }
     };
-    RepositoriodeMemoria.prototype.actualizar = function (some) {
-        var index = this.memoria.findIndex(function (i) { return i === some; });
+    RepositoriodeMemoria.prototype.actualizar = function (criterio, nuevo) {
+        var index = this.memoria.findIndex(criterio);
         if (index !== -1) {
-            this.memoria[index] = some;
+            this.memoria[index] = nuevo;
         }
     };
     RepositoriodeMemoria.prototype.mostrar = function () {
@@ -65,6 +64,15 @@ var ServicioLibro = /** @class */ (function () {
     ServicioLibro.prototype.delete = function (id) {
         this.memoria.eliminar(id);
     };
+    ServicioLibro.prototype.update = function (id, titulo, autor) {
+        var libro = {
+            id: id,
+            titulo: titulo,
+            autor: autor,
+            disponible: true
+        };
+        this.memoria.actualizar(id, libro);
+    };
     ServicioLibro.prototype.getAll = function () {
         this.memoria.mostrar();
     };
@@ -73,12 +81,28 @@ var ServicioLibro = /** @class */ (function () {
 //---------------------------------------
 var estudiante = new Cliente;
 var profesor = new Cliente;
-var repositoriobiblioteca = new RepositoriodeMemoria;
-var serviciolibro = new ServicioLibro(repositoriobiblioteca);
-serviciolibro.register(1, "IT", "Sthephen King");
-console.log(repositoriobiblioteca.mostrar());
-serviciolibro.delete(1);
-console.log(repositoriobiblioteca.mostrar());
+//const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
+//const serviciolibro = new ServicioLibro(repositoriobiblioteca)
+//serviciolibro.register(1, "IT", "Sthephen King")
+//console.log(repositoriobiblioteca.mostrar())
+//serviciolibro.update(1, "IT (Edición Especial)", "Stephen King")
+//console.log(serviciolibro.getAll())
+var repoLibros = new RepositoriodeMemoria();
+repoLibros.guardar({
+    id: 1,
+    titulo: "IT",
+    autor: "Stephen King",
+    disponible: true
+});
+repoLibros.actualizar(function (libro) { return libro.id === 1; }, {
+    id: 1,
+    titulo: "IT (Edición Especial)",
+    autor: "Stephen King",
+    disponible: true
+});
+console.log(repoLibros.mostrar());
+//serviciolibro.delete(1)
+//console.log(repositoriobiblioteca.mostrar())
 //repositoriobiblioteca.guardar(libro1)
 //console.log(repositoriobiblioteca.mostrar())
 // ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO

@@ -15,9 +15,9 @@ interface IPrestamo<T> {
 }
 
 interface IAccionMemoria<T>{
-    guardar(some: any): void;
-    eliminar(some: any): void;
-    actualizar(some: any): void;
+    guardar(some: T): void;
+    eliminar(some: T): void;
+    actualizar(id: any, some: T): void;
     //Mostrar(): T[]
 }
 
@@ -60,17 +60,18 @@ class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
 
       if (index !== -1) {
         this.memoria.splice(index, 1);
-      }
-}
+      }}
 
-    actualizar(some: any){
-        const index = this.memoria.findIndex(i => i === some);
-        if (index !== -1) {
-            this.memoria[index] = some;}}
+    actualizar(criterio: (item: T) => boolean, nuevo: T): void {
+    const index = this.memoria.findIndex(criterio);
+
+    if (index !== -1) {
+      this.memoria[index] = nuevo;}
+      }
 
     mostrar(){
         return this.memoria
-    }
+      }
 }
 
 type Libro = {
@@ -110,6 +111,16 @@ class ServicioLibro{
       this.memoria.eliminar(id)
     }
 
+    update(id: any, titulo:string, autor: string): void{
+      const libro: Libro = {
+        id,
+        titulo,
+        autor,
+        disponible: true
+      }
+      this.memoria.actualizar(id, libro)
+    }
+
     getAll(){
       this.memoria.mostrar()
     }
@@ -120,14 +131,38 @@ class ServicioLibro{
 const estudiante = new Cliente<Estudiante>
 const profesor = new Cliente<Profesor>
 
-const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
+//const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
 
-const serviciolibro = new ServicioLibro(repositoriobiblioteca)
-serviciolibro.register(1, "IT", "Sthephen King")
-console.log(repositoriobiblioteca.mostrar())
+//const serviciolibro = new ServicioLibro(repositoriobiblioteca)
+//serviciolibro.register(1, "IT", "Sthephen King")
+//console.log(repositoriobiblioteca.mostrar())
 
-serviciolibro.delete(1)
-console.log(repositoriobiblioteca.mostrar())
+//serviciolibro.update(1, "IT (Edición Especial)", "Stephen King")
+//console.log(serviciolibro.getAll())
+
+const repoLibros = new RepositoriodeMemoria<Libro>();
+
+repoLibros.guardar({
+  id: 1,
+  titulo: "IT",
+  autor: "Stephen King",
+  disponible: true
+});
+
+repoLibros.actualizar(
+  libro => libro.id === 1,
+  {
+    id: 1,
+    titulo: "IT (Edición Especial)",
+    autor: "Stephen King",
+    disponible: true
+  }
+);
+
+console.log(repoLibros.mostrar());
+
+//serviciolibro.delete(1)
+//console.log(repositoriobiblioteca.mostrar())
 
 
 //repositoriobiblioteca.guardar(libro1)
