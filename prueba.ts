@@ -5,6 +5,9 @@
 // Que ingrese para registrar estudiante, para prestar, devolver
 // O para manejar el INVENTARIO
 
+import * as promptSync from "prompt-sync";
+const prompt = (promptSync as any)();
+
 interface IAccionMemoria<T>{
     guardar(some: T): void;
     eliminar(id: T): void;
@@ -209,16 +212,22 @@ class MenuAccion {
 
       case MenuOpcion.ACTUALIZAR_ESTUDIANTE:
         this.actualizarEstudiante()
+        break;
 
       case MenuOpcion.REGISTRAR_LIBRO:
         this.registrarLibro();
         break;
       
       case MenuOpcion.ELIMINAR_LIBRO:
+        this.elmiminarLibro();
+        break
 
       case MenuOpcion.VER_LIBROS:
         console.log(this.servicioLibro.getAll());
         break;
+      
+      case MenuOpcion.ACTUALIZAR_LIBRO:
+
 
       case MenuOpcion.PRESTAR_LIBRO:
         this.prestarLibro();
@@ -273,17 +282,26 @@ class MenuAccion {
     console.log("Libro registrado");
   }
 
+  private elmiminarLibro(){
+    const idLibro = String(prompt("ID Libro: "));
+    this.servicioLibro.delete(idLibro)
+  }
+
+  private actualizarlibro(){
+    const id = String(prompt("ID Libro: "));
+    const titulo = String(prompt("Título: "));
+    const autor = String(prompt("Autor: "));
+
+    this.servicioLibro.update(id, titulo, autor);
+    console.log("Libro actualizado");
+  }
+
   private prestarLibro() {
     const idLibro = String(prompt("ID Libro: "));
     const idEstudiante = String(prompt("ID Estudiante: "));
 
     const ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
     console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
-  }
-
-  private elmiminarLibro(){
-    const idLibro = String(prompt("ID Libro: "));
-    this.servicioLibro.delete(idLibro)
   }
 
   private devolverLibro() {
@@ -298,9 +316,29 @@ class ConsoleView{
     console.log("Bienvenido al Sistema de Biblioteca que desea:")
     console.log("\n1. Registrar Estudiante,\n2. Eliminar Estudiante,\n3. Ver Estudiantes,\n4. Actualizar Estudiante")
     console.log("\n5. Registrar Libro,\n6. Eliminar Libro,\n7. Ver Libros,\n8. Actualizar Libros")
-    console.log("\n9. Prestar Libro\n10. Devolver Libro")
+    console.log("\n9. Prestar Libro\n10. Devolver Libro\n0. Salir")
   }
 }
+
+const repoLibro = new RepositoriodeMemoria<Libro>();
+const repoEstudiante = new RepositoriodeMemoria<Estudiante>();
+
+const servicioLibro = new ServicioLibro(repoLibro);
+const servicioCliente = new ServicioEstudiante(repoEstudiante);
+
+const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
+
+const view = new ConsoleView();
+const menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
+
+let continuar = true;
+
+while (continuar) {
+  view.mensaje();
+  const opcion = Number(prompt("Seleccione opción: "));
+  continuar = menu.ejecutar(opcion);
+}
+
 
 //--------------------------------
 //PROBANDO LOS PRESTAMOS

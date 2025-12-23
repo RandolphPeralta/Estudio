@@ -1,4 +1,12 @@
+"use strict";
 // Praticar la abstracion de como realizar un sistema de prestamos en la repositoriobiblioteca
+Object.defineProperty(exports, "__esModule", { value: true });
+// Escribiendo el programa
+// Quiero un programa de sistema de gestion de repositoriobiblioteca
+// Que ingrese para registrar estudiante, para prestar, devolver
+// O para manejar el INVENTARIO
+var promptSync = require("prompt-sync");
+var prompt = promptSync();
 var RepositoriodeMemoria = /** @class */ (function () {
     function RepositoriodeMemoria() {
         this.memoria = [];
@@ -23,7 +31,6 @@ var RepositoriodeMemoria = /** @class */ (function () {
     };
     return RepositoriodeMemoria;
 }());
-// ESTA CLASE ES PARA EL INVENTARIO DE LOS LIBROS
 var ServicioLibro = /** @class */ (function () {
     function ServicioLibro(memoria) {
         this.memoria = memoria;
@@ -80,24 +87,24 @@ var ServicioEstudiante = /** @class */ (function () {
     return ServicioEstudiante;
 }());
 var ServicioPrestamo = /** @class */ (function () {
-    function ServicioPrestamo(servicioLibro, servicioEstudiante) {
+    function ServicioPrestamo(servicioLibro, servicioCliente) {
         this.servicioLibro = servicioLibro;
-        this.servicioEstudiante = servicioEstudiante;
+        this.servicioCliente = servicioCliente;
         this.prestamos = [];
     }
-    ServicioPrestamo.prototype.prestarLibro = function (idLibro, idEstudiante) {
+    ServicioPrestamo.prototype.prestarLibro = function (idLibro, idCliente) {
         var libros = this.servicioLibro.getAll();
-        var estudiantes = this.servicioEstudiante.getAll();
+        var clientes = this.servicioCliente.getAll();
         var libro = libros.find(function (l) { return l.id === idLibro; });
         if (!libro || !libro.disponible)
             return false;
-        var estudiante = estudiantes.find(function (e) { return e.id === idEstudiante; });
-        if (!estudiante)
+        var cliente = clientes.find(function (e) { return e.id === idCliente; });
+        if (!cliente)
             return false;
         libro.disponible = false;
         this.prestamos.push({
             idLibro: idLibro,
-            idEstudiante: idEstudiante
+            idCliente: idCliente
         });
         return true;
     };
@@ -118,6 +125,116 @@ var ServicioPrestamo = /** @class */ (function () {
     };
     return ServicioPrestamo;
 }());
+var MenuOpcion = /** @class */ (function () {
+    function MenuOpcion() {
+    }
+    MenuOpcion.REGISTRAR_ESTUDIANTE = 1;
+    MenuOpcion.ELIMINAR_ESTUDIANTE = 2;
+    MenuOpcion.VER_ESTUDIANTES = 3;
+    MenuOpcion.ACTUALIZAR_ESTUDIANTE = 4;
+    MenuOpcion.REGISTRAR_LIBRO = 5;
+    MenuOpcion.ELIMINAR_LIBRO = 6;
+    MenuOpcion.VER_LIBROS = 7;
+    MenuOpcion.ACTUALIZAR_LIBRO = 8;
+    MenuOpcion.PRESTAR_LIBRO = 9;
+    MenuOpcion.DEVOLVER_LIBRO = 10;
+    MenuOpcion.SALIR = 0;
+    return MenuOpcion;
+}());
+var MenuAccion = /** @class */ (function () {
+    function MenuAccion(servicioCliente, servicioLibro, servicioPrestamo) {
+        this.servicioCliente = servicioCliente;
+        this.servicioLibro = servicioLibro;
+        this.servicioPrestamo = servicioPrestamo;
+    }
+    MenuAccion.prototype.ejecutar = function (opcion) {
+        switch (opcion) {
+            case MenuOpcion.REGISTRAR_ESTUDIANTE:
+                this.registrarEstudiante();
+                break;
+            case MenuOpcion.ELIMINAR_ESTUDIANTE:
+                this.eliminarEstudiante();
+            case MenuOpcion.VER_ESTUDIANTES:
+                console.log(this.servicioCliente.getAll());
+                break;
+            case MenuOpcion.ACTUALIZAR_ESTUDIANTE:
+                this.actualizarEstudiante();
+                break;
+            case MenuOpcion.REGISTRAR_LIBRO:
+                this.registrarLibro();
+                break;
+            case MenuOpcion.ELIMINAR_LIBRO:
+                this.elmiminarLibro();
+                break;
+            case MenuOpcion.VER_LIBROS:
+                console.log(this.servicioLibro.getAll());
+                break;
+            case MenuOpcion.ACTUALIZAR_LIBRO:
+            case MenuOpcion.PRESTAR_LIBRO:
+                this.prestarLibro();
+                break;
+            case MenuOpcion.DEVOLVER_LIBRO:
+                this.devolverLibro();
+                break;
+            case MenuOpcion.SALIR:
+                return false;
+            default:
+                console.log("Opción inválida");
+        }
+        return true;
+    };
+    MenuAccion.prototype.registrarEstudiante = function () {
+        var id = String(prompt("ID: "));
+        var nombre = String(prompt("Nombre: "));
+        var identificacion = String(prompt("Identificación: "));
+        var grado = String(prompt("Grado: "));
+        this.servicioCliente.register(id, nombre, identificacion, grado);
+        console.log("Estudiante registrado");
+    };
+    MenuAccion.prototype.eliminarEstudiante = function () {
+        var id = String(prompt("ID: "));
+        this.servicioCliente.delete(id);
+        console.log("Estudiante Eliminado");
+    };
+    MenuAccion.prototype.actualizarEstudiante = function () {
+        var id = String(prompt("ID: "));
+        var nombre = String(prompt("Nombre: "));
+        var identificacion = String(prompt("Identificación: "));
+        var grado = String(prompt("Grado: "));
+        this.servicioCliente.update(id, nombre, identificacion, grado);
+        console.log("Estudiante actualizado");
+    };
+    MenuAccion.prototype.registrarLibro = function () {
+        var id = String(prompt("ID Libro: "));
+        var titulo = String(prompt("Título: "));
+        var autor = String(prompt("Autor: "));
+        this.servicioLibro.register(id, titulo, autor);
+        console.log("Libro registrado");
+    };
+    MenuAccion.prototype.elmiminarLibro = function () {
+        var idLibro = String(prompt("ID Libro: "));
+        this.servicioLibro.delete(idLibro);
+    };
+    MenuAccion.prototype.actualizarlibro = function () {
+        var id = String(prompt("ID Libro: "));
+        var titulo = String(prompt("Título: "));
+        var autor = String(prompt("Autor: "));
+        this.servicioLibro.update(id, titulo, autor);
+        console.log("Libro actualizado");
+    };
+    MenuAccion.prototype.prestarLibro = function () {
+        var idLibro = String(prompt("ID Libro: "));
+        var idEstudiante = String(prompt("ID Estudiante: "));
+        var ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
+        console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
+    };
+    MenuAccion.prototype.devolverLibro = function () {
+        var idLibro = String(prompt("ID Libro: "));
+        var ok = this.servicioPrestamo.devolverLibro(idLibro);
+        console.log(ok ? "Libro devuelto" : "No se pudo devolver");
+    };
+    return MenuAccion;
+}());
 var ConsoleView = /** @class */ (function () {
     function ConsoleView() {
     }
@@ -129,18 +246,29 @@ var ConsoleView = /** @class */ (function () {
     };
     return ConsoleView;
 }());
-var consola = new ConsoleView();
-consola.mensaje();
+var repoLibro = new RepositoriodeMemoria();
+var repoEstudiante = new RepositoriodeMemoria();
+var servicioLibro = new ServicioLibro(repoLibro);
+var servicioCliente = new ServicioEstudiante(repoEstudiante);
+var servicioPrestamo = new ServicioPrestamo(servicioLibro, servicioCliente);
+var view = new ConsoleView();
+var menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
+var continuar = true;
+while (continuar) {
+    view.mensaje();
+    var opcion = Number(prompt("Seleccione opción: "));
+    continuar = menu.ejecutar(opcion);
+}
 //--------------------------------
 //PROBANDO LOS PRESTAMOS
 // const repoLibro = new RepositoriodeMemoria<Libro>();
 // const repoEstudiante = new RepositoriodeMemoria<Estudiante>();
 // const servicioLibro = new ServicioLibro(repoLibro);
-// const servicioEstudiante = new ServicioEstudiante(repoEstudiante);
-// const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioEstudiante);
+// const servicioCliente = new ServicioEstudiante(repoEstudiante);
+// const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
 // servicioLibro.register("L1", "1984", "Orwell");
 // servicioLibro.register("L2", "Harry Potter", "J. K. Rowling")
-// servicioEstudiante.register("E1", "Juan", "123", "11");
+// servicioCliente.register("E1", "Juan", "123", "11");
 // // SI SE PUEDE PRESTAR
 // console.log(servicioPrestamo.prestarLibro("L1", "E1")); // true
 // console.log(servicioPrestamo.prestarLibro("L2", "E1")); // TRUE
