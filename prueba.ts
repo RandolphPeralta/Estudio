@@ -1,28 +1,27 @@
-// Praticar la abstracion de como realizar un sistema de prestamos en la biblioteca
+// Praticar la abstracion de como realizar un sistema de prestamos en la repositoriobiblioteca
 
 // Escribiendo el programa
-// Quiero un programa de sistema de gestion de biblioteca
-// Que primero me registre en el programa
-// Que ingrese si soy estudiante, para prestar, devolver
-// O para manejar el inventario de la biblioteca
+// Quiero un programa de sistema de gestion de repositoriobiblioteca
+// Que ingrese para registrar estudiante, para prestar, devolver
+// O para manejar el inventario de la repositoriobiblioteca
 
 interface IRegistro<T> {
-  registro(data: T): boolean;
+  registro(data: any): boolean;
 }
 
-interface IAcciones<T> {
-  prestar(veces: number, data: T): boolean;
-  devolver(data: T): void;
+interface IPrestamo<T> {
+  prestar(veces: number, data: any): boolean;
+  devolver(data: any): void;
 }
 
-interface AccionMemoria<T>{
-    guardar(some: T): void;
-    eliminar(some:T): void;
-    actualizar(some: T): void;
+interface IAccionMemoria<T>{
+    guardar(some: any): void;
+    eliminar(some: any): void;
+    actualizar(some: any): void;
     //Mostrar(): T[]
 }
 
-class Usuario<T> implements IAcciones<T>, IRegistro<T> {
+class Cliente<T> implements IPrestamo<T>, IRegistro<T> {
    private informacion: Array<any> = []
    public prestamos: Array<any> = [];
 
@@ -47,19 +46,24 @@ class Usuario<T> implements IAcciones<T>, IRegistro<T> {
    }
 }
 
-class RepositoriodeMemoria<T> implements AccionMemoria<T>{
+class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
     private memoria: T[] = []
 
-    guardar(some: T) {
+    guardar(some: any) {
         this.memoria.push(some)
     }
 
-    eliminar(some: T){
-        const index = this.memoria.indexOf(some);
-        if (index !== -1) {this.memoria.splice(index, 1);}
-    }
+    eliminar(some: any) {
+      const index = this.memoria.findIndex(
+        (item: any) => item.id === some
+          );
 
-    actualizar(some: T){
+      if (index !== -1) {
+        this.memoria.splice(index, 1);
+      }
+}
+
+    actualizar(some: any){
         const index = this.memoria.findIndex(i => i === some);
         if (index !== -1) {
             this.memoria[index] = some;}}
@@ -67,7 +71,6 @@ class RepositoriodeMemoria<T> implements AccionMemoria<T>{
     mostrar(){
         return this.memoria
     }
-
 }
 
 type Libro = {
@@ -90,65 +93,45 @@ type Profesor = {
 }
 
 class ServicioLibro{
-    constructor(private memoria: AccionMemoria<Libro>){}
+    constructor(private memoria: RepositoriodeMemoria<Libro>){}
     
-    register(id: number, titulo: string, autor: string): void {
+    register(id: number, titulo: string, autor: string): Libro {
       const libro: Libro = {
         id,
         titulo,
         autor,
         disponible: true
       }
+      this.memoria.guardar(libro)
+      return libro
+    }
+
+    delete(id: number): void{
+      this.memoria.eliminar(id)
+    }
+
+    getAll(){
+      this.memoria.mostrar()
     }
 }
 
 
 //---------------------------------------
-const estudiante = new Usuario<Estudiante>
-const profesor = new Usuario<Profesor>
+const estudiante = new Cliente<Estudiante>
+const profesor = new Cliente<Profesor>
 
-const libro1: Libro = {
-  id: 1,
-  titulo: "Juego de tronos",
-  autor: "George R.R Martin",
-  disponible: true
-}
+const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
 
-const libro2: Libro = {
-  id: 2,
-  titulo: "Harry Potter",
-  autor: "J. K. Rowling",
-  disponible: true
-}
+const serviciolibro = new ServicioLibro(repositoriobiblioteca)
+serviciolibro.register(1, "IT", "Sthephen King")
+console.log(repositoriobiblioteca.mostrar())
 
-const libro3: Libro = {
-  id: 3,
-  titulo: "Don Quijote",
-  autor: "Cervantes",
-  disponible: true
-}
-
-const libro4: Libro = {
-  id: 4,
-  titulo: "Cien años de soledad",
-  autor: "Gabriel García Márquez",
-  disponible: true
-}
-
-const libro5: Libro = {
-  id: 5,
-  titulo: "Orgullo y prejuicio",
-  autor: "Jane Austen",
-  disponible: true
-}
+serviciolibro.delete(1)
+console.log(repositoriobiblioteca.mostrar())
 
 
-//   reservar<T>(data: T): void {
-//     if (this.reservas.length <= 2) {
-//       this.reservas.push(data);
-//     }
-//   }
-// }
+//repositoriobiblioteca.guardar(libro1)
+//console.log(repositoriobiblioteca.mostrar())
 
 // ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO
 
@@ -185,3 +168,42 @@ const libro5: Libro = {
     
 
 //    }
+
+
+// const libro1: Libro = {
+//   id: 1,
+//   titulo: "Juego de tronos",
+//   autor: "George R.R Martin",
+//   disponible: true
+// }
+
+// const libro2: Libro = {
+//   id: 2,
+//   titulo: "Harry Potter",
+//   autor: "J. K. Rowling",
+//   disponible: true
+// }
+
+// const libro3: Libro = {
+//   id: 3,
+//   titulo: "Don Quijote",
+//   autor: "Cervantes",
+//   disponible: true
+// }
+
+// const libro4: Libro = {
+//   id: 4,
+//   titulo: "Cien años de soledad",
+//   autor: "Gabriel García Márquez",
+//   disponible: true
+// }
+
+// const libro5: Libro = {
+//   id: 5,
+//   titulo: "Orgullo y prejuicio",
+//   autor: "Jane Austen",
+//   disponible: true
+// }
+
+// const Libros = [libro1, libro2, libro3, libro4, libro5]
+
