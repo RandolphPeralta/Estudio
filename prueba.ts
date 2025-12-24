@@ -15,7 +15,7 @@ interface IAccionMemoria<T>{
     mostrar(): T[]
 }
 
-class RepositoriodeMemoria<T> implements IAccionMemoria<T>{
+class MemoriaCRUD<T> implements IAccionMemoria<T>{
     private memoria: T[] = []
 
     guardar<T>(some: any) {
@@ -59,7 +59,7 @@ type Estudiante = {
 }
 
 class ServicioLibro{
-    constructor(private memoria: RepositoriodeMemoria<Libro>){}
+    constructor(private memoria: MemoriaCRUD<Libro>){}
     
     register(id: string, titulo: string, autor: string): Libro {
       const libro: Libro = {id,titulo,autor,disponible: true}
@@ -91,7 +91,7 @@ class ServicioLibro{
 }
 
 class ServicioEstudiante {
-  constructor(private memoria: RepositoriodeMemoria<Estudiante>){}
+  constructor(private memoria: MemoriaCRUD<Estudiante>){}
 
   register(id: string, nombre: string, identificacion: string, grado: string): Estudiante {
       const estudiante: Estudiante = {id, nombre,identificacion,grado}
@@ -136,10 +136,12 @@ class ServicioPrestamo {
   const clientes = this.servicioCliente.getAll();
 
   const libro = libros.find(l => l.id === idLibro);
-  if (!libro || !libro.disponible) return false;
+  if (!libro || !libro.disponible) 
+    return false;
 
   const cliente = clientes.find(e => e.id === idCliente);
-  if (!cliente) return false;
+  if (!cliente) 
+    return false;
 
   libro.disponible = false
 
@@ -227,7 +229,7 @@ class MenuAccion {
         break;
       
       case MenuOpcion.ACTUALIZAR_LIBRO:
-
+        this.actualizarlibro();
 
       case MenuOpcion.PRESTAR_LIBRO:
         this.prestarLibro();
@@ -320,8 +322,21 @@ class ConsoleView{
   }
 }
 
-const repoLibro = new RepositoriodeMemoria<Libro>();
-const repoEstudiante = new RepositoriodeMemoria<Estudiante>();
+class App{
+  run(): void{
+  
+  let continuar = true;
+
+  while (continuar) {
+    view.mensaje();
+    const opcion = Number(prompt("Seleccione opción: "));
+    continuar = menu.ejecutar(opcion);
+    }
+  }
+}
+
+const repoLibro = new MemoriaCRUD<Libro>();
+const repoEstudiante = new MemoriaCRUD<Estudiante>();
 
 const servicioLibro = new ServicioLibro(repoLibro);
 const servicioCliente = new ServicioEstudiante(repoEstudiante);
@@ -331,20 +346,15 @@ const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
 const view = new ConsoleView();
 const menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
 
-let continuar = true;
-
-while (continuar) {
-  view.mensaje();
-  const opcion = Number(prompt("Seleccione opción: "));
-  continuar = menu.ejecutar(opcion);
-}
+const app = new App()
+app.run()
 
 
 //--------------------------------
 //PROBANDO LOS PRESTAMOS
 
-// const repoLibro = new RepositoriodeMemoria<Libro>();
-// const repoEstudiante = new RepositoriodeMemoria<Estudiante>();
+// const repoLibro = new MemoriaCRUD<Libro>();
+// const repoEstudiante = new MemoriaCRUD<Estudiante>();
 
 // const servicioLibro = new ServicioLibro(repoLibro);
 // const servicioCliente = new ServicioEstudiante(repoEstudiante);
@@ -365,7 +375,7 @@ while (continuar) {
 
 //---------------------------------------
 // PROBANDO POR LOS ESTUDIANTES
-//const repositorioestudiante = new RepositoriodeMemoria<Estudiante>
+//const repositorioestudiante = new MemoriaCRUD<Estudiante>
 //const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
 
 //servicioestudiante.register("1","Sara","1132456789","11")
@@ -381,7 +391,7 @@ while (continuar) {
 
 //-----------------------------------------
 //PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
-//const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
+//const repositoriobiblioteca = new MemoriaCRUD<Libro>
 //const serviciolibro = new ServicioLibro(repositoriobiblioteca)
 
 // YA SE PUEDE REGISTRAR
@@ -403,7 +413,7 @@ while (continuar) {
 
 
 //class ServicioLibro {
-//    constructor(private memoria: RepositoriodeMemoria<Libro>)
+//    constructor(private memoria: MemoriaCRUD<Libro>)
 
 //    register(id: string, title:string, author: string) {
 //        const book = {

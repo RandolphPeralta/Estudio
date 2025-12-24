@@ -7,29 +7,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // O para manejar el INVENTARIO
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
-var RepositoriodeMemoria = /** @class */ (function () {
-    function RepositoriodeMemoria() {
+var MemoriaCRUD = /** @class */ (function () {
+    function MemoriaCRUD() {
         this.memoria = [];
     }
-    RepositoriodeMemoria.prototype.guardar = function (some) {
+    MemoriaCRUD.prototype.guardar = function (some) {
         this.memoria.push(some);
     };
-    RepositoriodeMemoria.prototype.eliminar = function (id) {
+    MemoriaCRUD.prototype.eliminar = function (id) {
         var index = this.memoria.findIndex(function (item) { return item.id === id; });
         if (index !== -1) {
             this.memoria.splice(index, 1);
         }
     };
-    RepositoriodeMemoria.prototype.actualizar = function (some) {
+    MemoriaCRUD.prototype.actualizar = function (some) {
         var index = this.memoria.findIndex(function (i) { return i === some; });
         if (index !== -1) {
             this.memoria[index] = some;
         }
     };
-    RepositoriodeMemoria.prototype.mostrar = function () {
+    MemoriaCRUD.prototype.mostrar = function () {
         return this.memoria;
     };
-    return RepositoriodeMemoria;
+    return MemoriaCRUD;
 }());
 var ServicioLibro = /** @class */ (function () {
     function ServicioLibro(memoria) {
@@ -170,6 +170,7 @@ var MenuAccion = /** @class */ (function () {
                 console.log(this.servicioLibro.getAll());
                 break;
             case MenuOpcion.ACTUALIZAR_LIBRO:
+                this.actualizarlibro();
             case MenuOpcion.PRESTAR_LIBRO:
                 this.prestarLibro();
                 break;
@@ -242,27 +243,36 @@ var ConsoleView = /** @class */ (function () {
         console.log("Bienvenido al Sistema de Biblioteca que desea:");
         console.log("\n1. Registrar Estudiante,\n2. Eliminar Estudiante,\n3. Ver Estudiantes,\n4. Actualizar Estudiante");
         console.log("\n5. Registrar Libro,\n6. Eliminar Libro,\n7. Ver Libros,\n8. Actualizar Libros");
-        console.log("\n9. Prestar Libro\n10. Devolver Libro");
+        console.log("\n9. Prestar Libro\n10. Devolver Libro\n0. Salir");
     };
     return ConsoleView;
 }());
-var repoLibro = new RepositoriodeMemoria();
-var repoEstudiante = new RepositoriodeMemoria();
+var repoLibro = new MemoriaCRUD();
+var repoEstudiante = new MemoriaCRUD();
 var servicioLibro = new ServicioLibro(repoLibro);
 var servicioCliente = new ServicioEstudiante(repoEstudiante);
 var servicioPrestamo = new ServicioPrestamo(servicioLibro, servicioCliente);
 var view = new ConsoleView();
 var menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
-var continuar = true;
-while (continuar) {
-    view.mensaje();
-    var opcion = Number(prompt("Seleccione opción: "));
-    continuar = menu.ejecutar(opcion);
-}
+var App = /** @class */ (function () {
+    function App() {
+    }
+    App.prototype.run = function () {
+        var continuar = true;
+        while (continuar) {
+            view.mensaje();
+            var opcion = Number(prompt("Seleccione opción: "));
+            continuar = menu.ejecutar(opcion);
+        }
+    };
+    return App;
+}());
+var app = new App();
+app.run();
 //--------------------------------
 //PROBANDO LOS PRESTAMOS
-// const repoLibro = new RepositoriodeMemoria<Libro>();
-// const repoEstudiante = new RepositoriodeMemoria<Estudiante>();
+// const repoLibro = new MemoriaCRUD<Libro>();
+// const repoEstudiante = new MemoriaCRUD<Estudiante>();
 // const servicioLibro = new ServicioLibro(repoLibro);
 // const servicioCliente = new ServicioEstudiante(repoEstudiante);
 // const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
@@ -276,7 +286,7 @@ while (continuar) {
 // console.log(servicioPrestamo.getAll());
 //---------------------------------------
 // PROBANDO POR LOS ESTUDIANTES
-//const repositorioestudiante = new RepositoriodeMemoria<Estudiante>
+//const repositorioestudiante = new MemoriaCRUD<Estudiante>
 //const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
 //servicioestudiante.register("1","Sara","1132456789","11")
 //servicioestudiante.register("2","Laura","12356789","11")
@@ -288,7 +298,7 @@ while (continuar) {
 //console.log(servicioestudiante.getAll())
 //-----------------------------------------
 //PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
-//const repositoriobiblioteca = new RepositoriodeMemoria<Libro>
+//const repositoriobiblioteca = new MemoriaCRUD<Libro>
 //const serviciolibro = new ServicioLibro(repositoriobiblioteca)
 // YA SE PUEDE REGISTRAR
 //serviciolibro.register("1", "IT", "Sthephen King")
@@ -301,7 +311,7 @@ while (continuar) {
 //console.log(serviciolibro.getAll())
 // ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO
 //class ServicioLibro {
-//    constructor(private memoria: RepositoriodeMemoria<Libro>)
+//    constructor(private memoria: MemoriaCRUD<Libro>)
 //    register(id: string, title:string, author: string) {
 //        const book = {
 //            id,
