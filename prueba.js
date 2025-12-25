@@ -247,13 +247,6 @@ var ConsoleView = /** @class */ (function () {
     };
     return ConsoleView;
 }());
-var repoLibro = new MemoriaCRUD();
-var repoEstudiante = new MemoriaCRUD();
-var servicioLibro = new ServicioLibro(repoLibro);
-var servicioCliente = new ServicioEstudiante(repoEstudiante);
-var servicioPrestamo = new ServicioPrestamo(servicioLibro, servicioCliente);
-var view = new ConsoleView();
-var menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
 var App = /** @class */ (function () {
     function App() {
     }
@@ -267,6 +260,13 @@ var App = /** @class */ (function () {
     };
     return App;
 }());
+var repoLibro = new MemoriaCRUD();
+var repoEstudiante = new MemoriaCRUD();
+var servicioLibro = new ServicioLibro(repoLibro);
+var servicioCliente = new ServicioEstudiante(repoEstudiante);
+var servicioPrestamo = new ServicioPrestamo(servicioLibro, servicioCliente);
+var view = new ConsoleView();
+var menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
 var app = new App();
 app.run();
 //--------------------------------

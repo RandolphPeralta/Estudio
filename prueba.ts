@@ -156,12 +156,14 @@ class ServicioPrestamo {
   devolverLibro(idLibro: string): boolean {
   const prestamoIndex = this.prestamos.findIndex(p => p.idLibro === idLibro);
 
-  if (prestamoIndex === -1) return false;
+  if (prestamoIndex === -1) 
+    return false;
 
   const libros = this.servicioLibro.getAll();
   const libro = libros.find(l => l.id === idLibro);
 
-  if (!libro) return false;
+  if (!libro) 
+    return false;
 
   libro.disponible = true;
   this.prestamos.splice(prestamoIndex, 1);
