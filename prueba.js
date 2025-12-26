@@ -21,10 +21,12 @@ var MemoriaCRUD = /** @class */ (function () {
         }
     };
     MemoriaCRUD.prototype.actualizar = function (some) {
-        var index = this.memoria.findIndex(function (i) { return i === some; });
-        if (index !== -1) {
-            this.memoria[index] = some;
+        var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
+        if (index === -1) {
+            return false;
         }
+        this.memoria[index] = some;
+        return true;
     };
     MemoriaCRUD.prototype.mostrar = function () {
         return this.memoria;
@@ -35,23 +37,15 @@ var ServicioLibro = /** @class */ (function () {
     function ServicioLibro(memoria) {
         this.memoria = memoria;
     }
-    ServicioLibro.prototype.register = function (id, titulo, autor) {
-        var libro = { id: id, titulo: titulo, autor: autor, disponible: true };
+    ServicioLibro.prototype.register = function (libro) {
         this.memoria.guardar(libro);
         return libro;
     };
     ServicioLibro.prototype.delete = function (id) {
         this.memoria.eliminar(id);
     };
-    ServicioLibro.prototype.update = function (id, titulo, autor) {
-        var libros = this.memoria.mostrar();
-        var libroExistente = libros.find(function (l) { return l.id === id; });
-        if (!libroExistente) {
-            return;
-        }
-        libroExistente.titulo = titulo;
-        libroExistente.autor = autor;
-        this.memoria.actualizar(libroExistente);
+    ServicioLibro.prototype.update = function (libro) {
+        return this.memoria.actualizar(libro);
     };
     ServicioLibro.prototype.getAll = function () {
         return this.memoria.mostrar();
@@ -62,8 +56,7 @@ var ServicioEstudiante = /** @class */ (function () {
     function ServicioEstudiante(memoria) {
         this.memoria = memoria;
     }
-    ServicioEstudiante.prototype.register = function (id, nombre, identificacion, grado) {
-        var estudiante = { id: id, nombre: nombre, identificacion: identificacion, grado: grado };
+    ServicioEstudiante.prototype.register = function (estudiante) {
         this.memoria.guardar(estudiante);
         return estudiante;
     };
@@ -72,7 +65,7 @@ var ServicioEstudiante = /** @class */ (function () {
     };
     ServicioEstudiante.prototype.update = function (id, nombre, identificacion, grado) {
         var estudiantes = this.memoria.mostrar();
-        var estudianteExistente = estudiantes.find(function (l) { return l.id === id; });
+        var estudianteExistente = estudiantes.find(function (estudi) { return estudi.id === id; });
         if (!estudianteExistente) {
             return;
         }
@@ -171,6 +164,7 @@ var MenuAccion = /** @class */ (function () {
                 break;
             case MenuOpcion.ACTUALIZAR_LIBRO:
                 this.actualizarlibro();
+                break;
             case MenuOpcion.PRESTAR_LIBRO:
                 this.prestarLibro();
                 break;
@@ -189,7 +183,13 @@ var MenuAccion = /** @class */ (function () {
         var nombre = String(prompt("Nombre: "));
         var identificacion = String(prompt("Identificación: "));
         var grado = String(prompt("Grado: "));
-        this.servicioCliente.register(id, nombre, identificacion, grado);
+        var estudiante = {
+            id: id,
+            nombre: nombre,
+            identificacion: identificacion,
+            grado: grado
+        };
+        this.servicioCliente.register(estudiante);
         console.log("Estudiante registrado");
     };
     MenuAccion.prototype.eliminarEstudiante = function () {
@@ -209,7 +209,13 @@ var MenuAccion = /** @class */ (function () {
         var id = String(prompt("ID Libro: "));
         var titulo = String(prompt("Título: "));
         var autor = String(prompt("Autor: "));
-        this.servicioLibro.register(id, titulo, autor);
+        var libro = {
+            id: id,
+            titulo: titulo,
+            autor: autor,
+            disponible: true
+        };
+        this.servicioLibro.register(libro);
         console.log("Libro registrado");
     };
     MenuAccion.prototype.elmiminarLibro = function () {
@@ -220,8 +226,19 @@ var MenuAccion = /** @class */ (function () {
         var id = String(prompt("ID Libro: "));
         var titulo = String(prompt("Título: "));
         var autor = String(prompt("Autor: "));
-        this.servicioLibro.update(id, titulo, autor);
-        console.log("Libro actualizado");
+        var libroexistente = {
+            id: id,
+            titulo: titulo,
+            autor: autor,
+            disponible: true
+        };
+        var actualizado = this.servicioLibro.update(libroexistente);
+        if (actualizado) {
+            console.log("Libro actualizado");
+        }
+        else {
+            console.log("No existe un libro con ese ID");
+        }
     };
     MenuAccion.prototype.prestarLibro = function () {
         var idLibro = String(prompt("ID Libro: "));

@@ -11,7 +11,7 @@ const prompt = (promptSync as any)();
 interface IAccionMemoria<T>{
     guardar(some: T): void;
     eliminar(id: T): void;
-    actualizar(some: T): void;
+    actualizar(some: T): boolean;
     mostrar(): T[]
 }
 
@@ -20,27 +20,29 @@ class MemoriaCRUD<T> implements IAccionMemoria<T>{
 
     guardar<T>(some: any) {
         this.memoria.push(some)
-    }
+        }
 
     eliminar(id: any) 
-    {
-      const index = this.memoria.findIndex(
-        (item: any) => item.id === id
-          );
+      {const index = this.memoria.findIndex((item: any) => item.id === id);
 
       if (index !== -1) {
         this.memoria.splice(index, 1);
-      }}
+          }}
 
-    actualizar(some: T): void {
-      const index = this.memoria.findIndex(i => i === some);
-      if (index !== -1) {
-        this.memoria[index] = some;}
-    }
+    actualizar(some: any): boolean {
+      const index = this.memoria.findIndex((item: any) => item.id === some.id);
+
+        if (index === -1) {
+          return false;
+        }
+
+        this.memoria[index] = some;
+        return true;
+          }
 
     mostrar(){
         return this.memoria
-      }
+        }
 }
 
 // ---------------------------------------------
@@ -61,8 +63,7 @@ type Estudiante = {
 class ServicioLibro{
     constructor(private memoria: MemoriaCRUD<Libro>){}
     
-    register(id: string, titulo: string, autor: string): Libro {
-      const libro: Libro = {id,titulo,autor,disponible: true}
+    register(libro: Libro): Libro {
       this.memoria.guardar(libro)
       return libro
     }
@@ -71,19 +72,10 @@ class ServicioLibro{
       this.memoria.eliminar(id)
     }
 
-    update(id: string, titulo: string, autor: string): void {
-    const libros = this.memoria.mostrar();
-    const libroExistente = libros.find(l => l.id === id);
-
-    if (!libroExistente) {
-      return;
+    update(libro: Libro): boolean {
+      return this.memoria.actualizar(libro);
       }
 
-    libroExistente.titulo = titulo;
-    libroExistente.autor = autor;
-
-    this.memoria.actualizar(libroExistente);
-  }
 
     getAll(){
       return this.memoria.mostrar()
@@ -93,8 +85,7 @@ class ServicioLibro{
 class ServicioEstudiante {
   constructor(private memoria: MemoriaCRUD<Estudiante>){}
 
-  register(id: string, nombre: string, identificacion: string, grado: string): Estudiante {
-      const estudiante: Estudiante = {id, nombre,identificacion,grado}
+  register(estudiante: Estudiante): Estudiante {
       this.memoria.guardar(estudiante)
       return estudiante
     }
@@ -105,7 +96,7 @@ class ServicioEstudiante {
 
   update(id: string, nombre: string, identificacion: string, grado: string): void {
     const estudiantes = this.memoria.mostrar();
-    const estudianteExistente = estudiantes.find(l => l.id === id);
+    const estudianteExistente = estudiantes.find(estudi => estudi.id === id);
 
     if (!estudianteExistente) {
       return;
@@ -232,6 +223,7 @@ class MenuAccion {
       
       case MenuOpcion.ACTUALIZAR_LIBRO:
         this.actualizarlibro();
+        break;
 
       case MenuOpcion.PRESTAR_LIBRO:
         this.prestarLibro();
@@ -257,7 +249,14 @@ class MenuAccion {
     const identificacion = String(prompt("Identificación: "));
     const grado = String(prompt("Grado: "));
 
-    this.servicioCliente.register(id, nombre, identificacion, grado);
+    const estudiante: Estudiante = {
+      id: id,
+      nombre: nombre,
+      identificacion: identificacion,
+      grado: grado
+    }
+    
+    this.servicioCliente.register(estudiante);
     console.log("Estudiante registrado");
   }
 
@@ -282,7 +281,14 @@ class MenuAccion {
     const titulo = String(prompt("Título: "));
     const autor = String(prompt("Autor: "));
 
-    this.servicioLibro.register(id, titulo, autor);
+    const libro: Libro = {
+      id: id,
+      titulo: titulo,
+      autor: autor,
+      disponible: true
+    }
+
+    this.servicioLibro.register(libro);
     console.log("Libro registrado");
   }
 
@@ -291,13 +297,25 @@ class MenuAccion {
     this.servicioLibro.delete(idLibro)
   }
 
-  private actualizarlibro(){
-    const id = String(prompt("ID Libro: "));
-    const titulo = String(prompt("Título: "));
-    const autor = String(prompt("Autor: "));
+  private actualizarlibro() {
+  const id = String(prompt("ID Libro: "));
+  const titulo = String(prompt("Título: "));
+  const autor = String(prompt("Autor: "));
 
-    this.servicioLibro.update(id, titulo, autor);
+  const libroexistente: Libro = {
+    id: id,
+    titulo: titulo,
+    autor: autor,
+    disponible: true
+  };
+
+  const actualizado = this.servicioLibro.update(libroexistente);
+
+  if (actualizado) {
     console.log("Libro actualizado");
+    } else {
+    console.log("No existe un libro con ese ID");
+    }
   }
 
   private prestarLibro() {
