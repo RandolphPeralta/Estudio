@@ -8,14 +8,14 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-interface IAccionMemoria<T>{
+interface IAccion<T>{
     guardar(some: T): void;
     eliminar(id: T): void;
     actualizar(some: T): boolean;
     mostrar(): T[]
 }
 
-class MemoriaCRUD<T> implements IAccionMemoria<T>{
+class MemoriaCRUD<T> implements IAccion<T>{
     private memoria: T[] = []
 
     guardar<T>(some: any) {
@@ -94,19 +94,8 @@ class ServicioEstudiante {
       this.memoria.eliminar(id)
     }
 
-  update(id: string, nombre: string, identificacion: string, grado: string): void {
-    const estudiantes = this.memoria.mostrar();
-    const estudianteExistente = estudiantes.find(estudi => estudi.id === id);
-
-    if (!estudianteExistente) {
-      return;
-      }
-    
-    estudianteExistente.nombre = nombre;
-    estudianteExistente.identificacion = identificacion
-    estudianteExistente.grado = grado;
-
-    this.memoria.actualizar(estudianteExistente);
+  update(estudiante: Estudiante): boolean {
+    return this.memoria.actualizar(estudiante);
   }
 
     getAll(){
@@ -272,10 +261,22 @@ class MenuAccion {
     const identificacion = String(prompt("Identificación: "));
     const grado = String(prompt("Grado: "));
 
-    this.servicioCliente.update(id, nombre, identificacion, grado);
-    console.log("Estudiante actualizado");
-  }
+    const estudiantexistente: Estudiante = {
+    id: id,
+    nombre: nombre,
+    identificacion: identificacion,
+    grado: grado
+    };
 
+    const estudianteactualizado = this.servicioCliente.update(estudiantexistente);
+
+    if (estudianteactualizado) {
+      console.log("Libro actualizado");
+      } else {
+      console.log("No existe un libro con ese ID");
+      }
+    }
+  
   private registrarLibro() {
     const id = String(prompt("ID Libro: "));
     const titulo = String(prompt("Título: "));
@@ -309,9 +310,9 @@ class MenuAccion {
     disponible: true
   };
 
-  const actualizado = this.servicioLibro.update(libroexistente);
+  const libroactualizado = this.servicioLibro.update(libroexistente);
 
-  if (actualizado) {
+  if (libroactualizado) {
     console.log("Libro actualizado");
     } else {
     console.log("No existe un libro con ese ID");
