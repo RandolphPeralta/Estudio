@@ -111,18 +111,6 @@ class ServicioPrestamo {
     private servicioCliente: ServicioEstudiante ) {}
 
   prestarLibro(idLibro: string, idCliente: string): boolean {
-  const libros = this.servicioLibro.getAll();
-  const clientes = this.servicioCliente.getAll();
-
-  const libro = libros.find(libr => libr.id === idLibro);
-  if (!libro || !libro.disponible) 
-    return false;
-
-  const cliente = clientes.find(estudi => estudi.id === idCliente);
-  if (!cliente) 
-    return false;
-
-  libro.disponible = false
 
   this.prestamos.push({
     idLibro,
@@ -322,6 +310,19 @@ class MenuAccion {
     const idLibro = String(prompt("ID Libro: "));
     const idEstudiante = String(prompt("ID Estudiante: "));
 
+    const libros = this.servicioLibro.getAll();
+    const clientes = this.servicioCliente.getAll();
+
+    const libro = libros.find(libr => libr.id === idLibro);
+    if (!libro || !libro.disponible) 
+      return false;
+
+    const cliente = clientes.find(estudi => estudi.id === idEstudiante);
+    if (!cliente) 
+      return false;
+
+    libro.disponible = false
+
     const ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
     console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
   }
@@ -329,9 +330,17 @@ class MenuAccion {
   private devolverLibro() {
     const idLibro = String(prompt("ID Libro: "));
     const ok = this.servicioPrestamo.devolverLibro(idLibro);
-    console.log(ok ? "Libro devuelto" : "No se pudo devolver");
+
+    const libros = this.servicioLibro.getAll();
+    const libro = libros.find(l => l.id === idLibro);
+
+    if (!libro) 
+      return false;
+
+    libro.disponible = true;
+      console.log(ok ? "Libro devuelto" : "No se pudo devolver");
+    }
   }
-}
 
 class ConsoleView{
   mensaje(){
