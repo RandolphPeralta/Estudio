@@ -126,13 +126,6 @@ class ServicioPrestamo {
   if (prestamoIndex === -1) 
     return false;
 
-  const libros = this.servicioLibro.getAll();
-  const libro = libros.find(l => l.id === idLibro);
-
-  if (!libro) 
-    return false;
-
-  libro.disponible = true;
   this.prestamos.splice(prestamoIndex, 1);
 
   return true;
