@@ -63,16 +63,8 @@ var ServicioEstudiante = /** @class */ (function () {
     ServicioEstudiante.prototype.delete = function (id) {
         this.memoria.eliminar(id);
     };
-    ServicioEstudiante.prototype.update = function (id, nombre, identificacion, grado) {
-        var estudiantes = this.memoria.mostrar();
-        var estudianteExistente = estudiantes.find(function (estudi) { return estudi.id === id; });
-        if (!estudianteExistente) {
-            return;
-        }
-        estudianteExistente.nombre = nombre;
-        estudianteExistente.identificacion = identificacion;
-        estudianteExistente.grado = grado;
-        this.memoria.actualizar(estudianteExistente);
+    ServicioEstudiante.prototype.update = function (estudiante) {
+        return this.memoria.actualizar(estudiante);
     };
     ServicioEstudiante.prototype.getAll = function () {
         return this.memoria.mostrar();
@@ -86,30 +78,13 @@ var ServicioPrestamo = /** @class */ (function () {
         this.prestamos = [];
     }
     ServicioPrestamo.prototype.prestarLibro = function (idLibro, idCliente) {
-        var libros = this.servicioLibro.getAll();
-        var clientes = this.servicioCliente.getAll();
-        var libro = libros.find(function (l) { return l.id === idLibro; });
-        if (!libro || !libro.disponible)
-            return false;
-        var cliente = clientes.find(function (e) { return e.id === idCliente; });
-        if (!cliente)
-            return false;
-        libro.disponible = false;
-        this.prestamos.push({
-            idLibro: idLibro,
-            idCliente: idCliente
-        });
+        this.prestamos.push({ idLibro: idLibro, idCliente: idCliente });
         return true;
     };
     ServicioPrestamo.prototype.devolverLibro = function (idLibro) {
-        var prestamoIndex = this.prestamos.findIndex(function (p) { return p.idLibro === idLibro; });
+        var prestamoIndex = this.prestamos.findIndex(function (prestado) { return prestado.idLibro === idLibro; });
         if (prestamoIndex === -1)
             return false;
-        var libros = this.servicioLibro.getAll();
-        var libro = libros.find(function (l) { return l.id === idLibro; });
-        if (!libro)
-            return false;
-        libro.disponible = true;
         this.prestamos.splice(prestamoIndex, 1);
         return true;
     };
@@ -202,8 +177,19 @@ var MenuAccion = /** @class */ (function () {
         var nombre = String(prompt("Nombre: "));
         var identificacion = String(prompt("Identificación: "));
         var grado = String(prompt("Grado: "));
-        this.servicioCliente.update(id, nombre, identificacion, grado);
-        console.log("Estudiante actualizado");
+        var estudiantexistente = {
+            id: id,
+            nombre: nombre,
+            identificacion: identificacion,
+            grado: grado
+        };
+        var estudianteactualizado = this.servicioCliente.update(estudiantexistente);
+        if (estudianteactualizado) {
+            console.log("Libro actualizado");
+        }
+        else {
+            console.log("No existe un libro con ese ID");
+        }
     };
     MenuAccion.prototype.registrarLibro = function () {
         var id = String(prompt("ID Libro: "));
@@ -232,8 +218,8 @@ var MenuAccion = /** @class */ (function () {
             autor: autor,
             disponible: true
         };
-        var actualizado = this.servicioLibro.update(libroexistente);
-        if (actualizado) {
+        var libroactualizado = this.servicioLibro.update(libroexistente);
+        if (libroactualizado) {
             console.log("Libro actualizado");
         }
         else {
@@ -243,12 +229,26 @@ var MenuAccion = /** @class */ (function () {
     MenuAccion.prototype.prestarLibro = function () {
         var idLibro = String(prompt("ID Libro: "));
         var idEstudiante = String(prompt("ID Estudiante: "));
+        var libros = this.servicioLibro.getAll();
+        var clientes = this.servicioCliente.getAll();
+        var libro = libros.find(function (libr) { return libr.id === idLibro; });
+        if (!libro || !libro.disponible)
+            return false;
+        var cliente = clientes.find(function (estudi) { return estudi.id === idEstudiante; });
+        if (!cliente)
+            return false;
+        libro.disponible = false;
         var ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
         console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
     };
     MenuAccion.prototype.devolverLibro = function () {
         var idLibro = String(prompt("ID Libro: "));
         var ok = this.servicioPrestamo.devolverLibro(idLibro);
+        var libros = this.servicioLibro.getAll();
+        var libro = libros.find(function (l) { return l.id === idLibro; });
+        if (!libro)
+            return false;
+        libro.disponible = true;
         console.log(ok ? "Libro devuelto" : "No se pudo devolver");
     };
     return MenuAccion;
@@ -257,10 +257,26 @@ var ConsoleView = /** @class */ (function () {
     function ConsoleView() {
     }
     ConsoleView.prototype.mensaje = function () {
-        console.log("Bienvenido al Sistema de Biblioteca que desea:");
-        console.log("\n1. Registrar Estudiante,\n2. Eliminar Estudiante,\n3. Ver Estudiantes,\n4. Actualizar Estudiante");
-        console.log("\n5. Registrar Libro,\n6. Eliminar Libro,\n7. Ver Libros,\n8. Actualizar Libros");
-        console.log("\n9. Prestar Libro\n10. Devolver Libro\n0. Salir");
+        var opciones = [
+            "1. Registrar Estudiante",
+            "2. Eliminar Estudiante",
+            "3. Ver Estudiantes",
+            "4. Actualizar Estudiante",
+            "",
+            "5. Registrar Libro",
+            "6. Eliminar Libro",
+            "7. Ver Libros",
+            "8. Actualizar Libros",
+            "",
+            "9. Prestar Libro",
+            "10. Devolver Libro",
+            "0. Salir"
+        ];
+        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+        for (var _i = 0, opciones_1 = opciones; _i < opciones_1.length; _i++) {
+            var opcion = opciones_1[_i];
+            console.log(opcion);
+        }
     };
     return ConsoleView;
 }());

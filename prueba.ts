@@ -111,25 +111,20 @@ class ServicioPrestamo {
     private servicioCliente: ServicioEstudiante ) {}
 
   prestarLibro(idLibro: string, idCliente: string): boolean {
-
-  this.prestamos.push({
-    idLibro,
-    idCliente
-  });
-
-  return true;
-  }
+    this.prestamos.push({idLibro,idCliente});
+      return true;
+      }
 
   devolverLibro(idLibro: string): boolean {
-  const prestamoIndex = this.prestamos.findIndex(p => p.idLibro === idLibro);
+    const prestamoIndex = this.prestamos.findIndex(prestado => prestado.idLibro === idLibro);
 
-  if (prestamoIndex === -1) 
-    return false;
+    if (prestamoIndex === -1) 
+      return false;
 
-  this.prestamos.splice(prestamoIndex, 1);
+    this.prestamos.splice(prestamoIndex, 1);
 
-  return true;
-  }
+    return true;
+    }
 
   getAll(){
     return this.prestamos
@@ -335,12 +330,29 @@ class MenuAccion {
     }
   }
 
-class ConsoleView{
-  mensaje(){
-    console.log("Bienvenido al Sistema de Biblioteca que desea:")
-    console.log("\n1. Registrar Estudiante,\n2. Eliminar Estudiante,\n3. Ver Estudiantes,\n4. Actualizar Estudiante")
-    console.log("\n5. Registrar Libro,\n6. Eliminar Libro,\n7. Ver Libros,\n8. Actualizar Libros")
-    console.log("\n9. Prestar Libro\n10. Devolver Libro\n0. Salir")
+class ConsoleView {
+  mensaje(): void {
+    const opciones: string[] = [
+      "1. Registrar Estudiante",
+      "2. Eliminar Estudiante",
+      "3. Ver Estudiantes",
+      "4. Actualizar Estudiante",
+      "",
+      "5. Registrar Libro",
+      "6. Eliminar Libro",
+      "7. Ver Libros",
+      "8. Actualizar Libros",
+      "",
+      "9. Prestar Libro",
+      "10. Devolver Libro",
+      "0. Salir"
+    ];
+
+    console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+    
+    for (const opcion of opciones) {
+      console.log(opcion);
+    }
   }
 }
 
