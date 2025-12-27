@@ -98,7 +98,7 @@ class ServicioEstudiante {
     return this.memoria.actualizar(estudiante);
   }
 
-    getAll(){
+  getAll(){
       return this.memoria.mostrar()
     }
 }
