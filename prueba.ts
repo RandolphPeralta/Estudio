@@ -108,18 +108,17 @@ class ServicioPrestamo {
 
   constructor(
     private servicioLibro: ServicioLibro,
-    private servicioCliente: ServicioEstudiante 
-  ) {}
+    private servicioCliente: ServicioEstudiante ) {}
 
   prestarLibro(idLibro: string, idCliente: string): boolean {
   const libros = this.servicioLibro.getAll();
   const clientes = this.servicioCliente.getAll();
 
-  const libro = libros.find(l => l.id === idLibro);
+  const libro = libros.find(libr => libr.id === idLibro);
   if (!libro || !libro.disponible) 
     return false;
 
-  const cliente = clientes.find(e => e.id === idCliente);
+  const cliente = clientes.find(estudi => estudi.id === idCliente);
   if (!cliente) 
     return false;
 
