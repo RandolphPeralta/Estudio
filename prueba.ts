@@ -320,7 +320,7 @@ class MenuAccion {
     const ok = this.servicioPrestamo.devolverLibro(idLibro);
 
     const libros = this.servicioLibro.getAll();
-    const libro = libros.find(l => l.id === idLibro);
+    const libro = libros.find(book => book.id === idLibro);
 
     if (!libro) 
       return false;
