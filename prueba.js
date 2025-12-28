@@ -245,7 +245,7 @@ var MenuAccion = /** @class */ (function () {
         var idLibro = String(prompt("ID Libro: "));
         var ok = this.servicioPrestamo.devolverLibro(idLibro);
         var libros = this.servicioLibro.getAll();
-        var libro = libros.find(function (l) { return l.id === idLibro; });
+        var libro = libros.find(function (book) { return book.id === idLibro; });
         if (!libro)
             return false;
         libro.disponible = true;
