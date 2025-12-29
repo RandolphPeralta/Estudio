@@ -1,5 +1,6 @@
 abstract class Animal {
     hacerSonido(): any{}
+    comer(): any{}
 }
 
 //-----------------------------
@@ -8,10 +9,12 @@ class Perro implements Animal {
     hacerSonido() {
         return "Guau"
     }
+    comer() {
+
+    }
 }
 
 //.....
-
 
 class Granja {
     hogar: Array<any> = []
@@ -21,3 +24,12 @@ class Granja {
     }
 }
 
+class Gavilan implements Animal{
+    hacerSonido() {
+        return "Aaa"
+    }
+
+    comer() {
+        
+    }
+}
