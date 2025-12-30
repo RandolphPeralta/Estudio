@@ -1,7 +1,7 @@
-// Praticar la abstracion de como realizar un sistema de prestamos en la repositoriobiblioteca
+// Praticar la abstracion de como realizar sistema de gestion de prestamo para una biblioteca
 
 // Escribiendo el programa
-// Quiero un programa de sistema de gestion de repositoriobiblioteca
+// Quiero un programa de sistema de gestion de prestamo para una biblioteca
 // Que ingrese para registrar estudiante, para prestar, devolver
 // O para manejar el INVENTARIO
 
@@ -369,11 +369,11 @@ class App{
   }
 }
 
-const repoLibro = new MemoriaCRUD<Libro>();
-const repoEstudiante = new MemoriaCRUD<Estudiante>();
+const memoriaLibro = new MemoriaCRUD<Libro>();
+const memoriaEstudiante = new MemoriaCRUD<Estudiante>();
 
-const servicioLibro = new ServicioLibro(repoLibro);
-const servicioCliente = new ServicioEstudiante(repoEstudiante);
+const servicioLibro = new ServicioLibro(memoriaLibro);
+const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
 
 const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
 
@@ -387,11 +387,11 @@ app.run()
 //--------------------------------
 //PROBANDO LOS PRESTAMOS
 
-// const repoLibro = new MemoriaCRUD<Libro>();
-// const repoEstudiante = new MemoriaCRUD<Estudiante>();
+// const memoriaLibro = new MemoriaCRUD<Libro>();
+// const memoriaEstudiante = new MemoriaCRUD<Estudiante>();
 
-// const servicioLibro = new ServicioLibro(repoLibro);
-// const servicioCliente = new ServicioEstudiante(repoEstudiante);
+// const servicioLibro = new ServicioLibro(memoriaLibro);
+// const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
 
 // const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
 
@@ -409,8 +409,8 @@ app.run()
 
 //---------------------------------------
 // PROBANDO POR LOS ESTUDIANTES
-//const repositorioestudiante = new MemoriaCRUD<Estudiante>
-//const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
+//const memoriasitorioestudiante = new MemoriaCRUD<Estudiante>
+//const servicioestudiante = new ServicioEstudiante(memoriasitorioestudiante)
 
 //servicioestudiante.register("1","Sara","1132456789","11")
 //servicioestudiante.register("2","Laura","12356789","11")
@@ -425,16 +425,16 @@ app.run()
 
 //-----------------------------------------
 //PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
-//const repositoriobiblioteca = new MemoriaCRUD<Libro>
-//const serviciolibro = new ServicioLibro(repositoriobiblioteca)
+//const memoriasitoriobiblioteca = new MemoriaCRUD<Libro>
+//const serviciolibro = new ServicioLibro(memoriasitoriobiblioteca)
 
 // YA SE PUEDE REGISTRAR
 //serviciolibro.register("1", "IT", "Sthephen King")
-//console.log(repositoriobiblioteca.mostrar())
+//console.log(memoriasitoriobiblioteca.mostrar())
 
 //YA SE PUEDE ELMINAR POR ID
 //serviciolibro.delete("1")
-//console.log(repositoriobiblioteca.mostrar())
+//console.log(memoriasitoriobiblioteca.mostrar())
 
 // YA SE PUEDE ACTUALIZAR POR EL ID
 //serviciolibro.update("1", "IT (Edición Especial)", "Stephen King")
@@ -443,7 +443,7 @@ app.run()
 
 
 
-// ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO
+// ACA SE IMPLEMENTO LA INTERFACE DE memoriaSITORIO
 
 
 //class ServicioLibro {
@@ -458,23 +458,23 @@ app.run()
 //        }
     
     // eliminar(id: string): void{
-    // this.repository.guardar(book)}
+    // this.memoriasitory.guardar(book)}
 
     //getById(id:string): Book | null {
-    // return this.repository.getById(id)}
+    // return this.memoriasitory.getById(id)}
 
     //getAll(): Book[]{
-    // return this.repository.getAll()}
+    // return this.memoriasitory.getAll()}
 
 //    prestar(book: Book): void{
 //        book.available = false;
 //    }
-    // this.repository.update(book)
+    // this.memoriasitory.update(book)
     //}
 
     // devolver(book: Book): void{
     // book.available = true;
-    //  this.repository.update(book)}
+    //  this.memoriasitory.update(book)}
     
 
 //    }
