@@ -18,7 +18,7 @@ interface IAccion<T>{
 class MemoriaCRUD<T> implements IAccion<T>{
     private memoria: T[] = []
 
-    guardar<T>(some: any) {
+    guardar(some: any): boolean {
         const index = this.memoria.findIndex((item: any) => item.id === some.id);
 
         if (index === -1) {
