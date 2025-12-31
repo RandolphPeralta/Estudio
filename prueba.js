@@ -12,8 +12,8 @@ var MemoriaCRUD = /** @class */ (function () {
         this.memoria = [];
     }
     MemoriaCRUD.prototype.guardar = function (some) {
-        var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
-        if (index === -1) {
+        var index = this.memoria.findIndex(function (item) { return item === some; });
+        if (index !== -1) {
             return false;
         }
         this.memoria.push(some);
@@ -43,8 +43,7 @@ var ServicioLibro = /** @class */ (function () {
         this.memoria = memoria;
     }
     ServicioLibro.prototype.register = function (libro) {
-        this.memoria.guardar(libro);
-        return libro;
+        return this.memoria.guardar(libro);
     };
     ServicioLibro.prototype.delete = function (id) {
         this.memoria.eliminar(id);
@@ -62,8 +61,7 @@ var ServicioEstudiante = /** @class */ (function () {
         this.memoria = memoria;
     }
     ServicioEstudiante.prototype.register = function (estudiante) {
-        this.memoria.guardar(estudiante);
-        return estudiante;
+        return this.memoria.guardar(estudiante);
     };
     ServicioEstudiante.prototype.delete = function (id) {
         this.memoria.eliminar(id);
@@ -77,7 +75,8 @@ var ServicioEstudiante = /** @class */ (function () {
     return ServicioEstudiante;
 }());
 var ServicioPrestamo = /** @class */ (function () {
-    function ServicioPrestamo(servicioLibro, servicioCliente) {
+    function ServicioPrestamo(servicioLibro, servicioCliente // | Servicio
+    ) {
         this.servicioLibro = servicioLibro;
         this.servicioCliente = servicioCliente;
         this.prestamos = [];
@@ -187,7 +186,6 @@ var MenuAccion = /** @class */ (function () {
         else {
             console.log("El estudiante ya existe con este ID");
         }
-        //console.log("Estudiante registrado");
     };
     MenuAccion.prototype.eliminarEstudiante = function () {
         var id = String(prompt("ID: "));
@@ -274,7 +272,8 @@ var MenuAccion = /** @class */ (function () {
         console.log(ok ? "Libro devuelto" : "No se pudo devolver");
     };
     MenuAccion.prototype.pause = function () {
-        prompt("\nPresiona ENTER para continuar...");
+        console.log("\nPresiona ENTER para continuar...");
+        prompt("");
     };
     return MenuAccion;
 }());

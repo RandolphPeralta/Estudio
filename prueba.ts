@@ -9,10 +9,10 @@ import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
 interface IAccion<T>{
-    guardar(some: T): void;
-    eliminar(id: T): void;
-    actualizar(some: T): boolean;
-    mostrar(): T[]
+    guardar(some: any): any;
+    eliminar(id: any): any;
+    actualizar(some: any): any;
+    mostrar(): T[];
 }
 
 class MemoriaCRUD<T> implements IAccion<T>{
@@ -21,7 +21,7 @@ class MemoriaCRUD<T> implements IAccion<T>{
     guardar(some: any): boolean {
         const index = this.memoria.findIndex((item: any) => item.id === some.id);
 
-        if (index === -1) {
+        if (index !== -1) {
           return false;
         }
 
@@ -70,9 +70,8 @@ type Estudiante = {
 class ServicioLibro{
     constructor(private memoria: MemoriaCRUD<Libro>){}
     
-    register(libro: Libro): Libro {
-      this.memoria.guardar(libro)
-      return libro
+    register(libro: Libro): boolean {
+      return this.memoria.guardar(libro)
     }
 
     delete(id: string): void{
@@ -92,9 +91,9 @@ class ServicioLibro{
 class ServicioEstudiante {
   constructor(private memoria: MemoriaCRUD<Estudiante>){}
 
-  register(estudiante: Estudiante): Estudiante {
-      this.memoria.guardar(estudiante)
-      return estudiante
+  register(estudiante: Estudiante): boolean {
+      return this.memoria.guardar(estudiante)
+       
     }
 
   delete(id: string): void{
@@ -115,7 +114,8 @@ class ServicioPrestamo {
 
   constructor(
     private servicioLibro: ServicioLibro,
-    private servicioCliente: ServicioEstudiante ) {}
+    private servicioCliente: ServicioEstudiante // | Servicio
+  ) {}
 
   prestarLibro(idLibro: string, idCliente: string): boolean {
     this.prestamos.push({idLibro,idCliente});
@@ -245,8 +245,6 @@ class MenuAccion {
       } else {
       console.log("El estudiante ya existe con este ID");
       }
-
-    //console.log("Estudiante registrado");
   }
 
   private eliminarEstudiante(){
@@ -355,12 +353,11 @@ class MenuAccion {
     }
 
   private pause() {
-    prompt("\nPresiona ENTER para continuar...");
+    console.log("\nPresiona ENTER para continuar...");
+    prompt("");
 }
 
-
-
-  }
+}
 
 class ConsoleView {
   mensaje(): void {
