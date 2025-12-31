@@ -1,8 +1,8 @@
 "use strict";
-// Praticar la abstracion de como realizar un sistema de prestamos en la repositoriobiblioteca
+// Praticar la abstracion de como realizar sistema de gestion de prestamo para una biblioteca
 Object.defineProperty(exports, "__esModule", { value: true });
 // Escribiendo el programa
-// Quiero un programa de sistema de gestion de repositoriobiblioteca
+// Quiero un programa de sistema de gestion de prestamo para una biblioteca
 // Que ingrese para registrar estudiante, para prestar, devolver
 // O para manejar el INVENTARIO
 var promptSync = require("prompt-sync");
@@ -119,32 +119,42 @@ var MenuAccion = /** @class */ (function () {
         switch (opcion) {
             case MenuOpcion.REGISTRAR_ESTUDIANTE:
                 this.registrarEstudiante();
+                this.pause();
                 break;
             case MenuOpcion.ELIMINAR_ESTUDIANTE:
                 this.eliminarEstudiante();
+                this.pause();
+                break;
             case MenuOpcion.VER_ESTUDIANTES:
-                console.log(this.servicioCliente.getAll());
+                console.table(this.servicioCliente.getAll());
+                this.pause();
                 break;
             case MenuOpcion.ACTUALIZAR_ESTUDIANTE:
                 this.actualizarEstudiante();
+                this.pause();
                 break;
             case MenuOpcion.REGISTRAR_LIBRO:
                 this.registrarLibro();
+                this.pause();
                 break;
             case MenuOpcion.ELIMINAR_LIBRO:
                 this.elmiminarLibro();
+                this.pause();
                 break;
             case MenuOpcion.VER_LIBROS:
-                console.log(this.servicioLibro.getAll());
+                console.table(this.servicioLibro.getAll());
+                this.pause();
                 break;
             case MenuOpcion.ACTUALIZAR_LIBRO:
                 this.actualizarlibro();
+                this.pause();
                 break;
             case MenuOpcion.PRESTAR_LIBRO:
                 this.prestarLibro();
                 break;
             case MenuOpcion.DEVOLVER_LIBRO:
                 this.devolverLibro();
+                this.pause();
                 break;
             case MenuOpcion.SALIR:
                 return false;
@@ -251,6 +261,9 @@ var MenuAccion = /** @class */ (function () {
         libro.disponible = true;
         console.log(ok ? "Libro devuelto" : "No se pudo devolver");
     };
+    MenuAccion.prototype.pause = function () {
+        prompt("\nPresiona ENTER para continuar...");
+    };
     return MenuAccion;
 }());
 var ConsoleView = /** @class */ (function () {
@@ -293,10 +306,10 @@ var App = /** @class */ (function () {
     };
     return App;
 }());
-var repoLibro = new MemoriaCRUD();
-var repoEstudiante = new MemoriaCRUD();
-var servicioLibro = new ServicioLibro(repoLibro);
-var servicioCliente = new ServicioEstudiante(repoEstudiante);
+var memoriaLibro = new MemoriaCRUD();
+var memoriaEstudiante = new MemoriaCRUD();
+var servicioLibro = new ServicioLibro(memoriaLibro);
+var servicioCliente = new ServicioEstudiante(memoriaEstudiante);
 var servicioPrestamo = new ServicioPrestamo(servicioLibro, servicioCliente);
 var view = new ConsoleView();
 var menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
@@ -304,10 +317,10 @@ var app = new App();
 app.run();
 //--------------------------------
 //PROBANDO LOS PRESTAMOS
-// const repoLibro = new MemoriaCRUD<Libro>();
-// const repoEstudiante = new MemoriaCRUD<Estudiante>();
-// const servicioLibro = new ServicioLibro(repoLibro);
-// const servicioCliente = new ServicioEstudiante(repoEstudiante);
+// const memoriaLibro = new MemoriaCRUD<Libro>();
+// const memoriaEstudiante = new MemoriaCRUD<Estudiante>();
+// const servicioLibro = new ServicioLibro(memoriaLibro);
+// const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
 // const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
 // servicioLibro.register("L1", "1984", "Orwell");
 // servicioLibro.register("L2", "Harry Potter", "J. K. Rowling")
@@ -319,8 +332,8 @@ app.run();
 // console.log(servicioPrestamo.getAll());
 //---------------------------------------
 // PROBANDO POR LOS ESTUDIANTES
-//const repositorioestudiante = new MemoriaCRUD<Estudiante>
-//const servicioestudiante = new ServicioEstudiante(repositorioestudiante)
+//const memoriasitorioestudiante = new MemoriaCRUD<Estudiante>
+//const servicioestudiante = new ServicioEstudiante(memoriasitorioestudiante)
 //servicioestudiante.register("1","Sara","1132456789","11")
 //servicioestudiante.register("2","Laura","12356789","11")
 //YA SE PUEDE ELMINAR POR ID
@@ -331,18 +344,18 @@ app.run();
 //console.log(servicioestudiante.getAll())
 //-----------------------------------------
 //PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
-//const repositoriobiblioteca = new MemoriaCRUD<Libro>
-//const serviciolibro = new ServicioLibro(repositoriobiblioteca)
+//const memoriasitoriobiblioteca = new MemoriaCRUD<Libro>
+//const serviciolibro = new ServicioLibro(memoriasitoriobiblioteca)
 // YA SE PUEDE REGISTRAR
 //serviciolibro.register("1", "IT", "Sthephen King")
-//console.log(repositoriobiblioteca.mostrar())
+//console.log(memoriasitoriobiblioteca.mostrar())
 //YA SE PUEDE ELMINAR POR ID
 //serviciolibro.delete("1")
-//console.log(repositoriobiblioteca.mostrar())
+//console.log(memoriasitoriobiblioteca.mostrar())
 // YA SE PUEDE ACTUALIZAR POR EL ID
 //serviciolibro.update("1", "IT (Edición Especial)", "Stephen King")
 //console.log(serviciolibro.getAll())
-// ACA SE IMPLEMENTO LA INTERFACE DE REPOSITORIO
+// ACA SE IMPLEMENTO LA INTERFACE DE memoriaSITORIO
 //class ServicioLibro {
 //    constructor(private memoria: MemoriaCRUD<Libro>)
 //    register(id: string, title:string, author: string) {
@@ -353,19 +366,19 @@ app.run();
 //            available: true
 //        }
 // eliminar(id: string): void{
-// this.repository.guardar(book)}
+// this.memoriasitory.guardar(book)}
 //getById(id:string): Book | null {
-// return this.repository.getById(id)}
+// return this.memoriasitory.getById(id)}
 //getAll(): Book[]{
-// return this.repository.getAll()}
+// return this.memoriasitory.getAll()}
 //    prestar(book: Book): void{
 //        book.available = false;
 //    }
-// this.repository.update(book)
+// this.memoriasitory.update(book)
 //}
 // devolver(book: Book): void{
 // book.available = true;
-//  this.repository.update(book)}
+//  this.memoriasitory.update(book)}
 //    }
 // actualizar(criterio: (item: T) => boolean, nuevo: T): void {
 //     const index = this.memoria.findIndex(criterio);

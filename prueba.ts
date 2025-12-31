@@ -160,41 +160,52 @@ class MenuAccion {
     switch (opcion) {
       case MenuOpcion.REGISTRAR_ESTUDIANTE:
         this.registrarEstudiante();
+        this.pause();
         break;
       
       case MenuOpcion.ELIMINAR_ESTUDIANTE:
         this.eliminarEstudiante();
+        this.pause();
+        break
 
       case MenuOpcion.VER_ESTUDIANTES:
-        console.log(this.servicioCliente.getAll());
+        console.table(this.servicioCliente.getAll());
+        this.pause();
         break;
 
       case MenuOpcion.ACTUALIZAR_ESTUDIANTE:
         this.actualizarEstudiante()
+        this.pause();
         break;
 
       case MenuOpcion.REGISTRAR_LIBRO:
         this.registrarLibro();
+        this.pause();
         break;
       
       case MenuOpcion.ELIMINAR_LIBRO:
         this.elmiminarLibro();
+        this.pause();
         break
 
       case MenuOpcion.VER_LIBROS:
-        console.log(this.servicioLibro.getAll());
+        console.table(this.servicioLibro.getAll());
+        this.pause();
         break;
       
       case MenuOpcion.ACTUALIZAR_LIBRO:
         this.actualizarlibro();
+        this.pause();
         break;
 
       case MenuOpcion.PRESTAR_LIBRO:
         this.prestarLibro();
+        this.pause();
         break;
 
       case MenuOpcion.DEVOLVER_LIBRO:
         this.devolverLibro();
+        this.pause();
         break;
 
       case MenuOpcion.SALIR:
@@ -328,6 +339,13 @@ class MenuAccion {
     libro.disponible = true;
       console.log(ok ? "Libro devuelto" : "No se pudo devolver");
     }
+
+  private pause() {
+    prompt("\nPresiona ENTER para continuar...");
+}
+
+
+
   }
 
 class ConsoleView {
