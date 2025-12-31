@@ -19,7 +19,14 @@ class MemoriaCRUD<T> implements IAccion<T>{
     private memoria: T[] = []
 
     guardar<T>(some: any) {
+        const index = this.memoria.findIndex((item: any) => item.id === some.id);
+
+        if (index === -1) {
+          return false;
+        }
+
         this.memoria.push(some)
+        return true;
         }
 
     eliminar(id: any) 
@@ -231,8 +238,15 @@ class MenuAccion {
       grado: grado
     }
     
-    this.servicioCliente.register(estudiante);
-    console.log("Estudiante registrado");
+    const estudianteregistrado = this.servicioCliente.register(estudiante);
+
+    if (estudianteregistrado) {
+      console.log("Estudiante registrado");
+      } else {
+      console.log("El estudiante ya existe con este ID");
+      }
+
+    //console.log("Estudiante registrado");
   }
 
   private eliminarEstudiante(){

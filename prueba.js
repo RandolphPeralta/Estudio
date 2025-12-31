@@ -12,7 +12,12 @@ var MemoriaCRUD = /** @class */ (function () {
         this.memoria = [];
     }
     MemoriaCRUD.prototype.guardar = function (some) {
+        var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
+        if (index === -1) {
+            return false;
+        }
         this.memoria.push(some);
+        return true;
     };
     MemoriaCRUD.prototype.eliminar = function (id) {
         var index = this.memoria.findIndex(function (item) { return item.id === id; });
@@ -151,6 +156,7 @@ var MenuAccion = /** @class */ (function () {
                 break;
             case MenuOpcion.PRESTAR_LIBRO:
                 this.prestarLibro();
+                this.pause();
                 break;
             case MenuOpcion.DEVOLVER_LIBRO:
                 this.devolverLibro();
@@ -174,8 +180,14 @@ var MenuAccion = /** @class */ (function () {
             identificacion: identificacion,
             grado: grado
         };
-        this.servicioCliente.register(estudiante);
-        console.log("Estudiante registrado");
+        var estudianteregistrado = this.servicioCliente.register(estudiante);
+        if (estudianteregistrado) {
+            console.log("Estudiante registrado");
+        }
+        else {
+            console.log("El estudiante ya existe con este ID");
+        }
+        //console.log("Estudiante registrado");
     };
     MenuAccion.prototype.eliminarEstudiante = function () {
         var id = String(prompt("ID: "));
