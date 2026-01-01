@@ -287,8 +287,12 @@ class MenuAccion {
       disponible: true
     }
 
-    this.servicioLibro.register(libro);
-    console.log("Libro registrado");
+    const libroregistrado = this.servicioLibro.register(libro);
+    if (libroregistrado) {
+      console.log("Estudiante registrado");
+      } else {
+      console.log("El estudiante ya existe con este ID");
+      }
   }
 
   private elmiminarLibro(){

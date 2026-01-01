@@ -15,7 +15,7 @@ abstract class Animal {
 
 class Perro extends Animal {
     hacerSonido(): void {
-        console.log("Guau 🐶")
+        console.log("Guau")
     }
 
     comer(algo: any): void {
@@ -25,7 +25,7 @@ class Perro extends Animal {
 
 class Pollo extends Animal {
     hacerSonido(): void {
-        console.log("Pio 🐔")
+        console.log("Pio")
     }
 
     comer(algo: any): void {
@@ -35,7 +35,7 @@ class Pollo extends Animal {
 
 class Pez extends Animal {
     hacerSonido(): void {
-        console.log("Glu 🐟")
+        console.log("Glu")
     }
 
     comer(algo: any): void {
@@ -58,12 +58,12 @@ class Granja {
 
 class Gavilan extends Animal {
     hacerSonido(): void {
-        console.log("Aaaa 🦅")
+        console.log("Aaaa")
     }
 
     comer(animal: Animal): void {
         this.estomago.push(animal)
-        console.log("Devoro una presa ⚠️")
+        console.log("Devoro una presa!")
     }
 }
 
