@@ -67,7 +67,6 @@ class Gavilan extends Animal {
     }
 }
 
-
 const finca = new Granja();
 
 const pollo = new Pollo();
