@@ -1,0 +1,102 @@
+//En la Finca del Sr Pablo, tenemos muchos animales de granja, 
+// cerdos, patos, pollos, perros, gatos y peces, pero un enemigo 
+// acecha la Finca un Gavilan !!! El Gavilan siempre esta atento 
+// a los pollos y en ocasiones los peces de la represa, 
+// representa cada uno de ellos usando POO
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var Animal = /** @class */ (function () {
+    function Animal() {
+        this.estomago = [];
+    }
+    return Animal;
+}());
+//-----------------------------
+var Perro = /** @class */ (function (_super) {
+    __extends(Perro, _super);
+    function Perro() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Perro.prototype.hacerSonido = function () {
+        console.log("Guau 🐶");
+    };
+    Perro.prototype.comer = function (algo) {
+        this.estomago.push(algo);
+    };
+    return Perro;
+}(Animal));
+var Pollo = /** @class */ (function (_super) {
+    __extends(Pollo, _super);
+    function Pollo() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Pollo.prototype.hacerSonido = function () {
+        console.log("Pio 🐔");
+    };
+    Pollo.prototype.comer = function (algo) {
+        this.estomago.push(algo);
+    };
+    return Pollo;
+}(Animal));
+var Pez = /** @class */ (function (_super) {
+    __extends(Pez, _super);
+    function Pez() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Pez.prototype.hacerSonido = function () {
+        console.log("Glu 🐟");
+    };
+    Pez.prototype.comer = function (algo) {
+        this.estomago.push(algo);
+    };
+    return Pez;
+}(Animal));
+//.....
+var Granja = /** @class */ (function () {
+    function Granja() {
+        this.animales = [];
+    }
+    Granja.prototype.agregarAnimal = function (animal) {
+        this.animales.push(animal);
+    };
+    Granja.prototype.mostrarAnimales = function () {
+        this.animales.forEach(function (animalcualquiera) { return animalcualquiera.hacerSonido(); });
+    };
+    return Granja;
+}());
+var Gavilan = /** @class */ (function (_super) {
+    __extends(Gavilan, _super);
+    function Gavilan() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Gavilan.prototype.hacerSonido = function () {
+        console.log("Aaaa 🦅");
+    };
+    Gavilan.prototype.comer = function (animal) {
+        this.estomago.push(animal);
+        console.log("Devoro una presa ⚠️");
+    };
+    return Gavilan;
+}(Animal));
+var finca = new Granja();
+var pollo = new Pollo();
+var pez = new Pez();
+var gavilan = new Gavilan();
+finca.agregarAnimal(pollo);
+finca.agregarAnimal(pez);
+finca.mostrarAnimales();
+gavilan.comer(pollo);
+gavilan.comer(pez);

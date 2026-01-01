@@ -5,64 +5,79 @@
 // representa cada uno de ellos usando POO
 
 abstract class Animal {
-    hacerSonido(): any{}
-    comer(algo: any): any{}
+    protected estomago: any[] = []
+
+    abstract hacerSonido(): void
+    abstract comer(algo: any): void
 }
 
 //-----------------------------
 
-class Perro implements Animal {
-    private estomago: Array<any> = []
-    hacerSonido() {
-        return "Guau"
+class Perro extends Animal {
+    hacerSonido(): void {
+        console.log("Guau 🐶")
     }
-    comer() {
 
-    }
-}
-
-class Pollo implements Animal {
-    private estomago: Array<any> = []
-    hacerSonido() {
-        return "Pio"
-    }
-    comer() {
-
+    comer(algo: any): void {
+        this.estomago.push(algo)
     }
 }
 
-class Pez implements Animal {
-    private estomago: Array<any> = []
-    hacerSonido() {
-        return "Glu"
+class Pollo extends Animal {
+    hacerSonido(): void {
+        console.log("Pio 🐔")
     }
-    comer() {
 
+    comer(algo: any): void {
+        this.estomago.push(algo)
     }
 }
 
+class Pez extends Animal {
+    hacerSonido(): void {
+        console.log("Glu 🐟")
+    }
+
+    comer(algo: any): void {
+        this.estomago.push(algo)
+    }
+}
 //.....
 
 class Granja {
-    hogar: Array<any> = []
+    animales: Array<any> = []
 
-    agregarAnimales(animal: Animal){
-        this.hogar.push(animal)
+    agregarAnimal(animal: Animal){
+        this.animales.push(animal)
+    }
+
+   mostrarAnimales(): void {
+    this.animales.forEach(animalcualquiera => animalcualquiera.hacerSonido())
+  }
+}
+
+class Gavilan extends Animal {
+    hacerSonido(): void {
+        console.log("Aaaa 🦅")
+    }
+
+    comer(animal: Animal): void {
+        this.estomago.push(animal)
+        console.log("Devoro una presa ⚠️")
     }
 }
 
-class Gavilan implements Animal{
-    private estomago: Array<any> = []
-    hacerSonido() {
-        return "Aaa"
-    }
 
-    comer(pollito: Pollo) {
-        this.estomago.push(pollito)
-        return "Comio pollo"
-    }
+const finca = new Granja();
 
-    comerPez(pececito: Pez){
-        this.estomago.push(pececito)
-    }
-}
+const pollo = new Pollo();
+const pez = new Pez();
+const gavilan = new Gavilan();
+
+finca.agregarAnimal(pollo);
+finca.agregarAnimal(pez);
+
+finca.mostrarAnimales();
+
+gavilan.comer(pollo)
+gavilan.comer(pez)
