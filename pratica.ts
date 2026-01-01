@@ -11,7 +11,8 @@ interface IOtroControlador{
 
 }
 
-class Controlador implements IControlador, IOtroControlador {
+class Controlador implements IControlador //, IOtroControlador 
+{
     private _properties: number = 0;
 
     public setData(): void {
