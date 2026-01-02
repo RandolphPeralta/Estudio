@@ -108,14 +108,14 @@
 // RECOMENDACIONES DE CLASES DE NEGOCIO Y DE CONSUMO
 
 abstract class MaterialBibliografico {
-    abstract prestar(): void;
+    abstract prestar(): void; //Pueden ser bases de implementacion y pueden tener atributos
 }
 
-class EstadoPrestamo {
+class EstadoPrestamo extends MaterialBibliografico{
     private _estado: boolean = false
 
     prestar(): void{
-        this._estado = true;
+        this._estado = true;  //Detalles de implementacion
     }
 
     devolver(): void {
@@ -132,3 +132,54 @@ class Libro extends EstadoPrestamo {
 }
 
 const libro1 = new Libro();
+
+// ESTO DE AQUI ES NEGOCIO
+
+//------------------
+
+// ESTO DE AQUI ES CONSUMO
+// class Application {
+//     run(): void {
+//         const libro = new EstadoPrestamo();
+
+//         console.log("Estado inicial (deberia ser disponible): ", libro.estaDisponible());
+
+//         libro.prestar();
+//         console.log("Estado despues de prestar(deberia no estar disponible): ", libro.estaDisponible());
+
+//         libro.devolver();
+//         console.log("Estado después de devolver (deberia ser disponible): ", libro.estaDisponible());
+
+//     }
+
+// }
+
+// LA CLASE APLICATION PUEDE CAMBIAR EN UN .JSX, PUEDE SER UN COMPONENTE DE REACT
+
+// const AppComponent = () => {
+//      const libro = new EstadoPrestamo();
+//      
+//        return {
+//                     <div>
+//                         <h1>Estado del prestamo del libro</h1>
+//                         <p>Disponilbe: {libro.estaDisponible() ? 'Si' : 'No'}</p>
+//                         <Button onClick>......
+// }
+//  
+
+const AppComponent = () => {
+    const libro = new EstadoPrestamo();
+    libro.prestar();
+    console.log("¿El libro esta disponible?", libro.estaDisponible()); // Deberia mostrar: false
+
+    libro.devolver();
+    console.log("¿El libro esta disponible?", libro.estaDisponible()); // Deberia mostrar: true
+
+    return null;
+}
+
+export default AppComponent;
+
+// const app = new Application();
+// app.run();
+
