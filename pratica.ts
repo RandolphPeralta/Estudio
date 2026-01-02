@@ -104,3 +104,31 @@
 // class Perro implements Terrestre{
     
 // }
+
+// RECOMENDACIONES DE CLASES DE NEGOCIO Y DE CONSUMO
+
+abstract class MaterialBibliografico {
+    abstract prestar(): void;
+}
+
+class EstadoPrestamo {
+    private _estado: boolean = false
+
+    prestar(): void{
+        this._estado = true;
+    }
+
+    devolver(): void {
+        this._estado = false;
+    }
+
+    estaDisponible(): boolean{
+        return !this._estado
+    }
+}
+
+class Libro extends EstadoPrestamo {
+
+}
+
+const libro1 = new Libro();
