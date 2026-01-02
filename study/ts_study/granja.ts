@@ -5,7 +5,7 @@
 // representa cada uno de ellos usando POO
 
 abstract class Animal {
-    protected estomago: any[] = []
+    estomago: Array<any> = []
 
     abstract hacerSonido(): void
     abstract comer(algo: any): void
