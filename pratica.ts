@@ -91,16 +91,16 @@
 
 // }
 
-abstract class Animal {
+// abstract class Animal {
 
-}
+// }
 
-interface Acuatico extends Animal {}
+// interface Acuatico extends Animal {}
 
-interface Terrestre extends Animal {}
+// interface Terrestre extends Animal {}
 
-interface Mamiferos extends Terrestre{}
+// interface Mamiferos extends Terrestre{}
 
-class Perro implements Terrestre{
+// class Perro implements Terrestre{
     
-}
+// }
