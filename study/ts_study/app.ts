@@ -19,29 +19,94 @@
 // ESTO NO ES UN BUEN EJEMPLO YA QUE SI ME 
 // PONGO A PONER MAS METODOS, LA CLASE NO TENDRA FIN
 
-class DataBaseMySQL<T>{
 
-    create(data: T): boolean{
+// EJEMPLO DE DATABSE EN MYSQL 
+
+// class DataBaseMySQL<T>{
+
+//     create(data: T): boolean{
+//         return true;
+//     }
+// }
+
+// class Cliente {
+//     nombre!: string
+// }
+
+// type Producto = {
+//     idProducto: string;
+//     nombre: string;
+
+// }
+
+// interface OtraCosa {
+
+// }
+
+// const database = new DataBaseMySQL<Cliente>
+
+// database.create()
+
+// const producto: Producto = {
+//     idProducto: "A1",
+//     nombre: "Cafe"
+// }
+
+// const database = new DataBaseMySQL<new Cliente()>
+// const database = new DataBaseMySQL<Producto>
+// const database = new DataBaseMySQL<OtraCosa>
+
+// database.create(producto)
+
+// Y SI LO QUIERO MAS AGNOSTICO SE APLICA EL T AL METODO Y AL CAMBIO DE MOTOR DE BASE DE DATOS
+
+abstract class Database{
+    abstract create<T>(data: T): boolean
+}
+
+class DataBaseMySQL extends Database{
+    create<T>(data: T): boolean{
         return true;
     }
-
-
 }
 
-class Cliente {
-
+class DataBasePostgreSQL extends Database{
+    create<T>(data: T): boolean{  // OJO ESTO ES UN ERROR DE DISEÑO
+        return true;
+    }
 }
 
-type Producto = {
-
+class Cliente{
+    nombre!:string
 }
 
-interface OtraCosa {
-
+interface Producto{
+    idProducto: string;
+    nombre: string
 }
 
-const dataBaseObjectMySQL = new DataBaseMySQL<Cliente>
+type Compra = {
+    idCompra: "1",
+    idProducto: "2"
+}
 
-// const dataBaseObjectMySQL = new DataBaseMySQL<new Cliente()>
-// const dataBaseObjectMySQL = new DataBaseMySQL<Producto>
-// const dataBaseObjectMySQL = new DataBaseMySQL<OtraCosa>
+const cliente = new Cliente;
+cliente.nombre = "Victor";
+
+const database: Database = new DataBaseMySQL;
+
+const producto: Producto = {
+    idProducto: "1",
+    nombre:"Cafe"
+}
+
+const compraDeCliente: Compra = {
+    idCompra: "1",
+    idProducto: "2"
+}
+
+database.create<Cliente>(cliente);
+database.create<Producto>(producto);
+database.create<Compra>(compraDeCliente)
+
+
