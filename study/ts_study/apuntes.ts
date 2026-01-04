@@ -82,3 +82,37 @@
 // }
 
 // const uiApp = new UI(new ProductsUseCase)
+
+// interface IProducts{
+//     createProduct(product: any): void
+// }
+
+// class ProductUseCase{
+
+// }
+
+// //DIP
+
+// class ProductsService implements IProducts {
+
+//     constructor(private _productUseCase: IProducts){}
+
+//     public createProduct(product: any): void{
+//         this._productUseCase.createProduct
+//     }
+// }
+
+// class Clientes {
+
+// }
+
+// class UI {
+
+//     constructor(private _product: IProducts){}
+
+//     createProduct(data: any):void {
+//         this._product.createProduct(data);
+//     }
+// }
+
+// const uiApp = new UI(new ProductsService)
