@@ -12,8 +12,9 @@ abstract class Animal {
 }
 
 interface Peligroso extends Animal{
-
+    atacar(animal: Animal): boolean
 }
+
 //-----------------------------
 
 class Perro extends Animal {
@@ -57,17 +58,28 @@ class Granja {
    mostrarAnimales() {
     return this.animales.forEach(animalcualquiera => console.log(animalcualquiera.hacerSonido()))
   }
+
+   alerta(dep: Animal, victima: Animal) {
+
+   }
+
 }
 
 class Gavilan implements Peligroso {
+
     estomago: Array<any> = []
+    
     hacerSonido() {
         return "Aaaa"
     }
 
     comer(animal: Animal) {
         this.estomago.push(animal)
-        return "Devoro una presa!"
+    }
+
+    atacar(animal: Animal): boolean {
+        this.comer(animal)
+        return true
     }
 }
 
