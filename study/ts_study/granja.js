@@ -31,7 +31,7 @@ var Perro = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Perro.prototype.hacerSonido = function () {
-        console.log("Guau 🐶");
+        return "Guau";
     };
     Perro.prototype.comer = function (algo) {
         this.estomago.push(algo);
@@ -44,7 +44,7 @@ var Pollo = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Pollo.prototype.hacerSonido = function () {
-        console.log("Pio 🐔");
+        return "Pio";
     };
     Pollo.prototype.comer = function (algo) {
         this.estomago.push(algo);
@@ -57,7 +57,7 @@ var Pez = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Pez.prototype.hacerSonido = function () {
-        console.log("Glu 🐟");
+        return "Glu";
     };
     Pez.prototype.comer = function (algo) {
         this.estomago.push(algo);
@@ -73,7 +73,7 @@ var Granja = /** @class */ (function () {
         this.animales.push(animal);
     };
     Granja.prototype.mostrarAnimales = function () {
-        this.animales.forEach(function (animalcualquiera) { return animalcualquiera.hacerSonido(); });
+        return this.animales.forEach(function (animalcualquiera) { return console.log(animalcualquiera.hacerSonido()); });
     };
     return Granja;
 }());
@@ -83,11 +83,11 @@ var Gavilan = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Gavilan.prototype.hacerSonido = function () {
-        console.log("Aaaa 🦅");
+        return "Aaaa";
     };
     Gavilan.prototype.comer = function (animal) {
         this.estomago.push(animal);
-        console.log("Devoro una presa ⚠️");
+        return "Devoro una presa!";
     };
     return Gavilan;
 }(Animal));
@@ -100,3 +100,13 @@ finca.agregarAnimal(pez);
 finca.mostrarAnimales();
 gavilan.comer(pollo);
 gavilan.comer(pez);
+var Persona = /** @class */ (function () {
+    function Persona() {
+    }
+    Persona.prototype.saludo = function () {
+        return "Hola";
+    };
+    return Persona;
+}());
+var persona = new Persona;
+persona.saludo();

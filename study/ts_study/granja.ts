@@ -7,7 +7,7 @@
 abstract class Animal {
     estomago: Array<any> = []
 
-    abstract hacerSonido(): any
+    abstract hacerSonido(): string
     abstract comer(algo: any): any
 }
 
@@ -18,27 +18,27 @@ class Perro extends Animal {
         return "Guau"
     }
 
-    comer(algo: any): void {
+    comer(algo: any) {
         this.estomago.push(algo)
     }
 }
 
 class Pollo extends Animal {
-    hacerSonido(): void {
-        console.log("Pio")
+    hacerSonido() {
+        return "Pio"
     }
 
-    comer(algo: any): void {
+    comer(algo: any) {
         this.estomago.push(algo)
     }
 }
 
 class Pez extends Animal {
-    hacerSonido(): void {
-        console.log("Glu")
+    hacerSonido(){
+        return "Glu"
     }
 
-    comer(algo: any): void {
+    comer(algo: any) {
         this.estomago.push(algo)
     }
 }
@@ -51,19 +51,19 @@ class Granja {
         this.animales.push(animal)
     }
 
-   mostrarAnimales(): void {
-    this.animales.forEach(animalcualquiera => animalcualquiera.hacerSonido())
+   mostrarAnimales() {
+    return this.animales.forEach(animalcualquiera => console.log(animalcualquiera.hacerSonido()))
   }
 }
 
 class Gavilan extends Animal {
-    hacerSonido(): void {
-        console.log("Aaaa")
+    hacerSonido() {
+        return "Aaaa"
     }
 
-    comer(animal: Animal): void {
+    comer(animal: Animal) {
         this.estomago.push(animal)
-        console.log("Devoro una presa!")
+        return "Devoro una presa!"
     }
 }
 
@@ -80,3 +80,12 @@ finca.mostrarAnimales();
 
 gavilan.comer(pollo)
 gavilan.comer(pez)
+
+class Persona {
+    saludo(): string {
+        return "Hola"
+    }
+}
+
+const persona = new Persona
+persona.saludo();
