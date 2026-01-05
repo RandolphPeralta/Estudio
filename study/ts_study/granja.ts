@@ -7,15 +7,15 @@
 abstract class Animal {
     estomago: Array<any> = []
 
-    abstract hacerSonido(): void
-    abstract comer(algo: any): void
+    abstract hacerSonido(): any
+    abstract comer(algo: any): any
 }
 
 //-----------------------------
 
 class Perro extends Animal {
-    hacerSonido(): void {
-        console.log("Guau")
+    hacerSonido() {
+        return "Guau"
     }
 
     comer(algo: any): void {
