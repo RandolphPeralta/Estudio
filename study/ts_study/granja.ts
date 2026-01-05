@@ -1,4 +1,4 @@
-//En la Finca del Sr Pablo, tenemos muchos animales de granja, 
+// En la Finca del Sr Pablo, tenemos muchos animales de granja, 
 // cerdos, patos, pollos, perros, gatos y peces, pero un enemigo 
 // acecha la Finca un Gavilan !!! El Gavilan siempre esta atento 
 // a los pollos y en ocasiones los peces de la represa, 
@@ -11,6 +11,9 @@ abstract class Animal {
     abstract comer(algo: any): any
 }
 
+interface Peligroso extends Animal{
+
+}
 //-----------------------------
 
 class Perro extends Animal {
@@ -56,7 +59,8 @@ class Granja {
   }
 }
 
-class Gavilan extends Animal {
+class Gavilan implements Peligroso {
+    estomago: Array<any> = []
     hacerSonido() {
         return "Aaaa"
     }
@@ -80,12 +84,3 @@ finca.mostrarAnimales();
 
 gavilan.comer(pollo)
 gavilan.comer(pez)
-
-class Persona {
-    saludo(): string {
-        return "Hola"
-    }
-}
-
-const persona = new Persona
-persona.saludo();
