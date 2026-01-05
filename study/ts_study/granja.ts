@@ -11,7 +11,7 @@ abstract class Animal {
     abstract comer(algo: any): any
 }
 
-interface Peligroso extends Animal{
+interface Peligroso extends Animal {
     atacar(animal: Animal): boolean
 }
 
@@ -38,7 +38,7 @@ class Pollo extends Animal {
 }
 
 class Pez extends Animal {
-    hacerSonido(){
+    hacerSonido() {
         return "Glu"
     }
 
@@ -49,26 +49,27 @@ class Pez extends Animal {
 //.....
 
 class Granja {
+    
     animales: Array<any> = []
 
-    agregarAnimal(animal: Animal){
+    agregarAnimal(animal: Animal) {
         this.animales.push(animal)
     }
 
-   mostrarAnimales() {
-    return this.animales.forEach(animalcualquiera => console.log(animalcualquiera.hacerSonido()))
-  }
+    mostrarAnimales() {
+        return this.animales.forEach(animalcualquiera => console.log(animalcualquiera.hacerSonido()))
+    }
 
-   alerta(dep: Animal, victima: Animal) {
-
-   }
+    alerta(depredador: Peligroso, victima: Animal) {
+        return "Nos atacan los animales"
+    }
 
 }
 
 class Gavilan implements Peligroso {
 
     estomago: Array<any> = []
-    
+
     hacerSonido() {
         return "Aaaa"
     }
