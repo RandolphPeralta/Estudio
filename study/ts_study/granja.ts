@@ -1,4 +1,4 @@
-// En la Finca del Sr Pablo, tenemos muchos animales de granja, 
+// En la finca, tenemos muchos animales de granja, 
 // cerdos, patos, pollos, perros, gatos y peces, pero un enemigo 
 // acecha la Finca un Gavilan !!! El Gavilan siempre esta atento 
 // a los pollos y en ocasiones los peces de la represa, 
