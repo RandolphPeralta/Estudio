@@ -7,11 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // O para manejar el INVENTARIO
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
-var MemoriaCRUD = /** @class */ (function () {
-    function MemoriaCRUD() {
+var Memoria = /** @class */ (function () {
+    function Memoria() {
         this.memoria = [];
     }
-    MemoriaCRUD.prototype.guardar = function (some) {
+    Memoria.prototype.guardar = function (some) {
         var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
         if (index !== -1) {
             return false;
@@ -19,13 +19,13 @@ var MemoriaCRUD = /** @class */ (function () {
         this.memoria.push(some);
         return true;
     };
-    MemoriaCRUD.prototype.eliminar = function (id) {
+    Memoria.prototype.eliminar = function (id) {
         var index = this.memoria.findIndex(function (item) { return item.id === id; });
         if (index !== -1) {
             this.memoria.splice(index, 1);
         }
     };
-    MemoriaCRUD.prototype.actualizar = function (some) {
+    Memoria.prototype.actualizar = function (some) {
         var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
         if (index === -1) {
             return false;
@@ -33,10 +33,10 @@ var MemoriaCRUD = /** @class */ (function () {
         this.memoria[index] = some;
         return true;
     };
-    MemoriaCRUD.prototype.mostrar = function () {
+    Memoria.prototype.mostrar = function () {
         return this.memoria;
     };
-    return MemoriaCRUD;
+    return Memoria;
 }());
 var ServicioLibro = /** @class */ (function () {
     function ServicioLibro(memoria) {
@@ -81,11 +81,11 @@ var ServicioPrestamo = /** @class */ (function () {
         this.servicioCliente = servicioCliente;
         this.prestamos = [];
     }
-    ServicioPrestamo.prototype.prestarLibro = function (idLibro, idCliente) {
+    ServicioPrestamo.prototype.prestar = function (idLibro, idCliente) {
         this.prestamos.push({ idLibro: idLibro, idCliente: idCliente });
         return true;
     };
-    ServicioPrestamo.prototype.devolverLibro = function (idLibro) {
+    ServicioPrestamo.prototype.devolver = function (idLibro) {
         var prestamoIndex = this.prestamos.findIndex(function (prestado) { return prestado.idLibro === idLibro; });
         if (prestamoIndex === -1)
             return false;
@@ -256,29 +256,33 @@ var MenuAccion = /** @class */ (function () {
         var idEstudiante = String(prompt("ID Estudiante: "));
         var libros = this.servicioLibro.getAll();
         var clientes = this.servicioCliente.getAll();
-        var libro = libros.find(function (libr) { return libr.id === idLibro; });
-        if (!libro || !libro.disponible)
-            return false;
-        var cliente = clientes.find(function (estudi) { return estudi.id === idEstudiante; });
-        if (!cliente)
-            return false;
+        var libro = libros.find(function (librop) { return librop.id === idLibro; });
+        if (!libro) {
+            console.log("No se pudo prestar: el libro no existe");
+            return;
+        }
+        if (!libro.disponible) {
+            console.log("No se pudo prestar: el libro no está disponible");
+            return;
+        }
+        var cliente = clientes.find(function (estudiantep) { return estudiantep.id === idEstudiante; });
+        if (!cliente) {
+            console.log("No se pudo prestar: el estudiante no existe");
+            return;
+        }
         libro.disponible = false;
-        var ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
-        if (ok) {
-            console.log("Préstamo exitoso");
-        }
-        else {
-            console.log("No se pudo prestar");
-        }
-        //console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
+        var ok = this.servicioPrestamo.prestar(idLibro, idEstudiante);
+        console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
     };
     MenuAccion.prototype.devolverLibro = function () {
         var idLibro = String(prompt("ID Libro: "));
-        var ok = this.servicioPrestamo.devolverLibro(idLibro);
+        var ok = this.servicioPrestamo.devolver(idLibro);
         var libros = this.servicioLibro.getAll();
         var libro = libros.find(function (book) { return book.id === idLibro; });
-        if (!libro)
-            return false;
+        if (!libro) {
+            console.log("No se pudo devolver, No esxite el libro");
+            return;
+        }
         libro.disponible = true;
         console.log(ok ? "Libro devuelto" : "No se pudo devolver");
     };
@@ -326,8 +330,8 @@ var App = /** @class */ (function () {
     };
     return App;
 }());
-var memoriaLibro = new MemoriaCRUD();
-var memoriaEstudiante = new MemoriaCRUD();
+var memoriaLibro = new Memoria();
+var memoriaEstudiante = new Memoria();
 var servicioLibro = new ServicioLibro(memoriaLibro);
 var servicioCliente = new ServicioEstudiante(memoriaEstudiante);
 var servicioPrestamo = new ServicioPrestamo(servicioLibro, servicioCliente);
@@ -337,8 +341,8 @@ var app = new App();
 app.run();
 //--------------------------------
 //PROBANDO LOS PRESTAMOS
-// const memoriaLibro = new MemoriaCRUD<Libro>();
-// const memoriaEstudiante = new MemoriaCRUD<Estudiante>();
+// const memoriaLibro = new Memoria<Libro>();
+// const memoriaEstudiante = new Memoria<Estudiante>();
 // const servicioLibro = new ServicioLibro(memoriaLibro);
 // const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
 // const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
@@ -346,13 +350,13 @@ app.run();
 // servicioLibro.register("L2", "Harry Potter", "J. K. Rowling")
 // servicioCliente.register("E1", "Juan", "123", "11");
 // // SI SE PUEDE PRESTAR
-// console.log(servicioPrestamo.prestarLibro("L1", "E1")); // true
-// console.log(servicioPrestamo.prestarLibro("L2", "E1")); // TRUE
-// console.log(servicioPrestamo.devolverLibro("L1"));      // true
+// console.log(servicioPrestamo.prestar("L1", "E1")); // true
+// console.log(servicioPrestamo.prestar("L2", "E1")); // TRUE
+// console.log(servicioPrestamo.devolver("L1"));      // true
 // console.log(servicioPrestamo.getAll());
 //---------------------------------------
 // PROBANDO POR LOS ESTUDIANTES
-//const memoriasitorioestudiante = new MemoriaCRUD<Estudiante>
+//const memoriasitorioestudiante = new Memoria<Estudiante>
 //const servicioestudiante = new ServicioEstudiante(memoriasitorioestudiante)
 //servicioestudiante.register("1","Sara","1132456789","11")
 //servicioestudiante.register("2","Laura","12356789","11")
@@ -364,7 +368,7 @@ app.run();
 //console.log(servicioestudiante.getAll())
 //-----------------------------------------
 //PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
-//const memoriasitoriobiblioteca = new MemoriaCRUD<Libro>
+//const memoriasitoriobiblioteca = new Memoria<Libro>
 //const serviciolibro = new ServicioLibro(memoriasitoriobiblioteca)
 // YA SE PUEDE REGISTRAR
 //serviciolibro.register("1", "IT", "Sthephen King")
@@ -377,7 +381,7 @@ app.run();
 //console.log(serviciolibro.getAll())
 // ACA SE IMPLEMENTO LA INTERFACE DE memoriaSITORIO
 //class ServicioLibro {
-//    constructor(private memoria: MemoriaCRUD<Libro>)
+//    constructor(private memoria: Memoria<Libro>)
 //    register(id: string, title:string, author: string) {
 //        const book = {
 //            id,
