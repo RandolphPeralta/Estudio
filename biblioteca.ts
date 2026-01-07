@@ -1,483 +1,570 @@
-// Praticar la abstracion de como realizar un sistema de prestamos en la biblioteca
+// Praticar la abstracion de como realizar sistema de gestion de prestamo para una biblioteca
 
 // Escribiendo el programa
-// Quiero un programa de sistema de gestion de biblioteca
-// Que primero me registre en el programa
-// Que ingrese si soy estudiante, profesor, para prestar, devolver, reservar
-// O directivo para manejar el inventario de la biblioteca
+// Quiero un programa de sistema de gestion de prestamo para una biblioteca
+// Que ingrese para registrar estudiante, para prestar, devolver
+// O para manejar el INVENTARIO
 
-// Codigo: 
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-interface IRegistro {
-  registro<T>(data: T): boolean;
+interface IAccion<T>{
+    guardar(some: any): any;
+    eliminar(id: any): any;
+    actualizar(some: any): any;
+    mostrar(): T[];
 }
 
-interface IAcciones {
-  prestar<T>(data: T): boolean;
-  devolver<T>(data: T): void;
-  reservar<T>(data: T): void;
+class Memoria<T> implements IAccion<T>{
+    private memoria: T[] = []
+
+    guardar(some: any): boolean {
+        const index = this.memoria.findIndex((item: any) => item.id === some.id);
+
+        if (index !== -1) {
+          return false;
+        }
+
+        this.memoria.push(some)
+        return true;
+        }
+
+    eliminar(id: any) 
+      {const index = this.memoria.findIndex((item: any) => item.id === id);
+
+      if (index !== -1) {
+        this.memoria.splice(index, 1);
+          }}
+
+    actualizar(some: any): boolean {
+      const index = this.memoria.findIndex((item: any) => item.id === some.id);
+
+        if (index === -1) {
+          return false;
+        }
+
+        this.memoria[index] = some;
+        return true;
+          }
+
+    mostrar(){
+        return this.memoria
+        }
 }
 
-interface IInventario {
-  agregar<T>(item: T): void;
-  eliminar<T>(item: T): void;
-  actualizar<T>(item: T): void;
-}
+// ------------------------------------------------------
 
-class Estudiante implements IAcciones, IRegistro {
-  private informacion: Array<any> = []
-  public reservas: Array<any> = [];
-  public prestamos: Array<any> = [];
-
-  registro<T>(data: T): boolean {
-    this.informacion.push(data)
-    return true
-  }
-
-  prestar<T>(data: T): boolean {
-    if (this.prestamos.length >= 2) {
-      return false;
-    }
-    this.prestamos.push(data);
-    return true;
-  }
-
-  devolver<T>(data: T): void {
-    const index = this.prestamos.indexOf(data);
-    if (index !== -1) {
-      this.prestamos.splice(index, 1);
-    }
-  }
-
-  reservar<T>(data: T): void {
-    if (this.reservas.length <= 2) {
-      this.reservas.push(data);
-    }
-  }
-}
-
-class Profesor implements IAcciones, IRegistro {
-
-  private informacion: Array<any> = []
-  public reservas: Array<any> = [];
-  public prestamos: Array<any> = []
-
-  registro<T>(data: T): boolean {
-    this.informacion.push(data)
-    return true
-  }
-
-  prestar<T>(data: T): boolean {
-    if (this.prestamos.length >= 3) {
-      return false;
-    }
-    this.prestamos.push(data);
-    return true;
-  }
-
-  devolver<T>(data: T): void {
-    const index = this.prestamos.indexOf(data);
-    if (index !== -1) {
-      this.prestamos.splice(index, 1);
-    }
-  }
-
-  reservar<T>(data: T): void {
-    if (this.reservas.length <= 3) {
-      this.reservas.push(data);
-    }
-  }
-}
-
-class Directivo implements IInventario, IRegistro {
-  private informacion: Array<any> = []
-
-  constructor(private inventario: Array<any> = []) { }
-
-  registro<T>(data: T): boolean {
-    this.informacion.push(data)
-    return true
-  }
-
-  agregar<T>(item: T): void {
-    this.inventario.push(item);
-  }
-
-  eliminar<T>(item: T): void {
-    const index = this.inventario.indexOf(item);
-    if (index !== -1) {
-      this.inventario.splice(index, 1);
-    }
-  }
-
-  actualizar<T>(item: T): void {
-    const index = this.inventario.findIndex(i => i === item);
-    if (index !== -1) {
-      this.inventario[index] = item;}
-  }
-}
-
-type libro = {
-  id: number;
-  titulo: string;
-  autor: string;
+type Libro = {
+  id: string
+  titulo: string
+  autor: string
   disponible: boolean
 }
 
-type EstudianteInfo = {
+type Estudiante = {
+  id: string
   nombre: string;
   identificacion: string
-  genero: string
-  edad: number
-  nacionalidad: string
   grado: string
 }
 
-type ProfesorInfo = {
-  nombre: string;
-  identificacion: string
-  genero: string
-  edad: number
-  nacionalidad: string
-  curso: string
-}
-
-type DirectivoInfo = {
-  nombre: string;
-  identificacion: string
-  genero: string
-  edad: number
-  nacionalidad: string
-  puesto: string
-}
-
-//--------------------------------------------------
-
-const libro1: libro = {
-  id: 1,
-  titulo: "Juego de tronos",
-  autor: "George R.R Martin",
-  disponible: true
-}
-
-const libro2: libro = {
-  id: 2,
-  titulo: "Harry Potter",
-  autor: "J. K. Rowling",
-  disponible: true
-}
-
-const libro3: libro = {
-  id: 3,
-  titulo: "Don Quijote",
-  autor: "Cervantes",
-  disponible: true
-}
-
-const libro4: libro = {
-  id: 4,
-  titulo: "Cien años de soledad",
-  autor: "Gabriel García Márquez",
-  disponible: true
-}
-
-const libro5: libro = {
-  id: 5,
-  titulo: "Orgullo y prejuicio",
-  autor: "Jane Austen",
-  disponible: true
-}
-
-class App {
-  private usuariosRegistrados: string[] = [];
-  private catalogo: libro[] = []
-
-  run(): void {
-
-    this.catalogo.push(libro1, libro2, libro3, libro4, libro5);
-
-    let continuar = true;
-
-    while (continuar) {
-
-      console.log("\n📚 Sistema de Biblioteca");
-      console.log("1. Registrar usuario\n0. Salir")
-
-      const opcion = Number(prompt("👉 Selecione una opción: "));
-
-      switch (opcion) {
-        case 1:
-          this.registrarUsuario();
-          break;
-
-        case 0:
-          continuar = false;
-          console.log("👋 Gracias por usar el sistema");
-          break;
-
-        default:
-          console.log("❌ Opción inválida");
-      }
+class ServicioLibro{
+    constructor(private memoria: Memoria<Libro>){}
+    
+    register(libro: Libro): boolean {
+      return this.memoria.guardar(libro)
     }
+
+    delete(id: string): void{
+      this.memoria.eliminar(id)
+    }
+
+    update(libro: Libro): boolean {
+      return this.memoria.actualizar(libro);
+      }
+
+    getAll(){
+      return this.memoria.mostrar()
+    }
+}
+
+class ServicioEstudiante {
+  constructor(private memoria: Memoria<Estudiante>){}
+
+  register(estudiante: Estudiante): boolean {
+      return this.memoria.guardar(estudiante)
+       
+    }
+
+  delete(id: string): void{
+      this.memoria.eliminar(id)
+    }
+
+  update(estudiante: Estudiante): boolean {
+    return this.memoria.actualizar(estudiante);
   }
 
-private registrarUsuario(): void {
+  getAll(){
+      return this.memoria.mostrar()
+    }
+}
 
-    console.log("📝 Registro de usuario");
+class ServicioPrestamo {
+  prestamos: Array<any> = [];
 
-    const name = String(prompt("👉 Ingresa su nombre : "));
-    const identification = String(prompt("👉 Ingresa su identificacion : "));
-    const gender = String(prompt("👉 Ingresa su genero : "));
-    const age = Number(prompt("👉 Ingresa su edad: "));
-    const nacionality = String(prompt("👉 Ingresa su nacionalidad: "));
-    const position = Number(prompt("👉 Eres (1) Estudiante, (2) Profesor, (3) Directivo: "));
+  constructor(
+    private servicioLibro: ServicioLibro,
+    private servicioCliente: ServicioEstudiante // | Servicio
+  ) {}
 
-    let usuario: any;
-    if (this.usuariosRegistrados.includes(identification)) {
-      console.log("❌ Usuario ya registrado");
-      return;
+  prestarLibro(idLibro: string, idCliente: string): boolean {
+      this.prestamos.push({idLibro,idCliente})
+      return true;
     }
 
-    switch (position) {
+  devolverLibro(idLibro: string): boolean {
+    const prestamoIndex = this.prestamos.findIndex(prestado => prestado.idLibro === idLibro);
 
-      case 1: {
-        const degree = String(prompt("👉 Grado: "));
+    if (prestamoIndex === -1) 
+      return false;
 
-        const data: EstudianteInfo = {
-          nombre: name,
-          identificacion: identification,
-          genero: gender,
-          edad: age,
-          nacionalidad: nacionality,
-          grado: degree
-        };
+    this.prestamos.splice(prestamoIndex, 1);
 
-        usuario = new Estudiante();
-        usuario.registro(data);
-        this.menuAcciones(usuario);
+    return true;
+    }
+
+  getAll(){
+    return this.prestamos
+  }
+}
+
+class MenuOpcion {
+  static REGISTRAR_ESTUDIANTE = 1;
+  static ELIMINAR_ESTUDIANTE = 2;
+  static VER_ESTUDIANTES = 3;
+  static ACTUALIZAR_ESTUDIANTE = 4;
+
+  static REGISTRAR_LIBRO = 5;
+  static ELIMINAR_LIBRO = 6;
+  static VER_LIBROS = 7;
+  static ACTUALIZAR_LIBRO = 8;
+
+  static PRESTAR_LIBRO = 9;
+  static DEVOLVER_LIBRO = 10;
+
+  static SALIR = 0;
+}
+
+
+class MenuAccion {
+  constructor(
+    private servicioCliente: ServicioEstudiante,
+    private servicioLibro: ServicioLibro,
+    private servicioPrestamo: ServicioPrestamo
+  ) {}
+
+  ejecutar(opcion: number): boolean {
+    switch (opcion) {
+      case MenuOpcion.REGISTRAR_ESTUDIANTE:
+        this.registrarEstudiante();
+        this.pause();
         break;
-      }
+      
+      case MenuOpcion.ELIMINAR_ESTUDIANTE:
+        this.eliminarEstudiante();
+        this.pause();
+        break
 
-      case 2: {
-        const course = String(prompt("👉 Que curso estas dictando: "));
-
-        const data: ProfesorInfo = {
-          nombre: name,
-          identificacion: identification,
-          genero: gender,
-          edad: age,
-          nacionalidad: nacionality,
-          curso: course
-        };
-
-        usuario = new Profesor();
-        usuario.registro(data);
-        this.menuAcciones(usuario);
+      case MenuOpcion.VER_ESTUDIANTES:
+        console.table(this.servicioCliente.getAll());
+        this.pause();
         break;
-      }
 
-      case 3: {
-        const job = String(prompt("👉 Que puesto de trabajo ocupa: "));
-
-        const data: DirectivoInfo = {
-          nombre: name,
-          identificacion: identification,
-          genero: gender,
-          edad: age,
-          nacionalidad: nacionality,
-          puesto: job
-        };
-
-        usuario = new Directivo();
-        usuario.registro(data);
-        this.menuInventario(usuario);
+      case MenuOpcion.ACTUALIZAR_ESTUDIANTE:
+        this.actualizarEstudiante()
+        this.pause();
         break;
-      }
+
+      case MenuOpcion.REGISTRAR_LIBRO:
+        this.registrarLibro();
+        this.pause();
+        break;
+      
+      case MenuOpcion.ELIMINAR_LIBRO:
+        this.elmiminarLibro();
+        this.pause();
+        break
+
+      case MenuOpcion.VER_LIBROS:
+        console.table(this.servicioLibro.getAll());
+        this.pause();
+        break;
+      
+      case MenuOpcion.ACTUALIZAR_LIBRO:
+        this.actualizarlibro();
+        this.pause();
+        break;
+
+      case MenuOpcion.PRESTAR_LIBRO:
+        this.prestarLibro();
+        this.pause();
+        break;
+
+      case MenuOpcion.DEVOLVER_LIBRO:
+        this.devolverLibro();
+        this.pause();
+        break;
+
+      case MenuOpcion.SALIR:
+        return false;
 
       default:
-        console.log("❌ Opción inválida");
+        console.log("Opción inválida");
     }
 
-    this.usuariosRegistrados.push(identification);
-}
+    return true;
+  }
 
-private menuAcciones(usuario: IAcciones): void {
+  private registrarEstudiante() {
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const identificacion = String(prompt("Identificación: "));
+    const grado = String(prompt("Grado: "));
 
-    let continuar = true;
+    const estudiante: Estudiante = {
+      id: id,
+      nombre: nombre,
+      identificacion: identificacion,
+      grado: grado
+    }
+    
+    const estudianteregistrado = this.servicioCliente.register(estudiante);
 
-    while (continuar) {
-
-      const opcion = Number(prompt("👉 (1) Prestar (2) Devolver (3) Reservar (0) Salir: "));
-
-      switch (opcion) {
-
-        case 1: {
-          console.log("📚 Libros disponibles:");
-          this.catalogo.forEach(l => {
-            if (l.disponible) console.log(`${l.id}. ${l.titulo}`);
-          });
-
-          const idLibro = Number(prompt("👉 ID del libro: "));
-          const libro = this.catalogo.find(l => l.id === idLibro && l.disponible);
-
-          if (!libro) {
-            console.log("❌ Libro no disponible");
-            break;
-          }
-
-          const prestado = usuario.prestar(libro);
-
-          if (!prestado) {
-            console.log("❌ Has alcanzado el límite de préstamos");
-            break;
-          }
-
-          libro.disponible = false;
-          console.log("✅ Libro prestado");
-
-          break;
-        }
-
-        case 2: {
-          const idLibro = Number(prompt("👉 ID del libro a devolver: "));
-          const libro = this.catalogo.find(l => l.id === idLibro);
-
-          if (!libro) {
-            console.log("❌ Libro no encontrado");
-            break;
-          }
-
-          usuario.devolver(libro);
-          libro.disponible = true;
-          console.log("📘 Libro devuelto");
-          break;
-        }
-
-        case 3: {
-          const idLibro = Number(prompt("👉 ID del libro a reservar: "));
-          const libro = this.catalogo.find(l => l.id === idLibro);
-
-          if (!libro) {
-            console.log("❌ Libro no encontrado");
-            break;
-          }
-
-          usuario.reservar(libro);
-          libro.disponible = false;
-          console.log("📌 Libro reservado");
-          break;
-        }
-
-        case 0:
-          continuar = false;
-          break;
-
-        default:
-          console.log("❌ Opción inválida");
+    if (estudianteregistrado) {
+      console.log("Estudiante registrado");
+      } else {
+      console.log("El estudiante ya existe con este ID");
       }
+  }
+
+  private eliminarEstudiante(){
+    const id = String(prompt("ID: "));
+    this.servicioCliente.delete(id)
+    console.log("Estudiante Eliminado")
+  }
+
+  private actualizarEstudiante() {
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const identificacion = String(prompt("Identificación: "));
+    const grado = String(prompt("Grado: "));
+
+    const estudiantexistente: Estudiante = {
+    id: id,
+    nombre: nombre,
+    identificacion: identificacion,
+    grado: grado
+    };
+
+    const estudianteactualizado = this.servicioCliente.update(estudiantexistente);
+
+    if (estudianteactualizado) {
+      console.log("Libro actualizado");
+      } else {
+      console.log("No existe un libro con ese ID");
+      }
+    }
+  
+  private registrarLibro() {
+    const id = String(prompt("ID Libro: "));
+    const titulo = String(prompt("Título: "));
+    const autor = String(prompt("Autor: "));
+
+    const libro: Libro = {
+      id: id,
+      titulo: titulo,
+      autor: autor,
+      disponible: true
+    }
+
+    const libroregistrado = this.servicioLibro.register(libro);
+    if (libroregistrado) {
+      console.log("Estudiante registrado");
+      } else {
+      console.log("El estudiante ya existe con este ID");
+      }
+  }
+
+  private elmiminarLibro(){
+    const idLibro = String(prompt("ID Libro: "));
+    this.servicioLibro.delete(idLibro)
+  }
+
+  private actualizarlibro() {
+  const id = String(prompt("ID Libro: "));
+  const titulo = String(prompt("Título: "));
+  const autor = String(prompt("Autor: "));
+
+  const libroexistente: Libro = {
+    id: id,
+    titulo: titulo,
+    autor: autor,
+    disponible: true
+  };
+
+  const libroactualizado = this.servicioLibro.update(libroexistente);
+
+  if (libroactualizado) {
+    console.log("Libro actualizado");
+    } else {
+    console.log("No existe un libro con ese ID");
     }
   }
 
-private menuInventario(usuario: IInventario): void {
+  private prestarLibro() {
+    const idLibro = String(prompt("ID Libro: "));
+    const idEstudiante = String(prompt("ID Estudiante: "));
 
-    let continuar = true;
+    const libros = this.servicioLibro.getAll();
+    const clientes = this.servicioCliente.getAll();
 
-    while (continuar) {
+    const libro = libros.find(librobuscado => librobuscado.id === idLibro);
+    if (!libro || !libro.disponible) 
+      return false;
 
-      const opcion = Number(prompt("👉 (1) Agregar (2) Eliminar (3) Ver (4) Actualizar (0) Salir: "));
+    const cliente = clientes.find(estudiantebuscado => estudiantebuscado.id === idEstudiante);
+    if (!cliente) 
+      return false;
 
-      switch (opcion) {
+    libro.disponible = false
 
-        case 1: {
-          const id = Number(prompt("👉 ID del libro: "));
+    const ok = this.servicioPrestamo.prestarLibro(idLibro, idEstudiante);
 
-          if (this.catalogo.some(l => l.id === id)) {
-            console.log("❌ Ya existe un libro con ese ID");
-            break;
-          }
+    if (ok){
+      console.log( "Préstamo exitoso")
+    }
+    else {
+      console.log("No se pudo prestar")
+    }
+    //console.log(ok ? "Préstamo exitoso" : "No se pudo prestar");
+  }
 
-          const titulo = String(prompt("👉 Titulo: "));
-          const autor = String(prompt("👉 Autor: "));
+  private devolverLibro() {
+    const idLibro = String(prompt("ID Libro: "));
+    const ok = this.servicioPrestamo.devolverLibro(idLibro);
 
-          const nuevoLibro: libro = {
-            id,
-            titulo,
-            autor,
-            disponible: true
-          };
+    const libros = this.servicioLibro.getAll();
+    const libro = libros.find(book => book.id === idLibro);
 
-          this.catalogo.push(nuevoLibro);
-          usuario.agregar(nuevoLibro);
+    if (!libro) 
+      return false;
 
-          console.log("✅ Libro agregado");
-          break;
-        }
+    libro.disponible = true;
+      console.log(ok ? "Libro devuelto" : "No se pudo devolver");
+    }
 
-        case 2: {
-          const idLibro = Number(prompt("👉 ID del libro a eliminar: "));
-          const index = this.catalogo.findIndex(l => l.id === idLibro);
+  private pause() {
+    console.log("\nPresiona ENTER para continuar...");
+    prompt("");
+}
 
-          if (index === -1) {
-            console.log("❌ Libro no encontrado");
-            break;
-          }
+}
 
-          const libro = this.catalogo[index];
-          usuario.eliminar(libro);
-          this.catalogo.splice(index, 1);
+class ConsoleView {
+  mensaje(): void {
+    const opciones: string[] = [
+      "1. Registrar Estudiante",
+      "2. Eliminar Estudiante",
+      "3. Ver Estudiantes",
+      "4. Actualizar Estudiante",
+      "5. Registrar Libro",
+      "6. Eliminar Libro",
+      "7. Ver Libros",
+      "8. Actualizar Libros",
+      "9. Prestar Libro",
+      "10. Devolver Libro",
+      "0. Salir"
+    ];
 
-          console.log("🗑️ Libro eliminado");
-          break;
-        }
-
-        case 3:
-          console.log("📚 Catálogo:");
-          this.catalogo.forEach(l => console.log(`${l.id}. ${l.titulo} - ${l.autor}`)
-          );
-          break;
-        
-        case 4: {
-          const idLibro = Number(prompt("👉 ID del libro a actualizar: "));
-          const index = this.catalogo.findIndex(l => l.id === idLibro);
-
-          if (index === -1) {
-            console.log("❌ Libro no encontrado");
-            break;
-            }
-
-          const libroActual = this.catalogo[index];
-
-          const nuevoTitulo = String(prompt(`👉 Nuevo título (${libroActual.titulo}): `));
-          const nuevoAutor = String(prompt(`👉 Nuevo autor (${libroActual.autor}): `));
-
-          const libroActualizado: libro = {
-            id: libroActual.id,
-            titulo: nuevoTitulo || libroActual.titulo,
-            autor: nuevoAutor || libroActual.autor,
-            disponible: libroActual.disponible
-          };
-
-          this.catalogo[index] = libroActualizado;
-
-          usuario.actualizar(libroActualizado);
-
-          console.log("✏️ Libro actualizado correctamente");
-          break;
-        }
-
-
-        case 0:
-          continuar = false;
-          break;
-
-        default:
-          console.log("❌ Opción inválida");
-      }
+    console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+    
+    for (const opcion of opciones) {
+      console.log(opcion);
     }
   }
 }
 
-const app = new App();
+class App{
+  run(): void{
+  
+  let continuar = true;
+
+  while (continuar) {
+    view.mensaje();
+    const opcion = Number(prompt("Seleccione opción: "));
+    continuar = menu.ejecutar(opcion);
+    }
+  }
+}
+
+const memoriaLibro = new Memoria<Libro>();
+const memoriaEstudiante = new Memoria<Estudiante>();
+
+const servicioLibro = new ServicioLibro(memoriaLibro);
+const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
+
+const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
+
+const view = new ConsoleView();
+const menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
+
+const app = new App()
 app.run()
+
+
+//--------------------------------
+//PROBANDO LOS PRESTAMOS
+
+// const memoriaLibro = new Memoria<Libro>();
+// const memoriaEstudiante = new Memoria<Estudiante>();
+
+// const servicioLibro = new ServicioLibro(memoriaLibro);
+// const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
+
+// const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
+
+// servicioLibro.register("L1", "1984", "Orwell");
+// servicioLibro.register("L2", "Harry Potter", "J. K. Rowling")
+// servicioCliente.register("E1", "Juan", "123", "11");
+
+// // SI SE PUEDE PRESTAR
+// console.log(servicioPrestamo.prestarLibro("L1", "E1")); // true
+// console.log(servicioPrestamo.prestarLibro("L2", "E1")); // TRUE
+// console.log(servicioPrestamo.devolverLibro("L1"));      // true
+
+// console.log(servicioPrestamo.getAll());
+
+
+//---------------------------------------
+// PROBANDO POR LOS ESTUDIANTES
+//const memoriasitorioestudiante = new Memoria<Estudiante>
+//const servicioestudiante = new ServicioEstudiante(memoriasitorioestudiante)
+
+//servicioestudiante.register("1","Sara","1132456789","11")
+//servicioestudiante.register("2","Laura","12356789","11")
+
+//YA SE PUEDE ELMINAR POR ID
+//servicioestudiante.delete("2")
+//console.log(servicioestudiante.getAll())
+
+// YA SE PUEDE ACTUALIZAR POR EL ID
+//servicioestudiante.update("2","Laura","1235678964573","11")
+//console.log(servicioestudiante.getAll())
+
+//-----------------------------------------
+//PROBANDO POR EL INVENTARIO DE LIBROS EN LA BIBLIOTECA
+//const memoriasitoriobiblioteca = new Memoria<Libro>
+//const serviciolibro = new ServicioLibro(memoriasitoriobiblioteca)
+
+// YA SE PUEDE REGISTRAR
+//serviciolibro.register("1", "IT", "Sthephen King")
+//console.log(memoriasitoriobiblioteca.mostrar())
+
+//YA SE PUEDE ELMINAR POR ID
+//serviciolibro.delete("1")
+//console.log(memoriasitoriobiblioteca.mostrar())
+
+// YA SE PUEDE ACTUALIZAR POR EL ID
+//serviciolibro.update("1", "IT (Edición Especial)", "Stephen King")
+//console.log(serviciolibro.getAll())
+
+
+
+
+// ACA SE IMPLEMENTO LA INTERFACE DE memoriaSITORIO
+
+
+//class ServicioLibro {
+//    constructor(private memoria: Memoria<Libro>)
+
+//    register(id: string, title:string, author: string) {
+//        const book = {
+//            id,
+//            title,
+//            author,
+//            available: true
+//        }
+    
+    // eliminar(id: string): void{
+    // this.memoriasitory.guardar(book)}
+
+    //getById(id:string): Book | null {
+    // return this.memoriasitory.getById(id)}
+
+    //getAll(): Book[]{
+    // return this.memoriasitory.getAll()}
+
+//    prestar(book: Book): void{
+//        book.available = false;
+//    }
+    // this.memoriasitory.update(book)
+    //}
+
+    // devolver(book: Book): void{
+    // book.available = true;
+    //  this.memoriasitory.update(book)}
+    
+
+//    }
+
+// actualizar(criterio: (item: T) => boolean, nuevo: T): void {
+//     const index = this.memoria.findIndex(criterio);
+
+//     if (index !== -1) {
+//       this.memoria[index] = nuevo;}
+//       }
+
+
+// const libro1: Libro = {
+//   id: 1,
+//   titulo: "Juego de tronos",
+//   autor: "George R.R Martin",
+//   disponible: true
+// }
+
+// const libro2: Libro = {
+//   id: 2,
+//   titulo: "Harry Potter",
+//   autor: "J. K. Rowling",
+//   disponible: true
+// }
+
+// const libro3: Libro = {
+//   id: 3,
+//   titulo: "Don Quijote",
+//   autor: "Cervantes",
+//   disponible: true
+// }
+
+// const libro4: Libro = {
+//   id: 4,
+//   titulo: "Cien años de soledad",
+//   autor: "Gabriel García Márquez",
+//   disponible: true
+// }
+
+// const libro5: Libro = {
+//   id: 5,
+//   titulo: "Orgullo y prejuicio",
+//   autor: "Jane Austen",
+//   disponible: true
+// }
+
+// const Libros = [libro1, libro2, libro3, libro4, libro5]
+
+// type Profesor = {
+//   id: string
+//   nombre: string;
+//   identificacion: string
+//   curso: string
+// }
