@@ -1,4 +1,4 @@
-//En la Finca del Sr Pablo, tenemos muchos animales de granja, 
+// En la finca, tenemos muchos animales de granja, 
 // cerdos, patos, pollos, perros, gatos y peces, pero un enemigo 
 // acecha la Finca un Gavilan !!! El Gavilan siempre esta atento 
 // a los pollos y en ocasiones los peces de la represa, 
@@ -65,6 +65,22 @@ var Pez = /** @class */ (function (_super) {
     return Pez;
 }(Animal));
 //.....
+var Gavilan = /** @class */ (function () {
+    function Gavilan() {
+        this.estomago = [];
+    }
+    Gavilan.prototype.hacerSonido = function () {
+        return "Aaaa";
+    };
+    Gavilan.prototype.comer = function (animal) {
+        this.estomago.push(animal);
+    };
+    Gavilan.prototype.atacar = function (animal) {
+        this.comer(animal);
+        return true;
+    };
+    return Gavilan;
+}());
 var Granja = /** @class */ (function () {
     function Granja() {
         this.animales = [];
@@ -73,40 +89,21 @@ var Granja = /** @class */ (function () {
         this.animales.push(animal);
     };
     Granja.prototype.mostrarAnimales = function () {
-        return this.animales.forEach(function (animalcualquiera) { return console.log(animalcualquiera.hacerSonido()); });
+        return this.animales.map(function (animalp) { return animalp.hacerSonido(); });
+    };
+    Granja.prototype.alerta = function (depredador, victima) {
+        return "Nos atacan los animales";
     };
     return Granja;
 }());
-var Gavilan = /** @class */ (function (_super) {
-    __extends(Gavilan, _super);
-    function Gavilan() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Gavilan.prototype.hacerSonido = function () {
-        return "Aaaa";
-    };
-    Gavilan.prototype.comer = function (animal) {
-        this.estomago.push(animal);
-        return "Devoro una presa!";
-    };
-    return Gavilan;
-}(Animal));
 var finca = new Granja();
+var perro = new Perro();
 var pollo = new Pollo();
 var pez = new Pez();
 var gavilan = new Gavilan();
+finca.agregarAnimal(perro);
 finca.agregarAnimal(pollo);
 finca.agregarAnimal(pez);
-finca.mostrarAnimales();
+console.log(finca.mostrarAnimales());
 gavilan.comer(pollo);
 gavilan.comer(pez);
-var Persona = /** @class */ (function () {
-    function Persona() {
-    }
-    Persona.prototype.saludo = function () {
-        return "Hola";
-    };
-    return Persona;
-}());
-var persona = new Persona;
-persona.saludo();

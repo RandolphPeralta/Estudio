@@ -48,24 +48,6 @@ class Pez extends Animal {
 }
 //.....
 
-class Granja {
-    
-    animales: Array<any> = []
-
-    agregarAnimal(animal: Animal) {
-        this.animales.push(animal)
-    }
-
-    mostrarAnimales() {
-        return this.animales.forEach(animalcualquiera => console.log(animalcualquiera.hacerSonido()))
-    }
-
-    alerta(depredador: Peligroso, victima: Animal) {
-        return "Nos atacan los animales"
-    }
-
-}
-
 class Gavilan implements Peligroso {
 
     estomago: Array<any> = []
@@ -84,16 +66,38 @@ class Gavilan implements Peligroso {
     }
 }
 
+class Granja {
+
+    private animales: Array<any> = []
+
+    agregarAnimal(animal: Animal) {
+        this.animales.push(animal)
+    }
+
+    mostrarAnimales(): string[] {
+        return this.animales.map(animalp => animalp.hacerSonido())
+    }
+
+    alerta(depredador: Peligroso, victima: Animal) {
+        return "Nos atacan los animales"
+    }
+
+}
+
 const finca = new Granja();
 
+const perro = new Perro();
 const pollo = new Pollo();
 const pez = new Pez();
 const gavilan = new Gavilan();
 
+finca.agregarAnimal(perro);
 finca.agregarAnimal(pollo);
 finca.agregarAnimal(pez);
 
-finca.mostrarAnimales();
+console.log(finca.mostrarAnimales());
 
-gavilan.comer(pollo)
-gavilan.comer(pez)
+gavilan.comer(pollo);
+gavilan.comer(pez);
+
+// TOCA BUSCAR LA MANERA DE CREAR UNA ALERTA EN LA GRANJA
