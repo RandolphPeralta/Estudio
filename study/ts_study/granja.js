@@ -92,7 +92,7 @@ var Granja = /** @class */ (function () {
         return this.animales.map(function (animalp) { return animalp.hacerSonido(); });
     };
     Granja.prototype.alerta = function (depredador, victima) {
-        return "Nos atacan los animales";
+        return "Nos atacan los animales peligrosos";
     };
     return Granja;
 }());
@@ -107,3 +107,4 @@ finca.agregarAnimal(pez);
 console.log(finca.mostrarAnimales());
 gavilan.comer(pollo);
 gavilan.comer(pez);
+// TOCA BUSCAR LA MANERA DE CREAR UNA ALERTA EN LA GRANJA

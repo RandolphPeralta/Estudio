@@ -79,7 +79,7 @@ class Granja {
     }
 
     alerta(depredador: Peligroso, victima: Animal) {
-        return "Nos atacan los animales"
+        // "Nos atacan los animales peligrosos"
     }
 
 }
