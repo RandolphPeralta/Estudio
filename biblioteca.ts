@@ -15,6 +15,9 @@ interface IAccion<T>{
     mostrar(): T[];
 }
 
+// ------------------------------------------------------
+
+// EN MEMORIA RAM
 class Memoria<T> implements IAccion<T>{
     private memoria: T[] = []
 
@@ -52,7 +55,30 @@ class Memoria<T> implements IAccion<T>{
         }
 }
 
-// ------------------------------------------------------
+// EN BASE DE DATOS
+class RepositoryDB<T extends { id: string }> implements IAccion<T> {
+
+  guardar(algo: T): boolean {
+    // INSERT INTO tabla ...
+    return true;
+  }
+
+  eliminar(id: string): void {
+    // DELETE FROM tabla WHERE id = ?
+  }
+
+  actualizar(algo: T): boolean {
+    // UPDATE tabla SET ...
+    return true;
+  }
+
+  mostrar(): T[] {
+    // SELECT * FROM tabla
+    return [];
+  }
+}
+
+
 
 type Libro = {
   id: string
