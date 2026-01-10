@@ -20,7 +20,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Animal = /** @class */ (function () {
     function Animal() {
-        this.estomago = [];
     }
     return Animal;
 }());
@@ -28,7 +27,9 @@ var Animal = /** @class */ (function () {
 var Perro = /** @class */ (function (_super) {
     __extends(Perro, _super);
     function Perro() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.estomago = [];
+        return _this;
     }
     Perro.prototype.hacerSonido = function () {
         return "Guau";
@@ -41,7 +42,9 @@ var Perro = /** @class */ (function (_super) {
 var Pollo = /** @class */ (function (_super) {
     __extends(Pollo, _super);
     function Pollo() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.estomago = [];
+        return _this;
     }
     Pollo.prototype.hacerSonido = function () {
         return "Pio";
@@ -54,7 +57,9 @@ var Pollo = /** @class */ (function (_super) {
 var Pez = /** @class */ (function (_super) {
     __extends(Pez, _super);
     function Pez() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.estomago = [];
+        return _this;
     }
     Pez.prototype.hacerSonido = function () {
         return "Glu";
@@ -92,7 +97,7 @@ var Granja = /** @class */ (function () {
         return this.animales.map(function (animalp) { return animalp.hacerSonido(); });
     };
     Granja.prototype.alerta = function (depredador, victima) {
-        return "Nos atacan los animales peligrosos";
+        // "Nos atacan los animales peligrosos"
     };
     return Granja;
 }());

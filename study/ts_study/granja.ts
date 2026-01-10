@@ -5,8 +5,7 @@
 // representa cada uno de ellos usando POO
 
 abstract class Animal {
-    estomago: Array<any> = []
-
+    abstract estomago: any[]
     abstract hacerSonido(): string
     abstract comer(algo: any): any
 }
@@ -18,6 +17,9 @@ interface Peligroso extends Animal {
 //-----------------------------
 
 class Perro extends Animal {
+
+    estomago: any[] = []
+
     hacerSonido() {
         return "Guau"
     }
@@ -28,6 +30,9 @@ class Perro extends Animal {
 }
 
 class Pollo extends Animal {
+
+    estomago: any[] = []
+
     hacerSonido() {
         return "Pio"
     }
@@ -38,6 +43,9 @@ class Pollo extends Animal {
 }
 
 class Pez extends Animal {
+
+    estomago: any[] = []
+
     hacerSonido() {
         return "Glu"
     }
