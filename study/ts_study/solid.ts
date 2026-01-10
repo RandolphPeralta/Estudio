@@ -91,6 +91,7 @@ class KDK extends Abanico {
 }
 
 class Olimpo implements SuperAbanico{
+    
 
     public encender(): boolean {
         return true
@@ -112,7 +113,7 @@ class Olimpo implements SuperAbanico{
         return 4;
     }
 
-    public ControlRemoto(): boolean{
+    public controlRemoto(): boolean{
         this.encender
         return true
     }
@@ -131,8 +132,8 @@ class Program {
         sanyo.encender();
 
         const olimpo: SuperAbanico = new Olimpo();
-        //console.log(olimpo.cantidadDeAspas())
-        //console.log(samurai.cantidadDeAspas)
+        console.log(olimpo.cantidadDeAspas())
+        console.log(samurai.cantidadDeAspas)
 
     }
 }
