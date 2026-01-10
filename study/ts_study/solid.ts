@@ -5,6 +5,10 @@ abstract class Abanico {
     abstract apagar(): boolean
     abstract velocidades(velocidad: number): void
     abstract girar(): boolean
+
+    public cantidadDeAspas(): number{
+        return 3;
+    }
 }
 
 interface SuperAbanico extends Abanico {
@@ -29,8 +33,8 @@ class Samurai extends Abanico{
         return true
     }
 
-    public ControlRemoto(){
-
+    public cantidadDeAspas(): number {
+        return 5
     }
 }
 
@@ -56,6 +60,10 @@ class Sanyo extends Abanico {
         return true
     }
 
+    public cantidadDeAspas(): number {
+        return 3
+    }
+
 }
 
 class KDK extends Abanico {
@@ -76,9 +84,13 @@ class KDK extends Abanico {
         return true
     }
 
+    public cantidadDeAspas(): number {
+        return 3
+    }
+
 }
 
-class Olimpo extends Abanico{
+class Olimpo implements SuperAbanico{
 
     public encender(): boolean {
         return true
@@ -96,6 +108,15 @@ class Olimpo extends Abanico{
         return true
     }
 
+    public cantidadDeAspas(): number {
+        return 4;
+    }
+
+    public ControlRemoto(): boolean{
+        this.encender
+        return true
+    }
+
 }
 
 class Program {
@@ -108,6 +129,10 @@ class Program {
 
         const sanyo: Abanico = new Sanyo();
         sanyo.encender();
+
+        const olimpo: SuperAbanico = new Olimpo();
+        //console.log(olimpo.cantidadDeAspas())
+        //console.log(samurai.cantidadDeAspas)
 
     }
 }

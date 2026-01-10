@@ -1,12 +1,12 @@
-// En la finca, tenemos muchos animales de granja, 
+// En la granja, tenemos muchos animales de granja, 
 // cerdos, patos, pollos, perros, gatos y peces, pero un enemigo 
-// acecha la Finca un Gavilan !!! El Gavilan siempre esta atento 
+// acecha la granja un gavilan. El Gavilan siempre esta atento 
 // a los pollos y en ocasiones los peces de la represa, 
 // representa cada uno de ellos usando POO
 
 abstract class Animal {
     abstract estomago: any[]
-    abstract hacerSonido(): string
+    abstract hacerSonido(): any
     abstract comer(algo: any): any
 }
 
@@ -109,3 +109,4 @@ gavilan.comer(pollo);
 gavilan.comer(pez);
 
 // TOCA BUSCAR LA MANERA DE CREAR UNA ALERTA EN LA GRANJA
+// APARTIR DE LAS CONCRECIONES CREAR UNA CLASE CONSUMIDORA
