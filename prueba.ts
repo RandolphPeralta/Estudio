@@ -1,8 +1,8 @@
-const libraryCatalog: Map<string, string> = new Map([
-  ["book1", "A Tale of Two Cities"],
-  ["book2", "To Kill a Mockingbird"]
-]);
+const numbers: number[] = [1, 2, 3, 4];
 
-libraryCatalog.set("book3", "1984"); // Add new entry
-const title = libraryCatalog.get("book1"); // Retrieve value
-console.log(title); // Output: "A Tale of Two Cities"
+// Usando map para crear un nuevo array de strings
+const squaredNumbers: number[] = numbers.map((x: number) => x * x);
+
+console.log(squaredNumbers); // Output: [1, 4, 9, 16]
+console.log(numbers);       // Output: [1, 2, 3, 4] (el original no se modifica)
+
