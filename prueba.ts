@@ -8,6 +8,3 @@ console.log(myMap.has('one'));
 console.log(myMap.size);  
 myMap.delete('one');
 console.log(myMap.size);
-
-
-
