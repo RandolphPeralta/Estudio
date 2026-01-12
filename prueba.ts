@@ -1,8 +1,13 @@
-const numbers: number[] = [1, 2, 3, 4];
+const myMap = new Map<string, number>();
 
-// Usando map para crear un nuevo array de strings
-const squaredNumbers: number[] = numbers.map((x: number) => x * x);
+myMap.set('one', 1); 
+myMap.set('two', 2);
 
-console.log(squaredNumbers); // Output: [1, 4, 9, 16]
-console.log(numbers);       // Output: [1, 2, 3, 4] (el original no se modifica)
+console.log(myMap.get('two')); 
+console.log(myMap.has('one'));  
+console.log(myMap.size);  
+myMap.delete('one');
+console.log(myMap.size);
+
+
 

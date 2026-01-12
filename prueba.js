@@ -1,5 +1,11 @@
-var numbers = [1, 2, 3, 4];
-// Usando map para crear un nuevo array de strings
-var squaredNumbers = numbers.map(function (x) { return x * x; });
-console.log(squaredNumbers); // Output: [1, 4, 9, 16]
-console.log(numbers); // Output: [1, 2, 3, 4] (el original no se modifica)
+// Crear un Map donde las claves son strings y los valores son números
+var myMap = new Map();
+// Métodos comunes
+myMap.set('one', 1); // Añadir una entrada
+myMap.set('two', 2);
+//myMap.set('three', 3);
+console.log(myMap.get('two')); // Obtener un valor: Output: 2
+console.log(myMap.has('one')); // Comprobar existencia: Output: true
+console.log(myMap.size); // Tamaño del Map: Output: 3
+myMap.delete('one'); // Eliminar una entrada
+console.log(myMap.size); // Output: 2
