@@ -136,12 +136,8 @@ class ServicioEstudiante {
 }
 
 class ServicioPrestamo {
-  prestamos: Array<any> = [];
 
-  constructor(
-    private servicioLibro: ServicioLibro,
-    private servicioCliente: ServicioEstudiante // | Servicio
-  ) {}
+  prestamos: Array<any> = [];
 
   prestar(idLibro: string, idCliente: string): boolean {
       this.prestamos.push({idLibro,idCliente})
@@ -159,9 +155,6 @@ class ServicioPrestamo {
     return true;
     }
 
-  getAll(){
-    return this.prestamos
-  }
 }
 
 class MenuOpcion {
@@ -447,7 +440,7 @@ const memoriaEstudiante = new Memoria<Estudiante>();
 const servicioLibro = new ServicioLibro(memoriaLibro);
 const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
 
-const servicioPrestamo = new ServicioPrestamo(servicioLibro,servicioCliente);
+const servicioPrestamo = new ServicioPrestamo();
 
 const view = new ConsoleView();
 const menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
