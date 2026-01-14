@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // O para manejar el INVENTARIO
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
+// ------------------------------------------------------
+// EN MEMORIA RAM
 var Memoria = /** @class */ (function () {
     function Memoria() {
         this.memoria = [];
@@ -37,6 +39,27 @@ var Memoria = /** @class */ (function () {
         return this.memoria;
     };
     return Memoria;
+}());
+// EN BASE DE DATOS
+var RepositoryDB = /** @class */ (function () {
+    function RepositoryDB() {
+    }
+    RepositoryDB.prototype.guardar = function (algo) {
+        // INSERT INTO tabla ...
+        return true;
+    };
+    RepositoryDB.prototype.eliminar = function (id) {
+        // DELETE FROM tabla WHERE id = ?
+    };
+    RepositoryDB.prototype.actualizar = function (algo) {
+        // UPDATE tabla SET ...
+        return true;
+    };
+    RepositoryDB.prototype.mostrar = function () {
+        // SELECT * FROM tabla
+        return [];
+    };
+    return RepositoryDB;
 }());
 var ServicioLibro = /** @class */ (function () {
     function ServicioLibro(memoria) {
@@ -75,10 +98,7 @@ var ServicioEstudiante = /** @class */ (function () {
     return ServicioEstudiante;
 }());
 var ServicioPrestamo = /** @class */ (function () {
-    function ServicioPrestamo(servicioLibro, servicioCliente // | Servicio
-    ) {
-        this.servicioLibro = servicioLibro;
-        this.servicioCliente = servicioCliente;
+    function ServicioPrestamo() {
         this.prestamos = [];
     }
     ServicioPrestamo.prototype.prestar = function (idLibro, idCliente) {
@@ -91,9 +111,6 @@ var ServicioPrestamo = /** @class */ (function () {
             return false;
         this.prestamos.splice(prestamoIndex, 1);
         return true;
-    };
-    ServicioPrestamo.prototype.getAll = function () {
-        return this.prestamos;
     };
     return ServicioPrestamo;
 }());
@@ -334,7 +351,7 @@ var memoriaLibro = new Memoria();
 var memoriaEstudiante = new Memoria();
 var servicioLibro = new ServicioLibro(memoriaLibro);
 var servicioCliente = new ServicioEstudiante(memoriaEstudiante);
-var servicioPrestamo = new ServicioPrestamo(servicioLibro, servicioCliente);
+var servicioPrestamo = new ServicioPrestamo();
 var view = new ConsoleView();
 var menu = new MenuAccion(servicioCliente, servicioLibro, servicioPrestamo);
 var app = new App();

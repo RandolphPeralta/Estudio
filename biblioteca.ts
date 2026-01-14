@@ -78,8 +78,6 @@ class RepositoryDB<T extends { id: string }> implements IAccion<T> {
   }
 }
 
-
-
 type Libro = {
   id: string
   titulo: string
@@ -177,7 +175,7 @@ class MenuOpcion {
 
 class MenuAccion {
   constructor(
-    private servicioCliente: ServicioEstudiante,
+    private servicioCliente: ServicioEstudiante, // || ServicioProfesor
     private servicioLibro: ServicioLibro,
     private servicioPrestamo: ServicioPrestamo
   ) {}
@@ -373,7 +371,6 @@ class MenuAccion {
   );
 }
 
-
   private devolverLibro() {
     const idLibro = String(prompt("ID Libro: "));
     const ok = this.servicioPrestamo.devolver(idLibro);
@@ -393,8 +390,7 @@ class MenuAccion {
   private pause() {
     console.log("\nPresiona ENTER para continuar...");
     prompt("");
-}
-
+  }
 }
 
 class ConsoleView {
@@ -594,4 +590,25 @@ app.run()
 //   nombre: string;
 //   identificacion: string
 //   curso: string
+// }
+
+// class ServicioProfesor{
+//   constructor(private memoria: Memoria<Profesor>){}
+
+//   register(profesor: Profesor): boolean {
+//       return this.memoria.guardar(profesor)
+       
+//     }
+
+//   delete(id: string): void{
+//       this.memoria.eliminar(id)
+//     }
+
+//   update(profesor: Profesor): boolean {
+//     return this.memoria.actualizar(profesor);
+//   }
+
+//   getAll(){
+//       return this.memoria.mostrar()
+//     }
 // }
