@@ -1,10 +1,17 @@
-const myMap = new Map<string, number>();
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
-myMap.set('one', 1); 
-myMap.set('two', 2);
+// Create a new type where all properties from User are optional
+type PartialUser = Partial<User>;
 
-console.log(myMap.get('two')); 
-console.log(myMap.has('one'));  
-console.log(myMap.size);  
-myMap.delete('one');
-console.log(myMap.size);
+const userUpdates: PartialUser = {
+  name: 'Alice', // Only providing the 'name' property is valid
+  // 'id' and 'email' are now optional and can be omitted
+};
+
+function updateUser(id: number, updates: PartialUser) {
+  // function logic to apply updates
+}
