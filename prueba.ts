@@ -10,5 +10,4 @@ const userUpdates: PartialUser = {
   name: 'Alice', 
 };
 
-function updateUser(id: number, updates: PartialUser) {
-}
+function updateUser(id: number, updates: PartialUser) {};
