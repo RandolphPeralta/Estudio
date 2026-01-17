@@ -2,7 +2,7 @@ interface User {
   id: number;
   name: string;
   email: string;
-}
+};
 
 type PartialUser = Partial<User>;
 
