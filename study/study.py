@@ -1,44 +1,22 @@
-# Clase persona
-class Persona:
-    nombre = ""
-    edad = 0
-    altura = 0
-    genero = ""
+# Abstract class: A class that cannot be instantiated
+#                 on its own; Meant to be subclassed.
+#                 They can contain abstract methods, which
+#                 declared but have no implementation.
+#                 Abstract classes benefits:
+#                 1. Prevents insantiation of the class itself
+#                 2. Requires children to use inherited 
+#                    abstract methods
 
-    def __init__(self, att_nombre, att_edad, att_altura, att_genero):
-        self.nombre = att_nombre
-        self.edad = att_edad
-        self.altura = att_altura
-        self.genero = att_genero
+from abc import ABC, abstractmethod
 
-    def caminar(self):
-        return f"Hola soy {self.nombre} y me encuentro caminando"
+class Vehicle(ABC):
 
-personas_encuestadas = []
+    @abstractmethod
+    def go(self):
+        pass
+    
+    @abstractmethod
+    def stop(self):
+        pass
 
-while True:
-
-    op = int(input(
-        """Escoge
-        1. Ingresas datos
-        2. Ver listado d pesonas
-        0. Salir
-        : """
-    ))
-
-    if op == 0:
-        break
-
-    elif op == 1:
-        nombre = input("ingrese nombre: ")
-        edad = int(input("Edad: "))
-        altura = float(input("Altura: "))
-        genero = input("Genero: ")
-
-        persona = Persona(nombre, edad, altura, genero)
-
-        personas_encuestadas.append(persona)
-
-    elif op == 2:
-        for persona in personas_encuestadas:
-            print(persona.nombre)
+vehicle = Vehicle()
