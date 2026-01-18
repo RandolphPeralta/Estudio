@@ -6,6 +6,7 @@ class Vehiculo(ABC):
     def ir(self):
         pass
 
+    @abstractmethod
     def detener(self):
         pass
 
@@ -25,9 +26,3 @@ class Motocicleta(Vehiculo):
 
 coche = Coche()
 motocicleta = Motocicleta()
-
-coche.ir()
-motocicleta.ir()
-
-coche.detener()
-motocicleta.detener()
