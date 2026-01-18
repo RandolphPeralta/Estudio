@@ -14,10 +14,8 @@ class Motocicleta(Vehiculo):
     def ir(self):
         print("Andas en la moto")
 
-vehiculo = Vehiculo()
 coche = Coche()
 motocicleta = Motocicleta()
 
-vehiculo.ir()
 coche.ir()
 motocicleta.ir()
