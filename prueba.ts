@@ -1,13 +1,10 @@
-interface User {
-  id: number;
-  name: string;
-  email: string;
-};
+const myMap = new Map()
+const myObject: Record<any, any> = {}
 
-type PartialUser = Partial<User>;
+myMap.set("name", "john");
+myMap.set("Lastname", "Doe");
 
-const userUpdates: PartialUser = {
-  name: 'Alice', 
-};
+myObject.name = "John";
+myObject.lastname = "Doe";
 
-function updateUser(id: number, updates: PartialUser) {};
+console.log(myMap, myObject)

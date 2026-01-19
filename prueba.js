@@ -1,5 +1,3 @@
-var userUpdates = {
-    name: 'Alice',
-};
-function updateUser(id, updates) {
-}
+var myMap = new Map();
+myMap.set("Hola", "Mundo");
+console.log(myMap);
