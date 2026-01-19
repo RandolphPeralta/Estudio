@@ -1,3 +1,13 @@
 var myMap = new Map();
-myMap.set("Hola", "Mundo");
-console.log(myMap);
+var myObject = {};
+myMap.set("name", "john");
+myMap.set("Lastname", "Doe");
+myObject.name = "John";
+myObject.lastname = "Doe";
+// console.log(myMap, myObject);
+var customKey = {};
+myMap.set(1, "Fernando");
+myMap.set(true, "Herrera");
+myMap.set(customKey, "Costa rica");
+console.log(myMap.get(1));
+console.log(myMap.get(true));
