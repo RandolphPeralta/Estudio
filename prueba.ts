@@ -10,10 +10,20 @@ myObject.lastname = "Doe";
 // console.log(myMap, myObject);
 const customKey = {}
 
+console.log("==== Map ====")
 myMap.set(1, "Fernando");
 myMap.set(true, "Herrera");
 myMap.set(customKey, "Costa rica")
 
-console.log(myMap.get(1))
-console.log(myMap.get(true))
-console.log(myMap.get(customKey))
+// console.log(myMap.get(1))
+// console.log(myMap.get(true))
+// console.log(myMap.get(customKey))
+
+console.log("=== Object ====") 
+myObject[1] = 'Fernando'
+//myObject[true] = 'Herrera'
+//myObject[customKey] = 'Costa rica'
+
+console.log(myObject)
+
+

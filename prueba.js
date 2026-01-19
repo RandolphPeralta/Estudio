@@ -9,5 +9,10 @@ var customKey = {};
 myMap.set(1, "Fernando");
 myMap.set(true, "Herrera");
 myMap.set(customKey, "Costa rica");
-console.log(myMap.get(1));
-console.log(myMap.get(true));
+// console.log(myMap.get(1))
+// console.log(myMap.get(true))
+// console.log(myMap.get(customKey))
+myObject[1] = 'Fernando';
+//myObject[true] = 'Herrera'
+//myObject[customKey] = 'Costa rica'
+console.log(myObject);
