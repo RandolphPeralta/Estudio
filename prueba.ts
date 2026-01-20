@@ -27,5 +27,3 @@ myObject[1] = 'Fernando'
 //myObject[customKey] = 'Costa rica'
 
 console.log(myObject)
-
-
