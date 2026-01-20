@@ -15,6 +15,8 @@ myMap.set(1, "Fernando");
 myMap.set(true, "Herrera");
 myMap.set(customKey, "Costa rica")
 
+console.log(myMap)
+
 // console.log(myMap.get(1))
 // console.log(myMap.get(true))
 // console.log(myMap.get(customKey))
