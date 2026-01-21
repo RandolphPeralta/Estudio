@@ -30,7 +30,6 @@ myObject[1] = 'Fernando'
 
 console.log(myObject)
 
-
 const myChaterObject = new Map([
     [10,'John'], 
     [5, 'Jane'], 
