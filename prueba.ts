@@ -31,10 +31,10 @@ myObject[1] = 'Fernando'
 console.log(myObject)
 
 
-const myChaterMap = new Map([
+const myChaterObject = new Map([
     [10,'John'], 
     [5, 'Jane'], 
     [1, 'Doe']
 ]);
 
-console.log(myChaterMap);
+console.log(myChaterObject);
