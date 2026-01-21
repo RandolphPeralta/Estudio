@@ -11,6 +11,7 @@ myObject.lastname = "Doe";
 const customKey = {}
 
 console.log("==== Map ====")
+
 myMap.set(1, "Fernando");
 myMap.set(true, "Herrera");
 myMap.set(customKey, "Costa rica")
@@ -21,9 +22,19 @@ console.log(myMap)
 // console.log(myMap.get(true))
 // console.log(myMap.get(customKey))
 
-console.log("=== Object ====") 
+console.log("=== Object ====")
+
 myObject[1] = 'Fernando'
 //myObject[true] = 'Herrera'
 //myObject[customKey] = 'Costa rica'
 
 console.log(myObject)
+
+
+const myChaterMap = new Map([
+    [10,'John'], 
+    [5, 'Jane'], 
+    [1, 'Doe']
+]);
+
+console.log(myChaterMap);
