@@ -164,7 +164,7 @@ var MenuAccion = /** @class */ (function () {
                 this.pause();
                 break;
             case MenuOpcion.VER_LIBROS:
-                console.table(this.servicioLibro.getAll());
+                this.mostrarLibros();
                 this.pause();
                 break;
             case MenuOpcion.ACTUALIZAR_LIBRO:
@@ -268,6 +268,16 @@ var MenuAccion = /** @class */ (function () {
         else {
             console.log("No existe un libro con ese ID");
         }
+    };
+    MenuAccion.prototype.mostrarLibros = function () {
+        var libros = this.servicioLibro.getAll();
+        var librosVista = libros.map(function (libro) { return ({
+            id: libro.id,
+            titulo: libro.titulo,
+            autor: libro.autor,
+            disponible: libro.disponible ? "Sí" : "No"
+        }); });
+        console.table(librosVista);
     };
     MenuAccion.prototype.prestarLibro = function () {
         var idLibro = String(prompt("ID Libro: "));

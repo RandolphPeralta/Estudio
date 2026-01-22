@@ -213,9 +213,10 @@ class MenuAccion {
         break
 
       case MenuOpcion.VER_LIBROS:
-        console.table(this.servicioLibro.getAll());
+        this.mostrarLibros();
         this.pause();
         break;
+
       
       case MenuOpcion.ACTUALIZAR_LIBRO:
         this.actualizarlibro();
@@ -336,6 +337,19 @@ class MenuAccion {
     } else {
     console.log("No existe un libro con ese ID");
     }
+  }
+
+  private mostrarLibros(): void {
+  const libros = this.servicioLibro.getAll();
+
+  const librosVista = libros.map(libro => ({
+    id: libro.id,
+    titulo: libro.titulo,
+    autor: libro.autor,
+    disponible: libro.disponible ? "Sí" : "No"
+  }));
+
+  console.table(librosVista); 
   }
 
   private prestarLibro() {
