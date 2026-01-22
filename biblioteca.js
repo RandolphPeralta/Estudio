@@ -131,7 +131,8 @@ var MenuOpcion = /** @class */ (function () {
     return MenuOpcion;
 }());
 var MenuAccion = /** @class */ (function () {
-    function MenuAccion(servicioCliente, servicioLibro, servicioPrestamo) {
+    function MenuAccion(servicioCliente, // || ServicioProfesor
+    servicioLibro, servicioPrestamo) {
         this.servicioCliente = servicioCliente;
         this.servicioLibro = servicioLibro;
         this.servicioPrestamo = servicioPrestamo;
@@ -462,4 +463,19 @@ app.run();
 //   nombre: string;
 //   identificacion: string
 //   curso: string
+// }
+// class ServicioProfesor{
+//   constructor(private memoria: Memoria<Profesor>){}
+//   register(profesor: Profesor): boolean {
+//       return this.memoria.guardar(profesor)
+//     }
+//   delete(id: string): void{
+//       this.memoria.eliminar(id)
+//     }
+//   update(profesor: Profesor): boolean {
+//     return this.memoria.actualizar(profesor);
+//   }
+//   getAll(){
+//       return this.memoria.mostrar()
+//     }
 // }
