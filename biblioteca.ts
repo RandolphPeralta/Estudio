@@ -175,7 +175,7 @@ class MenuOpcion {
 
 class MenuAccion {
   constructor(
-    private servicioCliente: ServicioEstudiante, // || ServicioProfesor
+    private servicioCliente: ServicioEstudiante,
     private servicioLibro: ServicioLibro,
     private servicioPrestamo: ServicioPrestamo
   ) {}
