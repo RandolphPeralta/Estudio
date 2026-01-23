@@ -13,3 +13,8 @@ class Mago(Enemigo):
 maguito = Mago()
 
 print(maguito.atacar())
+
+def sumar(numero1, numero2):
+    return numero1 + numero2
+
+print(sumar(2,3))
