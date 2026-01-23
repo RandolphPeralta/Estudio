@@ -1,11 +1,15 @@
 from abc import ABC, abstractmethod
 
-class Enemigo():
+class Enemigo(ABC):
 
     @abstractmethod
-    def atacar():
+    def atacar(self):
         pass
 
 class Mago(Enemigo):
-    def atacar():
+    def atacar(self):
         return True
+
+maguito = Mago()
+
+print(maguito.atacar())
