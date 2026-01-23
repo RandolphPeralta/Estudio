@@ -172,7 +172,6 @@ class MenuOpcion {
   static SALIR = 0;
 }
 
-
 class MenuAccion {
   constructor(
     private servicioCliente: ServicioEstudiante,
