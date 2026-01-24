@@ -1,0 +1,3 @@
+interface Superhabilidad {
+    Superhabilidad(): any
+}
