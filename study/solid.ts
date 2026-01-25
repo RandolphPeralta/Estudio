@@ -4,10 +4,8 @@
 // Es decir una unica funcion 
 // y por ende una razon para cambiar
 
-class Superheroe {
-    volar():void {}
-    treparparedes(): void {}
-
+class SuperHero {
+    DoSuperSkill(){}
 }
 
 // 0 - OPEN/CLOSED 
@@ -43,11 +41,48 @@ class HeroeVoladorSinAlas implements Superpoder {
     }
 }
 
-// L - Principio de Liskov
+// L - LISKOV PRINCIPLE (Principio de Liskov)
 
 // Si tenemos clases padres e hijas es decir
 // Herencia, las instancias se pueden intercambiar 
 // sin generar resultados inesperadas
 
+// Es decir evitar agregar restriciones 
+// o comportamientos heredados en una clase, 
+// para no tener comportamientos inesperados
 
-// I - PRINCIPIO DE SEGREGACIONB DE INTERFACES
+// I - PRINCIPIO DE SEGREGACION DE INTERFACES
+
+// Los clientes no deben verse obligados a dependerse
+// de interfaces que no utilizan, es decir que el cliente
+// debe conocer los metodos que va a utilizar
+
+interface TrepaMuros {}
+
+interface Superheroe {}
+
+interface Volador {}
+
+
+class SuperHeroTrepaMuros implements TrepaMuros {}
+
+class SuperHeroVolador implements Volador {}
+
+
+class Spiderman extends SuperHeroTrepaMuros {}
+
+// D - INVERSION DE DEPENDENCIAS
+
+// Depende de abstraciones no de implementacion concreta
+// Las clases de alto nivel no deben 
+// depender de las clases de bajo nivel
+// sino que ambas deben depender de abstracciones
+
+class TheAvengers {
+    
+}
+
+interface Avenger extends TheAvengers {
+
+}
+
