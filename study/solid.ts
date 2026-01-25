@@ -98,19 +98,25 @@ class Pinguino implements Ave {}
 // de interfaces que no utilizan, es decir que el cliente
 // debe conocer los metodos que va a utilizar
 
-interface TrepaMuros {}
+// Mal ejemplo:
+interface Animal {
+    volar(): void
+    nadar(): void
+    caminar(): void
+}
 
-interface Superheroe {}
+// Buen ejemplo:
+interface Volador {
+    volar(): void
+}
 
-interface Volador {}
+interface Nadador {
+    nadar(): void
+}
 
-
-class SuperHeroTrepaMuros implements TrepaMuros {}
-
-class SuperHeroVolador implements Volador {}
-
-
-class Spiderman extends SuperHeroTrepaMuros {}
+class Pez implements Nadador {
+    nadar() {}
+}
 
 // D - INVERSION DE DEPENDENCIAS
 
