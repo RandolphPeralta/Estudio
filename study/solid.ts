@@ -4,8 +4,23 @@
 // Es decir una unica funcion 
 // y por ende una razon para cambiar
 
-class SuperHero {
-    DoSuperSkill(){}
+// Mal ejemplo:
+// class Usuario {
+//     guardarEnBD() {}
+//     enviarEmail() {}
+// }
+
+//Buen ejemplo:
+class Usuario {
+    constructor(public nombre: string) {}
+}
+
+class UsuarioRepository {
+    guardar(usuario: Usuario) {}
+}
+
+class EmailService {
+    enviar(usuario: Usuario) {}
 }
 
 // 0 - OPEN/CLOSED 
@@ -17,29 +32,31 @@ class SuperHero {
 // a la clase no deberia cambiar cosas (codigo)
 // sino extender las funcionalidades desde afuera
 
-interface Superpoder {
-    superpoder(): any
-}
-
-class HeroeVoladorConAlas implements Superpoder {
-    private volarconalas(): string {
-        return "Volar con alas"
-    }
-
-    public superpoder() {
-        return this.volarconalas()
+// Mal ejemplo
+class Calculadora {
+    calcular(tipo: string) {
+        if (tipo === "suma") return 1 + 1
+        if (tipo === "resta") return 2 - 1
     }
 }
 
-class HeroeVoladorSinAlas implements Superpoder {
-    private volarsinalas(): string {
-        return "Volar sin alas"
-    }
+// Buen ejemplo
+interface Operacion {
+    ejecutar(): number
+}
 
-    public superpoder() {
-        return this.volarsinalas()
+class Suma implements Operacion {
+    ejecutar() {
+        return 1 + 1
     }
 }
+
+class Resta implements Operacion {
+    ejecutar() {
+        return 2 - 1
+    }
+}
+
 
 // L - LISKOV PRINCIPLE (Principio de Liskov)
 
@@ -50,6 +67,30 @@ class HeroeVoladorSinAlas implements Superpoder {
 // Es decir evitar agregar restriciones 
 // o comportamientos heredados en una clase, 
 // para no tener comportamientos inesperados
+
+// Mal ejemplo:
+// class Ave {
+//     volar() {}
+// }
+
+// class Pinguino extends Ave {
+//     volar() {
+//         throw new Error("No puedo volar")
+//     }
+// }
+
+// Buen ejemplo:
+interface Ave {}
+
+interface AveVoladora extends Ave {
+    volar(): void
+}
+
+class Aguila implements AveVoladora {
+    volar() {}
+}
+
+class Pinguino implements Ave {}
 
 // I - PRINCIPIO DE SEGREGACION DE INTERFACES
 
