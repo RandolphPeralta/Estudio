@@ -125,11 +125,45 @@ class Pez implements Nadador {
 // depender de las clases de bajo nivel
 // sino que ambas deben depender de abstracciones
 
-class TheAvengers {
-    
+// Mal ejemplo:
+
+// class MySQL {
+//     conectar() {}
+// }
+
+// class App {
+//     private db = new MySQL()
+// }
+
+// Buen ejemplo:
+interface Database {
+    conectar(): void
 }
 
-interface Avenger extends TheAvengers {
-
+class MySQL implements Database {
+    conectar() {}
 }
 
+class App {
+    constructor(private db: Database) {}
+}
+
+// SOLID
+
+interface Superpoder {
+    usar(): string
+}
+
+class VolarConAlas implements Superpoder {
+    usar() {
+        return "Volar con alas"
+    }
+}
+
+class Heroe {
+    constructor(private poder: Superpoder) {}
+
+    activarPoder() {
+        return this.poder.usar()
+    }
+}
