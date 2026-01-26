@@ -59,7 +59,7 @@ const task1 = new Task("Completar el informe");
 
 taskManager.addTask(task1);
 taskManager.displayTasks();
-
+ 
 taskManager.completeTask(0);
 taskManager.displayTasks();
 
