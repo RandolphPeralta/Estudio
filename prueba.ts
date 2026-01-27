@@ -160,11 +160,46 @@ class Button {
 
 //#region Example 2
 
+//BAD
 class GreetingService{
 
     language: string;
     
-    constructor(language:string){}
+    constructor(language:string){
+        this.language = language
+    }
+
+    execute(): string {
+        switch(this.language){
+            case "en": {
+                return "Hello";
+            }
+
+            case "es": {
+                return "Hola"
+            }
+
+            case "fr": {
+                return "Bonjour"
+            }
+
+            default:
+                return "";
+        }
+    }
 }
+
+//BETTER
+
+interface LanguageProvider {
+    greet(): string;
+}
+
+class ENLanguageProvider implements LaanguageProvider {
+    greet(): string {
+        return "Hello";
+    }
+}
+
 
 //#endregion
