@@ -207,11 +207,28 @@ class FRLanguageProvider implements LaanguageProvider {
     }
 }
 
-
 class ESLanguageProvider implements LaanguageProvider {
     greet(): string {
         return "Hola";
     }
 }
+
+class GreetingService{
+
+    languageProvider: LanguageProvider;
+    
+    constructor(languageProvider: LanguageProvider){
+        this.languageProvider = languageProvider
+    }
+
+    execute(): string {
+        return this.languageProvider.greet();
+    }
+}
+
+const provider = new FRLanguageProvider(); //Se puede cambiar el lenguaje
+const grettingService = new GreetingService(provider);
+grettingService.execute()
+
 
 //#endregion
