@@ -91,7 +91,7 @@ uiManager.displayTasks(tasks)
 
 // OPEN/CLOSED
 
-//#region Example 3
+//#region Example 1
 // BAD
 class Button {
     text: string;
@@ -125,6 +125,36 @@ secondaryButton.render();
 
 // BETTER
 
+interface ButtonStyle {
+    render(text: string): void;
+}
+
+class PrimaryButtonStyle implements ButtonStyle{
+    render(text: strng): void {
+        //....logic
+    }
+}
+
+class SecondButtonStyle implements ButtonStyle{
+    render(text: strng): void {
+        //....logic
+    }
+}
+
+class Button {
+    text: string;
+    style: string;
+
+    constructor(text: string, style: ButtonStyle){
+        this.text = text
+        this.style = style
+    }
+
+    render(): void {
+        this.style.render(this.text)
+    }
+}
 
 
 //#endregion
+
