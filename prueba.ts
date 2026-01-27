@@ -201,5 +201,17 @@ class ENLanguageProvider implements LaanguageProvider {
     }
 }
 
+class FRLanguageProvider implements LaanguageProvider {
+    greet(): string {
+        return "Bonjour";
+    }
+}
+
+
+class ESLanguageProvider implements LaanguageProvider {
+    greet(): string {
+        return "Hola";
+    }
+}
 
 //#endregion
