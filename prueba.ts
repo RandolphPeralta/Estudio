@@ -31,6 +31,8 @@ class Products {
 //#endregion
 
 //#region Example 2
+
+// BAD
 class Task{}
 
 class TaskManager{
@@ -63,5 +65,24 @@ taskManager.displayTasks();
 taskManager.completeTask(0);
 taskManager.displayTasks();
 
+// BETTER
+
+class UIManager {
+    displayTasks(tasks: Task[]): void {
+        //......logic
+    }
+}
+
+const taskmanager = new TaskManager();
+const uiManager =  new UIManager();
+
+const task1 = new Task("Completar el informe");
+taskmanager.addTask(task1);
+
+const taks = taskmanager.getTasks();
+uiManager.displayTasks(tasks);
+
+taskmanager.completeTask(0);
+uiManager.displayTasks(tasks)
 
 //#endregion
