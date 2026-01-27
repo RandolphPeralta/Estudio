@@ -158,3 +158,13 @@ class Button {
 
 //#endregion
 
+//#region Example 2
+
+class GreetingService{
+
+    language: string;
+    
+    constructor(language:string){}
+}
+
+//#endregion
