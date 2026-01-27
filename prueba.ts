@@ -1,4 +1,6 @@
 //@ts-nocheck
+// SINGLE RESPONSABILITY
+
 //#region Example 1
 // BAD - Too coupled
 class Products {
@@ -84,5 +86,45 @@ uiManager.displayTasks(tasks);
 
 taskmanager.completeTask(0);
 uiManager.displayTasks(tasks)
+
+//#endregion
+
+// OPEN/CLOSED
+
+//#region Example 3
+// BAD
+class Button {
+    text: string;
+    style: string;
+
+    constructor(text: string, style: string){
+        this.text = text
+        this.style = style
+    }
+
+    render(): void {
+        if (this.style === "primary"){
+            // Lógica para renderizar un botón de estilo primario
+        } else if (this.style === "secondary") {
+            // Lógica para renderizar un botón de estilo secundario
+        } else {
+            throw new Error("Estilo de botón no soportado")
+        }
+
+    }
+}
+
+// Uso de la clase Button
+const primaryButton = new Button("Enviar", "primary")
+primaryButton.render();
+
+const secondaryButton = new Button("cancelar", "secondary");
+secondaryButton.render();
+
+
+
+// BETTER
+
+
 
 //#endregion
