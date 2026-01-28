@@ -232,3 +232,59 @@ grettingService.execute()
 //#endregion
 
 // LISKOV SUBSTITUTION
+
+// BAD
+
+ 
+
+// INVERSE DEPENDENCY
+
+//#region Example 1
+
+//BAD
+interface Worker{
+    eat: () => void;
+    work: () => void;
+    sleep: () => void;
+}
+
+class Chef implements Worker {
+    work(){}
+    sleep(){}
+    eat(){}
+}
+
+class Driver implements Worker {
+    work(){}
+    sleep(){}
+    eat(){}
+}
+
+const kevin = new Chef();
+kevin.sleep();
+
+// BETTER
+
+interface Workable{
+    work(): void;
+}
+
+interface Eatable{
+    eat(): void;
+}
+
+interface Sleepable{
+    sleep(): void;
+}
+
+class Chefsito implements Workable, Eatable{
+    work(): void {
+        
+    }
+
+    eat(): void {
+        
+    }
+}
+
+//##endregion
