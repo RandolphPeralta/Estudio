@@ -235,7 +235,6 @@ grettingService.execute()
 
 // BAD
 
- 
 
 // INTERFACE SEGREGATION
 
