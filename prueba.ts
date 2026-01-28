@@ -248,7 +248,38 @@ class Rectangle {
     public getArea() {
         return this.width * this.length
     }
-} 
+}
+
+class Square extends Rectangle {
+    constructor(side: number){
+        super(side,side)
+    }
+
+    public setWidth(length: number): void {
+        // A square must maintin equal sides
+        super.setWidth(width);
+        super.setLength(width);
+    }
+
+    public setLength(length: number): void {
+        super.setWidth(length);
+        super.setLength(length);
+    }
+}
+
+const rect: Rectangle = new Rectangle(10);
+rect.setWidth(length);
+rect.getArea(length)
+
+//BETTER
+interface Shape {
+    getArea: () => number;
+}
+
+class Rectangle {
+    widht: number;
+    lenght: number;
+}
 
 // INTERFACE SEGREGATION
 
