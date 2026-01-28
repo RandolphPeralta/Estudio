@@ -237,7 +237,7 @@ grettingService.execute()
 
  
 
-// INVERSE DEPENDENCY
+// INTERFACE SEGREGATION
 
 //#region Example 1
 
@@ -287,4 +287,78 @@ class Chefsito implements Workable, Eatable{
     }
 }
 
-//##endregion
+//#endregion
+
+// DEPENDENCY INVERSION
+
+//#region Example 1
+
+// BAD 
+class LightBub{
+
+    turnOn(): void {
+        console.log("Bombilla encendida")
+    }
+
+    turnOff(): void {
+        console.log("Bombilla apagada")
+    }
+}
+
+class Switch {
+    private bulb: LightBub
+
+    constructor(bulb: LightBub){
+        this.bulb = bulb
+    }
+
+    toggle() {
+        if (this.bulb.isOn()){
+            this.bulb.turnOff();
+        } else {
+            this.bulb.turnOn();
+        }
+    }
+}
+
+// BETTER
+interface Switchable {
+    turnOn(): void;
+    turnOff(): void;
+}
+
+class LightBub implements Switchable{
+
+    turnOn(): void {
+        console.log("Bombilla encendida")
+    }
+
+    turnOff(): void {
+        console.log("Bombilla apagada")
+    }
+}
+
+class Switch {
+    private device: Switchable
+
+    constructor(device: Switchable){
+        this.device = device
+    }
+
+    toggle() {
+        if (this.device.isOn()){
+            this.device.turnOff();
+        } else {
+            this.device.turnOn();
+        }
+    }
+}
+
+const bulb = new LightBub();
+const switcher = new Switch(bulb);
+
+class Fan implements Switchable {}
+
+switcher.toggle();
+
+//#endregion
