@@ -229,6 +229,6 @@ class GreetingService{
 const provider = new FRLanguageProvider(); //Se puede cambiar el lenguaje
 const grettingService = new GreetingService(provider);
 grettingService.execute()
-
-
 //#endregion
+
+// LISKOV SUBSTITUTION
