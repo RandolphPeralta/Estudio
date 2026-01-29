@@ -275,11 +275,24 @@ rect.getArea(length)
 interface Shape {
     getArea: () => number;
 }
-
+ 
 class Rectangle {
     widht: number;
     lenght: number;
 }
+
+class Square implements Shape {
+    side: number;
+    constructor(side){
+        this.side = side
+    }
+    getArea() {
+        return side*2
+    }
+}
+
+const rect2 = new Rectangle(10);
+
 
 // INTERFACE SEGREGATION
 

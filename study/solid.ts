@@ -57,6 +57,12 @@ class Resta implements Operacion {
     }
 }
 
+class Calculador {
+    constructor(operacion: Operacion){
+        return operacion.ejecutar()
+    }
+}
+
 
 // L - LISKOV PRINCIPLE (Principio de Liskov)
 
