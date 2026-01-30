@@ -11,3 +11,4 @@ class Mago(Enemigo):
         return True
 
 maguito = Mago()
+
