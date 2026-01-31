@@ -12,7 +12,7 @@
 
 //Buen ejemplo:
 class Usuario {
-    constructor(public nombre: string) {}
+    constructor(private nombre: string) {}
 }
 
 class UsuarioRepository {
