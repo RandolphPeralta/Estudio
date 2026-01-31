@@ -63,7 +63,6 @@ class Calculador {
     }
 }
 
-
 // L - LISKOV PRINCIPLE (Principio de Liskov)
 
 // Si tenemos clases padres e hijas es decir
