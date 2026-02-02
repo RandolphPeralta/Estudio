@@ -81,13 +81,14 @@ type Libro = {
 
 type Estudiante = {
   id: string
-  nombre: string;
+  nombre: string,
   identificacion: string
   grado: string
 }
 
 type Prestamo = {
-
+  idLibro: string,
+  idCliente: string
 }
 
 class ServicioLibro {
@@ -138,11 +139,12 @@ class ServicioPrestamos {
     return this.repositorio.guardar(prestamo);
   };
 
-  devolver(idLibro: string): boolean {
-    return this.repositorio.eliminar(idLibro);
+  devolver(prestamo: Prestamo): boolean {
+    return this.repositorio.eliminar(prestamo);
   }
 
   listar(): Prestamo[] {
     return this.repositorio.mostrar();
   } 
 }
+
