@@ -152,7 +152,6 @@ class ServicioPrestamo {
 
     return true;
     }
-
 }
 
 class MenuOpcion {

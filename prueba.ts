@@ -21,7 +21,6 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T>
   mostrar(): T[];
 }
 
-
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
@@ -120,4 +119,8 @@ class ServicioEstudiante {
   getAll() {
     return this.memoria.mostrar()
   }
+}
+
+class ServicioPrestamos {
+  // LA IDEA ES CREAR UNA LOGICA DONDE MUESTRE 
 }
