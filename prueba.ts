@@ -1,48 +1,70 @@
-interface IAccion<T>{
-    guardar(some: any): any;
-    eliminar(id: any): any;
-    actualizar(some: any): any;
-    mostrar(): T[];
+interface IGuardar<T> {
+  guardar(item: T): boolean;
 }
+
+interface IEliminar<T> {
+  eliminar(item: T): boolean;
+}
+
+interface IActualizar<T> {
+  actualizar(item: T): boolean;
+}
+
+interface IMostrar<T> {
+  mostrar(): T[];
+}
+
+interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T> {
+  guardar(item: T): boolean;
+  eliminar(item: T): boolean;
+  actualizar(item: T): boolean;
+  mostrar(): T[];
+}
+
 
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
-class Memoria<T> implements IAccion<T>{
-    private memoria: T[] = []
+class Memoria<T> implements IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar<T> {
+  private memoria: T[] = []
 
-    guardar(some: any): boolean {
-        const index = this.memoria.findIndex((item: any) => item.id === some.id);
+  guardar(some: any): boolean {
+    const index = this.memoria.findIndex((item: any) => item.id === some.id);
 
-        if (index !== -1) {
-          return false;
-        }
+    if (index !== -1) {
+      return false;
+    }
 
-        this.memoria.push(some)
-        return true;
-        }
+    this.memoria.push(some)
+    return true;
+  }
 
-    eliminar(id: any) 
-      {const index = this.memoria.findIndex((item: any) => item.id === id);
+  eliminar(id: any) {
+    const index = this.memoria.findIndex((item: any) => item.id === id);
 
-      if (index !== -1) {
-        this.memoria.splice(index, 1);
-          }}
+    if (index === -1) {
+      return false;
+    }
 
-    actualizar(some: any): boolean {
-      const index = this.memoria.findIndex((item: any) => item.id === some.id);
+    this.memoria.splice(index, 1);
+    return true
 
-        if (index === -1) {
-          return false;
-        }
+  }
 
-        this.memoria[index] = some;
-        return true;
-          }
+  actualizar(some: any): boolean {
+    const index = this.memoria.findIndex((item: any) => item.id === some.id);
 
-    mostrar(){
-        return this.memoria
-        }
+    if (index === -1) {
+      return false;
+    }
+
+    this.memoria[index] = some;
+    return true;
+  }
+
+  mostrar() {
+    return this.memoria
+  }
 }
 
 type Libro = {
@@ -59,43 +81,43 @@ type Estudiante = {
   grado: string
 }
 
-class ServicioLibro{
-    constructor(private memoria: IAccion<Libro>){}
-    
-    register(libro: Libro): boolean {
-      return this.memoria.guardar(libro)
-    }
+class ServicioLibro {
+  constructor(private memoria: IAccion<Libro>) { }
 
-    delete(id: string): void{
-      this.memoria.eliminar(id)
-    }
+  register(libro: Libro): boolean {
+    return this.memoria.guardar(libro)
+  }
 
-    update(libro: Libro): boolean {
-      return this.memoria.actualizar(libro);
-      }
+  delete(id: any): void {
+    this.memoria.eliminar(id)
+  }
 
-    getAll(){
-      return this.memoria.mostrar()
-    }
+  update(libro: Libro): boolean {
+    return this.memoria.actualizar(libro);
+  }
+
+  getAll() {
+    return this.memoria.mostrar()
+  }
 }
 
 class ServicioEstudiante {
-  constructor(private memoria: IAccion<Estudiante>){}
+  constructor(private memoria: IAccion<Estudiante>) { }
 
   register(estudiante: Estudiante): boolean {
-      return this.memoria.guardar(estudiante)
-       
-    }
+    return this.memoria.guardar(estudiante)
 
-  delete(id: string): void{
-      this.memoria.eliminar(id)
-    }
+  }
+
+  delete(id: any): void {
+    this.memoria.eliminar(id)
+  }
 
   update(estudiante: Estudiante): boolean {
     return this.memoria.actualizar(estudiante);
   }
 
-  getAll(){
-      return this.memoria.mostrar()
-    }
+  getAll() {
+    return this.memoria.mostrar()
+  }
 }
