@@ -21,6 +21,12 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T>
   mostrar(): T[];
 }
 
+interface IPrestamo<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>{
+  guardar(item: T): boolean;
+  eliminar(item: T): boolean;
+  mostrar(): T[];
+}
+
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
@@ -80,6 +86,10 @@ type Estudiante = {
   grado: string
 }
 
+type Prestamo = {
+
+}
+
 class ServicioLibro {
   constructor(private memoria: IAccion<Libro>) { }
 
@@ -122,5 +132,17 @@ class ServicioEstudiante {
 }
 
 class ServicioPrestamos {
-  // LA IDEA ES CREAR UNA LOGICA DONDE MUESTRE 
+  constructor(private repositorio: IPrestamo<Prestamo>) {}
+
+  prestar(prestamo: Prestamo): boolean {
+    return this.repositorio.guardar(prestamo);
+  };
+
+  devolver(idLibro: string): boolean {
+    return this.repositorio.eliminar(idLibro);
+  }
+
+  listar(): Prestamo[] {
+    return this.repositorio.mostrar();
+  } 
 }
