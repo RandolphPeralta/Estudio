@@ -30,7 +30,7 @@ interface IPrestamo<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>{
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
-class Memoria<T> implements IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar<T> {
+class Memoria<T> implements IAccion<T> {
   private memoria: T[] = []
 
   guardar(some: any): boolean {
@@ -132,7 +132,7 @@ class ServicioEstudiante {
   }
 }
 
-class ServicioPrestamos {
+class ServicioPrestamo {
   constructor(private repositorio: IPrestamo<Prestamo>) {}
 
   prestar(prestamo: Prestamo): boolean {
@@ -147,4 +147,6 @@ class ServicioPrestamos {
     return this.repositorio.mostrar();
   } 
 }
+
+
 
