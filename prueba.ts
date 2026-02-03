@@ -21,11 +21,9 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T>
   mostrar(): T[];
 }
 
-interface Menu {
-  mostrarMenu(): void;
-}
 
-interface View {
+
+interface IView {
   leerTexto(mensaje: string): string;
   leerNumero(mensaje: string): number;
   mostrarMensaje(mensaje: string): void;
@@ -159,8 +157,12 @@ class ServicioPrestamo {
   } 
 }
 
-class Consoleview implements Menu {
-  mostrarMenu(): void {
+interface IMenu {
+  mostrarMenu(): void;
+}
+
+class Consoleview implements IMenu {
+  mostrarMenu() {
     const opciones: string[] = [
       "1. Registrar Estudiante",
       "2. Eliminar Estudiante",
