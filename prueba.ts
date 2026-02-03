@@ -18,7 +18,7 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T>
   guardar(item: T): boolean;
   eliminar(item: T): boolean;
   actualizar(item: T): boolean;
-  mostrar(): any;
+  mostrar(): T[];
 }
 
 interface IView {
@@ -155,8 +155,6 @@ class ServicioPrestamo {
   } 
 }
 
-
-
 //----------------------------
 //VISTA
 
@@ -184,13 +182,18 @@ const opcionesMenu: MenuOption[] = [
 ];
 
 
-class ConsoleView implements IMenu {
+class ConsoleView implements IMostrar<MenuOption> {
   constructor(private opciones: MenuOption[]) {}
 
-  mostrarMenu(): void {
+  mostrar(): MenuOption[] {
     console.log("Bienvenido...");
     this.opciones.forEach(o =>
       console.log(`${o.key}. ${o.label}`)
     );
+    
+    return this.opciones;  // Devuelve las opciones para posible uso posterior
   }
 }
+
+const consoleview = new ConsoleView(opcionesMenu)
+consoleview.mostrar();
