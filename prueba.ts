@@ -21,11 +21,11 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T>
   mostrar(): T[];
 }
 
-interface ConsoleMenu {
+interface Menu {
   mostrarMenu(): void;
 }
 
-interface ConsoleView {
+interface View {
   leerTexto(mensaje: string): string;
   leerNumero(mensaje: string): number;
   mostrarMensaje(mensaje: string): void;
@@ -159,5 +159,28 @@ class ServicioPrestamo {
   } 
 }
 
+class Consoleview implements Menu {
+  mostrarMenu(): void {
+    const opciones: string[] = [
+      "1. Registrar Estudiante",
+      "2. Eliminar Estudiante",
+      "3. Ver Estudiantes",
+      "4. Actualizar Estudiante",
+      "5. Registrar Libro",
+      "6. Eliminar Libro",
+      "7. Ver Libros",
+      "8. Actualizar Libros",
+      "9. Prestar Libro",
+      "10. Devolver Libro",
+      "0. Salir"
+    ];
+
+    console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+    
+    for (const opcion of opciones) {
+      console.log(opcion);
+    }
+  }
+}
 
 
