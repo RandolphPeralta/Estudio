@@ -21,6 +21,17 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T>
   mostrar(): T[];
 }
 
+interface ConsoleMenu {
+  mostrarMenu(): void;
+}
+
+interface ConsoleView {
+  leerTexto(mensaje: string): string;
+  leerNumero(mensaje: string): number;
+  mostrarMensaje(mensaje: string): void;
+  mostrarTabla(data: any[]): void;
+}
+
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
@@ -94,8 +105,8 @@ class ServicioLibro {
     return this.memoria.guardar(libro)
   }
 
-  delete(id: any): void {
-    this.memoria.eliminar(id)
+  delete(id: any): boolean {
+    return this.memoria.eliminar(id)
   }
 
   update(libro: Libro): boolean {
