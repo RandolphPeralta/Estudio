@@ -18,10 +18,8 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T>
   guardar(item: T): boolean;
   eliminar(item: T): boolean;
   actualizar(item: T): boolean;
-  mostrar(): T[];
+  mostrar(): any;
 }
-
-
 
 interface IView {
   leerTexto(mensaje: string): string;
@@ -157,32 +155,42 @@ class ServicioPrestamo {
   } 
 }
 
+
+
+//----------------------------
+//VISTA
+
+interface MenuOption {
+  key: number;
+  label: string;
+}
+
 interface IMenu {
   mostrarMenu(): void;
 }
 
-class Consoleview implements IMenu {
-  mostrarMenu() {
-    const opciones: string[] = [
-      "1. Registrar Estudiante",
-      "2. Eliminar Estudiante",
-      "3. Ver Estudiantes",
-      "4. Actualizar Estudiante",
-      "5. Registrar Libro",
-      "6. Eliminar Libro",
-      "7. Ver Libros",
-      "8. Actualizar Libros",
-      "9. Prestar Libro",
-      "10. Devolver Libro",
-      "0. Salir"
-    ];
+const opcionesMenu: MenuOption[] = [
+  { key: 1, label: "Registrar Estudiante" },
+  { key: 2, label: "Eliminar Estudiante" },
+  { key: 3, label: "Ver Estudiantes" },
+  { key: 4, label: "Actualizar Estudiante" },
+  { key: 5, label: "Registrar Libro" },
+  { key: 6, label: "Eliminar Libro" },
+  { key: 7, label: "Ver Libros" },
+  { key: 8, label: "Actualizar Libros" },
+  { key: 9, label: "Prestar Libro" },
+  { key: 10, label: "Devolver Libro" },
+  { key: 0, label: "Salir" }
+];
 
-    console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
-    
-    for (const opcion of opciones) {
-      console.log(opcion);
-    }
+
+class ConsoleView implements IMenu {
+  constructor(private opciones: MenuOption[]) {}
+
+  mostrarMenu(): void {
+    console.log("Bienvenido...");
+    this.opciones.forEach(o =>
+      console.log(`${o.key}. ${o.label}`)
+    );
   }
 }
-
-
