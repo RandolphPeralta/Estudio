@@ -28,6 +28,10 @@ interface IView {
   mostrarTabla(data: any[]): void;
 }
 
+interface Command {
+  ejecutar(): void;
+}
+
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
@@ -195,5 +199,78 @@ class ConsoleView implements IMostrar<MenuOption> {
   }
 }
 
-const consoleview = new ConsoleView(opcionesMenu)
-consoleview.mostrar();
+
+
+//------------------------------------
+// MENU ACCION
+
+class RegistrarEstudianteCommand implements Command {
+  constructor(
+    private servicio: ServicioEstudiante,
+    private view: IView
+  ) {}
+
+  ejecutar(): void {
+    const id = this.view.leerTexto("ID:");
+    const nombre = this.view.leerTexto("Nombre:");
+    const identificacion = this.view.leerTexto("Identificación:");
+    const grado = this.view.leerTexto("Grado:");
+
+    const estudiante: Estudiante = {
+      id, nombre, identificacion, grado
+    };
+
+    const ok = this.servicio.register(estudiante);
+
+    this.view.mostrarMensaje(
+      ok ? "Estudiante registrado" : "El estudiante ya existe"
+    );
+  }
+}
+
+class VerEstudiantesCommand implements Command {
+  constructor(
+    private servicio: ServicioEstudiante,
+    private view: IView
+  ) {}
+
+  ejecutar(): void {
+    const estudiantes = this.servicio.getAll();
+    this.view.mostrarTabla(estudiantes);
+  }
+}
+
+
+// DESPUES SIGUEN LAS DEMAS OPCIONES
+
+class MenuController {
+  constructor(private comandos: Map<number, Command>) {}
+
+  ejecutar(opcion: number): boolean {
+    if (opcion === 0) return false;
+
+    const comando = this.comandos.get(opcion);
+    if (!comando) {
+      console.log("Opción inválida");
+      return true;
+    }
+
+    comando.ejecutar();
+    return true;
+  }
+}
+
+const view = new ConsoleView(opcionesMenu);           //ESTO ESTA MALO TOCA CORREGIR
+
+const servicioEstudiante = new ServicioEstudiante(new Memoria<Estudiante>());
+const servicioLibro = new ServicioLibro(new Memoria<Libro>());
+
+const comandos = new Map<number, Command>();
+
+//comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante, view));  ESTO TAMBIEN
+//comandos.set(3, new VerEstudiantesCommand(servicioEstudiante, view));
+// comandos.set(5, RegistrarLibroCommand)
+// comandos.set(9, PrestarLibroCommand)
+// etc...
+
+const menuController = new MenuController(comandos);

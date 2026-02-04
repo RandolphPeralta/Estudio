@@ -442,11 +442,11 @@ class App{
   }
 }
 
-const memoriaLibro = new Memoria<Libro>();
-const memoriaEstudiante = new Memoria<Estudiante>();
+//const memoriaLibro = new Memoria<Libro>();
+//const memoriaEstudiante = new Memoria<Estudiante>();
 
-const servicioLibro = new ServicioLibro(memoriaLibro);
-const servicioCliente = new ServicioEstudiante(memoriaEstudiante);
+const servicioLibro = new ServicioLibro(new Memoria<Libro>());
+const servicioCliente = new ServicioEstudiante(new Memoria<Estudiante>());
 
 const servicioPrestamo = new ServicioPrestamo();
 
