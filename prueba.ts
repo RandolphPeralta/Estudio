@@ -17,7 +17,7 @@ interface IMostrar<T> {
   mostrar(): T[];
 }
 
-interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IMostrar<T>, IMostrar<T> {
+interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar<T> {
   guardar(item: T): boolean;
   eliminar(item: T): boolean;
   actualizar(item: T): boolean;
@@ -207,9 +207,7 @@ class ConsoleView implements IMostrar<MenuOption> {
 
 class RegistrarEstudianteCommand implements Command {
   constructor(
-    private servicio: ServicioEstudiante,
-    private view: IMostrar<MenuOption>
-  ) {}
+    private servicio: ServicioEstudiante) {}
 
   ejecutar(): void {
     const id = String(prompt("ID: "));
@@ -231,16 +229,12 @@ class RegistrarEstudianteCommand implements Command {
 
 class VerEstudiantesCommand implements Command {
   constructor(
-    private servicio: ServicioEstudiante,
-    private view: IView
-  ) {}
+    private servicio: ServicioEstudiante) {}
 
   ejecutar(): void {
-    const estudiantes = this.servicio.getAll();
-    this.view.mostrarTabla(estudiantes);
+    console.table(this.servicio.getAll())
   }
 }
-
 
 // DESPUES SIGUEN LAS DEMAS OPCIONES
 
@@ -261,17 +255,18 @@ class MenuController {
   }
 }
 
-const view = new ConsoleView(opcionesMenu);           //ESTO ESTA MALO TOCA CORREGIR Y CREO QUE DESDE LAS INTERFACES
+const view = new ConsoleView(opcionesMenu);           
 
 const servicioEstudiante = new ServicioEstudiante(new Memoria<Estudiante>());
 const servicioLibro = new ServicioLibro(new Memoria<Libro>());
 
-const comandos = new Map<number, Command>();
+const comandos = new Map<number, Command>(); // TOCA MIRAR LOS COMANDOS
 
-comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante, view));  //ESTO TAMBIEN HAY QUE CORREGIRLO Y CREO QUE DESDE LAS INTERFACES
-//comandos.set(3, new VerEstudiantesCommand(servicioEstudiante, view));
+comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante)); 
+comandos.set(3, new VerEstudiantesCommand(servicioEstudiante));
 // comandos.set(5, RegistrarLibroCommand)
 // comandos.set(9, PrestarLibroCommand)
 // etc...
 
 const menuController = new MenuController(comandos);
+

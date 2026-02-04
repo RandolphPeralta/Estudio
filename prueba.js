@@ -1,3 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var promptSync = require("prompt-sync");
+var prompt = promptSync();
 // ------------------------------------------------------
 // EN MEMORIA RAM
 var Memoria = /** @class */ (function () {
@@ -113,5 +117,65 @@ var ConsoleView = /** @class */ (function () {
     };
     return ConsoleView;
 }());
-var consoleview = new ConsoleView(opcionesMenu);
-consoleview.mostrar();
+//------------------------------------
+// MENU ACCION
+var RegistrarEstudianteCommand = /** @class */ (function () {
+    function RegistrarEstudianteCommand(servicio, view) {
+        this.servicio = servicio;
+        this.view = view;
+    }
+    RegistrarEstudianteCommand.prototype.ejecutar = function () {
+        var id = String(prompt("ID: "));
+        var nombre = String(prompt("Nombre: "));
+        var identificacion = String(prompt("Identificación: "));
+        var grado = String(prompt("Grado: "));
+        var estudiante = {
+            id: id,
+            nombre: nombre,
+            identificacion: identificacion,
+            grado: grado
+        };
+        var ok = this.servicio.register(estudiante);
+        console.log(ok ? "Estudiante registrado" : "El estudiante ya existe");
+    };
+    return RegistrarEstudianteCommand;
+}());
+var VerEstudiantesCommand = /** @class */ (function () {
+    function VerEstudiantesCommand(servicio, view) {
+        this.servicio = servicio;
+        this.view = view;
+    }
+    VerEstudiantesCommand.prototype.ejecutar = function () {
+        console.table(this.servicio.getAll());
+    };
+    return VerEstudiantesCommand;
+}());
+// DESPUES SIGUEN LAS DEMAS OPCIONES
+var MenuController = /** @class */ (function () {
+    function MenuController(comandos) {
+        this.comandos = comandos;
+    }
+    MenuController.prototype.ejecutar = function (opcion) {
+        if (opcion === 0)
+            return false;
+        var comando = this.comandos.get(opcion);
+        if (!comando) {
+            console.log("Opción inválida");
+            return true;
+        }
+        comando.ejecutar();
+        return true;
+    };
+    return MenuController;
+}());
+var view = new ConsoleView(opcionesMenu); //ESTO ESTA MALO TOCA CORREGIR Y CREO QUE DESDE LAS INTERFACES
+var servicioEstudiante = new ServicioEstudiante(new Memoria());
+var servicioLibro = new ServicioLibro(new Memoria());
+var comandos = new Map();
+comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante, view)); //ESTO TAMBIEN HAY QUE CORREGIRLO Y CREO QUE DESDE LAS INTERFACES
+comandos.set(3, new VerEstudiantesCommand(servicioEstudiante, view));
+// comandos.set(5, RegistrarLibroCommand)
+// comandos.set(9, PrestarLibroCommand)
+// etc...
+var menuController = new MenuController(comandos);
+view.mostrar();
