@@ -101,6 +101,26 @@ type Prestamos = {
   fechaDevolucion?: Date;
 }
 
+class Servicio<T> {
+  constructor(private memoria: IAccion<T>) { }
+
+  register(algo: T): boolean {
+    return this.memoria.guardar(algo)
+  }
+
+  delete(id: any): boolean {
+    return this.memoria.eliminar(id)
+  }
+
+  update(algo: T): boolean {
+    return this.memoria.actualizar(algo);
+  }
+
+  getAll() {
+    return this.memoria.mostrar()
+  }
+}
+
 class ServicioLibro {
   constructor(private memoria: IAccion<Libro>) { }
 
@@ -114,27 +134,6 @@ class ServicioLibro {
 
   update(libro: Libro): boolean {
     return this.memoria.actualizar(libro);
-  }
-
-  getAll() {
-    return this.memoria.mostrar()
-  }
-}
-
-class ServicioEstudiante {
-  constructor(private memoria: IAccion<Estudiante>) { }
-
-  register(estudiante: Estudiante): boolean {
-    return this.memoria.guardar(estudiante)
-
-  }
-
-  delete(id: any): boolean {
-    return this.memoria.eliminar(id)
-  }
-
-  update(estudiante: Estudiante): boolean {
-    return this.memoria.actualizar(estudiante);
   }
 
   getAll() {
@@ -199,10 +198,10 @@ class ConsoleView implements IMostrar<MenuOption> {
 //------------------------------------
 // MENU ACCION
 
-// EJEMPLO REGISTRAR ESTUDIANTE
+// EJEMPLO REGISTRAR ESTUDIANTE y los demas...
 class RegistrarEstudianteCommand implements Command {
   constructor(
-    private servicio: ServicioEstudiante) {}
+    private servicio: Servicio<Estudiante>) {}
 
   ejecutar(): void {
     const id = String(prompt("ID: "));
@@ -222,9 +221,18 @@ class RegistrarEstudianteCommand implements Command {
   }
 }
 
+class EliminarEstudiantesCommand implements Command {
+  constructor(private servicio: Servicio<Estudiante>) {}
+  ejecutar(): void {
+    const id = String(prompt("ID: "));
+    this.servicio.delete(id)
+    console.log("Estudiante Eliminado")
+  }
+}
+
 class VerEstudiantesCommand implements Command {
   constructor(
-    private servicio: ServicioEstudiante) {}
+    private servicio: Servicio<Estudiante>) {}
 
   ejecutar(): void {
     console.table(this.servicio.getAll())
@@ -266,14 +274,17 @@ class App {
   }
 }
 
-const view = new ConsoleView(opcionesMenu);           
+const view = new ConsoleView(opcionesMenu);
 
-const servicioEstudiante = new ServicioEstudiante(new Memoria<Estudiante>());
+const memoriaestudiate = new Memoria<Estudiante>()
+
+const servicioEstudiante = new Servicio<Estudiante>(new Memoria<Estudiante>());
 const servicioLibro = new ServicioLibro(new Memoria<Libro>());
 
 const comandos = new Map<number, Command>(); // TOCA MIRAR LOS COMANDOS
 
-comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante)); 
+comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante));
+comandos.set(2, new EliminarEstudiantesCommand(servicioEstudiante)) 
 comandos.set(3, new VerEstudiantesCommand(servicioEstudiante));
 // comandos.set(5, RegistrarLibroCommand)
 // comandos.set(9, PrestarLibroCommand)
