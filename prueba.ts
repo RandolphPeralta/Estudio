@@ -24,12 +24,12 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar
   mostrar(): T[];
 }
 
-interface IView {
-  leerTexto(mensaje: string): string;
-  leerNumero(mensaje: string): number;
-  mostrarMensaje(mensaje: string): void;
-  mostrarTabla(data: any[]): void;
-}
+// interface IView {
+//   leerTexto(mensaje: string): string;
+//   leerNumero(mensaje: string): number;
+//   mostrarMensaje(mensaje: string): void;
+//   mostrarTabla(data: any[]): void;
+// }
 
 interface Command {
   ejecutar(): void;
@@ -165,13 +165,9 @@ class ServicioPrestamo {
 //----------------------------
 //VISTA
 
-interface MenuOption {
+type MenuOption = {
   key: number;
   label: string;
-}
-
-interface IMenu {
-  mostrarMenu(): void;
 }
 
 const opcionesMenu: MenuOption[] = [
@@ -188,23 +184,22 @@ const opcionesMenu: MenuOption[] = [
   { key: 0, label: "Salir" }
 ];
 
-
 class ConsoleView implements IMostrar<MenuOption> {
   constructor(private opciones: MenuOption[]) {}
 
   mostrar(): MenuOption[] {
     console.log("Bienvenido...");
-    this.opciones.forEach(o =>
-      console.log(`${o.key}. ${o.label}`)
+    this.opciones.forEach(option => console.log(`${option.key}. ${option.label}`)
     );
     
-    return this.opciones;  // Devuelve las opciones para posible uso posterior
+    return this.opciones
   }
 }
 
 //------------------------------------
 // MENU ACCION
 
+// EJEMPLO REGISTRAR ESTUDIANTE
 class RegistrarEstudianteCommand implements Command {
   constructor(
     private servicio: ServicioEstudiante) {}
@@ -252,6 +247,22 @@ class MenuController {
 
     comando.ejecutar();
     return true;
+  }
+}
+
+// LA CLASE CONSUMIDORA
+
+class App {
+  constructor(private menu: IMostrar<MenuOption>, private controller: MenuController) {}
+
+  run(): void {
+    let continuar = true;
+
+    while (continuar) {
+      this.menu.mostrar();
+      const opcion = Number(prompt("Seleccione opción:"))
+      continuar = this.controller.ejecutar(opcion);
+    }
   }
 }
 
