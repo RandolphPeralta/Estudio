@@ -1,3 +1,6 @@
+import * as promptSync from "prompt-sync";
+const prompt = (promptSync as any)();
+
 interface IGuardar<T> {
   guardar(item: T): boolean;
 }
@@ -199,22 +202,20 @@ class ConsoleView implements IMostrar<MenuOption> {
   }
 }
 
-
-
 //------------------------------------
 // MENU ACCION
 
 class RegistrarEstudianteCommand implements Command {
   constructor(
     private servicio: ServicioEstudiante,
-    private view: IView
+    private view: IMostrar<MenuOption>
   ) {}
 
   ejecutar(): void {
-    const id = this.view.leerTexto("ID:");
-    const nombre = this.view.leerTexto("Nombre:");
-    const identificacion = this.view.leerTexto("Identificación:");
-    const grado = this.view.leerTexto("Grado:");
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const identificacion = String(prompt("Identificación: "));
+    const grado = String(prompt("Grado: "));
 
     const estudiante: Estudiante = {
       id, nombre, identificacion, grado
@@ -222,7 +223,7 @@ class RegistrarEstudianteCommand implements Command {
 
     const ok = this.servicio.register(estudiante);
 
-    this.view.mostrarMensaje(
+    console.log(
       ok ? "Estudiante registrado" : "El estudiante ya existe"
     );
   }
@@ -260,14 +261,14 @@ class MenuController {
   }
 }
 
-const view = new ConsoleView(opcionesMenu);           //ESTO ESTA MALO TOCA CORREGIR
+const view = new ConsoleView(opcionesMenu);           //ESTO ESTA MALO TOCA CORREGIR Y CREO QUE DESDE LAS INTERFACES
 
 const servicioEstudiante = new ServicioEstudiante(new Memoria<Estudiante>());
 const servicioLibro = new ServicioLibro(new Memoria<Libro>());
 
 const comandos = new Map<number, Command>();
 
-//comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante, view));  ESTO TAMBIEN
+comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante, view));  //ESTO TAMBIEN HAY QUE CORREGIRLO Y CREO QUE DESDE LAS INTERFACES
 //comandos.set(3, new VerEstudiantesCommand(servicioEstudiante, view));
 // comandos.set(5, RegistrarLibroCommand)
 // comandos.set(9, PrestarLibroCommand)
