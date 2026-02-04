@@ -281,3 +281,5 @@ comandos.set(3, new VerEstudiantesCommand(servicioEstudiante));
 
 const menuController = new MenuController(comandos);
 
+const app = new App(view, menuController)
+
