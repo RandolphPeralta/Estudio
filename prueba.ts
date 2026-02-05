@@ -60,7 +60,7 @@ class Memoria<T> implements IAccion<T> {
     }
 
     this.memoria.splice(index, 1);
-    return true
+    return true;
 
   }
 
@@ -121,46 +121,6 @@ class Servicio<T> {
   }
 }
 
-class ServicioLibro {
-  constructor(private memoria: IAccion<Libro>) { }
-
-  register(libro: Libro): boolean {
-    return this.memoria.guardar(libro)
-  }
-
-  delete(id: any): boolean {
-    return this.memoria.eliminar(id)
-  }
-
-  update(libro: Libro): boolean {
-    return this.memoria.actualizar(libro);
-  }
-
-  getAll() {
-    return this.memoria.mostrar()
-  }
-}
-
-class ServicioPrestamo {
-  constructor(private repositorio: IAccion<Prestamos>) {}
-
-  lend(prestamo: Prestamos): boolean {
-    return this.repositorio.guardar(prestamo);
-  }
-
-  restore(prestamo: Prestamos): boolean {
-    return this.repositorio.eliminar(prestamo);
-  }
-
-  update(prestamo: Prestamos): boolean {
-    return this.repositorio.actualizar(prestamo)
-  }
-
-  list(): Prestamos[] {
-    return this.repositorio.mostrar();
-  } 
-}
-
 //----------------------------
 //VISTA
 
@@ -200,8 +160,7 @@ class ConsoleView implements IMostrar<MenuOption> {
 
 // EJEMPLO REGISTRAR ESTUDIANTE y los demas...
 class RegistrarEstudianteCommand implements Command {
-  constructor(
-    private servicio: Servicio<Estudiante>) {}
+  constructor(private servicio: Servicio<Estudiante>) {}
 
   ejecutar(): void {
     const id = String(prompt("ID: "));
@@ -210,14 +169,15 @@ class RegistrarEstudianteCommand implements Command {
     const grado = String(prompt("Grado: "));
 
     const estudiante: Estudiante = {
-      id, nombre, identificacion, grado
+      id: id, 
+      nombre: nombre, 
+      identificacion: identificacion, 
+      grado: grado
     };
 
     const ok = this.servicio.register(estudiante);
 
-    console.log(
-      ok ? "Estudiante registrado" : "El estudiante ya existe"
-    );
+    console.log(ok ? "Estudiante registrado" : "El estudiante ya existe");
   }
 }
 
@@ -231,8 +191,7 @@ class EliminarEstudiantesCommand implements Command {
 }
 
 class VerEstudiantesCommand implements Command {
-  constructor(
-    private servicio: Servicio<Estudiante>) {}
+  constructor(private servicio: Servicio<Estudiante>) {}
 
   ejecutar(): void {
     console.table(this.servicio.getAll())
@@ -278,14 +237,15 @@ const view = new ConsoleView(opcionesMenu);
 
 const memoriaestudiate = new Memoria<Estudiante>()
 
-const servicioEstudiante = new Servicio<Estudiante>(new Memoria<Estudiante>());
-const servicioLibro = new ServicioLibro(new Memoria<Libro>());
+const servicioestudiante = new Servicio<Estudiante>(memoriaestudiate);
+const serviciolibro = new Servicio<Libro>(new Memoria<Libro>());
+const servicioprestamos = new Servicio<Prestamos>(new Memoria<Prestamos>())
 
 const comandos = new Map<number, Command>(); // TOCA MIRAR LOS COMANDOS
 
-comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante));
-comandos.set(2, new EliminarEstudiantesCommand(servicioEstudiante)) 
-comandos.set(3, new VerEstudiantesCommand(servicioEstudiante));
+comandos.set(1, new RegistrarEstudianteCommand(servicioestudiante));
+comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante)) 
+comandos.set(3, new VerEstudiantesCommand(servicioestudiante));
 // comandos.set(5, RegistrarLibroCommand)
 // comandos.set(9, PrestarLibroCommand)
 // etc...
