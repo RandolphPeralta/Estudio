@@ -144,13 +144,13 @@ const opcionesMenu: MenuOption[] = [
 ];
 
 class ConsoleView implements IMostrar<MenuOption> {
-  constructor(private opciones: MenuOption[]) {}
+  constructor(private opciones: MenuOption[]) { }
 
   mostrar(): MenuOption[] {
     console.log("Bienvenido...");
     this.opciones.forEach(option => console.log(`${option.key}. ${option.label}`)
     );
-    
+
     return this.opciones
   }
 }
@@ -160,7 +160,7 @@ class ConsoleView implements IMostrar<MenuOption> {
 
 // EJEMPLO REGISTRAR ESTUDIANTE y los demas...
 class RegistrarEstudianteCommand implements Command {
-  constructor(private servicio: Servicio<Estudiante>) {}
+  constructor(private servicio: Servicio<Estudiante>) { }
 
   ejecutar(): void {
     const id = String(prompt("ID: "));
@@ -169,9 +169,9 @@ class RegistrarEstudianteCommand implements Command {
     const grado = String(prompt("Grado: "));
 
     const estudiante: Estudiante = {
-      id: id, 
-      nombre: nombre, 
-      identificacion: identificacion, 
+      id: id,
+      nombre: nombre,
+      identificacion: identificacion,
       grado: grado
     };
 
@@ -182,7 +182,7 @@ class RegistrarEstudianteCommand implements Command {
 }
 
 class EliminarEstudiantesCommand implements Command {
-  constructor(private servicio: Servicio<Estudiante>) {}
+  constructor(private servicio: Servicio<Estudiante>) { }
   ejecutar(): void {
     const id = String(prompt("ID: "));
     this.servicio.delete(id)
@@ -191,17 +191,43 @@ class EliminarEstudiantesCommand implements Command {
 }
 
 class VerEstudiantesCommand implements Command {
-  constructor(private servicio: Servicio<Estudiante>) {}
+  constructor(private servicio: Servicio<Estudiante>) { }
 
   ejecutar(): void {
     console.table(this.servicio.getAll())
   }
 }
 
+class ActualizarEstudiantesCommand implements Command {
+  constructor(private servicio: Servicio<Estudiante>) { }
+
+  ejecutar(): void {
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const identificacion = String(prompt("Identificación: "));
+    const grado = String(prompt("Grado: "));
+
+    const estudiantexistente: Estudiante = {
+      id: id,
+      nombre: nombre,
+      identificacion: identificacion,
+      grado: grado
+    };
+
+    const estudianteactualizado = this.servicio.update(estudiantexistente);
+
+    if (estudianteactualizado) {
+      console.log("Libro actualizado");
+    } else {
+      console.log("No existe un libro con ese ID");
+    }
+  }
+}
+
 // DESPUES SIGUEN LAS DEMAS OPCIONES
 
 class MenuController {
-  constructor(private comandos: Map<number, Command>) {}
+  constructor(private comandos: Map<number, Command>) { }
 
   ejecutar(opcion: number): boolean {
     if (opcion === 0) return false;
@@ -220,7 +246,7 @@ class MenuController {
 // LA CLASE CONSUMIDORA
 
 class App {
-  constructor(private menu: IMostrar<MenuOption>, private controller: MenuController) {}
+  constructor(private menu: IMostrar<MenuOption>, private controller: MenuController) { }
 
   run(): void {
     let continuar = true;
@@ -244,8 +270,9 @@ const servicioprestamos = new Servicio<Prestamos>(new Memoria<Prestamos>())
 const comandos = new Map<number, Command>(); // TOCA MIRAR LOS COMANDOS
 
 comandos.set(1, new RegistrarEstudianteCommand(servicioestudiante));
-comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante)) 
+comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante))
 comandos.set(3, new VerEstudiantesCommand(servicioestudiante));
+comandos.set(4, new ActualizarEstudiantesCommand(servicioestudiante))
 // comandos.set(5, RegistrarLibroCommand)
 // comandos.set(9, PrestarLibroCommand)
 // etc...
@@ -253,4 +280,6 @@ comandos.set(3, new VerEstudiantesCommand(servicioestudiante));
 const menuController = new MenuController(comandos);
 
 const app = new App(view, menuController)
+
+app.run()
 

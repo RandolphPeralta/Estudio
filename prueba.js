@@ -37,59 +37,23 @@ var Memoria = /** @class */ (function () {
     };
     return Memoria;
 }());
-var ServicioLibro = /** @class */ (function () {
-    function ServicioLibro(memoria) {
+var Servicio = /** @class */ (function () {
+    function Servicio(memoria) {
         this.memoria = memoria;
     }
-    ServicioLibro.prototype.register = function (libro) {
-        return this.memoria.guardar(libro);
+    Servicio.prototype.register = function (algo) {
+        return this.memoria.guardar(algo);
     };
-    ServicioLibro.prototype.delete = function (id) {
+    Servicio.prototype.delete = function (id) {
         return this.memoria.eliminar(id);
     };
-    ServicioLibro.prototype.update = function (libro) {
-        return this.memoria.actualizar(libro);
+    Servicio.prototype.update = function (algo) {
+        return this.memoria.actualizar(algo);
     };
-    ServicioLibro.prototype.getAll = function () {
+    Servicio.prototype.getAll = function () {
         return this.memoria.mostrar();
     };
-    return ServicioLibro;
-}());
-var ServicioEstudiante = /** @class */ (function () {
-    function ServicioEstudiante(memoria) {
-        this.memoria = memoria;
-    }
-    ServicioEstudiante.prototype.register = function (estudiante) {
-        return this.memoria.guardar(estudiante);
-    };
-    ServicioEstudiante.prototype.delete = function (id) {
-        return this.memoria.eliminar(id);
-    };
-    ServicioEstudiante.prototype.update = function (estudiante) {
-        return this.memoria.actualizar(estudiante);
-    };
-    ServicioEstudiante.prototype.getAll = function () {
-        return this.memoria.mostrar();
-    };
-    return ServicioEstudiante;
-}());
-var ServicioPrestamo = /** @class */ (function () {
-    function ServicioPrestamo(repositorio) {
-        this.repositorio = repositorio;
-    }
-    ServicioPrestamo.prototype.lend = function (prestamo) {
-        return this.repositorio.guardar(prestamo);
-    };
-    ServicioPrestamo.prototype.restore = function (prestamo) {
-        return this.repositorio.eliminar(prestamo);
-    };
-    ServicioPrestamo.prototype.update = function (prestamo) {
-        return this.repositorio.actualizar(prestamo);
-    };
-    ServicioPrestamo.prototype.list = function () {
-        return this.repositorio.mostrar();
-    };
-    return ServicioPrestamo;
+    return Servicio;
 }());
 var opcionesMenu = [
     { key: 1, label: "Registrar Estudiante" },
@@ -110,19 +74,17 @@ var ConsoleView = /** @class */ (function () {
     }
     ConsoleView.prototype.mostrar = function () {
         console.log("Bienvenido...");
-        this.opciones.forEach(function (o) {
-            return console.log("".concat(o.key, ". ").concat(o.label));
-        });
-        return this.opciones; // Devuelve las opciones para posible uso posterior
+        this.opciones.forEach(function (option) { return console.log("".concat(option.key, ". ").concat(option.label)); });
+        return this.opciones;
     };
     return ConsoleView;
 }());
 //------------------------------------
 // MENU ACCION
+// EJEMPLO REGISTRAR ESTUDIANTE y los demas...
 var RegistrarEstudianteCommand = /** @class */ (function () {
-    function RegistrarEstudianteCommand(servicio, view) {
+    function RegistrarEstudianteCommand(servicio) {
         this.servicio = servicio;
-        this.view = view;
     }
     RegistrarEstudianteCommand.prototype.ejecutar = function () {
         var id = String(prompt("ID: "));
@@ -140,10 +102,20 @@ var RegistrarEstudianteCommand = /** @class */ (function () {
     };
     return RegistrarEstudianteCommand;
 }());
-var VerEstudiantesCommand = /** @class */ (function () {
-    function VerEstudiantesCommand(servicio, view) {
+var EliminarEstudiantesCommand = /** @class */ (function () {
+    function EliminarEstudiantesCommand(servicio) {
         this.servicio = servicio;
-        this.view = view;
+    }
+    EliminarEstudiantesCommand.prototype.ejecutar = function () {
+        var id = String(prompt("ID: "));
+        this.servicio.delete(id);
+        console.log("Estudiante Eliminado");
+    };
+    return EliminarEstudiantesCommand;
+}());
+var VerEstudiantesCommand = /** @class */ (function () {
+    function VerEstudiantesCommand(servicio) {
+        this.servicio = servicio;
     }
     VerEstudiantesCommand.prototype.ejecutar = function () {
         console.table(this.servicio.getAll());
@@ -168,14 +140,34 @@ var MenuController = /** @class */ (function () {
     };
     return MenuController;
 }());
-var view = new ConsoleView(opcionesMenu); //ESTO ESTA MALO TOCA CORREGIR Y CREO QUE DESDE LAS INTERFACES
-var servicioEstudiante = new ServicioEstudiante(new Memoria());
-var servicioLibro = new ServicioLibro(new Memoria());
-var comandos = new Map();
-comandos.set(1, new RegistrarEstudianteCommand(servicioEstudiante, view)); //ESTO TAMBIEN HAY QUE CORREGIRLO Y CREO QUE DESDE LAS INTERFACES
-comandos.set(3, new VerEstudiantesCommand(servicioEstudiante, view));
+// LA CLASE CONSUMIDORA
+var App = /** @class */ (function () {
+    function App(menu, controller) {
+        this.menu = menu;
+        this.controller = controller;
+    }
+    App.prototype.run = function () {
+        var continuar = true;
+        while (continuar) {
+            this.menu.mostrar();
+            var opcion = Number(prompt("Seleccione opción:"));
+            continuar = this.controller.ejecutar(opcion);
+        }
+    };
+    return App;
+}());
+var view = new ConsoleView(opcionesMenu);
+var memoriaestudiate = new Memoria();
+var servicioestudiante = new Servicio(memoriaestudiate);
+var serviciolibro = new Servicio(new Memoria());
+var servicioprestamos = new Servicio(new Memoria());
+var comandos = new Map(); // TOCA MIRAR LOS COMANDOS
+comandos.set(1, new RegistrarEstudianteCommand(servicioestudiante));
+comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante));
+comandos.set(3, new VerEstudiantesCommand(servicioestudiante));
 // comandos.set(5, RegistrarLibroCommand)
 // comandos.set(9, PrestarLibroCommand)
 // etc...
 var menuController = new MenuController(comandos);
-view.mostrar();
+var app = new App(view, menuController);
+app.run();
