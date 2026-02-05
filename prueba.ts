@@ -224,6 +224,77 @@ class ActualizarEstudiantesCommand implements Command {
   }
 }
 
+class RegistrarLibroCommand implements Command {
+  constructor(private servicio: Servicio<Libro>) { }
+
+  ejecutar(): void {
+    const id = String(prompt("ID Libro: "));
+    const titulo = String(prompt("Título: "));
+    const autor = String(prompt("Autor: "));
+
+    const libro: Libro = {
+      id: id,
+      titulo: titulo,
+      autor: autor,
+      disponible: true
+    }
+
+    const ok = this.servicio.register(libro);
+
+    console.log(ok ? "Libro registrado" : "El Libro ya existe");
+  }
+}
+
+class EliminarLibroCommand implements Command {
+  constructor(private servicio: Servicio<Libro>) { }
+  ejecutar(): void {
+    const id = String(prompt("ID: "));
+    this.servicio.delete(id)
+    console.log("Libro Eliminado")
+  }
+}
+
+class VerLibrosCommand implements Command {
+  constructor(private servicio: Servicio<Libro>) { }
+
+  ejecutar(): void {
+    console.table(this.servicio.getAll())
+  }
+}
+
+class ActualizarLibroCommand implements Command {
+  constructor(private servicio: Servicio<Libro>) { }
+
+  ejecutar(): void {
+    const id = String(prompt("ID Libro: "));
+    const titulo = String(prompt("Título: "));
+    const autor = String(prompt("Autor: "));
+
+    const libroexistente: Libro = {
+      id: id,
+      titulo: titulo,
+      autor: autor,
+      disponible: true
+    };
+
+    const libroactualizado = this.servicio.update(libroexistente);
+
+    if (libroactualizado) {
+      console.log("Libro actualizado");
+    } else {
+      console.log("No existe un libro con ese ID");
+    }
+  }
+}
+
+class PrestarLibroCommand implements Command {
+  constructor(private servicio: Servicio<Prestamos>) { }
+
+  ejecutar(): void {
+
+  }
+}
+
 // DESPUES SIGUEN LAS DEMAS OPCIONES
 
 class MenuController {
@@ -270,9 +341,9 @@ const servicioprestamos = new Servicio<Prestamos>(new Memoria<Prestamos>())
 const comandos = new Map<number, Command>(); // TOCA MIRAR LOS COMANDOS
 
 comandos.set(1, new RegistrarEstudianteCommand(servicioestudiante));
-comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante))
+comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante));
 comandos.set(3, new VerEstudiantesCommand(servicioestudiante));
-comandos.set(4, new ActualizarEstudiantesCommand(servicioestudiante))
+comandos.set(4, new ActualizarEstudiantesCommand(servicioestudiante));
 // comandos.set(5, RegistrarLibroCommand)
 // comandos.set(9, PrestarLibroCommand)
 // etc...
