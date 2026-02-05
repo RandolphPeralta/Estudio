@@ -32,7 +32,7 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar
 // }
 
 interface Command {
-  ejecutar(): void;
+  ejecutar(): any;
 }
 
 // ------------------------------------------------------
@@ -288,10 +288,53 @@ class ActualizarLibroCommand implements Command {
 }
 
 class PrestarLibroCommand implements Command {
-  constructor(private servicio: Servicio<Prestamos>) { }
+ constructor(
+    private libros: Servicio<Libro>,
+    private estudiantes: Servicio<Estudiante>,
+    private prestamos: Servicio<Prestamos>
+  ) {}
 
-  ejecutar(): void {
+  ejecutar(): boolean {
+    const idLibro = String(prompt("ID Libro: "));
+    const idEstudiante  = String(prompt("ID Libro: "));
+    const libro = this.libros.getAll().find(l => l.id === idLibro);
+    if (!libro || !libro.disponible) return false;
 
+    const estudiante = this.estudiantes.getAll().find(e => e.id === idEstudiante);
+    if (!estudiante) return false;
+
+    libro.disponible = false;
+
+    return this.prestamos.register({
+      idLibro,
+      idCliente: idEstudiante,
+      fechaPrestamo: new Date()
+    });
+  }
+}
+
+class DevolverLibroCommand implements Command {
+ constructor(
+    private libros: Servicio<Libro>,
+    private estudiantes: Servicio<Estudiante>,
+    private prestamos: Servicio<Prestamos>
+  ) {}
+
+  ejecutar(): boolean {
+    const idLibro = String(prompt("ID Libro: "));
+    const libro = this.libros.getAll().find(libro => libro.id === idLibro);
+    if (!libro) return false;
+
+    libro.disponible = true;
+
+    const prestamo = this.prestamos
+      .getAll()
+      .find(prestamo => prestamo.idLibro === idLibro && !prestamo.fechaDevolucion);
+
+    if (!prestamo) return false;
+
+    prestamo.fechaDevolucion = new Date();
+    return true;
   }
 }
 
