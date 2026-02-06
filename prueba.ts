@@ -24,17 +24,14 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar
   mostrar(): T[];
 }
 
-// interface IView {
-//   leerTexto(mensaje: string): string;
-//   leerNumero(mensaje: string): number;
-//   mostrarMensaje(mensaje: string): void;
-//   mostrarTabla(data: any[]): void;
-// }
-
 interface Command {
   ejecutar(): any;
 }
 
+type MenuOption = {
+  key: number;
+  label: string;
+}
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
@@ -121,44 +118,10 @@ class Servicio<T> {
   }
 }
 
-//----------------------------
 //VISTA
-
-type MenuOption = {
-  key: number;
-  label: string;
-}
-
-const opcionesMenu: MenuOption[] = [
-  { key: 1, label: "Registrar Estudiante" },
-  { key: 2, label: "Eliminar Estudiante" },
-  { key: 3, label: "Ver Estudiantes" },
-  { key: 4, label: "Actualizar Estudiante" },
-  { key: 5, label: "Registrar Libro" },
-  { key: 6, label: "Eliminar Libro" },
-  { key: 7, label: "Ver Libros" },
-  { key: 8, label: "Actualizar Libros" },
-  { key: 9, label: "Prestar Libro" },
-  { key: 10, label: "Devolver Libro" },
-  { key: 0, label: "Salir" }
-];
-
-class ConsoleView implements IMostrar<MenuOption> {
-  constructor(private opciones: MenuOption[]) { }
-
-  mostrar(): MenuOption[] {
-    console.log("Bienvenido...");
-    this.opciones.forEach(option => console.log(`${option.key}. ${option.label}`)
-    );
-
-    return this.opciones
-  }
-}
-
 //------------------------------------
 // MENU ACCION
 
-// EJEMPLO REGISTRAR ESTUDIANTE y los demas...
 class RegistrarEstudianteCommand implements Command {
   constructor(private servicio: Servicio<Estudiante>) { }
 
@@ -288,42 +251,39 @@ class ActualizarLibroCommand implements Command {
 }
 
 class PrestarLibroCommand implements Command {
- constructor(
-    private libros: Servicio<Libro>,
-    private estudiantes: Servicio<Estudiante>,
-    private prestamos: Servicio<Prestamos>
-  ) {}
+ constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) {}
 
-  ejecutar(): boolean {
+  ejecutar(): any {
     const idLibro = String(prompt("ID Libro: "));
-    const idEstudiante  = String(prompt("ID Libro: "));
-    const libro = this.libros.getAll().find(l => l.id === idLibro);
-    if (!libro || !libro.disponible) return false;
+    const idEstudiante  = String(prompt("ID del Estudiante: "));
+    const libro = this.libros.getAll().find(libro => libro.id === idLibro);
+    if (!libro || !libro.disponible) return "No existe el libro";
 
-    const estudiante = this.estudiantes.getAll().find(e => e.id === idEstudiante);
-    if (!estudiante) return false;
+    const estudiante = this.estudiantes.getAll().find(estudiante => estudiante.id === idEstudiante);
+    if (!estudiante) return "No existe el estudiante";
 
     libro.disponible = false;
 
-    return this.prestamos.register({
+    const ok = this.prestamos.register({
       idLibro,
       idCliente: idEstudiante,
       fechaPrestamo: new Date()
     });
+
+    console.log(
+      ok ? "Préstamo realizado correctamente" : "No se pudo realizar el préstamo"
+    );
+
   }
 }
 
 class DevolverLibroCommand implements Command {
- constructor(
-    private libros: Servicio<Libro>,
-    private estudiantes: Servicio<Estudiante>,
-    private prestamos: Servicio<Prestamos>
-  ) {}
+ constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) {}
 
-  ejecutar(): boolean {
+  ejecutar(): any {
     const idLibro = String(prompt("ID Libro: "));
     const libro = this.libros.getAll().find(libro => libro.id === idLibro);
-    if (!libro) return false;
+    if (!libro) return "No existe dicho libro";
 
     libro.disponible = true;
 
@@ -331,14 +291,12 @@ class DevolverLibroCommand implements Command {
       .getAll()
       .find(prestamo => prestamo.idLibro === idLibro && !prestamo.fechaDevolucion);
 
-    if (!prestamo) return false;
+    if (!prestamo) return "No se pudo reaizar el prestamo";
 
     prestamo.fechaDevolucion = new Date();
-    return true;
+    return "Libro devuelto";
   }
 }
-
-// DESPUES SIGUEN LAS DEMAS OPCIONES
 
 class MenuController {
   constructor(private comandos: Map<number, Command>) { }
@@ -354,6 +312,32 @@ class MenuController {
 
     comando.ejecutar();
     return true;
+  }
+}
+
+const opcionesMenu: MenuOption[] = [
+  { key: 1, label: "Registrar Estudiante" },
+  { key: 2, label: "Eliminar Estudiante" },
+  { key: 3, label: "Ver Estudiantes" },
+  { key: 4, label: "Actualizar Estudiante" },
+  { key: 5, label: "Registrar Libro" },
+  { key: 6, label: "Eliminar Libro" },
+  { key: 7, label: "Ver Libros" },
+  { key: 8, label: "Actualizar Libros" },
+  { key: 9, label: "Prestar Libro" },
+  { key: 10, label: "Devolver Libro" },
+  { key: 0, label: "Salir" }
+];
+
+class ConsoleView implements IMostrar<MenuOption> {
+  constructor(private opciones: MenuOption[]) { }
+
+  mostrar(): MenuOption[] {
+    console.log("Bienvenido...");
+    this.opciones.forEach(option => console.log(`${option.key}. ${option.label}`)
+    );
+
+    return this.opciones
   }
 }
 
@@ -376,10 +360,12 @@ class App {
 const view = new ConsoleView(opcionesMenu);
 
 const memoriaestudiate = new Memoria<Estudiante>()
+const memorialibro = new Memoria<Libro>()
+const memoriaprestamo = new Memoria<Prestamos>()
 
 const servicioestudiante = new Servicio<Estudiante>(memoriaestudiate);
-const serviciolibro = new Servicio<Libro>(new Memoria<Libro>());
-const servicioprestamos = new Servicio<Prestamos>(new Memoria<Prestamos>())
+const serviciolibro = new Servicio<Libro>(memorialibro);
+const servicioprestamos = new Servicio<Prestamos>(memoriaprestamo)
 
 const comandos = new Map<number, Command>(); // TOCA MIRAR LOS COMANDOS
 
@@ -387,9 +373,13 @@ comandos.set(1, new RegistrarEstudianteCommand(servicioestudiante));
 comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante));
 comandos.set(3, new VerEstudiantesCommand(servicioestudiante));
 comandos.set(4, new ActualizarEstudiantesCommand(servicioestudiante));
-// comandos.set(5, RegistrarLibroCommand)
-// comandos.set(9, PrestarLibroCommand)
-// etc...
+comandos.set(5, new RegistrarLibroCommand(serviciolibro))
+comandos.set(6, new EliminarLibroCommand(serviciolibro))
+comandos.set(7, new VerLibrosCommand(serviciolibro))
+comandos.set(8, new ActualizarLibroCommand(serviciolibro))
+
+comandos.set(9, new PrestarLibroCommand(serviciolibro, servicioestudiante, servicioprestamos));
+comandos.set(10, new DevolverLibroCommand(serviciolibro, servicioestudiante, servicioprestamos))
 
 const menuController = new MenuController(comandos);
 

@@ -122,6 +122,141 @@ var VerEstudiantesCommand = /** @class */ (function () {
     };
     return VerEstudiantesCommand;
 }());
+var ActualizarEstudiantesCommand = /** @class */ (function () {
+    function ActualizarEstudiantesCommand(servicio) {
+        this.servicio = servicio;
+    }
+    ActualizarEstudiantesCommand.prototype.ejecutar = function () {
+        var id = String(prompt("ID: "));
+        var nombre = String(prompt("Nombre: "));
+        var identificacion = String(prompt("Identificación: "));
+        var grado = String(prompt("Grado: "));
+        var estudiantexistente = {
+            id: id,
+            nombre: nombre,
+            identificacion: identificacion,
+            grado: grado
+        };
+        var estudianteactualizado = this.servicio.update(estudiantexistente);
+        if (estudianteactualizado) {
+            console.log("Libro actualizado");
+        }
+        else {
+            console.log("No existe un libro con ese ID");
+        }
+    };
+    return ActualizarEstudiantesCommand;
+}());
+var RegistrarLibroCommand = /** @class */ (function () {
+    function RegistrarLibroCommand(servicio) {
+        this.servicio = servicio;
+    }
+    RegistrarLibroCommand.prototype.ejecutar = function () {
+        var id = String(prompt("ID Libro: "));
+        var titulo = String(prompt("Título: "));
+        var autor = String(prompt("Autor: "));
+        var libro = {
+            id: id,
+            titulo: titulo,
+            autor: autor,
+            disponible: true
+        };
+        var ok = this.servicio.register(libro);
+        console.log(ok ? "Libro registrado" : "El Libro ya existe");
+    };
+    return RegistrarLibroCommand;
+}());
+var EliminarLibroCommand = /** @class */ (function () {
+    function EliminarLibroCommand(servicio) {
+        this.servicio = servicio;
+    }
+    EliminarLibroCommand.prototype.ejecutar = function () {
+        var id = String(prompt("ID: "));
+        this.servicio.delete(id);
+        console.log("Libro Eliminado");
+    };
+    return EliminarLibroCommand;
+}());
+var VerLibrosCommand = /** @class */ (function () {
+    function VerLibrosCommand(servicio) {
+        this.servicio = servicio;
+    }
+    VerLibrosCommand.prototype.ejecutar = function () {
+        console.table(this.servicio.getAll());
+    };
+    return VerLibrosCommand;
+}());
+var ActualizarLibroCommand = /** @class */ (function () {
+    function ActualizarLibroCommand(servicio) {
+        this.servicio = servicio;
+    }
+    ActualizarLibroCommand.prototype.ejecutar = function () {
+        var id = String(prompt("ID Libro: "));
+        var titulo = String(prompt("Título: "));
+        var autor = String(prompt("Autor: "));
+        var libroexistente = {
+            id: id,
+            titulo: titulo,
+            autor: autor,
+            disponible: true
+        };
+        var libroactualizado = this.servicio.update(libroexistente);
+        if (libroactualizado) {
+            console.log("Libro actualizado");
+        }
+        else {
+            console.log("No existe un libro con ese ID");
+        }
+    };
+    return ActualizarLibroCommand;
+}());
+var PrestarLibroCommand = /** @class */ (function () {
+    function PrestarLibroCommand(libros, estudiantes, prestamos) {
+        this.libros = libros;
+        this.estudiantes = estudiantes;
+        this.prestamos = prestamos;
+    }
+    PrestarLibroCommand.prototype.ejecutar = function () {
+        var idLibro = String(prompt("ID Libro: "));
+        var idEstudiante = String(prompt("ID del Estudiante: "));
+        var libro = this.libros.getAll().find(function (libro) { return libro.id === idLibro; });
+        if (!libro || !libro.disponible)
+            return "No existe el libro";
+        var estudiante = this.estudiantes.getAll().find(function (estudiante) { return estudiante.id === idEstudiante; });
+        if (!estudiante)
+            return "No existe el estudiante";
+        libro.disponible = false;
+        var ok = this.prestamos.register({
+            idLibro: idLibro,
+            idCliente: idEstudiante,
+            fechaPrestamo: new Date()
+        });
+        console.log(ok ? "Préstamo realizado correctamente" : "No se pudo realizar el préstamo");
+    };
+    return PrestarLibroCommand;
+}());
+var DevolverLibroCommand = /** @class */ (function () {
+    function DevolverLibroCommand(libros, estudiantes, prestamos) {
+        this.libros = libros;
+        this.estudiantes = estudiantes;
+        this.prestamos = prestamos;
+    }
+    DevolverLibroCommand.prototype.ejecutar = function () {
+        var idLibro = String(prompt("ID Libro: "));
+        var libro = this.libros.getAll().find(function (libro) { return libro.id === idLibro; });
+        if (!libro)
+            return "No existe dicho libro";
+        libro.disponible = true;
+        var prestamo = this.prestamos
+            .getAll()
+            .find(function (prestamo) { return prestamo.idLibro === idLibro && !prestamo.fechaDevolucion; });
+        if (!prestamo)
+            return "No se pudo reaizar el prestamo";
+        prestamo.fechaDevolucion = new Date();
+        return "Libro devuelto";
+    };
+    return DevolverLibroCommand;
+}());
 // DESPUES SIGUEN LAS DEMAS OPCIONES
 var MenuController = /** @class */ (function () {
     function MenuController(comandos) {
@@ -158,16 +293,22 @@ var App = /** @class */ (function () {
 }());
 var view = new ConsoleView(opcionesMenu);
 var memoriaestudiate = new Memoria();
+var memorialibro = new Memoria();
+var memoriaprestamo = new Memoria();
 var servicioestudiante = new Servicio(memoriaestudiate);
-var serviciolibro = new Servicio(new Memoria());
-var servicioprestamos = new Servicio(new Memoria());
+var serviciolibro = new Servicio(memorialibro);
+var servicioprestamos = new Servicio(memoriaprestamo);
 var comandos = new Map(); // TOCA MIRAR LOS COMANDOS
 comandos.set(1, new RegistrarEstudianteCommand(servicioestudiante));
 comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante));
 comandos.set(3, new VerEstudiantesCommand(servicioestudiante));
-// comandos.set(5, RegistrarLibroCommand)
-// comandos.set(9, PrestarLibroCommand)
-// etc...
+comandos.set(4, new ActualizarEstudiantesCommand(servicioestudiante));
+comandos.set(5, new RegistrarLibroCommand(serviciolibro));
+comandos.set(6, new EliminarLibroCommand(serviciolibro));
+comandos.set(7, new VerLibrosCommand(serviciolibro));
+comandos.set(8, new ActualizarLibroCommand(serviciolibro));
+comandos.set(9, new PrestarLibroCommand(serviciolibro, servicioestudiante, servicioprestamos));
+comandos.set(10, new DevolverLibroCommand(serviciolibro, servicioestudiante, servicioprestamos));
 var menuController = new MenuController(comandos);
 var app = new App(view, menuController);
 app.run();
