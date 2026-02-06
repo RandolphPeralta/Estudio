@@ -255,11 +255,11 @@ class ActualizarLibroCommand implements Command {
 }
 
 class PrestarLibroCommand implements Command {
- constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) {}
+  constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) { }
 
   ejecutar(): any {
     const idLibro = String(prompt("ID Libro: "));
-    const idEstudiante  = String(prompt("ID del Estudiante: "));
+    const idEstudiante = String(prompt("ID del Estudiante: "));
     const libro = this.libros.getAll().find(libro => libro.id === idLibro);
     if (!libro || !libro.disponible) return "No existe el libro";
 
@@ -282,7 +282,7 @@ class PrestarLibroCommand implements Command {
 }
 
 class DevolverLibroCommand implements Command {
- constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) {}
+  constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) { }
 
   ejecutar(): any {
     const idLibro = String(prompt("ID Libro: "));
@@ -302,7 +302,7 @@ class DevolverLibroCommand implements Command {
   }
 }
 
-class MenuController implements Menu{
+class MenuController implements Menu {
   constructor(private comandos: Map<number, Command>) { }
 
   ejecutar(opcion: number): boolean {
