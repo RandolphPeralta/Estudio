@@ -123,8 +123,20 @@ interface Nadador {
     nadar(): void
 }
 
+interface Caminador {
+    caminar(): void
+}
+
 class Pez implements Nadador {
     nadar() {}
+}
+
+class Loro implements Volador {
+    volar(): void {}
+}
+
+class Perro implements Caminador {
+    caminar(): void {}
 }
 
 // D - INVERSION DE DEPENDENCIAS
