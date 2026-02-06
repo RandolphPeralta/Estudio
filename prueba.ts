@@ -28,6 +28,10 @@ interface Command {
   ejecutar(): any;
 }
 
+interface Menu {
+  ejecutar(some: any): any;
+}
+
 type MenuOption = {
   key: number;
   label: string;
@@ -298,7 +302,7 @@ class DevolverLibroCommand implements Command {
   }
 }
 
-class MenuController {
+class MenuController implements Menu{
   constructor(private comandos: Map<number, Command>) { }
 
   ejecutar(opcion: number): boolean {
