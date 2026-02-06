@@ -291,9 +291,7 @@ class DevolverLibroCommand implements Command {
 
     libro.disponible = true;
 
-    const prestamo = this.prestamos
-      .getAll()
-      .find(prestamo => prestamo.idLibro === idLibro && !prestamo.fechaDevolucion);
+    const prestamo = this.prestamos.getAll().find(prestamo => prestamo.idLibro === idLibro && !prestamo.fechaDevolucion);
 
     if (!prestamo) return "No se pudo reaizar el prestamo";
 

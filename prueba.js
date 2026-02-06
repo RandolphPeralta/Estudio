@@ -55,33 +55,9 @@ var Servicio = /** @class */ (function () {
     };
     return Servicio;
 }());
-var opcionesMenu = [
-    { key: 1, label: "Registrar Estudiante" },
-    { key: 2, label: "Eliminar Estudiante" },
-    { key: 3, label: "Ver Estudiantes" },
-    { key: 4, label: "Actualizar Estudiante" },
-    { key: 5, label: "Registrar Libro" },
-    { key: 6, label: "Eliminar Libro" },
-    { key: 7, label: "Ver Libros" },
-    { key: 8, label: "Actualizar Libros" },
-    { key: 9, label: "Prestar Libro" },
-    { key: 10, label: "Devolver Libro" },
-    { key: 0, label: "Salir" }
-];
-var ConsoleView = /** @class */ (function () {
-    function ConsoleView(opciones) {
-        this.opciones = opciones;
-    }
-    ConsoleView.prototype.mostrar = function () {
-        console.log("Bienvenido...");
-        this.opciones.forEach(function (option) { return console.log("".concat(option.key, ". ").concat(option.label)); });
-        return this.opciones;
-    };
-    return ConsoleView;
-}());
+//VISTA
 //------------------------------------
 // MENU ACCION
-// EJEMPLO REGISTRAR ESTUDIANTE y los demas...
 var RegistrarEstudianteCommand = /** @class */ (function () {
     function RegistrarEstudianteCommand(servicio) {
         this.servicio = servicio;
@@ -257,7 +233,6 @@ var DevolverLibroCommand = /** @class */ (function () {
     };
     return DevolverLibroCommand;
 }());
-// DESPUES SIGUEN LAS DEMAS OPCIONES
 var MenuController = /** @class */ (function () {
     function MenuController(comandos) {
         this.comandos = comandos;
@@ -274,6 +249,30 @@ var MenuController = /** @class */ (function () {
         return true;
     };
     return MenuController;
+}());
+var opcionesMenu = [
+    { key: 1, label: "Registrar Estudiante" },
+    { key: 2, label: "Eliminar Estudiante" },
+    { key: 3, label: "Ver Estudiantes" },
+    { key: 4, label: "Actualizar Estudiante" },
+    { key: 5, label: "Registrar Libro" },
+    { key: 6, label: "Eliminar Libro" },
+    { key: 7, label: "Ver Libros" },
+    { key: 8, label: "Actualizar Libros" },
+    { key: 9, label: "Prestar Libro" },
+    { key: 10, label: "Devolver Libro" },
+    { key: 0, label: "Salir" }
+];
+var ConsoleView = /** @class */ (function () {
+    function ConsoleView(opciones) {
+        this.opciones = opciones;
+    }
+    ConsoleView.prototype.mostrar = function () {
+        console.log("Bienvenido...");
+        this.opciones.forEach(function (option) { return console.log("".concat(option.key, ". ").concat(option.label)); });
+        return this.opciones;
+    };
+    return ConsoleView;
 }());
 // LA CLASE CONSUMIDORA
 var App = /** @class */ (function () {
