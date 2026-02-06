@@ -65,6 +65,10 @@ class Calculador {
 
 // L - LISKOV PRINCIPLE (Principio de Liskov)
 
+// Las submodulos, subclases o subtipos deben ser 
+// sustituibles por los modulos, clases o tipos bases 
+// sin afectar el comportamiento del codigo 
+
 // Si tenemos clases padres e hijas es decir
 // Herencia, las instancias se pueden intercambiar 
 // sin generar resultados inesperadas
