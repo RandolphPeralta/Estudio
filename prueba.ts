@@ -80,3 +80,23 @@ class Memoria<T> implements IAccion<T> {
         return this.memoria
     }
 }
+
+class Servicio<T> {
+    constructor(private memoria: IAccion<T>) { }
+
+    register(algo: T): boolean {
+        return this.memoria.registro(algo)
+    }
+
+    delete(id: any): boolean {
+        return this.memoria.eliminar(id)
+    }
+
+    update(algo: T): boolean {
+        return this.memoria.actualizar(algo);
+    }
+
+    getAll() {
+        return this.memoria.mostrar()
+    }
+}
