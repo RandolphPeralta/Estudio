@@ -24,18 +24,14 @@ interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar
   mostrar(): T[];
 }
 
-interface Command {
+interface ICommand {
   ejecutar(): any;
 }
 
-interface Menu {
+interface ICommandE {
   ejecutar(some: any): any;
 }
 
-type MenuOption = {
-  key: number;
-  label: string;
-}
 // ------------------------------------------------------
 
 // EN MEMORIA RAM
@@ -102,6 +98,11 @@ type Prestamos = {
   fechaDevolucion?: Date;
 }
 
+type MenuOption = {
+  key: number;
+  label: string;
+}
+
 class Servicio<T> {
   constructor(private memoria: IAccion<T>) { }
 
@@ -126,7 +127,7 @@ class Servicio<T> {
 //------------------------------------
 // MENU ACCION
 
-class RegistrarEstudianteCommand implements Command {
+class RegistrarEstudianteCommand implements ICommand {
   constructor(private servicio: Servicio<Estudiante>) { }
 
   ejecutar(): void {
@@ -148,7 +149,7 @@ class RegistrarEstudianteCommand implements Command {
   }
 }
 
-class EliminarEstudiantesCommand implements Command {
+class EliminarEstudiantesCommand implements ICommand {
   constructor(private servicio: Servicio<Estudiante>) { }
   ejecutar(): void {
     const id = String(prompt("ID: "));
@@ -157,7 +158,7 @@ class EliminarEstudiantesCommand implements Command {
   }
 }
 
-class VerEstudiantesCommand implements Command {
+class VerEstudiantesCommand implements ICommand {
   constructor(private servicio: Servicio<Estudiante>) { }
 
   ejecutar(): void {
@@ -165,7 +166,7 @@ class VerEstudiantesCommand implements Command {
   }
 }
 
-class ActualizarEstudiantesCommand implements Command {
+class ActualizarEstudiantesCommand implements ICommand {
   constructor(private servicio: Servicio<Estudiante>) { }
 
   ejecutar(): void {
@@ -191,7 +192,7 @@ class ActualizarEstudiantesCommand implements Command {
   }
 }
 
-class RegistrarLibroCommand implements Command {
+class RegistrarLibroCommand implements ICommand {
   constructor(private servicio: Servicio<Libro>) { }
 
   ejecutar(): void {
@@ -212,7 +213,7 @@ class RegistrarLibroCommand implements Command {
   }
 }
 
-class EliminarLibroCommand implements Command {
+class EliminarLibroCommand implements ICommand {
   constructor(private servicio: Servicio<Libro>) { }
   ejecutar(): void {
     const id = String(prompt("ID: "));
@@ -221,7 +222,7 @@ class EliminarLibroCommand implements Command {
   }
 }
 
-class VerLibrosCommand implements Command {
+class VerLibrosCommand implements ICommand {
   constructor(private servicio: Servicio<Libro>) { }
 
   ejecutar(): void {
@@ -229,7 +230,7 @@ class VerLibrosCommand implements Command {
   }
 }
 
-class ActualizarLibroCommand implements Command {
+class ActualizarLibroCommand implements ICommand {
   constructor(private servicio: Servicio<Libro>) { }
 
   ejecutar(): void {
@@ -254,7 +255,7 @@ class ActualizarLibroCommand implements Command {
   }
 }
 
-class PrestarLibroCommand implements Command {
+class PrestarLibroCommand implements ICommand {
   constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) { }
 
   ejecutar(): any {
@@ -281,7 +282,7 @@ class PrestarLibroCommand implements Command {
   }
 }
 
-class DevolverLibroCommand implements Command {
+class DevolverLibroCommand implements ICommand {
   constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) { }
 
   ejecutar(): any {
@@ -300,8 +301,8 @@ class DevolverLibroCommand implements Command {
   }
 }
 
-class MenuController implements Menu {
-  constructor(private comandos: Map<number, Command>) { }
+class MenuController implements ICommandE {
+  constructor(private comandos: Map<number, ICommand>) { }
 
   ejecutar(opcion: number): boolean {
     if (opcion === 0) return false;
@@ -334,7 +335,7 @@ const opcionesMenu: MenuOption[] = [
 class ConsoleView implements IMostrar<MenuOption> {
   constructor(private opciones: MenuOption[]) { }
 
-  mostrar(): MenuOption[] {
+  mostrar(): any[] {
     console.log("Bienvenido...");
     this.opciones.forEach(option => console.log(`${option.key}. ${option.label}`)
     );
@@ -346,7 +347,7 @@ class ConsoleView implements IMostrar<MenuOption> {
 // LA CLASE CONSUMIDORA
 
 class App {
-  constructor(private menu: IMostrar<MenuOption>, private controller: MenuController) { }
+  constructor(private menu: IMostrar<MenuOption>, private controller: ICommandE) { }
 
   run(): void {
     let continuar = true;
@@ -369,7 +370,7 @@ const servicioestudiante = new Servicio<Estudiante>(memoriaestudiate);
 const serviciolibro = new Servicio<Libro>(memorialibro);
 const servicioprestamos = new Servicio<Prestamos>(memoriaprestamo)
 
-const comandos = new Map<number, Command>(); // TOCA MIRAR LOS COMANDOS
+const comandos = new Map<number, ICommand>(); // TOCA MIRAR LOS COMANDOS
 
 comandos.set(1, new RegistrarEstudianteCommand(servicioestudiante));
 comandos.set(2, new EliminarEstudiantesCommand(servicioestudiante));
