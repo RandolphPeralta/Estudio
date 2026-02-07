@@ -16,23 +16,23 @@
 
 // SOLUCION
 
-interface IGuardado<T> {
+interface IGuardar<T> {
   registro(item: T): boolean;
 }
 
-interface IEliminado<T> {
+interface IEliminar<T> {
   eliminar(item: T): boolean;
 }
 
-interface IActualizado<T> {
+interface IActualizar<T> {
   actualizar(item: T): boolean;
 }
 
-interface IMostrado<T> {
+interface IMostrar<T> {
   mostrar(): T[]
 }
 
-interface IAccion<T> extends IGuardado<T>, IEliminado<T>, IActualizado<T>, IMostrado<T>{
+interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar<T>{
   registro(item: T): boolean;
   eliminar(item: T): boolean;
   actualizar(item: T): boolean;
@@ -99,4 +99,15 @@ class Servicio<T> {
     getAll() {
         return this.memoria.mostrar()
     }
+}
+
+type Producto = {
+    // nombre: string,
+    // precio: number,
+    // cantidad: number
+}
+
+type Cliente = {
+    // nombre: string,
+    // cedula: string
 }
