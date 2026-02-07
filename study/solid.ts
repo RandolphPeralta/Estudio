@@ -5,22 +5,22 @@
 // y por ende una razon para cambiar
 
 // Mal ejemplo:
-// class Usuario {
-//     guardarEnBD() {}
-//     enviarEmail() {}
-// }
+class CUsuario {
+    guardarEnBD() { }
+    enviarEmail() { }
+}
 
 //Buen ejemplo:
 class Usuario {
-    constructor(private nombre: string) {}
+    constructor(private nombre: string) { }
 }
 
 class UsuarioRepository {
-    guardar(usuario: Usuario) {}
+    guardar(usuario: Usuario) { }
 }
 
 class EmailService {
-    enviar(usuario: Usuario) {}
+    enviar(usuario: Usuario) { }
 }
 
 // 0 - OPEN/CLOSED 
@@ -58,7 +58,7 @@ class Resta implements Operacion {
 }
 
 class Calculador {
-    constructor(operacion: Operacion){
+    constructor(operacion: Operacion) {
         return operacion.ejecutar()
     }
 }
@@ -89,17 +89,17 @@ class Calculador {
 // }
 
 // Buen ejemplo:
-interface Ave {}
+interface Ave { }
 
 interface AveVoladora extends Ave {
     volar(): void
 }
 
 class Aguila implements AveVoladora {
-    volar() {}
+    volar() { }
 }
 
-class Pinguino implements Ave {}
+class Pinguino implements Ave { }
 
 // I - PRINCIPIO DE SEGREGACION DE INTERFACES
 
@@ -128,15 +128,15 @@ interface Caminador {
 }
 
 class Pez implements Nadador {
-    nadar() {}
+    nadar() { }
 }
 
 class Loro implements Volador {
-    volar(): void {}
+    volar(): void { }
 }
 
 class Perro implements Caminador {
-    caminar(): void {}
+    caminar(): void { }
 }
 
 // D - INVERSION DE DEPENDENCIAS
@@ -162,11 +162,11 @@ interface Database {
 }
 
 class MySQL implements Database {
-    conectar() {}
+    conectar() { }
 }
 
 class App {
-    constructor(private db: Database) {}
+    constructor(private db: Database) { }
 }
 
 // SOLID
@@ -182,7 +182,7 @@ class VolarConAlas implements Superpoder {
 }
 
 class Heroe {
-    constructor(private poder: Superpoder) {}
+    constructor(private poder: Superpoder) { }
 
     activarPoder() {
         return this.poder.usar()
