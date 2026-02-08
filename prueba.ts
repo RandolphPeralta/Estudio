@@ -16,33 +16,36 @@
 
 // SOLUCION
 
-interface IGuardar<T> {
-  registro(item: T): boolean;
+interface ISave<T> {
+  save(item: T): boolean;
 }
 
-interface IEliminar<T> {
-  eliminar(item: T): boolean;
+interface IDelete<T> {
+  delete(item: T): boolean;
 }
 
-interface IActualizar<T> {
-  actualizar(item: T): boolean;
+interface IUpdate<T> {
+  update(item: T): boolean;
 }
 
-interface IMostrar<T> {
-  mostrar(): T[]
+interface IShow<T> {
+  show(): T[]
 }
 
-interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar<T>{
-  registro(item: T): boolean;
-  eliminar(item: T): boolean;
-  actualizar(item: T): boolean;
-  mostrar(): T[]
+interface IAction<T> extends ISave<T>, IDelete<T>, IUpdate<T>, IShow<T>{
+  save(item: T): boolean;
+  delete(item: T): boolean;
+  update(item: T): boolean;
+  show(): T[]
 }
 
-class Memoria<T> implements IAccion<T> {
+//----------------------------------------
+
+class Memoria<T> implements IAction<T> {
+    
     private memoria: T[] = []
 
-    registro(some: any): boolean {
+    save(some: any): boolean {
         const index = this.memoria.findIndex((item: any) => item.id === some.id);
 
         if (index !== -1) {
@@ -53,7 +56,7 @@ class Memoria<T> implements IAccion<T> {
         return true;
     }
 
-    eliminar(id: any) {
+    delete(id: any) {
         const index = this.memoria.findIndex((item: any) => item.id === id);
 
         if (index === -1) {
@@ -65,7 +68,7 @@ class Memoria<T> implements IAccion<T> {
 
     }
 
-    actualizar(some: any): boolean {
+    update(some: any): boolean {
         const index = this.memoria.findIndex((item: any) => item.id === some.id);
 
         if (index === -1) {
@@ -76,38 +79,61 @@ class Memoria<T> implements IAccion<T> {
         return true;
     }
 
-    mostrar() {
+    show() {
         return this.memoria
     }
 }
 
 class Servicio<T> {
-    constructor(private memoria: IAccion<T>) { }
+    constructor(private memoria: IAction<T>) { }
 
     register(algo: T): boolean {
-        return this.memoria.registro(algo)
+        return this.memoria.save(algo)
     }
 
     delete(id: any): boolean {
-        return this.memoria.eliminar(id)
+        return this.memoria.delete(id)
     }
 
     update(algo: T): boolean {
-        return this.memoria.actualizar(algo);
+        return this.memoria.update(algo);
     }
 
     getAll() {
-        return this.memoria.mostrar()
+        return this.memoria.show()
     }
 }
 
 type Producto = {
-    // nombre: string,
-    // precio: number,
-    // cantidad: number
+    nombre: string,
+    precio: number,
+    cantidad: number
 }
 
 type Cliente = {
-    // nombre: string,
-    // cedula: string
+    nombre: string,
+    cedula: string
 }
+
+type Compra = {
+    cliente: Cliente
+    productos: Producto[]
+}
+
+class Tienda {
+    constructor(private serviciocompra: Servicio<Compra>){}
+
+    comprar(compra: Compra){
+        return this.serviciocompra.register(compra)
+    }
+}
+
+const memoriacliente = new Memoria<Cliente>() 
+const memoriaproducto = new Memoria<Producto>() 
+
+const serviciocliente = new Servicio<Cliente>(memoriacliente)
+const servicioproducto = new Servicio<Producto>(memoriaproducto)
+
+// const tienda = new Tienda()
+
+//------

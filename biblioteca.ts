@@ -16,7 +16,7 @@ interface IAccion<T>{
 }
 
 // ------------------------------------------------------
-
+// PERSISTENCIA
 // EN MEMORIA RAM
 class Memoria<T> implements IAccion<T>{
     private memoria: T[] = []
