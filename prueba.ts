@@ -121,17 +121,18 @@ type Cliente = {
 class Tienda {
    constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>){}
 
-   vender(cliente: Cliente, producto: Producto){
+   vender(cliente: Cliente, producto: Producto[]){
     this.serviciocliente.save(cliente)
     this.servicioproducto.delete(producto)
-    return true
+    // Toca mirar como sacar la cuenta
+    const productos = this.servicioproducto.show()
+    //const productoacomprar = productos.find(productoc => productoc.id == producto.id)
    }
 
    registroproducto(producto: Producto){
     this.servicioproducto.save(producto)
    }
-
-   // Toca mirar como sacar la cuenta
+   
 }
 
 const memoriacliente = new Memoria<Cliente>() 
