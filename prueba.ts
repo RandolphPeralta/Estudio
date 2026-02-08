@@ -32,7 +32,15 @@ interface IShow<T> {
   show(): T[]
 }
 
-interface IAction<T> extends ISave<T>, IDelete<T>, IUpdate<T>, IShow<T>{
+interface ICommand {
+    ejecutar(item: any): any
+}
+
+interface ICommando {
+    ejecutar(): any
+}
+
+interface IAction<T> extends ISave<T>, IDelete<T>, IUpdate<T>, IShow<T> {
   save(item: T): boolean;
   delete(item: T): boolean;
   update(item: T): boolean;
@@ -115,17 +123,8 @@ type Cliente = {
     cedula: string
 }
 
-type Compra = {
-    cliente: Cliente
-    productos: Producto[]
-}
-
 class Tienda {
-    constructor(private serviciocompra: Servicio<Compra>){}
-
-    comprar(compra: Compra){
-        return this.serviciocompra.register(compra)
-    }
+   
 }
 
 const memoriacliente = new Memoria<Cliente>() 
