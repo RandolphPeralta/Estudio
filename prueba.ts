@@ -14,8 +14,6 @@
 // saber exactamente qué vendió y a quién, 
 // y tener su tienda más ordenada y controlada.
 
-// SOLUCION
-
 interface ISave<T> {
   save(item: T): boolean;
 }
@@ -92,10 +90,10 @@ class Memoria<T> implements IAction<T> {
     }
 }
 
-class Servicio<T> {
+class Servicio<T> implements IAction<T>{
     constructor(private memoria: IAction<T>) { }
 
-    register(algo: T): boolean {
+    save(algo: T): boolean {
         return this.memoria.save(algo)
     }
 
@@ -107,24 +105,33 @@ class Servicio<T> {
         return this.memoria.update(algo);
     }
 
-    getAll() {
+    show() {
         return this.memoria.show()
     }
 }
 
 type Producto = {
-    nombre: string,
-    precio: number,
-    cantidad: number
+    
 }
 
 type Cliente = {
-    nombre: string,
-    cedula: string
+    
 }
 
 class Tienda {
-   
+   constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>){}
+
+   vender(cliente: Cliente, producto: Producto){
+    this.serviciocliente.save(cliente)
+    this.servicioproducto.delete(producto)
+    return true
+   }
+
+   registroproducto(producto: Producto){
+    this.servicioproducto.save(producto)
+   }
+
+   // Toca mirar como sacar la cuenta
 }
 
 const memoriacliente = new Memoria<Cliente>() 
@@ -134,5 +141,3 @@ const serviciocliente = new Servicio<Cliente>(memoriacliente)
 const servicioproducto = new Servicio<Producto>(memoriaproducto)
 
 // const tienda = new Tienda()
-
-//------
