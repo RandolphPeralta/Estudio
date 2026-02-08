@@ -118,32 +118,67 @@ type Producto = {
 }
 
 type Cliente = {
-    
+    nombre: string,
+    cedula: string
 }
 
 
 
 class Tienda {
-   constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>){}
+   constructor(private servicioproducto: IAction<Producto[]>, private serviciocliente: IAction<Cliente>){}
 
-   vender(cliente: Cliente, producto: Producto[]){
+   vender(cliente: Cliente, productos: Producto[]){
     this.serviciocliente.save(cliente)
-    //this.servicioproducto.delete(producto)
-    // Toca mirar como sacar la cuenta
-    const productos = this.servicioproducto.show()
-    //const productoacomprar = productos.find(productoc => productoc.id == producto.id)
-   }
+    this.servicioproducto.delete(productos)
 
-   registroproducto(producto: Producto){
+    let total = 0
+    for (const producto of productos) {
+        total += producto.precio * producto.cantidad
+    }
+
+    return total
+    }
+
+   registroproducto(producto: Producto[]){
     this.servicioproducto.save(producto)
    }
    
+   verproductos(){
+    return this.servicioproducto.show()
+   }
 }
 
 const memoriacliente = new Memoria<Cliente>() 
-const memoriaproducto = new Memoria<Producto>() 
+const memoriaproducto = new Memoria<Producto[]>() 
 
 const serviciocliente = new Servicio<Cliente>(memoriacliente)
-const servicioproducto = new Servicio<Producto>(memoriaproducto)
+const servicioproducto = new Servicio<Producto[]>(memoriaproducto)
 
-// const tienda = new Tienda()
+const tienda = new Tienda(servicioproducto, serviciocliente,)
+
+tienda.registroproducto([{id: 1,
+    nombre: "Arroz",
+    precio: 3000,
+    cantidad: 10
+}, {id: 2,
+    nombre: "Azucar",
+    precio: 2000,
+    cantidad: 10
+}]
+    )
+
+const total = tienda.vender(
+    { nombre: "Juan", cedula: "123" },
+    [{ id: 1, nombre: "Arroz",
+    precio: 3000, cantidad: 2 }, {id: 2,
+    nombre: "Azucar",
+    precio: 2000,
+    cantidad: 1
+}]
+)
+
+const inventario = tienda.verproductos()
+
+console.log("Total a pagar:", total) 
+
+console.log("Invenario: ", inventario) // TOCA MIRAR LA CANTIDAD QUE NO ESTA RESTANDO EN LA VENTA
