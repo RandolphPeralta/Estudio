@@ -111,19 +111,24 @@ class Servicio<T> implements IAction<T>{
 }
 
 type Producto = {
-    
+    id: number
+    nombre: string
+    precio: number
+    cantidad: number
 }
 
 type Cliente = {
     
 }
 
+
+
 class Tienda {
    constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>){}
 
    vender(cliente: Cliente, producto: Producto[]){
     this.serviciocliente.save(cliente)
-    this.servicioproducto.delete(producto)
+    //this.servicioproducto.delete(producto)
     // Toca mirar como sacar la cuenta
     const productos = this.servicioproducto.show()
     //const productoacomprar = productos.find(productoc => productoc.id == producto.id)
