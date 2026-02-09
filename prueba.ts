@@ -123,14 +123,11 @@ type Cliente = {
 }
 
 class Tienda {
-   constructor(
-     private servicioproducto: IAction<Producto>,
-     private serviciocliente: IAction<Cliente>
-   ) {}
+   constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>) {}
 
    registroproducto(productos: Producto[]) {
       for (const producto of productos) {
-          this.servicioproducto.save(producto)
+          return this.servicioproducto.save(producto)
       }
    }
 
@@ -141,7 +138,7 @@ class Tienda {
       const inventario = this.servicioproducto.show()
 
       for (const vendido of productos) {
-          const productoInventario = inventario.find(p => p.id === vendido.id)
+          const productoInventario = inventario.find(producto => producto.id === vendido.id)
 
           if (!productoInventario) continue
 
@@ -153,14 +150,17 @@ class Tienda {
           }
       }
 
-      return total
+      return total // NO PUEDE CALCULAR EL TOTAL
    }
 
    verproductos() {
       return this.servicioproducto.show()
    }
-}
 
+   eliminarproducto(producto: Producto){
+    return this.servicioproducto.delete(producto)
+   }
+}
 
 const memoriacliente = new Memoria<Cliente>() 
 const memoriaproducto = new Memoria<Producto>() 
@@ -194,4 +194,4 @@ const inventario = tienda.verproductos()
 
 console.log("Total a pagar:", total) 
 
-console.log("Invenario: ", inventario) // TOCA MIRAR LA CANTIDAD QUE NO ESTA RESTANDO EN LA VENTA
+console.log("Invenario: ", inventario) 

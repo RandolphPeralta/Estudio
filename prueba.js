@@ -62,7 +62,7 @@ var Tienda = /** @class */ (function () {
     Tienda.prototype.registroproducto = function (productos) {
         for (var _i = 0, productos_1 = productos; _i < productos_1.length; _i++) {
             var producto = productos_1[_i];
-            this.servicioproducto.save(producto);
+            return this.servicioproducto.save(producto);
         }
     };
     Tienda.prototype.vender = function (cliente, productos) {
@@ -70,7 +70,7 @@ var Tienda = /** @class */ (function () {
         var total = 0;
         var inventario = this.servicioproducto.show();
         var _loop_1 = function (vendido) {
-            var productoInventario = inventario.find(function (p) { return p.id === vendido.id; });
+            var productoInventario = inventario.find(function (producto) { return producto.id === vendido.id; });
             if (!productoInventario)
                 return "continue";
             if (productoInventario.cantidad >= vendido.cantidad) {
@@ -88,6 +88,9 @@ var Tienda = /** @class */ (function () {
     };
     Tienda.prototype.verproductos = function () {
         return this.servicioproducto.show();
+    };
+    Tienda.prototype.eliminarproducto = function (producto) {
+        return this.servicioproducto.delete(producto);
     };
     return Tienda;
 }());
@@ -112,4 +115,4 @@ var total = tienda.vender({ nombre: "Juan", cedula: "123" }, [{ id: 1, nombre: "
     }]);
 var inventario = tienda.verproductos();
 console.log("Total a pagar:", total);
-console.log("Invenario: ", inventario); // TOCA MIRAR LA CANTIDAD QUE NO ESTA RESTANDO EN LA VENTA
+console.log("Invenario: ", inventario);
