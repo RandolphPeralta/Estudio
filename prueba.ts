@@ -123,34 +123,50 @@ type Cliente = {
 }
 
 class Tienda {
-   constructor(private servicioproducto: IAction<Producto[]>, private serviciocliente: IAction<Cliente>){}
+   constructor(
+     private servicioproducto: IAction<Producto>,
+     private serviciocliente: IAction<Cliente>
+   ) {}
 
-   vender(cliente: Cliente, productos: Producto[]){
-    this.serviciocliente.save(cliente)
-    this.servicioproducto.delete(productos)
-
-    let total = 0
-    for (const producto of productos) {
-        total += producto.precio * producto.cantidad
-    }
-
-    return total
-    }
-
-   registroproducto(producto: Producto[]){
-    this.servicioproducto.save(producto)
+   registroproducto(productos: Producto[]) {
+      for (const producto of productos) {
+          this.servicioproducto.save(producto)
+      }
    }
-   
-   verproductos(){
-    return this.servicioproducto.show()
+
+   vender(cliente: Cliente, productos: Producto[]) {
+      this.serviciocliente.save(cliente)
+
+      let total = 0
+      const inventario = this.servicioproducto.show()
+
+      for (const vendido of productos) {
+          const productoInventario = inventario.find(p => p.id === vendido.id)
+
+          if (!productoInventario) continue
+
+          if (productoInventario.cantidad >= vendido.cantidad) {
+              productoInventario.cantidad -= vendido.cantidad
+              this.servicioproducto.update(productoInventario)
+
+              total += vendido.precio * vendido.cantidad
+          }
+      }
+
+      return total
+   }
+
+   verproductos() {
+      return this.servicioproducto.show()
    }
 }
 
+
 const memoriacliente = new Memoria<Cliente>() 
-const memoriaproducto = new Memoria<Producto[]>() 
+const memoriaproducto = new Memoria<Producto>() 
 
 const serviciocliente = new Servicio<Cliente>(memoriacliente)
-const servicioproducto = new Servicio<Producto[]>(memoriaproducto)
+const servicioproducto = new Servicio<Producto>(memoriaproducto)
 
 const tienda = new Tienda(servicioproducto, serviciocliente,)
 

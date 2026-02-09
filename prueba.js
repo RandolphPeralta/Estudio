@@ -59,18 +59,32 @@ var Tienda = /** @class */ (function () {
         this.servicioproducto = servicioproducto;
         this.serviciocliente = serviciocliente;
     }
-    Tienda.prototype.vender = function (cliente, productos) {
-        this.serviciocliente.save(cliente);
-        this.servicioproducto.delete(productos);
-        var total = 0;
+    Tienda.prototype.registroproducto = function (productos) {
         for (var _i = 0, productos_1 = productos; _i < productos_1.length; _i++) {
             var producto = productos_1[_i];
-            total += producto.precio * producto.cantidad;
+            this.servicioproducto.save(producto);
+        }
+    };
+    Tienda.prototype.vender = function (cliente, productos) {
+        this.serviciocliente.save(cliente);
+        var total = 0;
+        var inventario = this.servicioproducto.show();
+        var _loop_1 = function (vendido) {
+            var productoInventario = inventario.find(function (p) { return p.id === vendido.id; });
+            if (!productoInventario)
+                return "continue";
+            if (productoInventario.cantidad >= vendido.cantidad) {
+                productoInventario.cantidad -= vendido.cantidad;
+                this_1.servicioproducto.update(productoInventario);
+                total += vendido.precio * vendido.cantidad;
+            }
+        };
+        var this_1 = this;
+        for (var _i = 0, productos_2 = productos; _i < productos_2.length; _i++) {
+            var vendido = productos_2[_i];
+            _loop_1(vendido);
         }
         return total;
-    };
-    Tienda.prototype.registroproducto = function (producto) {
-        this.servicioproducto.save(producto);
     };
     Tienda.prototype.verproductos = function () {
         return this.servicioproducto.show();
