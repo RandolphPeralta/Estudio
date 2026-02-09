@@ -150,7 +150,7 @@ class Tienda {
           }
       }
 
-      return total // NO PUEDE CALCULAR EL TOTAL
+      return total
    }
 
    verproductos() {
@@ -173,7 +173,10 @@ const tienda = new Tienda(servicioproducto, serviciocliente,)
 tienda.registroproducto([{id: 1,
     nombre: "Arroz",
     precio: 3000,
-    cantidad: 10}, {id: 2,
+    cantidad: 10}]
+    )
+
+tienda.registroproducto([{id: 2,
     nombre: "Azucar",
     precio: 2000,
     cantidad: 10

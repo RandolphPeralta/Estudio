@@ -107,6 +107,11 @@ tienda.registroproducto([{ id: 1,
         precio: 2000,
         cantidad: 10
     }]);
+tienda.registroproducto([{ id: 2,
+        nombre: "Azucar",
+        precio: 2000,
+        cantidad: 10
+    }]);
 var total = tienda.vender({ nombre: "Juan", cedula: "123" }, [{ id: 1, nombre: "Arroz",
         precio: 3000, cantidad: 2 }, { id: 2,
         nombre: "Azucar",
