@@ -122,8 +122,6 @@ type Cliente = {
     cedula: string
 }
 
-
-
 class Tienda {
    constructor(private servicioproducto: IAction<Producto[]>, private serviciocliente: IAction<Cliente>){}
 
@@ -159,8 +157,7 @@ const tienda = new Tienda(servicioproducto, serviciocliente,)
 tienda.registroproducto([{id: 1,
     nombre: "Arroz",
     precio: 3000,
-    cantidad: 10
-}, {id: 2,
+    cantidad: 10}, {id: 2,
     nombre: "Azucar",
     precio: 2000,
     cantidad: 10

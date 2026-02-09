@@ -85,8 +85,7 @@ var tienda = new Tienda(servicioproducto, serviciocliente);
 tienda.registroproducto([{ id: 1,
         nombre: "Arroz",
         precio: 3000,
-        cantidad: 10
-    }, { id: 2,
+        cantidad: 10 }, { id: 2,
         nombre: "Azucar",
         precio: 2000,
         cantidad: 10
@@ -98,5 +97,5 @@ var total = tienda.vender({ nombre: "Juan", cedula: "123" }, [{ id: 1, nombre: "
         cantidad: 1
     }]);
 var inventario = tienda.verproductos();
-console.log("Total a pagar:", total); // 6000
-console.log("Invenario: ", inventario);
+console.log("Total a pagar:", total);
+console.log("Invenario: ", inventario); // TOCA MIRAR LA CANTIDAD QUE NO ESTA RESTANDO EN LA VENTA
