@@ -197,4 +197,4 @@ const inventario = tienda.verproductos()
 
 console.log("Total a pagar:", total) 
 
-console.log("Invenario: ", inventario) 
+console.log("Inventario: ", inventario) 
