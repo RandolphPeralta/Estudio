@@ -103,22 +103,22 @@ type MenuOption = {
     label: string;
 }
 
-class Servicio<T> {
+class Servicio<T> implements IAccion<T>{
     constructor(private memoria: IAccion<T>) { }
 
-    register(algo: T): boolean {
+    guardar(algo: T): boolean {
         return this.memoria.guardar(algo)
     }
 
-    delete(id: any): boolean {
+    eliminar(id: any): boolean {
         return this.memoria.eliminar(id)
     }
 
-    update(algo: T): boolean {
+    actualizar(algo: T): boolean {
         return this.memoria.actualizar(algo);
     }
 
-    getAll() {
+    mostrar() {
         return this.memoria.mostrar()
     }
 }
@@ -128,7 +128,7 @@ class Servicio<T> {
 // MENU ACCION
 
 class RegistrarEstudianteCommand implements ICommand {
-    constructor(private servicio: Servicio<Estudiante>) { }
+    constructor(private servicio: IAccion<Estudiante>) { }
 
     ejecutar(): void {
         const id = String(prompt("ID: "));
@@ -143,7 +143,7 @@ class RegistrarEstudianteCommand implements ICommand {
             grado: grado
         };
 
-        const ok = this.servicio.register(estudiante);
+        const ok = this.servicio.guardar(estudiante);
 
         console.log(ok ? "Estudiante registrado" : "El estudiante ya existe");
     }
@@ -153,21 +153,33 @@ class EliminarEstudiantesCommand implements ICommand {
     constructor(private servicio: Servicio<Estudiante>) { }
     ejecutar(): void {
         const id = String(prompt("ID: "));
-        this.servicio.delete(id)
-        console.log("Estudiante Eliminado")
+        const nombre = String(prompt("Nombre: "));
+        const identificacion = String(prompt("Identificación: "));
+        const grado = String(prompt("Grado: "));
+
+        const estudiante: Estudiante = {
+            id: id,
+            nombre: nombre,
+            identificacion: identificacion,
+            grado: grado
+        };
+
+        const ok = this.servicio.eliminar(estudiante);
+
+        console.log(ok ? "Estudiante eliminado" : "El estudiante no se pude eliminar");
     }
 }
 
 class VerEstudiantesCommand implements ICommand {
-    constructor(private servicio: Servicio<Estudiante>) { }
+    constructor(private servicio: IAccion<Estudiante>) { }
 
     ejecutar(): void {
-        console.table(this.servicio.getAll())
+        console.table(this.servicio.mostrar())
     }
 }
 
 class ActualizarEstudiantesCommand implements ICommand {
-    constructor(private servicio: Servicio<Estudiante>) { }
+    constructor(private servicio: IAccion<Estudiante>) { }
 
     ejecutar(): void {
         const id = String(prompt("ID: "));
@@ -182,7 +194,7 @@ class ActualizarEstudiantesCommand implements ICommand {
             grado: grado
         };
 
-        const estudianteactualizado = this.servicio.update(estudiantexistente);
+        const estudianteactualizado = this.servicio.actualizar(estudiantexistente);
 
         if (estudianteactualizado) {
             console.log("Libro actualizado");
@@ -193,7 +205,7 @@ class ActualizarEstudiantesCommand implements ICommand {
 }
 
 class RegistrarLibroCommand implements ICommand {
-    constructor(private servicio: Servicio<Libro>) { }
+    constructor(private servicio: IAccion<Libro>) { }
 
     ejecutar(): void {
         const id = String(prompt("ID Libro: "));
@@ -207,31 +219,43 @@ class RegistrarLibroCommand implements ICommand {
             disponible: true
         }
 
-        const ok = this.servicio.register(libro);
+        const ok = this.servicio.guardar(libro);
 
         console.log(ok ? "Libro registrado" : "El Libro ya existe");
     }
 }
 
 class EliminarLibroCommand implements ICommand {
-    constructor(private servicio: Servicio<Libro>) { }
+    constructor(private servicio: IAccion<Libro>) { }
     ejecutar(): void {
-        const id = String(prompt("ID: "));
-        this.servicio.delete(id)
-        console.log("Libro Eliminado")
+        const id = String(prompt("ID Libro: "));
+        const titulo = String(prompt("Título: "));
+        const autor = String(prompt("Autor: "));
+
+        const libro: Libro = {
+            id: id,
+            titulo: titulo,
+            autor: autor,
+            disponible: true
+        }
+
+        const ok = this.servicio.eliminar(libro);
+
+        console.log(ok ? "Libro eliminado" : "El Libro no se puede eliminar");
     }
 }
 
+
 class VerLibrosCommand implements ICommand {
-    constructor(private servicio: Servicio<Libro>) { }
+    constructor(private servicio: IAccion<Libro>) { }
 
     ejecutar(): void {
-        console.table(this.servicio.getAll())
+        console.table(this.servicio.mostrar())
     }
 }
 
 class ActualizarLibroCommand implements ICommand {
-    constructor(private servicio: Servicio<Libro>) { }
+    constructor(private servicio: IAccion<Libro>) { }
 
     ejecutar(): void {
         const id = String(prompt("ID Libro: "));
@@ -245,7 +269,7 @@ class ActualizarLibroCommand implements ICommand {
             disponible: true
         };
 
-        const libroactualizado = this.servicio.update(libroexistente);
+        const libroactualizado = this.servicio.actualizar(libroexistente);
 
         if (libroactualizado) {
             console.log("Libro actualizado");
@@ -256,20 +280,20 @@ class ActualizarLibroCommand implements ICommand {
 }
 
 class PrestarLibroCommand implements ICommand {
-    constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) { }
+    constructor(private libros: IAccion<Libro>, private estudiantes: IAccion<Estudiante>, private prestamos: IAccion<Prestamos>) { }
 
     ejecutar(): any {
         const idLibro = String(prompt("ID Libro: "));
         const idEstudiante = String(prompt("ID del Estudiante: "));
-        const libro = this.libros.getAll().find(libro => libro.id === idLibro);
+        const libro = this.libros.mostrar().find(libro => libro.id === idLibro);
         if (!libro || !libro.disponible) return "No existe el libro";
 
-        const estudiante = this.estudiantes.getAll().find(estudiante => estudiante.id === idEstudiante);
+        const estudiante = this.estudiantes.mostrar().find(estudiante => estudiante.id === idEstudiante);
         if (!estudiante) return "No existe el estudiante";
 
         libro.disponible = false;
 
-        const ok = this.prestamos.register({
+        const ok = this.prestamos.guardar({
             idLibro,
             idCliente: idEstudiante,
             fechaPrestamo: new Date()
@@ -283,16 +307,16 @@ class PrestarLibroCommand implements ICommand {
 }
 
 class DevolverLibroCommand implements ICommand {
-    constructor(private libros: Servicio<Libro>, private estudiantes: Servicio<Estudiante>, private prestamos: Servicio<Prestamos>) { }
+    constructor(private libros: IAccion<Libro>, private estudiantes: IAccion<Estudiante>, private prestamos: IAccion<Prestamos>) { }
 
     ejecutar(): any {
         const idLibro = String(prompt("ID Libro: "));
-        const libro = this.libros.getAll().find(libro => libro.id === idLibro);
+        const libro = this.libros.mostrar().find(libro => libro.id === idLibro);
         if (!libro) return "No existe dicho libro";
 
         libro.disponible = true;
 
-        const prestamo = this.prestamos.getAll().find(prestamo => prestamo.idLibro === idLibro && !prestamo.fechaDevolucion);
+        const prestamo = this.prestamos.mostrar().find(prestamo => prestamo.idLibro === idLibro && !prestamo.fechaDevolucion);
 
         if (!prestamo) return "No se pudo reaizar el prestamo";
 
@@ -380,7 +404,6 @@ comandos.set(5, new RegistrarLibroCommand(serviciolibro))
 comandos.set(6, new EliminarLibroCommand(serviciolibro))
 comandos.set(7, new VerLibrosCommand(serviciolibro))
 comandos.set(8, new ActualizarLibroCommand(serviciolibro))
-
 comandos.set(9, new PrestarLibroCommand(serviciolibro, servicioestudiante, servicioprestamos));
 comandos.set(10, new DevolverLibroCommand(serviciolibro, servicioestudiante, servicioprestamos))
 
