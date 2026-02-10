@@ -122,17 +122,24 @@ type Cliente = {
     cedula: string
 }
 
+type Venta = {
+    cliente: Cliente,
+    productos: Producto[]
+}
+
 class Tienda {
-   constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>) {}
+   constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>, private servicioventa: IAction<Venta>) {}
 
    registroproducto(productos: Producto[]) {
       for (const producto of productos) {
-          return this.servicioproducto.save(producto)
+          this.servicioproducto.save(producto)
       }
    }
 
    vender(cliente: Cliente, productos: Producto[]) {
       this.serviciocliente.save(cliente)
+      const venta: Venta = {cliente, productos}
+      this.servicioventa.save(venta)
 
       let total = 0
       const inventario = this.servicioproducto.show()
@@ -164,24 +171,23 @@ class Tienda {
 
 const memoriacliente = new Memoria<Cliente>() 
 const memoriaproducto = new Memoria<Producto>() 
+const memoriaventa = new Memoria<Venta>()
 
 const serviciocliente = new Servicio<Cliente>(memoriacliente)
 const servicioproducto = new Servicio<Producto>(memoriaproducto)
+const servicioventa = new Servicio<Venta>(memoriaventa)
 
-const tienda = new Tienda(servicioproducto, serviciocliente,)
+const tienda = new Tienda(servicioproducto, serviciocliente, servicioventa)
 
 tienda.registroproducto([{id: 1,
     nombre: "Arroz",
     precio: 3000,
-    cantidad: 10}]
-    )
-
-tienda.registroproducto([{id: 2,
+    cantidad: 10}, {id: 2,
     nombre: "Azucar",
     precio: 2000,
     cantidad: 10
 }]
-    )
+)
 
 const total = tienda.vender(
     { nombre: "Juan", cedula: "123" },

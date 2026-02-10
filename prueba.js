@@ -62,7 +62,7 @@ var Tienda = /** @class */ (function () {
     Tienda.prototype.registroproducto = function (productos) {
         for (var _i = 0, productos_1 = productos; _i < productos_1.length; _i++) {
             var producto = productos_1[_i];
-            return this.servicioproducto.save(producto);
+            this.servicioproducto.save(producto);
         }
     };
     Tienda.prototype.vender = function (cliente, productos) {
@@ -107,11 +107,6 @@ tienda.registroproducto([{ id: 1,
         precio: 2000,
         cantidad: 10
     }]);
-tienda.registroproducto([{ id: 2,
-        nombre: "Azucar",
-        precio: 2000,
-        cantidad: 10
-    }]);
 var total = tienda.vender({ nombre: "Juan", cedula: "123" }, [{ id: 1, nombre: "Arroz",
         precio: 3000, cantidad: 2 }, { id: 2,
         nombre: "Azucar",
@@ -120,4 +115,4 @@ var total = tienda.vender({ nombre: "Juan", cedula: "123" }, [{ id: 1, nombre: "
     }]);
 var inventario = tienda.verproductos();
 console.log("Total a pagar:", total);
-console.log("Invenario: ", inventario);
+console.log("Inventario: ", inventario);
