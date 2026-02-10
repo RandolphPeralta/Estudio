@@ -14,6 +14,14 @@
 // saber exactamente qué vendió y a quién, 
 // y tener su tienda más ordenada y controlada.
 
+interface ICommand {
+    ejecutar(item: any): any
+}
+
+interface ICommando {
+    ejecutar(): any
+}
+
 interface ISave<T> {
   save(item: T): boolean;
 }
@@ -28,14 +36,6 @@ interface IUpdate<T> {
 
 interface IShow<T> {
   show(): T[]
-}
-
-interface ICommand {
-    ejecutar(item: any): any
-}
-
-interface ICommando {
-    ejecutar(): any
 }
 
 interface IAction<T> extends ISave<T>, IDelete<T>, IUpdate<T>, IShow<T> {
