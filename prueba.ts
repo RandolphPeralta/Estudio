@@ -22,23 +22,7 @@ interface ICommando {
     ejecutar(): any
 }
 
-interface ISave<T> {
-  save(item: T): boolean;
-}
-
-interface IDelete<T> {
-  delete(item: T): boolean;
-}
-
-interface IUpdate<T> {
-  update(item: T): boolean;
-}
-
-interface IShow<T> {
-  show(): T[]
-}
-
-interface IAction<T> extends ISave<T>, IDelete<T>, IUpdate<T>, IShow<T> {
+interface IAction<T> {
   save(item: T): boolean;
   delete(item: T): boolean;
   update(item: T): boolean;
@@ -167,6 +151,8 @@ class Tienda {
    eliminarproducto(producto: Producto){
     return this.servicioproducto.delete(producto)
    }
+
+   // toca mirar la actualizacion del producto
 }
 
 const memoriacliente = new Memoria<Cliente>() 
