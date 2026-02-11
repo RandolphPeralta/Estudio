@@ -1,35 +1,22 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-interface IGuardar<T> {
-    guardar(item: T): boolean;
-}
-
-interface IEliminar<T> {
-    eliminar(item: T): boolean;
-}
-
-interface IActualizar<T> {
-    actualizar(item: T): boolean;
-}
-
-interface IMostrar<T> {
-    mostrar(): T[];
-}
-
-interface IAccion<T> extends IGuardar<T>, IEliminar<T>, IActualizar<T>, IMostrar<T> {
-    guardar(item: T): boolean;
-    eliminar(item: T): boolean;
-    actualizar(item: T): boolean;
-    mostrar(): T[];
-}
-
 interface ICommand {
     ejecutar(): any;
 }
 
 interface ICommandE {
     ejecutar(some: any): any;
+}
+
+interface IMostrar<T> {
+    mostrar(): T[];
+}
+
+interface IAccion<T> extends IMostrar<T> {
+    guardar(item: T): boolean;
+    eliminar(item: T): boolean;
+    actualizar(item: T): boolean;
 }
 
 // ------------------------------------------------------

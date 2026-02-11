@@ -27,15 +27,14 @@ interface IRead<T>{
 }
 
 interface IAction<T> extends IRead<T>{
-  save(item: any): boolean;
-  delete(item: any): boolean;
-  update(item: any): boolean;
-  
+  save(item: any): any;
+  delete(item: any): any;
+  update(item: any): any;
 }
 
 //----------------------------------------
 
-class Memoria<T> implements IAction<T> {
+class Memoria<T > implements IAction<T> {
     
     private memoria: T[] = []
 
@@ -115,11 +114,6 @@ type Venta = {
     productos: Producto[]
 }
 
-type MenuOption = {
-    key: number;
-    label: string;
-}
-
 class Tienda {
    constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>, private servicioventa: IAction<Venta>) {}
 
@@ -134,6 +128,7 @@ class Tienda {
       const venta: Venta = {cliente, productos}
       this.servicioventa.save(venta)
 
+      // Este pedazo de la funcion de la cuenta deberia tenerlo la vista
       let total = 0
       const inventario = this.servicioproducto.show()
 
@@ -161,20 +156,26 @@ class Tienda {
     return this.servicioproducto.delete(producto)
    }
 
-   // toca mirar la actualizacion del producto
+   actualizarproducto(productos: Producto[]){
+    return this.servicioproducto.update(productos)
+   }
+
 }
 
-class ConsoleView implements IRead<MenuOption> {
-    constructor(private opciones: MenuOption[]) { }
+// VISTA DE LA CONSOLA
 
-    show(): any[] {
-        console.log("Bienvenido...");
-        this.opciones.forEach(option => console.log(`${option.key}. ${option.label}`)
-        );
+class MenuOpcion {
+  static REGISTRAR_PRODUCTOS = 1;
+  static ELIMINAR_PROUCTOS = 2;
+  static VER_PRODUCTOS = 3;
+  static ACTUALIZAR_PRODUCTOS = 4;
 
-        return this.opciones
-    }
+  static VENDER = 5;
+
+  static SALIR = 0;
 }
+
+
 
 const serviciocliente = new Servicio<Cliente>(new Memoria<Cliente>() )
 const servicioproducto = new Servicio<Producto>(new Memoria<Producto>() )
@@ -182,31 +183,28 @@ const servicioventa = new Servicio<Venta>(new Memoria<Venta>())
 
 const tienda = new Tienda(servicioproducto, serviciocliente, servicioventa)
 
+tienda.registroproducto([{id: 1,
+    nombre: "Arroz",
+    precio: 3000,
+    cantidad: 10}, {id: 2,
+    nombre: "Azucar",
+    precio: 2000,
+    cantidad: 10
+}]
+)
 
+const total = tienda.vender(
+    { nombre: "Juan", cedula: "123" },
+    [{ id: 1, nombre: "Arroz",
+    precio: 3000, cantidad: 2 }, {id: 2,
+    nombre: "Azucar",
+    precio: 2000,
+    cantidad: 1
+}]
+)
 
+const inventario = tienda.verproductos()
 
-// tienda.registroproducto([{id: 1,
-//     nombre: "Arroz",
-//     precio: 3000,
-//     cantidad: 10}, {id: 2,
-//     nombre: "Azucar",
-//     precio: 2000,
-//     cantidad: 10
-// }]
-// )
+console.log("Total a pagar:", total) 
 
-// const total = tienda.vender(
-//     { nombre: "Juan", cedula: "123" },
-//     [{ id: 1, nombre: "Arroz",
-//     precio: 3000, cantidad: 2 }, {id: 2,
-//     nombre: "Azucar",
-//     precio: 2000,
-//     cantidad: 1
-// }]
-// )
-
-// const inventario = tienda.verproductos()
-
-// console.log("Total a pagar:", total) 
-
-// console.log("Inventario: ", inventario) 
+console.log("Inventario: ", inventario) 
