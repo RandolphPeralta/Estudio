@@ -22,11 +22,15 @@ interface ICommando {
     ejecutar(): any
 }
 
-interface IAction<T> {
-  save(item: T): boolean;
-  delete(item: T): boolean;
-  update(item: T): boolean;
-  show(): T[]
+interface IRead<T>{
+    show(): T[]
+}
+
+interface IAction<T> extends IRead<T>{
+  save(item: any): boolean;
+  delete(item: any): boolean;
+  update(item: any): boolean;
+  
 }
 
 //----------------------------------------
@@ -111,6 +115,11 @@ type Venta = {
     productos: Producto[]
 }
 
+type MenuOption = {
+    key: number;
+    label: string;
+}
+
 class Tienda {
    constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>, private servicioventa: IAction<Venta>) {}
 
@@ -155,38 +164,49 @@ class Tienda {
    // toca mirar la actualizacion del producto
 }
 
-const memoriacliente = new Memoria<Cliente>() 
-const memoriaproducto = new Memoria<Producto>() 
-const memoriaventa = new Memoria<Venta>()
+class ConsoleView implements IRead<MenuOption> {
+    constructor(private opciones: MenuOption[]) { }
 
-const serviciocliente = new Servicio<Cliente>(memoriacliente)
-const servicioproducto = new Servicio<Producto>(memoriaproducto)
-const servicioventa = new Servicio<Venta>(memoriaventa)
+    show(): any[] {
+        console.log("Bienvenido...");
+        this.opciones.forEach(option => console.log(`${option.key}. ${option.label}`)
+        );
+
+        return this.opciones
+    }
+}
+
+const serviciocliente = new Servicio<Cliente>(new Memoria<Cliente>() )
+const servicioproducto = new Servicio<Producto>(new Memoria<Producto>() )
+const servicioventa = new Servicio<Venta>(new Memoria<Venta>())
 
 const tienda = new Tienda(servicioproducto, serviciocliente, servicioventa)
 
-tienda.registroproducto([{id: 1,
-    nombre: "Arroz",
-    precio: 3000,
-    cantidad: 10}, {id: 2,
-    nombre: "Azucar",
-    precio: 2000,
-    cantidad: 10
-}]
-)
 
-const total = tienda.vender(
-    { nombre: "Juan", cedula: "123" },
-    [{ id: 1, nombre: "Arroz",
-    precio: 3000, cantidad: 2 }, {id: 2,
-    nombre: "Azucar",
-    precio: 2000,
-    cantidad: 1
-}]
-)
 
-const inventario = tienda.verproductos()
 
-console.log("Total a pagar:", total) 
+// tienda.registroproducto([{id: 1,
+//     nombre: "Arroz",
+//     precio: 3000,
+//     cantidad: 10}, {id: 2,
+//     nombre: "Azucar",
+//     precio: 2000,
+//     cantidad: 10
+// }]
+// )
 
-console.log("Inventario: ", inventario) 
+// const total = tienda.vender(
+//     { nombre: "Juan", cedula: "123" },
+//     [{ id: 1, nombre: "Arroz",
+//     precio: 3000, cantidad: 2 }, {id: 2,
+//     nombre: "Azucar",
+//     precio: 2000,
+//     cantidad: 1
+// }]
+// )
+
+// const inventario = tienda.verproductos()
+
+// console.log("Total a pagar:", total) 
+
+// console.log("Inventario: ", inventario) 

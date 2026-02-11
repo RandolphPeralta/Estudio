@@ -55,9 +55,10 @@ var Servicio = /** @class */ (function () {
     return Servicio;
 }());
 var Tienda = /** @class */ (function () {
-    function Tienda(servicioproducto, serviciocliente) {
+    function Tienda(servicioproducto, serviciocliente, servicioventa) {
         this.servicioproducto = servicioproducto;
         this.serviciocliente = serviciocliente;
+        this.servicioventa = servicioventa;
     }
     Tienda.prototype.registroproducto = function (productos) {
         for (var _i = 0, productos_1 = productos; _i < productos_1.length; _i++) {
@@ -67,6 +68,8 @@ var Tienda = /** @class */ (function () {
     };
     Tienda.prototype.vender = function (cliente, productos) {
         this.serviciocliente.save(cliente);
+        var venta = { cliente: cliente, productos: productos };
+        this.servicioventa.save(venta);
         var total = 0;
         var inventario = this.servicioproducto.show();
         var _loop_1 = function (vendido) {
@@ -96,9 +99,11 @@ var Tienda = /** @class */ (function () {
 }());
 var memoriacliente = new Memoria();
 var memoriaproducto = new Memoria();
+var memoriaventa = new Memoria();
 var serviciocliente = new Servicio(memoriacliente);
 var servicioproducto = new Servicio(memoriaproducto);
-var tienda = new Tienda(servicioproducto, serviciocliente);
+var servicioventa = new Servicio(memoriaventa);
+var tienda = new Tienda(servicioproducto, serviciocliente, servicioventa);
 tienda.registroproducto([{ id: 1,
         nombre: "Arroz",
         precio: 3000,
