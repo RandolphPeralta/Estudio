@@ -15,18 +15,18 @@
 // y tener su tienda más ordenada y controlada.
 
 interface ICommand {
-    ejecutar(item: any): any
+  ejecutar(item: any): any
 }
 
 interface ICommando {
-    ejecutar(): any
+  ejecutar(): any
 }
 
-interface IRead<T>{
-    show(): T[]
+interface IRead<T> {
+  show(): T[]
 }
 
-interface IAction<T> extends IRead<T>{
+interface IAction<T> extends IRead<T> {
   save(item: any): any;
   delete(item: any): any;
   update(item: any): any;
@@ -34,131 +34,131 @@ interface IAction<T> extends IRead<T>{
 
 //----------------------------------------
 
-class Memoria<T > implements IAction<T> {
-    
-    private memoria: T[] = []
+class Memoria<T> implements IAction<T> {
 
-    save(some: any): boolean {
-        const index = this.memoria.findIndex((item: any) => item.id === some.id);
+  private memoria: T[] = []
 
-        if (index !== -1) {
-            return false;
-        }
+  save(some: any): boolean {
+    const index = this.memoria.findIndex((item: any) => item.id === some.id);
 
-        this.memoria.push(some)
-        return true;
+    if (index !== -1) {
+      return false;
     }
 
-    delete(id: any) {
-        const index = this.memoria.findIndex((item: any) => item.id === id);
+    this.memoria.push(some)
+    return true;
+  }
 
-        if (index === -1) {
-            return false;
-        }
+  delete(id: any) {
+    const index = this.memoria.findIndex((item: any) => item.id === id);
 
-        this.memoria.splice(index, 1);
-        return true;
-
+    if (index === -1) {
+      return false;
     }
 
-    update(some: any): boolean {
-        const index = this.memoria.findIndex((item: any) => item.id === some.id);
+    this.memoria.splice(index, 1);
+    return true;
 
-        if (index === -1) {
-            return false;
-        }
+  }
 
-        this.memoria[index] = some;
-        return true;
+  update(some: any): boolean {
+    const index = this.memoria.findIndex((item: any) => item.id === some.id);
+
+    if (index === -1) {
+      return false;
     }
 
-    show() {
-        return this.memoria
-    }
+    this.memoria[index] = some;
+    return true;
+  }
+
+  show() {
+    return this.memoria
+  }
 }
 
-class Servicio<T> implements IAction<T>{
-    constructor(private memoria: IAction<T>) { }
+class Servicio<T> implements IAction<T> {
+  constructor(private memoria: IAction<T>) { }
 
-    save(algo: T): boolean {
-        return this.memoria.save(algo)
-    }
+  save(algo: T): boolean {
+    return this.memoria.save(algo)
+  }
 
-    delete(id: any): boolean {
-        return this.memoria.delete(id)
-    }
+  delete(id: any): boolean {
+    return this.memoria.delete(id)
+  }
 
-    update(algo: T): boolean {
-        return this.memoria.update(algo);
-    }
+  update(algo: T): boolean {
+    return this.memoria.update(algo);
+  }
 
-    show() {
-        return this.memoria.show()
-    }
+  show() {
+    return this.memoria.show()
+  }
 }
 
 type Producto = {
-    id: string
-    nombre: string
-    precio: number
-    cantidad: number
+  id: string
+  nombre: string
+  precio: number
+  cantidad: number
 }
 
 type Cliente = {
-    nombre: string,
-    cedula: string
+  nombre: string,
+  cedula: string
 }
 
 type Venta = {
-    cliente: Cliente,
-    productos: Producto[]
+  cliente: Cliente,
+  productos: Producto[]
 }
 
 class Tienda {
-   constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>, private servicioventa: IAction<Venta>) {}
+  constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>, private servicioventa: IAction<Venta>) { }
 
-   registroproducto(productos: Producto[]) {
-      for (const producto of productos) {
-          this.servicioproducto.save(producto)
+  registroproducto(productos: Producto[]) {
+    for (const producto of productos) {
+      this.servicioproducto.save(producto)
+    }
+  }
+
+  vender(cliente: Cliente, productos: Producto[]) {
+    this.serviciocliente.save(cliente)
+    const venta: Venta = { cliente, productos }
+    this.servicioventa.save(venta)
+
+    // Este pedazo de la funcion de la cuenta deberia tenerlo la vista
+    let total = 0
+    const inventario = this.servicioproducto.show()
+
+    for (const vendido of productos) {
+      const productoInventario = inventario.find(producto => producto.id === vendido.id)
+
+      if (!productoInventario) continue
+
+      if (productoInventario.cantidad >= vendido.cantidad) {
+        productoInventario.cantidad -= vendido.cantidad
+        this.servicioproducto.update(productoInventario)
+
+        total += vendido.precio * vendido.cantidad
       }
-   }
+    }
 
-   vender(cliente: Cliente, productos: Producto[]) {
-      this.serviciocliente.save(cliente)
-      const venta: Venta = {cliente, productos}
-      this.servicioventa.save(venta)
+    return total
+  }
 
-      // Este pedazo de la funcion de la cuenta deberia tenerlo la vista
-      let total = 0
-      const inventario = this.servicioproducto.show()
+  verproductos() {
+    return this.servicioproducto.show()
+  }
 
-      for (const vendido of productos) {
-          const productoInventario = inventario.find(producto => producto.id === vendido.id)
-
-          if (!productoInventario) continue
-
-          if (productoInventario.cantidad >= vendido.cantidad) {
-              productoInventario.cantidad -= vendido.cantidad
-              this.servicioproducto.update(productoInventario)
-
-              total += vendido.precio * vendido.cantidad
-          }
-      }
-
-      return total
-   }
-
-   verproductos() {
-      return this.servicioproducto.show()
-   }
-
-   eliminarproducto(producto: Producto){
+  eliminarproducto(producto: Producto) {
     return this.servicioproducto.delete(producto)
-   }
+  }
 
-   actualizarproducto(productos: Producto[]){
+  actualizarproducto(productos: Producto[]) {
     return this.servicioproducto.update(productos)
-   }
+  }
 
 }
 
@@ -182,7 +182,7 @@ class MenuAccion {
     private serviciocliente: IAction<Cliente>,
     private servicioproducto: IAction<Producto>,
     private servicioventa: IAction<Venta>
-  ) {}
+  ) { }
 
   ejecutar(opcion: number): boolean {
     switch (opcion) {
@@ -195,7 +195,7 @@ class MenuAccion {
         this.RegistrarCliente();
         this.pause();
         break;
-      
+
       case MenuOpcion.ELIMINAR_PROUCTOS:
         this.EliminarProducto();
         this.pause();
@@ -238,14 +238,14 @@ class MenuAccion {
       precio: precio,
       cantidad: cantidad
     }
-    
+
     const productoregistrado = this.servicioproducto.save(producto);
 
     if (productoregistrado) {
       console.log("Producto registrado");
-      } else {
+    } else {
       console.log("El producto ya existe con este ID");
-      }
+    }
   }
 
   private RegistrarCliente() {
@@ -256,17 +256,17 @@ class MenuAccion {
       nombre: nombre,
       cedula: cedula
     }
-    
+
     const clienteregistrado = this.serviciocliente.save(cliente);
 
     if (clienteregistrado) {
       console.log("Cliente registrado");
-      } else {
+    } else {
       console.log("El Cliente ya existe con esta cedula");
-      }
+    }
   }
 
-  private EliminarProducto(){
+  private EliminarProducto() {
     const id = String(prompt("ID: "));
     this.servicioproducto.delete(id)
     console.log("Estudiante Eliminado")
@@ -289,14 +289,89 @@ class MenuAccion {
 
     if (productoctualizado) {
       console.log("Producto actualizado");
-      } else {
+    } else {
       console.log("No existe un producto con ese ID");
+    }
+  }
+
+  private VenderProductos() {
+
+    // 1️⃣ Pedir cédula
+    const cedula = String(prompt("Cedula del cliente: "));
+
+    // 2️⃣ Buscar cliente
+    const clientes = this.serviciocliente.show();
+    const cliente = clientes.find(c => c.cedula === cedula);
+
+    if (!cliente) {
+      console.log("Cliente no encontrado");
+      return;
+    }
+
+    console.log("Cliente encontrado:", cliente.nombre);
+
+    // 3️⃣ Agregar productos
+    let productosVenta: Producto[] = [];
+    let total = 0;
+    let continuar = true;
+
+    while (continuar) {
+
+      console.table(this.servicioproducto.show());
+
+      const idProducto = String(prompt("ID del producto: "));
+      const producto = this.servicioproducto
+        .show()
+        .find(p => p.id === idProducto);
+
+      if (!producto) {
+        console.log("Producto no encontrado");
+        continue;
+      }
+
+      const cantidad = Number(prompt("Cantidad: "));
+
+      if (cantidad > producto.cantidad) {
+        console.log("No hay suficiente stock");
+        continue;
+      }
+
+      // 4️⃣ Calcular subtotal
+      const subtotal = producto.precio * cantidad;
+      total += subtotal;
+
+      // 5️⃣ Descontar stock
+      producto.cantidad -= cantidad;
+      this.servicioproducto.update(producto);
+
+      // 6️⃣ Agregar a la venta
+      // productosVenta.push({
+      //   ...producto,
+      //   cantidad: cantidad
+      // });   HAY QUE COMPONER ESTO
+
+      const respuesta = String(prompt("¿Agregar otro producto? (s/n): "));
+      if (respuesta.toLowerCase() !== "s") {
+        continuar = false;
       }
     }
 
-    private VenderProductos(){
-      //LA IDEA ES QUE SELECCIONE EL CLIENTE
-    }
+    // 7️⃣ Mostrar total
+    console.log("\nResumen de venta:");
+    console.table(productosVenta);
+    console.log("TOTAL A PAGAR: $", total);
+
+    // 8️⃣ Registrar venta
+    const venta: Venta = {
+      cliente: cliente,
+      productos: productosVenta
+    };
+
+    this.servicioventa.save(venta);
+
+    console.log("Venta registrada correctamente");
+  }
+
 
   private pause() {
     console.log("\nPresiona ENTER para continuar...");
@@ -304,34 +379,40 @@ class MenuAccion {
   }
 }
 
-const serviciocliente = new Servicio<Cliente>(new Memoria<Cliente>() )
-const servicioproducto = new Servicio<Producto>(new Memoria<Producto>() )
+const serviciocliente = new Servicio<Cliente>(new Memoria<Cliente>())
+const servicioproducto = new Servicio<Producto>(new Memoria<Producto>())
 const servicioventa = new Servicio<Venta>(new Memoria<Venta>())
 
 const tienda = new Tienda(servicioproducto, serviciocliente, servicioventa)
 
-tienda.registroproducto([{id: "1",
-    nombre: "Arroz",
-    precio: 3000,
-    cantidad: 10}, {id: "2",
-    nombre: "Azucar",
-    precio: 2000,
-    cantidad: 10
+tienda.registroproducto([{
+  id: "1",
+  nombre: "Arroz",
+  precio: 3000,
+  cantidad: 10
+}, {
+  id: "2",
+  nombre: "Azucar",
+  precio: 2000,
+  cantidad: 10
 }]
 )
 
 const total = tienda.vender(
-    { nombre: "Juan", cedula: "123" },
-    [{ id: "1", nombre: "Arroz",
-    precio: 3000, cantidad: 2 }, {id: "2",
+  { nombre: "Juan", cedula: "123" },
+  [{
+    id: "1", nombre: "Arroz",
+    precio: 3000, cantidad: 2
+  }, {
+    id: "2",
     nombre: "Azucar",
     precio: 2000,
     cantidad: 1
-}]
+  }]
 )
 
 const inventario = tienda.verproductos()
 
-console.log("Total a pagar:", total) 
+console.log("Total a pagar:", total)
 
 console.log("Inventario: ", inventario) 
