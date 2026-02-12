@@ -3,6 +3,17 @@
 // A veces se le olvida cuánto stock le queda, confunde precios y 
 // no sabe quiénes son sus clientes frecuentes. 
 // Un día decide crear un software sencillo para organizar su negocio.
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // El sistema que Bobby quiere debe permitirle registrar los productos que vende 
 // (con su precio y cantidad disponible), registrar los clientes que le compran 
@@ -67,7 +78,6 @@ var Servicio = /** @class */ (function () {
     };
     return Servicio;
 }());
-// VISTA DE LA CONSOLA
 var MenuOpcion = /** @class */ (function () {
     function MenuOpcion() {
     }
@@ -77,6 +87,7 @@ var MenuOpcion = /** @class */ (function () {
     MenuOpcion.ACTUALIZAR_PRODUCTOS = 4;
     MenuOpcion.REGISTRAR_CLIENTE = 5;
     MenuOpcion.VENDER = 6;
+    MenuOpcion.VER_VENTAS = 7;
     MenuOpcion.SALIR = 0;
     return MenuOpcion;
 }());
@@ -92,10 +103,6 @@ var MenuAccion = /** @class */ (function () {
                 this.RegistrarProducto();
                 this.pause();
                 break;
-            case MenuOpcion.REGISTRAR_CLIENTE:
-                this.RegistrarCliente();
-                this.pause();
-                break;
             case MenuOpcion.ELIMINAR_PROUCTOS:
                 this.EliminarProducto();
                 this.pause();
@@ -108,8 +115,16 @@ var MenuAccion = /** @class */ (function () {
                 this.ActualizarProducto();
                 this.pause();
                 break;
+            case MenuOpcion.REGISTRAR_CLIENTE:
+                this.RegistrarCliente();
+                this.pause();
+                break;
             case MenuOpcion.VENDER:
                 this.VenderProductos();
+                this.pause();
+                break;
+            case MenuOpcion.VER_VENTAS:
+                this.VerVentas();
                 this.pause();
                 break;
             case MenuOpcion.SALIR:
@@ -208,11 +223,7 @@ var MenuAccion = /** @class */ (function () {
             total += subtotal;
             producto.cantidad -= cantidad;
             this_1.servicioproducto.update(producto);
-            // 6️⃣ Agregar a la venta
-            // productosVenta.push({
-            //   ...producto,
-            //   cantidad: cantidad
-            // });   HAY QUE COMPONER ESTO
+            productosVenta.push(__assign(__assign({}, producto), { cantidad: cantidad })); // HAY QUE COMPONER ESTO
             var respuesta = String(prompt("¿Agregar otro producto? (s/n): "));
             if (respuesta.toLowerCase() !== "s") {
                 continuar = false;
@@ -232,6 +243,23 @@ var MenuAccion = /** @class */ (function () {
         this.servicioventa.save(venta);
         console.log("Venta registrada correctamente");
     };
+    MenuAccion.prototype.VerVentas = function () {
+        var ventas = this.servicioventa.show();
+        if (ventas.length === 0) {
+            console.log("No hay ventas registradas");
+            return;
+        }
+        ventas.forEach(function (venta, index) {
+            console.log("\n===============================");
+            console.log("VENTA #".concat(index + 1));
+            console.log("Cliente:", venta.cliente.nombre);
+            console.log("Cédula:", venta.cliente.cedula);
+            console.log("Productos:");
+            console.table(venta.productos);
+            var total = venta.productos.reduce(function (sum, p) { return sum + p.precio * p.cantidad; }, 0);
+            console.log("TOTAL:", total);
+        });
+    };
     MenuAccion.prototype.pause = function () {
         console.log("\nPresiona ENTER para continuar...");
         prompt("");
@@ -249,6 +277,7 @@ var ConsoleView = /** @class */ (function () {
             "4. Actualizar producto",
             "5. Registrar cliente",
             "6. Vender",
+            "7. Ver ventas",
             "0. Salir"
         ];
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");

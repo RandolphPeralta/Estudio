@@ -117,8 +117,6 @@ type Venta = {
   productos: Producto[]
 }
 
-// VISTA DE LA CONSOLA
-
 class MenuOpcion {
   static REGISTRAR_PRODUCTOS = 1;
   static ELIMINAR_PROUCTOS = 2;
@@ -128,6 +126,8 @@ class MenuOpcion {
   static REGISTRAR_CLIENTE = 5;
 
   static VENDER = 6;
+
+  static VER_VENTAS = 7;
 
   static SALIR = 0;
 }
@@ -146,11 +146,6 @@ class MenuAccion {
         this.pause();
         break;
 
-      case MenuOpcion.REGISTRAR_CLIENTE:
-        this.RegistrarCliente();
-        this.pause();
-        break;
-
       case MenuOpcion.ELIMINAR_PROUCTOS:
         this.EliminarProducto();
         this.pause();
@@ -166,8 +161,18 @@ class MenuAccion {
         this.pause();
         break;
 
+      case MenuOpcion.REGISTRAR_CLIENTE:
+        this.RegistrarCliente();
+        this.pause();
+        break;
+
       case MenuOpcion.VENDER:
         this.VenderProductos();
+        this.pause();
+        break;
+
+      case MenuOpcion.VER_VENTAS:
+        this.VerVentas();
         this.pause();
         break;
 
@@ -294,11 +299,10 @@ class MenuAccion {
       producto.cantidad -= cantidad;
       this.servicioproducto.update(producto);
 
-      // 6️⃣ Agregar a la venta
-      // productosVenta.push({
-      //   ...producto,
-      //   cantidad: cantidad
-      // });   HAY QUE COMPONER ESTO
+      productosVenta.push({
+        ...producto,
+        cantidad: cantidad
+      });  // HAY QUE COMPONER ESTO
 
       const respuesta = String(prompt("¿Agregar otro producto? (s/n): "));
       if (respuesta.toLowerCase() !== "s") {
@@ -320,6 +324,32 @@ class MenuAccion {
     console.log("Venta registrada correctamente");
   }
 
+  private VerVentas() {
+
+  const ventas = this.servicioventa.show();
+
+  if (ventas.length === 0) {
+    console.log("No hay ventas registradas");
+    return;
+  }
+
+  ventas.forEach((venta, index) => {
+    console.log("\n===============================");
+    console.log(`VENTA #${index + 1}`);
+    console.log("Cliente:", venta.cliente.nombre);
+    console.log("Cédula:", venta.cliente.cedula);
+    console.log("Productos:");
+
+    console.table(venta.productos);
+
+    const total = venta.productos.reduce(
+      (sum, p) => sum + p.precio * p.cantidad,
+      0
+    );
+
+    console.log("TOTAL:", total);
+  });
+}
 
   private pause() {
     console.log("\nPresiona ENTER para continuar...");
@@ -336,6 +366,7 @@ class ConsoleView {
       "4. Actualizar producto",
       "5. Registrar cliente",
       "6. Vender",
+      "7. Ver ventas",
 
       "0. Salir"
     ];
