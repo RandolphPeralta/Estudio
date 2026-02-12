@@ -90,7 +90,7 @@ type MenuOption = {
     label: string;
 }
 
-class Servicio<T> implements IAccion<T>{
+class Servicio<T> implements IAccion<T> {
     constructor(private memoria: IAccion<T>) { }
 
     guardar(algo: T): boolean {

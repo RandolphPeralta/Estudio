@@ -98,7 +98,7 @@ class Servicio<T> implements IAction<T>{
 }
 
 type Producto = {
-    id: number
+    id: string
     nombre: string
     precio: number
     cantidad: number
@@ -175,6 +175,109 @@ class MenuOpcion {
   static SALIR = 0;
 }
 
+class MenuAccion {
+  constructor(
+    private serviciocliente: IAction<Cliente>,
+    private servicioproducto: IAction<Producto>,
+    private servicioventa: IAction<Venta>
+  ) {}
+
+  ejecutar(opcion: number): boolean {
+    switch (opcion) {
+      case MenuOpcion.REGISTRAR_PRODUCTOS:
+        this.RegistrarProducto();
+        this.pause();
+        break;
+      
+      case MenuOpcion.ELIMINAR_PROUCTOS:
+        this.EliminarProducto();
+        this.pause();
+        break
+
+      case MenuOpcion.VER_PRODUCTOS:
+        console.table(this.servicioproducto.show());
+        this.pause();
+        break;
+
+      case MenuOpcion.ACTUALIZAR_PRODUCTOS:
+        this.ActualizarProducto()
+        this.pause();
+        break;
+
+      case MenuOpcion.VENDER:
+        this.VenderProductos();
+        this.pause();
+        break;
+
+      case MenuOpcion.SALIR:
+        return false;
+
+      default:
+        console.log("Opción inválida");
+    }
+
+    return true;
+  }
+
+  private RegistrarProducto() {
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const precio = Number(prompt("Identificación: "));
+    const cantidad = Number(prompt("Grado: "));
+
+    const producto: Producto = {
+      id: id,
+      nombre: nombre,
+      precio: precio,
+      cantidad: cantidad
+    }
+    
+    const productoregistrado = this.servicioproducto.save(producto);
+
+    if (producto) {
+      console.log("Producto registrado");
+      } else {
+      console.log("El producto ya existe con este ID");
+      }
+  }
+
+  private EliminarProducto(){
+    const id = String(prompt("ID: "));
+    this.servicioproducto.delete(id)
+    console.log("Estudiante Eliminado")
+  }
+
+  private ActualizarProducto() {
+    const id = String(prompt("ID: "));
+    const nombre = String(prompt("Nombre: "));
+    const precio = Number(prompt("Identificación: "));
+    const cantidad = Number(prompt("Grado: "));
+
+    const producto: Producto = {
+      id: id,
+      nombre: nombre,
+      precio: precio,
+      cantidad: cantidad
+    }
+
+    const productoctualizado = this.servicioproducto.update(producto);
+
+    if (productoctualizado) {
+      console.log("Producto actualizado");
+      } else {
+      console.log("No existe un producto con ese ID");
+      }
+    }
+
+    private VenderProductos(){
+        //LA IDEA ES QUE SELECCIONE EL CLIENTE
+    }
+
+  private pause() {
+    console.log("\nPresiona ENTER para continuar...");
+    prompt("");
+  }
+}
 
 
 const serviciocliente = new Servicio<Cliente>(new Memoria<Cliente>() )
@@ -183,10 +286,10 @@ const servicioventa = new Servicio<Venta>(new Memoria<Venta>())
 
 const tienda = new Tienda(servicioproducto, serviciocliente, servicioventa)
 
-tienda.registroproducto([{id: 1,
+tienda.registroproducto([{id: "1",
     nombre: "Arroz",
     precio: 3000,
-    cantidad: 10}, {id: 2,
+    cantidad: 10}, {id: "2",
     nombre: "Azucar",
     precio: 2000,
     cantidad: 10
@@ -195,8 +298,8 @@ tienda.registroproducto([{id: 1,
 
 const total = tienda.vender(
     { nombre: "Juan", cedula: "123" },
-    [{ id: 1, nombre: "Arroz",
-    precio: 3000, cantidad: 2 }, {id: 2,
+    [{ id: "1", nombre: "Arroz",
+    precio: 3000, cantidad: 2 }, {id: "2",
     nombre: "Azucar",
     precio: 2000,
     cantidad: 1
