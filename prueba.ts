@@ -170,7 +170,9 @@ class MenuOpcion {
   static VER_PRODUCTOS = 3;
   static ACTUALIZAR_PRODUCTOS = 4;
 
-  static VENDER = 5;
+  static REGISTRAR_CLIENTE = 5;
+
+  static VENDER = 6;
 
   static SALIR = 0;
 }
@@ -186,6 +188,11 @@ class MenuAccion {
     switch (opcion) {
       case MenuOpcion.REGISTRAR_PRODUCTOS:
         this.RegistrarProducto();
+        this.pause();
+        break;
+
+      case MenuOpcion.REGISTRAR_CLIENTE:
+        this.RegistrarCliente();
         this.pause();
         break;
       
@@ -234,10 +241,28 @@ class MenuAccion {
     
     const productoregistrado = this.servicioproducto.save(producto);
 
-    if (producto) {
+    if (productoregistrado) {
       console.log("Producto registrado");
       } else {
       console.log("El producto ya existe con este ID");
+      }
+  }
+
+  private RegistrarCliente() {
+    const nombre = String(prompt("Nombre: "));
+    const cedula = String(prompt("ID: "));
+
+    const cliente: Cliente = {
+      nombre: nombre,
+      cedula: cedula
+    }
+    
+    const clienteregistrado = this.serviciocliente.save(cliente);
+
+    if (clienteregistrado) {
+      console.log("Cliente registrado");
+      } else {
+      console.log("El Cliente ya existe con esta cedula");
       }
   }
 
@@ -270,7 +295,7 @@ class MenuAccion {
     }
 
     private VenderProductos(){
-        //LA IDEA ES QUE SELECCIONE EL CLIENTE
+      //LA IDEA ES QUE SELECCIONE EL CLIENTE
     }
 
   private pause() {
@@ -278,7 +303,6 @@ class MenuAccion {
     prompt("");
   }
 }
-
 
 const serviciocliente = new Servicio<Cliente>(new Memoria<Cliente>() )
 const servicioproducto = new Servicio<Producto>(new Memoria<Producto>() )
