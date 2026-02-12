@@ -113,8 +113,11 @@ type Cliente = {
 }
 
 type Venta = {
+  id: string,
   cliente: Cliente,
-  productos: Producto[]
+  productos: Producto[],
+  total: number,
+  fecha: Date
 }
 
 class MenuOpcion {
@@ -302,7 +305,7 @@ class MenuAccion {
       productosVenta.push({
         ...producto,
         cantidad: cantidad
-      });  // HAY QUE COMPONER ESTO
+      }); 
 
       const respuesta = String(prompt("¿Agregar otro producto? (s/n): "));
       if (respuesta.toLowerCase() !== "s") {
@@ -315,9 +318,13 @@ class MenuAccion {
     console.log("TOTAL A PAGAR: $", total);
 
     const venta: Venta = {
+      id: Date.now().toString(),  // id simple
       cliente: cliente,
-      productos: productosVenta
-    };
+      productos: productosVenta,
+      total: total,
+      fecha: new Date()
+      };
+
 
     this.servicioventa.save(venta);
 
@@ -342,12 +349,8 @@ class MenuAccion {
 
     console.table(venta.productos);
 
-    const total = venta.productos.reduce(
-      (sum, p) => sum + p.precio * p.cantidad,
-      0
-    );
-
-    console.log("TOTAL:", total);
+    console.log("TOTAL:", venta.total);
+    console.log("FECHA:", venta.fecha.toLocaleString());
   });
 }
 

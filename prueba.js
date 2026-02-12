@@ -223,7 +223,7 @@ var MenuAccion = /** @class */ (function () {
             total += subtotal;
             producto.cantidad -= cantidad;
             this_1.servicioproducto.update(producto);
-            productosVenta.push(__assign(__assign({}, producto), { cantidad: cantidad })); // HAY QUE COMPONER ESTO
+            productosVenta.push(__assign(__assign({}, producto), { cantidad: cantidad }));
             var respuesta = String(prompt("¿Agregar otro producto? (s/n): "));
             if (respuesta.toLowerCase() !== "s") {
                 continuar = false;
@@ -237,8 +237,11 @@ var MenuAccion = /** @class */ (function () {
         console.table(productosVenta);
         console.log("TOTAL A PAGAR: $", total);
         var venta = {
+            id: Date.now().toString(), // id simple
             cliente: cliente,
-            productos: productosVenta
+            productos: productosVenta,
+            total: total,
+            fecha: new Date()
         };
         this.servicioventa.save(venta);
         console.log("Venta registrada correctamente");
@@ -256,8 +259,8 @@ var MenuAccion = /** @class */ (function () {
             console.log("Cédula:", venta.cliente.cedula);
             console.log("Productos:");
             console.table(venta.productos);
-            var total = venta.productos.reduce(function (sum, p) { return sum + p.precio * p.cantidad; }, 0);
-            console.log("TOTAL:", total);
+            console.log("TOTAL:", venta.total);
+            console.log("FECHA:", venta.fecha.toLocaleString());
         });
     };
     MenuAccion.prototype.pause = function () {
