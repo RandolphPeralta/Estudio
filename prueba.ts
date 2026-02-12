@@ -14,6 +14,9 @@
 // saber exactamente qué vendió y a quién, 
 // y tener su tienda más ordenada y controlada.
 
+import * as promptSync from "prompt-sync";
+const prompt = (promptSync as any)();
+
 interface ICommand {
   ejecutar(item: any): any
 }
@@ -114,54 +117,6 @@ type Venta = {
   productos: Producto[]
 }
 
-class Tienda {
-  constructor(private servicioproducto: IAction<Producto>, private serviciocliente: IAction<Cliente>, private servicioventa: IAction<Venta>) { }
-
-  registroproducto(productos: Producto[]) {
-    for (const producto of productos) {
-      this.servicioproducto.save(producto)
-    }
-  }
-
-  vender(cliente: Cliente, productos: Producto[]) {
-    this.serviciocliente.save(cliente)
-    const venta: Venta = { cliente, productos }
-    this.servicioventa.save(venta)
-
-    // Este pedazo de la funcion de la cuenta deberia tenerlo la vista
-    let total = 0
-    const inventario = this.servicioproducto.show()
-
-    for (const vendido of productos) {
-      const productoInventario = inventario.find(producto => producto.id === vendido.id)
-
-      if (!productoInventario) continue
-
-      if (productoInventario.cantidad >= vendido.cantidad) {
-        productoInventario.cantidad -= vendido.cantidad
-        this.servicioproducto.update(productoInventario)
-
-        total += vendido.precio * vendido.cantidad
-      }
-    }
-
-    return total
-  }
-
-  verproductos() {
-    return this.servicioproducto.show()
-  }
-
-  eliminarproducto(producto: Producto) {
-    return this.servicioproducto.delete(producto)
-  }
-
-  actualizarproducto(productos: Producto[]) {
-    return this.servicioproducto.update(productos)
-  }
-
-}
-
 // VISTA DE LA CONSOLA
 
 class MenuOpcion {
@@ -229,8 +184,8 @@ class MenuAccion {
   private RegistrarProducto() {
     const id = String(prompt("ID: "));
     const nombre = String(prompt("Nombre: "));
-    const precio = Number(prompt("Identificación: "));
-    const cantidad = Number(prompt("Grado: "));
+    const precio = Number(prompt("Precio: "));
+    const cantidad = Number(prompt("Cantidad: "));
 
     const producto: Producto = {
       id: id,
@@ -250,7 +205,7 @@ class MenuAccion {
 
   private RegistrarCliente() {
     const nombre = String(prompt("Nombre: "));
-    const cedula = String(prompt("ID: "));
+    const cedula = String(prompt("Cedula: "));
 
     const cliente: Cliente = {
       nombre: nombre,
@@ -275,8 +230,8 @@ class MenuAccion {
   private ActualizarProducto() {
     const id = String(prompt("ID: "));
     const nombre = String(prompt("Nombre: "));
-    const precio = Number(prompt("Identificación: "));
-    const cantidad = Number(prompt("Grado: "));
+    const precio = Number(prompt("precio: "));
+    const cantidad = Number(prompt("cantidad: "));
 
     const producto: Producto = {
       id: id,
@@ -296,12 +251,10 @@ class MenuAccion {
 
   private VenderProductos() {
 
-    // 1️⃣ Pedir cédula
     const cedula = String(prompt("Cedula del cliente: "));
 
-    // 2️⃣ Buscar cliente
     const clientes = this.serviciocliente.show();
-    const cliente = clientes.find(c => c.cedula === cedula);
+    const cliente = clientes.find(clientep => clientep.cedula === cedula);
 
     if (!cliente) {
       console.log("Cliente no encontrado");
@@ -310,7 +263,6 @@ class MenuAccion {
 
     console.log("Cliente encontrado:", cliente.nombre);
 
-    // 3️⃣ Agregar productos
     let productosVenta: Producto[] = [];
     let total = 0;
     let continuar = true;
@@ -322,7 +274,7 @@ class MenuAccion {
       const idProducto = String(prompt("ID del producto: "));
       const producto = this.servicioproducto
         .show()
-        .find(p => p.id === idProducto);
+        .find(productop => productop.id === idProducto);
 
       if (!producto) {
         console.log("Producto no encontrado");
@@ -336,11 +288,9 @@ class MenuAccion {
         continue;
       }
 
-      // 4️⃣ Calcular subtotal
       const subtotal = producto.precio * cantidad;
       total += subtotal;
 
-      // 5️⃣ Descontar stock
       producto.cantidad -= cantidad;
       this.servicioproducto.update(producto);
 
@@ -356,12 +306,10 @@ class MenuAccion {
       }
     }
 
-    // 7️⃣ Mostrar total
     console.log("\nResumen de venta:");
     console.table(productosVenta);
     console.log("TOTAL A PAGAR: $", total);
 
-    // 8️⃣ Registrar venta
     const venta: Venta = {
       cliente: cliente,
       productos: productosVenta
@@ -379,40 +327,46 @@ class MenuAccion {
   }
 }
 
+class ConsoleView {
+  mensaje(): void {
+    const opciones: string[] = [
+      "1. Registrar producto",
+      "2. Eliminar producto",
+      "3. Ver producto",
+      "4. Actualizar producto",
+      "5. Registrar cliente",
+      "6. Vender",
+
+      "0. Salir"
+    ];
+
+    console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+    
+    for (const opcion of opciones) {
+      console.log(opcion);
+    }
+  }
+}
+
+class App{
+  run(): void{
+  
+  let continuar = true;
+
+  while (continuar) {
+    view.mensaje();
+    const opcion = Number(prompt("Seleccione opción: "));
+    continuar = menu.ejecutar(opcion);
+    }
+  }
+}
+
 const serviciocliente = new Servicio<Cliente>(new Memoria<Cliente>())
 const servicioproducto = new Servicio<Producto>(new Memoria<Producto>())
 const servicioventa = new Servicio<Venta>(new Memoria<Venta>())
 
-const tienda = new Tienda(servicioproducto, serviciocliente, servicioventa)
+const menu = new MenuAccion(serviciocliente, servicioproducto, servicioventa)
 
-tienda.registroproducto([{
-  id: "1",
-  nombre: "Arroz",
-  precio: 3000,
-  cantidad: 10
-}, {
-  id: "2",
-  nombre: "Azucar",
-  precio: 2000,
-  cantidad: 10
-}]
-)
-
-const total = tienda.vender(
-  { nombre: "Juan", cedula: "123" },
-  [{
-    id: "1", nombre: "Arroz",
-    precio: 3000, cantidad: 2
-  }, {
-    id: "2",
-    nombre: "Azucar",
-    precio: 2000,
-    cantidad: 1
-  }]
-)
-
-const inventario = tienda.verproductos()
-
-console.log("Total a pagar:", total)
-
-console.log("Inventario: ", inventario) 
+const view = new ConsoleView();
+const app = new App()
+app.run()
