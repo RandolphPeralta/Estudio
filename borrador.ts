@@ -40,7 +40,7 @@ class Memoria<T> implements IAction<T> {
     }
 
     show(): T[] {
-        return [...this.memoria]
+        return Array.from(this.memoria.values())
     }
 }
 
@@ -200,24 +200,31 @@ class MenuAccion {
     const producto = this.servicioproducto
         .show()
         .find(productop => productop.id === idProducto);
-    this.servicioproducto.delete(producto)
-    console.log("Estudiante Eliminado")
+    const productoeliminado = this.servicioproducto.delete(producto)
+    if ( productoeliminado) {
+      console.log("Cliente registrado");
+    } else {
+      console.log("El Cliente ya existe con esta cedula");
+    }
   }
 
   private ActualizarProducto() {
-    const id = String(prompt("ID: "));
+    const idProducto = String(prompt("ID: "));
+    const productoviejo = this.servicioproducto
+        .show()
+        .find(productop => productop.id === idProducto);
     const nombre = String(prompt("Nombre: "));
     const precio = Number(prompt("precio: "));
     const cantidad = Number(prompt("cantidad: "));
 
     const producto: Producto = {
-      id: id,
+      id: idProducto,
       nombre: nombre,
       precio: precio,
       cantidad: cantidad
     }
 
-    const productoctualizado = this.servicioproducto.update(producto ,producto);
+    const productoctualizado = this.servicioproducto.update(productoviejo ,producto);
 
     if (productoctualizado) {
       console.log("Producto actualizado");

@@ -221,7 +221,7 @@ var MenuAccion = /** @class */ (function () {
         console.table(productosVenta);
         console.log("TOTAL A PAGAR: $", total);
         var venta = {
-            id: Date.now().toString(), // id simple
+            id: Date.now().toString(),
             cliente: cliente,
             productos: productosVenta,
             total: total,

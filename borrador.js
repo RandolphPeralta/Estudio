@@ -10,15 +10,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
@@ -43,7 +34,7 @@ var Memoria = /** @class */ (function () {
         return true;
     };
     Memoria.prototype.show = function () {
-        return __spreadArray([], this.memoria, true);
+        return Array.from(this.memoria.values());
     };
     return Memoria;
 }());
@@ -157,22 +148,33 @@ var MenuAccion = /** @class */ (function () {
         }
     };
     MenuAccion.prototype.EliminarProducto = function () {
-        var id = String(prompt("ID: "));
-        this.servicioproducto.delete(id);
-        console.log("Estudiante Eliminado");
+        var idProducto = String(prompt("ID del producto: "));
+        var producto = this.servicioproducto
+            .show()
+            .find(function (productop) { return productop.id === idProducto; });
+        var productoeliminado = this.servicioproducto.delete(producto);
+        if (productoeliminado) {
+            console.log("Cliente registrado");
+        }
+        else {
+            console.log("El Cliente ya existe con esta cedula");
+        }
     };
     MenuAccion.prototype.ActualizarProducto = function () {
-        var id = String(prompt("ID: "));
+        var idProducto = String(prompt("ID: "));
+        var productoviejo = this.servicioproducto
+            .show()
+            .find(function (productop) { return productop.id === idProducto; });
         var nombre = String(prompt("Nombre: "));
         var precio = Number(prompt("precio: "));
         var cantidad = Number(prompt("cantidad: "));
         var producto = {
-            id: id,
+            id: idProducto,
             nombre: nombre,
             precio: precio,
             cantidad: cantidad
         };
-        var productoctualizado = this.servicioproducto.update(producto, producto);
+        var productoctualizado = this.servicioproducto.update(productoviejo, producto);
         if (productoctualizado) {
             console.log("Producto actualizado");
         }
