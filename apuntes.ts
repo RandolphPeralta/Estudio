@@ -1,19 +1,3 @@
-// Bobby tiene una tienda de barrio y está cansado de llevar todo en un cuaderno. 
-// A veces se le olvida cuánto stock le queda, confunde precios y 
-// no sabe quiénes son sus clientes frecuentes. 
-// Un día decide crear un software sencillo para organizar su negocio.
-
-// El sistema que Bobby quiere debe permitirle registrar los productos que vende 
-// (con su precio y cantidad disponible), registrar los clientes que le compran 
-// (con sus datos básicos) y, cuando alguien haga una compra, 
-// crear una venta donde se selecciona el cliente, 
-// se agregan uno o varios productos con sus cantidades, 
-// se calcula el total y se descuenta el stock.
-
-// Con ese software, Bobby espera dejar de cometer errores, 
-// saber exactamente qué vendió y a quién, 
-// y tener su tienda más ordenada y controlada.
-
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
@@ -35,48 +19,42 @@ interface IAction<T> extends IRead<T> {
   update(item: any): any;
 }
 
-//----------------------------------------
+class Memoria<T extends { id: string }> implements IAction<T> {
 
-class Memoria<T> implements IAction<T> {
+  private memoria: Map<string, T> = new Map()
 
-  private memoria: T[] = []
+  save(item: T): boolean {
 
-  save(some: any): boolean {
-    const index = this.memoria.findIndex((item: any) => item.id === some.id);
-
-    if (index !== -1) {
-      return false;
+    if (this.memoria.has(item.id)) {
+      return false
     }
 
-    this.memoria.push(some)
-    return true;
+    this.memoria.set(item.id, item)
+    return true
   }
 
-  delete(id: any) {
-    const index = this.memoria.findIndex((item: any) => item.id === id);
+  delete(id: string): boolean {
 
-    if (index === -1) {
-      return false;
+    if (!this.memoria.has(id)) {
+      return false
     }
 
-    this.memoria.splice(index, 1);
-    return true;
-
+    this.memoria.delete(id)
+    return true
   }
 
-  update(some: any): boolean {
-    const index = this.memoria.findIndex((item: any) => item.id === some.id);
+  update(item: T): boolean {
 
-    if (index === -1) {
-      return false;
+    if (!this.memoria.has(item.id)) {
+      return false
     }
 
-    this.memoria[index] = some;
-    return true;
+    this.memoria.set(item.id, item)
+    return true
   }
 
-  show() {
-    return this.memoria
+  show(): T[] {
+    return Array.from(this.memoria.values())
   }
 }
 

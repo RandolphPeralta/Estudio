@@ -1,8 +1,4 @@
 "use strict";
-// Bobby tiene una tienda de barrio y está cansado de llevar todo en un cuaderno. 
-// A veces se le olvida cuánto stock le queda, confunde precios y 
-// no sabe quiénes son sus clientes frecuentes. 
-// Un día decide crear un software sencillo para organizar su negocio.
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -15,48 +11,35 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// El sistema que Bobby quiere debe permitirle registrar los productos que vende 
-// (con su precio y cantidad disponible), registrar los clientes que le compran 
-// (con sus datos básicos) y, cuando alguien haga una compra, 
-// crear una venta donde se selecciona el cliente, 
-// se agregan uno o varios productos con sus cantidades, 
-// se calcula el total y se descuenta el stock.
-// Con ese software, Bobby espera dejar de cometer errores, 
-// saber exactamente qué vendió y a quién, 
-// y tener su tienda más ordenada y controlada.
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
-//----------------------------------------
 var Memoria = /** @class */ (function () {
     function Memoria() {
-        this.memoria = [];
+        this.memoria = new Map();
     }
-    Memoria.prototype.save = function (some) {
-        var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
-        if (index !== -1) {
+    Memoria.prototype.save = function (item) {
+        if (this.memoria.has(item.id)) {
             return false;
         }
-        this.memoria.push(some);
+        this.memoria.set(item.id, item);
         return true;
     };
     Memoria.prototype.delete = function (id) {
-        var index = this.memoria.findIndex(function (item) { return item.id === id; });
-        if (index === -1) {
+        if (!this.memoria.has(id)) {
             return false;
         }
-        this.memoria.splice(index, 1);
+        this.memoria.delete(id);
         return true;
     };
-    Memoria.prototype.update = function (some) {
-        var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
-        if (index === -1) {
+    Memoria.prototype.update = function (item) {
+        if (!this.memoria.has(item.id)) {
             return false;
         }
-        this.memoria[index] = some;
+        this.memoria.set(item.id, item);
         return true;
     };
     Memoria.prototype.show = function () {
-        return this.memoria;
+        return Array.from(this.memoria.values());
     };
     return Memoria;
 }());
