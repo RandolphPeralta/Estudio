@@ -202,9 +202,9 @@ class MenuAccion {
         .find(productop => productop.id === idProducto);
     const productoeliminado = this.servicioproducto.delete(producto)
     if ( productoeliminado) {
-      console.log("Cliente registrado");
+      console.log("Producto eliminado");
     } else {
-      console.log("El Cliente ya existe con esta cedula");
+      console.log("El Producto no pudo eliminarse");
     }
   }
 

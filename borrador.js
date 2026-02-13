@@ -154,10 +154,10 @@ var MenuAccion = /** @class */ (function () {
             .find(function (productop) { return productop.id === idProducto; });
         var productoeliminado = this.servicioproducto.delete(producto);
         if (productoeliminado) {
-            console.log("Cliente registrado");
+            console.log("Producto eliminado");
         }
         else {
-            console.log("El Cliente ya existe con esta cedula");
+            console.log("El Producto no pudo eliminarse");
         }
     };
     MenuAccion.prototype.ActualizarProducto = function () {
