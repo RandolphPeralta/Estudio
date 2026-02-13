@@ -136,7 +136,7 @@ class MenuOpcion {
   static SALIR = 0;
 }
 
-class MenuAccion {
+class MenuAccion implements ICommand{
   constructor(
     private serviciocliente: IAction<Cliente>,
     private servicioproducto: IAction<Producto>,
