@@ -6,7 +6,6 @@ interface IAction<T> {
   delete(item: any): any;
   update(olditem: any, newitem: any): any;
   show(): T[]
-
 }
 
 class Memoria<T> implements IAction<T> {
