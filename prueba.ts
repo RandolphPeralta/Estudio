@@ -17,14 +17,6 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-interface ICommand {
-  ejecutar(item: any): any
-}
-
-interface ICommando {
-  ejecutar(): any
-}
-
 interface IRead<T> {
   show(): T[]
 }
@@ -136,7 +128,7 @@ class MenuOpcion {
   static SALIR = 0;
 }
 
-class MenuAccion implements ICommand{
+class MenuAccion {
   constructor(
     private serviciocliente: IAction<Cliente>,
     private servicioproducto: IAction<Producto>,

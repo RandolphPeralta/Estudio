@@ -1,14 +1,6 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-interface ICommand {
-  ejecutar(item: any): any
-}
-
-interface ICommando {
-  ejecutar(): any
-}
-
 interface IRead<T> {
   show(): T[]
 }
