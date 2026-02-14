@@ -238,7 +238,7 @@ var MenuAccion = /** @class */ (function () {
         console.table(productosVenta);
         console.log("TOTAL A PAGAR: $", total);
         var venta = {
-            id: Date.now().toString(), // id simple
+            id: Date.now().toString(),
             cliente: cliente,
             productos: productosVenta,
             total: total,
@@ -284,7 +284,7 @@ var ConsoleView = /** @class */ (function () {
             "7. Ver ventas",
             "0. Salir"
         ];
-        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+        console.log("Bienvenidos a la tienda ¿qué desea?");
         for (var _i = 0, opciones_1 = opciones; _i < opciones_1.length; _i++) {
             var opcion = opciones_1[_i];
             console.log(opcion);

@@ -337,7 +337,7 @@ class ConsoleView {
       "0. Salir"
     ];
 
-    console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+    console.log("Bienvenido a la tienda ¿qué desea?");
 
     for (const opcion of opciones) {
       console.log(opcion);

@@ -201,7 +201,7 @@ class MenuAccion {
   private EliminarProducto() {
     const id = String(prompt("ID: "));
     this.servicioproducto.delete(id)
-    console.log("Estudiante Eliminado")
+    console.log("Producto Eliminado")
   }
 
   private ActualizarProducto() {
@@ -341,7 +341,7 @@ class ConsoleView {
       "0. Salir"
     ];
 
-    console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+    console.log("Bienvenido a la tienda ¿qué desea?");
 
     for (const opcion of opciones) {
       console.log(opcion);
