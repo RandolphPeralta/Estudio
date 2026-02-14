@@ -309,7 +309,7 @@ class MenuAccion {
     console.log("TOTAL A PAGAR: $", total);
 
     const venta: Venta = {
-      id: Date.now().toString(),  // id simple
+      id: Date.now().toString(),  
       cliente: cliente,
       productos: productosVenta,
       total: total,
