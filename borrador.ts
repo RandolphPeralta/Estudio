@@ -1,14 +1,12 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-interface IRead<T> {
-  show(): T[]
-}
-
-interface IAction<T> extends IRead<T> {
+interface IAction<T> {
   save(item: any): any;
   delete(item: any): any;
   update(olditem: any, newitem: any): any;
+  show(): T[]
+
 }
 
 class Memoria<T> implements IAction<T> {
