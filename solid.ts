@@ -25,4 +25,4 @@ class Calculadora {
 const suma = new Suma()
 const calculadora = new Calculadora(suma)
 
-console.log(calculadora.operar(5, 3)) // 8
+console.log(calculadora.operar(5, 3)) 
