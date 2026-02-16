@@ -4,6 +4,8 @@
 // OCP - Una clase o un modulo debe ser extensible para su uso 
 // y cerrado a su modificacion 
 
+// EJEMPLO DE CALCULADORA CON SUMA
+
 interface Operacion {
     ejecutar(number1: number, number2: number): number
 }
