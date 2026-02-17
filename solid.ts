@@ -1,5 +1,5 @@
 // SRP - Un modulo o una clase debe tener una y solo una razon para cambiar.  
-//          que tiene para cambiar, que esa clase o modulo tenga muchas cosas
+//       que tiene para cambiar, que esa clase o modulo tenga muchas cosas
 
 // OCP - Una clase o un modulo debe ser extensible para su uso 
 // y cerrado a su modificacion 
