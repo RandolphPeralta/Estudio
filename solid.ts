@@ -2,7 +2,7 @@
 //       que tiene para cambiar, que esa clase o modulo tenga muchas cosas
 
 // OCP - Una clase o un modulo debe ser extensible para su uso 
-// y cerrado a su modificacion 
+//        y cerrado a su modificacion 
 
 // EJEMPLO DE CALCULADORA CON SUMA
 
