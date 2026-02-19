@@ -1,4 +1,5 @@
-// CREAR MI PROPIO PROMPT CONVERTIDO EN ASK
+// CREAR MI PROPIO PROMPT CONVERTIDO EN ASK, 
+// USANDO Promise 
 
 function ask(question: string): Promise<string> {
   return new Promise((resolve) => {
