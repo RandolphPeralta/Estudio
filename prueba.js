@@ -1,5 +1,5 @@
-var a = 'Hola';
-function sumar(a, b) {
-    return a + b;
+function saluda(name) {
+    name.toLowerCase();
+    console.log("Hola ".concat(name));
 }
-console.log(typeof a);
+saluda('Randolph');
