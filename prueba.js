@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-function prompt(question) {
+function ask(question) {
     return new Promise(function (resolve) {
         process.stdout.write(question);
         process.stdin.resume();
@@ -52,10 +52,10 @@ function main() {
         var nombre, edad;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, prompt("Nombre: ")];
+                case 0: return [4 /*yield*/, ask("Nombre: ")];
                 case 1:
                     nombre = _a.sent();
-                    return [4 /*yield*/, prompt("Edad: ")];
+                    return [4 /*yield*/, ask("Edad: ")];
                 case 2:
                     edad = _a.sent();
                     console.log("Hola ".concat(nombre, ", tienes ").concat(edad, " a\u00F1os"));

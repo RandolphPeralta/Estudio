@@ -1,4 +1,4 @@
-function prompt(question: string): Promise<string> {
+function ask(question: string): Promise<string> {
   return new Promise((resolve) => {
     process.stdout.write(question);
 
@@ -16,8 +16,8 @@ function prompt(question: string): Promise<string> {
 }
 
 async function main() {
-  const nombre = await prompt("Nombre: ");
-  const edad = await prompt("Edad: ");
+  const nombre = await ask("Nombre: ");
+  const edad = await ask("Edad: ");
 
   console.log(`Hola ${nombre}, tienes ${edad} años`);
   process.exit();
