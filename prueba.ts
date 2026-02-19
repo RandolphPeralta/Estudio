@@ -1,6 +1,8 @@
-function saluda(name: string){
-  name.toLowerCase()
-  console.log(`Hola ${name}`)
+const sayHiFromFunction = (fn: Function) => {
+  fn('Miguel')
 }
 
-saluda('Randolph')
+sayHiFromFunction((name: string)=> {
+  console.log(`Hola ${name}`)
+})
+
