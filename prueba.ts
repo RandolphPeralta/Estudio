@@ -7,3 +7,4 @@ const sayHiFromFunction = (fn: Function) => {
 // })
 
 // sayHiFromFunction(sayHi)
+
