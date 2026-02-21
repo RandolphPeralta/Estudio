@@ -11,7 +11,7 @@ interface Operacion {
 }
 
 class Suma implements Operacion {
-    ejecutar(number1: number, number2: number): number {
+    ejecutar(number1: number, number2: number) {
         return number1 + number2
     }
 }
@@ -24,7 +24,7 @@ class Calculadora {
     }
 }
 
-const suma = new Suma()
-const calculadora = new Calculadora(suma)
+// const suma = new Suma()
+// const calculadora = new Calculadora(suma)
 
-console.log(calculadora.operar(5, 3)) 
+// console.log(calculadora.operar(5, 3)) 
