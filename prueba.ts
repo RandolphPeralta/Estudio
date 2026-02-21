@@ -1,5 +1,5 @@
 const sayHiFromFunction = (fn: Function) => {
-  fn('Miguel')
+  fn('Randolph')
 }
 
 // const sayHi = ((name: string) => {
