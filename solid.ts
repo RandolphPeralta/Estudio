@@ -29,11 +29,12 @@ class Calculadora {
 
 // console.log(calculadora.operar(5, 3)) 
 
+//-------------------------------------
 // CRUD
 // COonsultar datos por UI o ID
 
-//Persistencia (MEMORIA, BASE DE DATOS, LOCALSTOAGE, REDIS, KAFKA)
-//Modelo de datos
-//Capa de negocio
-//Capa de presentacion
-//I/O
+// Persistencia (MEMORIA, BASE DE DATOS, LOCALSTOAGE, REDIS, KAFKA)
+// Modelo de datos
+// Capa de negocio
+// Capa de presentacion
+// I/O

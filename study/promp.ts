@@ -1,6 +1,8 @@
 // CREAR MI PROPIO PROMPT CONVERTIDO EN ASK, 
 // USANDO Promise 
 
+// TOCA CREAR TU PROPIO TSCONFIG.TS PARA PODER USAR PROMISE
+
 function ask(question: string): Promise<string> {
   return new Promise((resolve) => {
     process.stdout.write(question);
