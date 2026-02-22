@@ -1,5 +1,5 @@
 // Se quiere crear un software donde se crean
-// sus propios Heroes y Villanos
+// sus propios Heroes, Villanos y demas
 
 interface Superpower {
     use(): string
@@ -13,7 +13,7 @@ interface Villan {
     Destruir(): string
 }
 
-//-----------------------
+//---------------------------
 
 class Character {
     constructor(private poder: Superpower) { }
@@ -48,6 +48,12 @@ class Speed implements Superpower {
     }
 }
 
+class Strengh implements Superpower {
+    use(){
+        return "SuperFuerza"
+    }
+}
+
 class Supertelaraña implements Superpower {
     use() {
         return "Trepa muros con telaraña"
@@ -64,9 +70,12 @@ class Intelligence implements Superpower {
 
 
 const blowup = new Blowup()
+
 const volarcontraje: Blowup = new Blowupwithsomething()
+
 const trepamuros = new Supertelaraña()
 
+const fuerza = new Strengh()
 
 
 
@@ -78,6 +87,8 @@ const Ironman: Hero = new Character(volarcontraje)
 const Spiderman: Hero = new Character(trepamuros)
 
 const DuendeVerde: Villan = new Character(volarcontraje)
+
+const Thanos: Villan = new Character(fuerza)
 
 console.log(Superman.Salvar())
 console.log(Ironman.Salvar())
