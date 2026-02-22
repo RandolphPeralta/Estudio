@@ -5,14 +5,14 @@ interface Personaje {
     activarPoder(): string[]
 }
 
-interface Superpoder {
+interface Poder {
     usar(): string
 }
 
 abstract class PersonajeBase implements Personaje {
-    protected poderes: Superpoder[] = []
+    protected poderes: Poder[] = []
 
-    agregarPoder(poder: Superpoder) {
+    agregarPoder(poder: Poder) {
         this.poderes.push(poder)
     }
 
@@ -33,32 +33,41 @@ class Heroe extends PersonajeBase {
     }
 
     salvarCiudad() {
-        return `${this.identidad} salva la ciudad`
+        return `${this.identidad.nombre} salva la ciudad, con su poder donde ${this.activarPoder()}`
     }
 }
 
 class Villano extends PersonajeBase {
+    constructor(private identidad: Identidad) {
+        super()
+    }
+
     destruirCiudad() {
-        return `está destruyendo la ciudad`
+        return `${this.identidad.nombre} está destruyendo la ciudad, con su poder ${this.activarPoder()}`
     }
 }
 
-class Invisibilidad implements Superpoder {
+class Invisibilidad implements Poder {
     usar() {
         return "Se vuelve invisible"
     }
 }
 
-class FabricaPersonajes {
-    static crearHeroe(identidad: Identidad): Heroe {
-        return new Heroe(identidad)
-    }
-
-    static crearVillano(): Villano {
-        return new Villano()
+class SuperFuerza implements Poder {
+    usar(): string {
+        return "Se vuelve muy fuerte"
     }
 }
 
 const persona: Identidad = {
     nombre: "Randolph"
 }
+
+const poder1 = new SuperFuerza()
+
+const heroe1 = new Heroe(persona)
+
+heroe1.agregarPoder(poder1)
+console.log(heroe1.salvarCiudad())
+
+console.log(heroe1.activarPoder())
