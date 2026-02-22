@@ -119,7 +119,7 @@ const persona3: EmpleadoContratista = {
 
 const memoria = new Memoria<Empleado>()
 
-const empleado1 = new EmpleadoTiempoCompleto(persona1)
+const empleado1: Empleado = new EmpleadoTiempoCompleto(persona1)
 const empleado2 = new EmpleadoPorHoras(persona2)
 const empleado3 = new Contratista(persona3)
 
