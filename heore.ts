@@ -1,57 +1,58 @@
 // Se quiere crear un software donde se crean
 // sus propios Heroes y Villanos
 
-interface Superpoder {
-    usar(): string
+interface Superpower {
+    use(): string
 }
 
-class Volar implements Superpoder {
-    usar() {
-        return "Volar por los cielos"
+class Blowup implements Superpower {
+    use() {
+        return "Blowup por los cielos"
     }
 }
 
-class Volarconalgo extends Volar {
-    usar() {
-        return "Volar por los cielos con algo"
+class Blowupwithsomething extends Blowup {
+    use() {
+        return "Blowup por los cielos con algo"
     }
 }
 
-class Velocidad implements Superpoder {
-    usar(){
+class Speed implements Superpower {
+    use(){
         return "Supervelocidad"}
 }    
 
 
-class Supertelaraña implements Superpoder {
-    usar(){
+class Supertelaraña implements Superpower {
+    use(){
         return "Trepa muros con telaraña"
     }
 }
-class Heroe {
-    constructor(private poder: Superpoder) { }
+class Hero {
+    constructor(private poder: Superpower) { }
 
     activarPoder() {
-        return this.poder.usar()
+        return this.poder.use()
     }
 }
 
-class Villano {
-    constructor(private poder: Superpoder){}
+class Villan {
+    constructor(private poder: Superpower){}
 
     activarPoder(){
-
+        return this.poder.use()
     }
 }
 
-const volar = new Volar()
-const volarcontraje: Volarconalgo = new Volar()
+const blowup = new Blowup()
+const volarcontraje: Blowupwithsomething = new Blowup()
 const trepamuros = new Supertelaraña()
 
-const Superman = new Heroe(volar)
+const Superman = new Hero(blowup)
 
-const Ironman = new Heroe(volarcontraje)
+const Ironman = new Hero(volarcontraje)
 
-const Spiderman = new Heroe(trepamuros)
+const Spiderman = new Hero(trepamuros)
 
-const DuendeVerde = new Villano(volarcontraje)
+const DuendeVerde = new Villan(volarcontraje)
+
