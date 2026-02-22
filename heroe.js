@@ -32,7 +32,7 @@ var Blowup = /** @class */ (function () {
     function Blowup() {
     }
     Blowup.prototype.use = function () {
-        return "Blowup por los cielos";
+        return "Vuela por los cielos";
     };
     return Blowup;
 }());
@@ -42,7 +42,7 @@ var Blowupwithsomething = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Blowupwithsomething.prototype.use = function () {
-        return "Blowup por los cielos con algo";
+        return "Vuela por los cielos con algo";
     };
     return Blowupwithsomething;
 }(Blowup));
@@ -71,10 +71,11 @@ var Intelligence = /** @class */ (function () {
     return Intelligence;
 }());
 var blowup = new Blowup();
-var volarcontraje = new Blowup();
+var volarcontraje = new Blowupwithsomething();
 var trepamuros = new Supertelaraña();
 var Superman = new Character(blowup);
 var Ironman = new Character(volarcontraje);
 var Spiderman = new Character(trepamuros);
 var DuendeVerde = new Character(volarcontraje);
 console.log(Superman.Salvar());
+console.log(Ironman.Salvar());

@@ -1,5 +1,5 @@
 // Se quiere crear un software donde se crean
-// sus propios Characteres y Villanos
+// sus propios Heroes y Villanos
 
 interface Superpower {
     use(): string
@@ -26,6 +26,9 @@ class Character {
         return this.poder.use()
     }
 }
+
+
+
 
 class Blowup implements Superpower {
     use() {
@@ -61,7 +64,7 @@ class Intelligence implements Superpower {
 
 
 const blowup = new Blowup()
-const volarcontraje: Blowupwithsomething = new Blowup()
+const volarcontraje: Blowup = new Blowupwithsomething()
 const trepamuros = new Supertelaraña()
 
 
@@ -77,7 +80,7 @@ const Spiderman: Hero = new Character(trepamuros)
 const DuendeVerde: Villan = new Character(volarcontraje)
 
 console.log(Superman.Salvar())
-
+console.log(Ironman.Salvar())
 
 
 
