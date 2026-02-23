@@ -93,6 +93,8 @@ const Thanos: Villan = new Character(fuerza)
 console.log(Superman.Salvar())
 console.log(Ironman.Salvar())
 
+console.log(Thanos.Destruir())
+
 
 
 

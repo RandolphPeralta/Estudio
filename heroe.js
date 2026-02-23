@@ -1,5 +1,5 @@
 // Se quiere crear un software donde se crean
-// sus propios Characteres y Villanos
+// sus propios Heroes, Villanos y demas
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-//-----------------------
+//---------------------------
 var Character = /** @class */ (function () {
     function Character(poder) {
         this.poder = poder;
@@ -54,6 +54,14 @@ var Speed = /** @class */ (function () {
     };
     return Speed;
 }());
+var Strengh = /** @class */ (function () {
+    function Strengh() {
+    }
+    Strengh.prototype.use = function () {
+        return "SuperFuerza";
+    };
+    return Strengh;
+}());
 var Supertelaraña = /** @class */ (function () {
     function Supertelaraña() {
     }
@@ -73,9 +81,12 @@ var Intelligence = /** @class */ (function () {
 var blowup = new Blowup();
 var volarcontraje = new Blowupwithsomething();
 var trepamuros = new Supertelaraña();
+var fuerza = new Strengh();
 var Superman = new Character(blowup);
 var Ironman = new Character(volarcontraje);
 var Spiderman = new Character(trepamuros);
 var DuendeVerde = new Character(volarcontraje);
+var Thanos = new Character(fuerza);
 console.log(Superman.Salvar());
 console.log(Ironman.Salvar());
+console.log(Thanos.Destruir());
