@@ -1,7 +1,7 @@
 // Se quiere crear un software donde se crean
 // sus propios Heroes, Villanos y demas
 
-interface Superpower {
+interface ISuperpower {
     use(): string
 }
 
@@ -16,7 +16,7 @@ interface Villan {
 //---------------------------
 
 class Character {
-    constructor(private poder: Superpower) { }
+    constructor(private poder: ISuperpower) { }
 
     Salvar() {
         return this.poder.use()
@@ -30,7 +30,7 @@ class Character {
 
 
 
-class Blowup implements Superpower {
+class Blowup implements ISuperpower {
     use() {
         return "Vuela por los cielos"
     }
@@ -42,25 +42,25 @@ class Blowupwithsomething extends Blowup {
     }
 }
 
-class Speed implements Superpower {
+class Speed implements ISuperpower {
     use() {
         return "Supervelocidad"
     }
 }
 
-class Strengh implements Superpower {
+class Strengh implements ISuperpower {
     use(){
         return "SuperFuerza"
     }
 }
 
-class Supertelaraña implements Superpower {
+class Supertelaraña implements ISuperpower {
     use() {
         return "Trepa muros con telaraña"
     }
 }
 
-class Intelligence implements Superpower {
+class Intelligence implements ISuperpower {
     use(): string {
         return "Muy Inteligente"
     }
