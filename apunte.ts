@@ -1,3 +1,7 @@
+// Sistema para gestionar Órdenes de Compra. El sistema debe:
+// Crear, Aprobar, Cancelar órdenes
+// Guardarlas en algún almacenamiento y Mostrar resultados
+
 interface OrderRepository<T> {
     save(order: T): boolean
     update(order: T): boolean
@@ -7,6 +11,8 @@ interface OrderRepository<T> {
 interface OrderAction<T> {
     execute(order: T): boolean
 }
+
+//------------------------------
 
 class MemoryRepository<T extends { id: string }> implements OrderRepository<T> {
 
@@ -75,9 +81,9 @@ class Menu<T> {
     }
 }
 
-export type OrderData = {
-    readonly id: string
-    readonly total: number
+type OrderData = {
+    id: string
+    total: number
 }
 
 const repository = new MemoryRepository<OrderData>()

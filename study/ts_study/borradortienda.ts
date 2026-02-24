@@ -8,6 +8,8 @@ interface IAction<T> {
   show(): T[]
 }
 
+//---------------------
+
 class Memoria<T> implements IAction<T> {
     private memoria: Set<T> = new Set()
 
