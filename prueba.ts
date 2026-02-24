@@ -34,7 +34,6 @@ class Memoria<T> implements Gestion<T> {
 
   mostrar(): T[] {
     return Array.from(this.memoria)
-    // o: return [...this.memoria]
   }
 }
 

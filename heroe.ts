@@ -6,11 +6,11 @@ interface ISuperpower {
 }
 
 interface Hero {
-    Salvar(): string
+    Salvar(): boolean
 }
 
 interface Villan {
-    Destruir(): string
+    Destruir(): boolean
 }
 
 //---------------------------
@@ -19,11 +19,13 @@ class Character {
     constructor(private poder: ISuperpower) { }
 
     Salvar() {
-        return this.poder.use()
+        this.poder.use()
+        return true
     }
 
     Destruir() {
-        return this.poder.use()
+        this.poder.use()
+        return false
     }
 }
 

@@ -21,10 +21,12 @@ var Character = /** @class */ (function () {
         this.poder = poder;
     }
     Character.prototype.Salvar = function () {
-        return this.poder.use();
+        this.poder.use();
+        return true;
     };
     Character.prototype.Destruir = function () {
-        return this.poder.use();
+        this.poder.use();
+        return false;
     };
     return Character;
 }());
