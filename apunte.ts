@@ -86,7 +86,7 @@ type OrderData = {
     total: number
 }
 
-const repository = new MemoryRepository<OrderData>()
+const repository: OrderRepository<OrderData> = new MemoryRepository<OrderData>()
 const service = new OrderService(repository)
 
 const create = new CreateOrder(service)
