@@ -66,24 +66,6 @@ class CreateOrder<T> implements OrderAction<T> {
     }
 }
 
-class Mapeo<T> {
-  
-  private mapeo = new Map<number, OrderAction<T>>()
-
-  create(number:number, order: OrderAction<T>){
-    this.mapeo.set(number, order)
-  }
-
-  getall(){
-    return this.mapeo.values()
-  }
-
-  // create(order: T){
-  //   const result = this.mapeo.set(1, order)
-  // }
-
-}
-
 
 class Menu<T> {
 
@@ -117,12 +99,5 @@ const menu = new Menu(create, approve)
 
 const order: OrderData = { id: "1", total: 100 }
 
-const mapeo = new Mapeo<OrderData>()
-
-mapeo.create(1, create)
-mapeo.create(2, approve)
-
 menu.create(order)
 menu.approve(order)
-
-console.log(mapeo.getall())
