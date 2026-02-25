@@ -31,7 +31,7 @@ class Calculadora {
 
 //-------------------------------------
 // CRUD
-// COonsultar datos por UI o ID
+// Consultar datos por UI o ID
 
 // Persistencia (MEMORIA, BASE DE DATOS, LOCALSTOAGE, REDIS, KAFKA)
 // Modelo de datos
