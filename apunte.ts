@@ -67,18 +67,30 @@ class CreateOrder<T> implements OrderAction<T> {
 }
 
 
-class Menu<T> {
+// class Menu<T> {
 
-    constructor(private createAction: { execute(order: T): boolean }, private approveAction: { execute(order: T): boolean }) {}
+//     constructor(private createAction: { execute(order: T): boolean }, private approveAction: { execute(order: T): boolean }) {}
 
-    create(order: T) {
-        const result = this.createAction.execute(order)
-        console.log(result ? "Orden creada" : "Error al crear")
+//     create(order: T) {
+//         const result = this.createAction.execute(order)
+//         console.log(result ? "Orden creada" : "Error al crear")
+//     }
+
+//     approve(order: T) {
+//         const result = this.approveAction.execute(order)
+//         console.log(result ? "Orden aprobada" : "Error al aprobar")
+//     }
+// }
+
+class Menu<T>{
+    private ExecuteOrder: any[] = []
+
+    addactionorder(orderaction:OrderAction<T>){
+        return this.ExecuteOrder.push(orderaction)
     }
 
-    approve(order: T) {
-        const result = this.approveAction.execute(order)
-        console.log(result ? "Orden aprobada" : "Error al aprobar")
+    executeorder(orderaction: { execute(order: T): boolean }){
+        
     }
 }
 
@@ -93,11 +105,13 @@ const service = new OrderService(repository)
 const create = new CreateOrder(service)
 const approve = new ApproveOrder(service)
 
-
-
-const menu = new Menu(create, approve)
-
 const order: OrderData = { id: "1", total: 100 }
 
-menu.create(order)
-menu.approve(order)
+const menu = new Menu()
+
+menu.addactionorder(create)
+
+// const menu = new Menu(create, approve)
+
+
+// menu.approve(order)
