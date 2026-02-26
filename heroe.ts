@@ -13,21 +13,28 @@ interface Villan {
     Destruir(): boolean
 }
 
+abstract class Character {
+    constructor(private poder: ISuperpower){}
+
+    abstract Salvar(): boolean
+    abstract Destruir(): boolean
+}
+
 //---------------------------
 
-class Character {
-    constructor(private poder: ISuperpower) { }
+// class Character {
+//     constructor(private poder: ISuperpower) { }
 
-    Salvar() {
-        this.poder.use()
-        return true
-    }
+//     Salvar() {
+//         this.poder.use()
+//         return true
+//     }
 
-    Destruir() {
-        this.poder.use()
-        return false
-    }
-}
+//     Destruir() {
+//         this.poder.use()
+//         return false
+//     }
+// }
 
 
 
@@ -68,34 +75,42 @@ class Intelligence implements ISuperpower {
     }
 }
 
+class Superman extends Character {
+    Salvar(): boolean {
+        return true
+    }
+    Destruir(): boolean {
+       return false
+    }
+}
 
-
+class Thanos extends Character {
+    Salvar(): boolean {
+        return true
+    }
+    Destruir(): boolean {
+        return false
+    }
+    
+}
 
 const blowup = new Blowup()
-
 const volarcontraje: Blowup = new Blowupwithsomething()
-
 const trepamuros = new Supertelaraña()
-
 const fuerza = new Strengh()
 
 
+const superman: Hero = new Superman(blowup)
+// const Ironman: Hero = new Character(volarcontraje)
+// const Spiderman: Hero = new Character(trepamuros)
+// const DuendeVerde: Villan = new Character(volarcontraje)
 
+const thanos: Villan = new Thanos(fuerza)
 
-const Superman: Hero = new Character(blowup)
+console.log(superman.Salvar())
+// console.log(Ironman.Salvar())
 
-const Ironman: Hero = new Character(volarcontraje)
-
-const Spiderman: Hero = new Character(trepamuros)
-
-const DuendeVerde: Villan = new Character(volarcontraje)
-
-const Thanos: Villan = new Character(fuerza)
-
-console.log(Superman.Salvar())
-console.log(Ironman.Salvar())
-
-console.log(Thanos.Destruir())
+console.log(thanos.Destruir())
 
 
 
