@@ -2,7 +2,7 @@
 // Crear, Aprobar, Cancelar órdenes
 // Guardarlas en algún almacenamiento y Mostrar resultados
 
-interface OrderRepository<T> {
+interface OrderPersistence<T> {
     save(order: T): boolean
     update(order: T): boolean
     findById(id: string): T | null
@@ -14,7 +14,7 @@ interface OrderAction<T> {
 
 //------------------------------
 
-class MemoryRepository<T extends { id: string }> implements OrderRepository<T> {
+class MemoryRepository<T extends { id: string }> implements OrderPersistence<T> {
 
     private storage: T[] = []
 
@@ -37,7 +37,7 @@ class MemoryRepository<T extends { id: string }> implements OrderRepository<T> {
 
 class OrderService<T> {
 
-    constructor(private repository: OrderRepository<T>) {}
+    constructor(private repository: OrderPersistence<T>) {}
 
     register(order: T): boolean {
         return this.repository.save(order)
@@ -99,7 +99,7 @@ type OrderData = {
     total: number
 }
 
-const repository: OrderRepository<OrderData> = new MemoryRepository<OrderData>()
+const repository: OrderPersistence<OrderData> = new MemoryRepository<OrderData>()
 const service = new OrderService(repository)
 
 const create = new CreateOrder(service)
