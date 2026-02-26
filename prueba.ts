@@ -11,6 +11,7 @@ interface Gestion<T> {
   eliminar(item: T): boolean
   mostrar(): T[]
 }
+
 abstract class Empleado {
   abstract CalcularSalario(): number
 }
@@ -53,31 +54,31 @@ class Memoria<T> implements Gestion<T> {
 //   }
 // }
 
-// type Persona = {
-//   cedula: string
-//   nombre: string
-// };
+type Persona = {
+   cedula: string
+   nombre: string
+ };
 
 // type EmpleadoSalarioporHora = Persona & {
 //   horas: number,
 //   valor: number
 // };
 
-// type EmpleadoSalarioMensual = Persona & {
-//   salario: number
-// }
+type EmpleadoSalarioMensual = Persona & {
+   salario: number
+ }
 
 // type EmpleadoContratista = Persona & {
 //   valorproyecto: number
 // }
 
-// class EmpleadoTiempoCompleto extends Empleado {
-//   constructor(private persona: EmpleadoSalarioMensual) {super()}
+class EmpleadoTiempoCompleto extends Empleado {
+  constructor(private persona: EmpleadoSalarioMensual) {super()}
 
-//   CalcularSalario(): number {
-//     return this.persona.salario
-//   }
-// }
+  CalcularSalario(): number {
+    return this.persona.salario
+  }
+}
 
 // class EmpleadoPorHoras extends Empleado {
 //   constructor(private persona: EmpleadoSalarioporHora) {super()}

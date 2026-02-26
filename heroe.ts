@@ -6,20 +6,25 @@ interface ISuperpower {
 }
 
 interface Hero {
-    Salvar(): boolean
+    Salvar(): string
 }
 
 interface Villan {
-    Destruir(): boolean
+    Destruir(): string
 }
 
 //---------------------------
 
-abstract class Character {
+class Character {
     constructor(private poder: ISuperpower){}
 
-    abstract Salvar(): boolean
-    abstract Destruir(): boolean
+    Salvar(): string {
+        return this.poder.use()
+    }
+    Destruir(): string {
+        return this.poder.use()
+    }
+        
 }
 
 class Blowup implements ISuperpower {
@@ -40,33 +45,13 @@ class Strengh implements ISuperpower {
     }
 }
 
-class Superman extends Character {
-
-    Salvar(): boolean {
-        return true
-    }
-    Destruir(): boolean {
-       return false
-    }
-}
-
-class Thanos extends Character {
-    
-    Salvar(): boolean {
-        return true
-    }
-    Destruir(): boolean {
-        return false
-    }
-    
-}
-
 const blowup = new Blowup()
 const volarcontraje: Blowup = new Blowupwithsomething()
 const fuerza = new Strengh()
 
-const superman: Hero = new Superman(blowup)
-const thanos: Villan = new Thanos(fuerza)
+const superman: Hero = new Character(blowup)
+const thanos: Villan = new Character(fuerza)
+const ironman: Hero = new Character(volarcontraje)
 
 
 
