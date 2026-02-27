@@ -7,15 +7,15 @@ interface EmployeeRepository<T> {
   findAll(): T[]
 }
 
+//---------------------------
+
 class Employee {
-    constructor(private policy: SalaryPolicy) {}
+  constructor(private policy: SalaryPolicy) {}
 
   calculateSalary(): number {
     return this.policy.calculate()
   }
 }
-
-//---------------------------
 
 class EmployeeService<T extends Employee> {
 
@@ -32,25 +32,25 @@ class EmployeeService<T extends Employee> {
   }
 }
 
-class InMemoryRepository<T> implements EmployeeRepository<T> {
+class InMemory<T> implements EmployeeRepository<T> {
 
-  private storage: T[] = []
+  private memory: T[] = []
 
   save(item: T): boolean {
-    this.storage.push(item)
+    this.memory.push(item)
     return true
   }
 
   findAll(): T[] {
-    return [...this.storage]
+    return [...this.memory]
   }
 }
 
-//
+//----------------
 
 class FullTimePolicy implements SalaryPolicy {
 
-  constructor(private readonly monthlySalary: number) {}
+  constructor(private monthlySalary: number) {}
 
   calculate(): number {
     return this.monthlySalary
@@ -78,8 +78,12 @@ class ContractorPolicy implements SalaryPolicy {
   }
 }
 
+class App {
 
-const repository = new InMemoryRepository<Employee>()
+}
+
+
+const repository = new InMemory<Employee>()
 const service = new EmployeeService(repository)
 
     // composición externa (Ley de Demeter + DIP)
