@@ -9,29 +9,6 @@ interface EmployeeRepository<T> {
 
 //---------------------------
 
-class Employee {
-  constructor(private policy: SalaryPolicy) {}
-
-  calculateSalary(): number {
-    return this.policy.calculate()
-  }
-}
-
-class EmployeeService<T extends Employee> {
-
-  constructor(
-    private repository: EmployeeRepository<T>
-  ) {}
-
-  register(employee: T): boolean {
-    return this.repository.save(employee)
-  }
-
-  calculatePayroll(): number[] {
-    return this.repository.findAll().map(employe => employe.calculateSalary())
-  }
-}
-
 class InMemory<T> implements EmployeeRepository<T> {
 
   private memory: T[] = []
@@ -45,6 +22,29 @@ class InMemory<T> implements EmployeeRepository<T> {
     return [...this.memory]
   }
 }
+
+class Employee {
+  constructor(private policy: SalaryPolicy) {}
+
+  calculateSalary(): number {
+    return this.policy.calculate()
+  }
+}
+
+class EmployeeService<T extends Employee> {
+
+  constructor(private repository: EmployeeRepository<T>) {}
+
+  register(employee: T): boolean {
+    return this.repository.save(employee)
+  }
+
+  calculatePayroll(): number[] {
+    return this.repository.findAll().map(employe => employe.calculateSalary())
+  }
+}
+
+
 
 //----------------
 
@@ -78,10 +78,6 @@ class ContractorPolicy implements SalaryPolicy {
   }
 }
 
-class App {
-
-}
-
 
 const repository = new InMemory<Employee>()
 const service = new EmployeeService(repository)
@@ -98,4 +94,4 @@ service.register(contractor)
 const salaries = service.calculatePayroll()
 
 console.log("Salarios calculados:")
-salaries.forEach(s => console.log(s))
+salaries.forEach(salario => console.log(salario))

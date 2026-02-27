@@ -64,6 +64,30 @@ class Memoria<T> implements IAccion<T> {
     }
 }
 
+class Servicio<T> implements IAccion<T> {
+    constructor(private memoria: IAccion<T>) { }
+
+    guardar(algo: T): boolean {
+        return this.memoria.guardar(algo)
+    }
+
+    eliminar(id: any): boolean {
+        return this.memoria.eliminar(id)
+    }
+
+    actualizar(algo: T): boolean {
+        return this.memoria.actualizar(algo);
+    }
+
+    mostrar() {
+        return this.memoria.mostrar()
+    }
+}
+
+//VISTA
+//------------------------------------
+// MENU ACCION
+
 type Libro = {
     id: string
     titulo: string
@@ -89,30 +113,6 @@ type MenuOption = {
     key: number;
     label: string;
 }
-
-class Servicio<T> implements IAccion<T> {
-    constructor(private memoria: IAccion<T>) { }
-
-    guardar(algo: T): boolean {
-        return this.memoria.guardar(algo)
-    }
-
-    eliminar(id: any): boolean {
-        return this.memoria.eliminar(id)
-    }
-
-    actualizar(algo: T): boolean {
-        return this.memoria.actualizar(algo);
-    }
-
-    mostrar() {
-        return this.memoria.mostrar()
-    }
-}
-
-//VISTA
-//------------------------------------
-// MENU ACCION
 
 class RegistrarEstudianteCommand implements ICommand {
     constructor(private servicio: IAccion<Estudiante>) { }
