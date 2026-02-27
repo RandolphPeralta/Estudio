@@ -48,23 +48,40 @@ class OrderService<T> {
     }
 }
 
-class ApproveOrder<T> implements OrderAction<T> {
 
-    constructor(private service: { modify(order: T): boolean }) {}
 
-    execute(order: T): boolean {
-        return this.service.modify(order)
-    }
-}
 
-class CreateOrder<T> implements OrderAction<T> {
 
-    constructor(private service: { register(order: T): boolean }) {}
 
-    execute(order: T): boolean {
-        return this.service.register(order)
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+// class ApproveOrder<T> implements OrderAction<T> {
+
+//     constructor(private service: { modify(order: T): boolean }) {}
+
+//     execute(order: T): boolean {
+//         return this.service.modify(order)
+//     }
+// }
+
+// class CreateOrder<T> implements OrderAction<T> {
+
+//     constructor(private service: { register(order: T): boolean }) {}
+
+//     execute(order: T): boolean {
+//         return this.service.register(order)
+//     }
+// }
 
 
 // class Menu<T> {
@@ -82,36 +99,35 @@ class CreateOrder<T> implements OrderAction<T> {
 //     }
 // }
 
-class Menu<T>{
-    private ExecuteOrder: any[] = []
+// class Menu<T>{
+//     private ExecuteOrder: any[] = []
 
-    addactionorder(orderaction:OrderAction<T>){
-        return this.ExecuteOrder.push(orderaction)
-    }
+//     addactionorder(orderaction:OrderAction<T>){
+//         return this.ExecuteOrder.push(orderaction)
+//     }
 
-    executeorder(orderaction: { execute(order: T): boolean }){
+//     executeorder(orderaction: { execute(order: T): boolean }){
         
-    }
-}
+//     }
+// }
 
-type OrderData = {
-    id: string
-    total: number
-}
+// type OrderData = {
+//     id: string
+//     total: number
+// }
 
-const repository: OrderPersistence<OrderData> = new MemoryRepository<OrderData>()
-const service = new OrderService(repository)
+// const repository: OrderPersistence<OrderData> = new MemoryRepository<OrderData>()
+// const service = new OrderService(repository)
 
-const create = new CreateOrder(service)
-const approve = new ApproveOrder(service)
+// const create = new CreateOrder(service)
+// const approve = new ApproveOrder(service)
 
-const order: OrderData = { id: "1", total: 100 }
+// const order: OrderData = { id: "1", total: 100 }
 
-const menu = new Menu()
+// const menu = new Menu()
 
-menu.addactionorder(create)
+// menu.addactionorder(create)
 
 // const menu = new Menu(create, approve)
-
 
 // menu.approve(order)

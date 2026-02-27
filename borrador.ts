@@ -1,5 +1,5 @@
-interface SalaryPolicy {
-  calculate(): number
+abstract class SalaryPolicy {
+  abstract calculate(): number
 }
 
 interface EmployeeRepository<T> {
@@ -44,8 +44,6 @@ class EmployeeService<T extends Employee> {
   }
 }
 
-
-
 //----------------
 
 class FullTimePolicy implements SalaryPolicy {
@@ -59,10 +57,7 @@ class FullTimePolicy implements SalaryPolicy {
 
 class HourlyPolicy implements SalaryPolicy {
 
-  constructor(
-    private hours: number,
-    private rate: number
-  ) {}
+  constructor(private hours: number, private rate: number) {}
 
   calculate(): number {
     return this.hours * this.rate
@@ -78,11 +73,9 @@ class ContractorPolicy implements SalaryPolicy {
   }
 }
 
-
 const repository = new InMemory<Employee>()
 const service = new EmployeeService(repository)
 
-    // composición externa (Ley de Demeter + DIP)
 const fullTime = new Employee(new FullTimePolicy(3000))
 const hourly = new Employee(new HourlyPolicy(160, 20))
 const contractor = new Employee(new ContractorPolicy(5000))
