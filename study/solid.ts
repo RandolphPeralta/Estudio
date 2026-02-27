@@ -188,3 +188,49 @@ class Heroe {
         return this.poder.usar()
     }
 }
+
+
+
+
+//------------------------------------------- Apuntes del profesor
+
+// SRP - Un modulo o una clase debe tener una y solo una razon para cambiar.  
+//       que tiene para cambiar, que esa clase o modulo tenga muchas cosas
+
+// OCP - Una clase o un modulo debe ser extensible para su uso 
+//        y cerrado a su modificacion 
+
+// EJEMPLO DE CALCULADORA CON SUMA
+
+interface IOperacion {
+    ejecutarE(number1: number, number2: number): number
+}
+
+class CSuma implements IOperacion {
+    ejecutarE(number1: number, number2: number) {
+        return number1 + number2
+    }
+}
+
+class CCalculadora {
+    constructor(private operacion: IOperacion){}
+    
+    operar(number1: number, number2: number): number {
+        return this.operacion.ejecutarE(number1, number2)
+    }
+}
+
+// const suma = new Suma()
+// const calculadora = new Calculadora(suma)
+
+// console.log(calculadora.operar(5, 3)) 
+
+//-------------------------------------
+// CRUD
+// Consultar datos por UI o ID
+
+// Persistencia (MEMORIA, BASE DE DATOS, LOCALSTOAGE, REDIS, KAFKA)
+// Modelo de datos
+// Capa de negocio
+// Capa de presentacion
+// I/O
