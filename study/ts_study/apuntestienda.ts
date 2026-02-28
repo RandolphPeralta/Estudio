@@ -2,9 +2,9 @@ import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
 interface IAction<T> {
-  save(item: any): any;
+  save(item: T): any;
   delete(item: any): any;
-  update(item: any): any;
+  update(item: T): any;
   show(): T[]
 }
 
