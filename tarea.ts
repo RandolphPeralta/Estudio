@@ -1,8 +1,9 @@
-// Una empresa quiere: Crear solicitudes de acceso, Aprobar, Rechazar, y Mostrar resultados
+// Una empresa quiere crear solicitudes de acceso, para Aprobar, Rechazar, y Mostrar solicitudes
 
 interface Repositorio<T> {
-  guardar(item: T): boolean
-  obtenerTodos(): T[]
+    guardar(item: T): boolean
+    eliminar(item: T): boolean
+    obtenerTodos(): T[]
 }
 
 interface SistemaSolicitud<T> {
@@ -14,30 +15,35 @@ interface SistemaSolicitud<T> {
 
 class MemoriaRepositorio<T> implements Repositorio<T> {
 
-  private datos: T[] = []
+    private datos = new Set<T>()
 
-  guardar(item: T): boolean {
-    this.datos.push(item)
-    return true
-  }
+    guardar(item: T): boolean {
+        this.datos.add(item)
+        return true
+    }
 
-  obtenerTodos(): T[] {
-    return [...this.datos]
-  }
+    eliminar(item: T): boolean {
+        this.datos.delete(item)
+        return false
+    }
+
+    obtenerTodos(): T[] {
+        return Array.from(this.datos.values())
+    }
 }
 
-class Solicitude<T> {
-    constructor(private repositorio: Repositorio<T>){}
+class Solicitudes<T> {
+    constructor(private repositorio: Repositorio<T>) { }
 
-    Aprobada(item: T){
+    Aprobada(item: T) {
         return this.repositorio.guardar(item)
     }
 
     Desaprobada(item: T) {
-        return false
+        return this.repositorio.eliminar(item)
     }
 
-    MostrarInfo(){
+    MostrarInfo() {
         return this.repositorio.obtenerTodos()
     }
 }
@@ -45,8 +51,12 @@ class Solicitude<T> {
 //------------------------
 
 type Solicitud = {
-  id: string
-  solicitante: string
+    id: string
+    nombre: string
+}
+
+type SolicitudInformacion = Solicitud & {
+    documento: string
 }
 
 type SolicitudTecnologica = Solicitud & {
@@ -54,11 +64,17 @@ type SolicitudTecnologica = Solicitud & {
 }
 
 const repositorio: Repositorio<Solicitud> = new MemoriaRepositorio<Solicitud>()
-const solicitudes: SistemaSolicitud<Solicitud> = new Solicitude(repositorio)
+const solicitudes: SistemaSolicitud<Solicitud> = new Solicitudes(repositorio)
 
-const solicitud: Solicitud = {
+const solicitud1: Solicitud = {
     id: "1",
-    solicitante: "Randolph",
+    nombre: "Randolph"
 }
 
-solicitudes.Aprobada(solicitud)
+const solicitud2: Solicitud = {
+    id: "2",
+    nombre: "Sara"
+}
+
+solicitudes.Aprobada(solicitud1)
+solicitudes.Desaprobada(solicitud2)

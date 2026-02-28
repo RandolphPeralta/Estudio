@@ -1,46 +1,48 @@
-// Una empresa quiere: Crear solicitudes de acceso, Aprobar, Rechazar, y Mostrar resultados
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
+// Una empresa quiere crear solicitudes de acceso, para Aprobar, Rechazar, y Mostrar solicitudes
 //-----------------------
 var MemoriaRepositorio = /** @class */ (function () {
     function MemoriaRepositorio() {
-        this.datos = [];
+        this.datos = new Set();
     }
     MemoriaRepositorio.prototype.guardar = function (item) {
-        this.datos.push(item);
+        this.datos.add(item);
         return true;
     };
+    MemoriaRepositorio.prototype.eliminar = function (item) {
+        this.datos.delete(item);
+        return false;
+    };
     MemoriaRepositorio.prototype.obtenerTodos = function () {
-        return __spreadArray([], this.datos, true);
+        return Array.from(this.datos.values());
     };
     return MemoriaRepositorio;
 }());
-var Solicitude = /** @class */ (function () {
-    function Solicitude(repositorio) {
+var Solicitudes = /** @class */ (function () {
+    function Solicitudes(repositorio) {
         this.repositorio = repositorio;
     }
-    Solicitude.prototype.Aprobada = function (item) {
+    Solicitudes.prototype.Aprobada = function (item) {
         return this.repositorio.guardar(item);
     };
-    Solicitude.prototype.Desaprobada = function (item) {
-        return false;
+    Solicitudes.prototype.Desaprobada = function (item) {
+        return this.repositorio.eliminar(item);
     };
-    Solicitude.prototype.MostrarInfo = function () {
+    Solicitudes.prototype.MostrarInfo = function () {
         return this.repositorio.obtenerTodos();
     };
-    return Solicitude;
+    return Solicitudes;
 }());
 var repositorio = new MemoriaRepositorio();
-var solicitudes = new Solicitude(repositorio);
-var solicitud = {
+var solicitudes = new Solicitudes(repositorio);
+var solicitud1 = {
     id: "1",
-    solicitante: "Randolph",
+    nombre: "Randolph"
 };
-console.log(solicitudes.Aprobada(solicitud));
+var solicitud2 = {
+    id: "2",
+    nombre: "Sara"
+};
+repositorio.guardar(solicitud2);
+console.log(solicitudes.Aprobada(solicitud1));
+console.log(solicitudes.MostrarInfo());
+//console.log(solicitudes.Desaprobada(solicitud2))   : SistemaSolicitud<Solicitud>
