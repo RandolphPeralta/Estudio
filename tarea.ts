@@ -31,47 +31,6 @@ class Memoria<T> extends Accion<T> {
     }
 }
 
-class BaseDatos<T> extends Accion<T> {
-    private memoria: T[] = []
-
-    guardar(some: any): boolean {
-        const index = this.memoria.findIndex((item: any) => item.id === some.id);
-
-        if (index !== -1) {
-            return false;
-        }
-
-        this.memoria.push(some)
-        return true;
-    }
-
-    eliminar(id: any) {
-        const index = this.memoria.findIndex((item: any) => item.id === id);
-
-        if (index === -1) {
-            return false;
-        }
-
-        this.memoria.splice(index, 1);
-        return true;
-
-    }
-
-    obtenerTodos(): T[] {
-        return this.memoria
-    }
-
-    actualizar(some: any): boolean {
-        const index = this.memoria.findIndex((item: any) => item.id === some.id);
-
-        if (index === -1) {
-            return false;
-        }
-
-        this.memoria[index] = some;
-        return true;
-    }
-}
 
 class Solicitudes<T> {
     constructor(private Accion: Accion<T>) { }
@@ -174,3 +133,45 @@ solicitudes.Aprobada(solicitud1)
 //         return true;
 //     }
 // }
+
+class BaseDatos<T> extends Accion<T> {
+    private memoria: T[] = []
+
+    guardar(some: any): boolean {
+        const index = this.memoria.findIndex((item: any) => item.id === some.id);
+
+        if (index !== -1) {
+            return false;
+        }
+
+        this.memoria.push(some)
+        return true;
+    }
+
+    eliminar(id: any) {
+        const index = this.memoria.findIndex((item: any) => item.id === id);
+
+        if (index === -1) {
+            return false;
+        }
+
+        this.memoria.splice(index, 1);
+        return true;
+
+    }
+
+    obtenerTodos(): T[] {
+        return this.memoria
+    }
+
+    actualizar(some: any): boolean {
+        const index = this.memoria.findIndex((item: any) => item.id === some.id);
+
+        if (index === -1) {
+            return false;
+        }
+
+        this.memoria[index] = some;
+        return true;
+    }
+}
