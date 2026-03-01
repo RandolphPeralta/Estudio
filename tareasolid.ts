@@ -33,6 +33,21 @@ class Memoria extends Accion {
     }
 }
 
+class Kafka extends Accion {
+    guardar<T>(item: T): boolean {
+        throw new Error("Method not implemented.");
+    }
+    eliminar<T>(item: T): boolean {
+        throw new Error("Method not implemented.");
+    }
+    obtenerTodos<T>(): T[] {
+        throw new Error("Method not implemented.");
+    }
+    actualizar<T>(item: T): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
 type Solicitud = {
     id: string
     nombre: string
@@ -190,53 +205,3 @@ const memoria: Accion = new Memoria()
 const view: Ejecucion = new View(memoria)
 const app = new App(view)
 app.run()
-
-
-
-// class Solicitudes<T> {
-//     constructor(private Accion: Accion<T>) { }
-
-//     Aprobada(item: T) {
-//         return this.Accion.guardar(item)
-//     }
-
-//     Desaprobada(item: T) {
-//         return this.Accion.eliminar(item)
-//     }
-
-//     MostrarInfo() {
-//         return this.Accion.obtenerTodos()
-//     }
-// }
-
-//------------------------
-
-// type Solicitud = {
-//     id: string
-//     nombre: string
-//     aprobacion: boolean
-// }
-
-// type SolicitudInformacion = Solicitud & {
-//     documento: string
-// }
-
-// type SolicitudTecnologica = Solicitud & {
-//     recurso: string
-// }
-
-// const Accion: Accion<Solicitud> = new Memoria<Solicitud>()
-// const solicitudes: SistemaSolicitud<Solicitud> = new Solicitudes(Accion)
-
-// const solicitud1: Solicitud = {
-//     id: "1",
-//     nombre: "Randolph"
-// }
-
-// const solicitud2: Solicitud = {
-//     id: "2",
-//     nombre: "Sara"
-// }
-
-// solicitudes.Aprobada(solicitud1)
-// solicitudes.Desaprobada(solicitud2)
