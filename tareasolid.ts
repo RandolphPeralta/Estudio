@@ -33,8 +33,8 @@ class Memoria extends Accion {
     }
 }
 
-class BaseDatos {
-    
+class BaseDatos<T> {
+    actualizar<T>(){}
 }
 
 type Solicitud = {
