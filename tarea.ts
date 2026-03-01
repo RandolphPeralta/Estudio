@@ -14,7 +14,7 @@ interface constratoalgo {
     accion1(): void
 }
 
-interface contratoalgoadicional {
+interface contratoalgoadicional extends constratoalgo {
     accion2(): void
 }
 
@@ -33,8 +33,8 @@ class trabajador implements constratoalgo {
         throw new Error("Method not implemented.")
     }
 
-    accion2(): void {
-
+    accion2(): void{
+        
     }
 
 }
