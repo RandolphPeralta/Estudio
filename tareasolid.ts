@@ -34,6 +34,7 @@ class Memoria extends Accion {
 }
 
 class BaseDatos {
+    
 }
 
 type Solicitud = {
