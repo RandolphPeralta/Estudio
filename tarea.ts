@@ -1,177 +1,44 @@
-// Una empresa quiere crear solicitudes de acceso, para Aprobar, Rechazar, y Mostrar solicitudes
+interface Database {
 
-abstract class Accion<T> {
-    abstract guardar(item: T): boolean
-    abstract eliminar(item: T): boolean
-    abstract obtenerTodos(): T[]
 }
 
-interface Sistema<T> {
-    Aprobada(item: T): boolean
-    Desaprobada(item: T): boolean
+interface Mysql extends Database {
+
 }
 
-//-----------------------
-
-class Memoria<T> extends Accion<T> {
-
-    private datos = new Set<T>()
-
-    guardar(item: T): boolean {
-        this.datos.add(item)
-        return true
-    }
-
-    eliminar(item: T): boolean {
-        return this.datos.delete(item)
-    }
-
-    obtenerTodos(): T[] {
-        return Array.from(this.datos.values()) as T[]
-    }
+interface PostgrestSQL extends Database {
+    
 }
 
-
-class Solicitudes<T> {
-    constructor(private Accion: Accion<T>) { }
-
-    Aprobada(item: T) {
-        return this.Accion.guardar(item)
-    }
-
-    Desaprobada(item: T) {
-        return this.Accion.eliminar(item)
-    }
-
-    MostrarInfo() {
-        return this.Accion.obtenerTodos()
-    }
+interface constratoalgo {
+    accion1(): void
 }
 
-//------------------------
-
-type Solicitud = {
-    id: string
-    nombre: string
-    aprobacion: boolean
+interface contratoalgoadicional {
+    accion2(): void
 }
 
-// type SolicitudInformacion = Solicitud & {
-//     documento: string
-// }
+//-------------------
 
-// type SolicitudTecnologica = Solicitud & {
-//     recurso: string
-// }
+class SQL implements Mysql {
 
-const accion: Accion<Solicitud> = new Memoria<Solicitud>()
-const solicitudes: Solicitudes<Solicitud> = new Solicitudes(accion)
-
-const solicitud1: Solicitud = {
-    id: "1",
-    nombre: "Randolph",
-    aprobacion: true
 }
 
-// const solicitud2: Solicitud = {
-//     id: "2",
-//     nombre: "Sara"
-// }
+class PSQL implements PostgrestSQL {
 
-solicitudes.Aprobada(solicitud1)
-//solicitudes.Desaprobada(solicitud2)
-
-
-
-
-
-
-
-
-
-
-
-
-// class BaseDatos<T> extends Accion<T> {
-//     private memoria: T[] = []
-
-//     guardar(some: any): boolean {
-//         const index = this.memoria.findIndex((item: any) => item.id === some.id);
-
-//         if (index !== -1) {
-//             return false;
-//         }
-
-//         this.memoria.push(some)
-//         return true;
-//     }
-
-//     eliminar(id: any) {
-//         const index = this.memoria.findIndex((item: any) => item.id === id);
-
-//         if (index === -1) {
-//             return false;
-//         }
-
-//         this.memoria.splice(index, 1);
-//         return true;
-
-//     }
-
-//     obtenerTodos(): T[] {
-//         return this.memoria
-//     }
-
-//     actualizar(some: any): boolean {
-//         const index = this.memoria.findIndex((item: any) => item.id === some.id);
-
-//         if (index === -1) {
-//             return false;
-//         }
-
-//         this.memoria[index] = some;
-//         return true;
-//     }
-// }
-
-class BaseDatos<T> extends Accion<T> {
-    private memoria: T[] = []
-
-    guardar(some: any): boolean {
-        const index = this.memoria.findIndex((item: any) => item.id === some.id);
-
-        if (index !== -1) {
-            return false;
-        }
-
-        this.memoria.push(some)
-        return true;
-    }
-
-    eliminar(id: any) {
-        const index = this.memoria.findIndex((item: any) => item.id === id);
-
-        if (index === -1) {
-            return false;
-        }
-
-        this.memoria.splice(index, 1);
-        return true;
-
-    }
-
-    obtenerTodos(): T[] {
-        return this.memoria
-    }
-
-    actualizar(some: any): boolean {
-        const index = this.memoria.findIndex((item: any) => item.id === some.id);
-
-        if (index === -1) {
-            return false;
-        }
-
-        this.memoria[index] = some;
-        return true;
-    }
 }
+
+class trabajador implements constratoalgo {
+    accion1(): void {
+        throw new Error("Method not implemented.")
+    }
+
+    accion2(): void {
+
+    }
+
+}
+
+const trabajador1: contratoalgoadicional = new trabajador()
+trabajador1.accion2()
+const sql = new PSQL()
