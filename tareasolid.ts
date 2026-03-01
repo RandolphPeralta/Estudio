@@ -33,19 +33,7 @@ class Memoria extends Accion {
     }
 }
 
-class BaseDatos extends Accion {
-    guardar<T>(item: T): boolean {
-        throw new Error("Method not implemented.");
-    }
-    eliminar<T>(item: T): boolean {
-        throw new Error("Method not implemented.");
-    }
-    obtenerTodos<T>(): T[] {
-        throw new Error("Method not implemented.");
-    }
-    actualizar<T>(item: T): boolean {
-        throw new Error("Method not implemented.");
-    }
+class BaseDatos {
 }
 
 type Solicitud = {
