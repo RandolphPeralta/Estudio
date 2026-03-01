@@ -33,7 +33,7 @@ class Memoria extends Accion {
     }
 }
 
-class Kafka extends Accion {
+class BaseDatos extends Accion {
     guardar<T>(item: T): boolean {
         throw new Error("Method not implemented.");
     }
@@ -58,52 +58,52 @@ type Solicitud = {
 class View implements Ejecucion {
     constructor(private servicio: Accion) { }
 
-   ejecutar() {
-    console.log("\n===== MENU SOLICITUDES =====")
-    console.log("1. Guardar solicitud")
-    console.log("2. Aprobar solicitud")
-    console.log("3. Rechazar solicitud")
-    console.log("4. Eliminar solicitud")
-    console.log("5. Mostrar solicitudes")
-    console.log("0. Salir")
+    ejecutar() {
+        console.log("\n===== MENU SOLICITUDES =====")
+        console.log("1. Guardar solicitud")
+        console.log("2. Aprobar solicitud")
+        console.log("3. Rechazar solicitud")
+        console.log("4. Eliminar solicitud")
+        console.log("5. Mostrar solicitudes")
+        console.log("0. Salir")
 
-    const opcion = Number(prompt("Ingrese una opción: "))
+        const opcion = Number(prompt("Ingrese una opción: "))
 
-    switch (opcion) {
-        case 1:
-            this.guardar()
-            this.pause()
-            this.ejecutar()  
-            break
-        case 2:
-            this.aprobar()
-            this.pause()
-            this.ejecutar()  
-            break
-        case 3:
-            this.rechazar()
-            this.pause()
-            this.ejecutar()  
-            break
-        case 4:
-            this.eliminar()
-            this.pause()
-            this.ejecutar()  
-            break
-        case 5:
-            this.mostrar()
-            this.pause()
-            this.ejecutar()  
-            break
-        case 0:
-            console.log("Saliendo del programa...")
-            return 
-        default:
-            console.log("Opción inválida");
-            this.pause()
-            this.ejecutar()  
+        switch (opcion) {
+            case 1:
+                this.guardar()
+                this.pause()
+                this.ejecutar()
+                break
+            case 2:
+                this.aprobar()
+                this.pause()
+                this.ejecutar()
+                break
+            case 3:
+                this.rechazar()
+                this.pause()
+                this.ejecutar()
+                break
+            case 4:
+                this.eliminar()
+                this.pause()
+                this.ejecutar()
+                break
+            case 5:
+                this.mostrar()
+                this.pause()
+                this.ejecutar()
+                break
+            case 0:
+                console.log("Saliendo del programa...")
+                return
+            default:
+                console.log("Opción inválida");
+                this.pause()
+                this.ejecutar()
+        }
     }
-}
 
     private guardar() {
         const id = String(prompt("Ingese un ID: "))
@@ -165,7 +165,7 @@ class View implements Ejecucion {
         }
 
         this.servicio.eliminar(solicitudEncontrada)
-        console.log("Solicitud eliminada correctamente")
+        console.log("Solicitud eliminada")
     }
 
     private mostrar() {
