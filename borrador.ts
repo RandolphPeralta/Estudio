@@ -5,15 +5,17 @@ interface BaseDatos {
     mostrar(): any
 }
 
-interface MemoriaRAM extends BaseDatos{
+interface IMemoriaRAM extends BaseDatos{
     actualizar(item: any): void
 }
 
-interface MYSQL extends BaseDatos{
+interface IMYSQL extends BaseDatos{
     eliminar(item: any): void
 }
 
-class Ram implements MemoriaRAM {
+//----------------------------
+
+class Ram implements IMemoriaRAM {
     guardar(item: any): void {
         throw new Error("Method not implemented.")
     }
@@ -25,7 +27,7 @@ class Ram implements MemoriaRAM {
     }
 }
 
-class Mysql implements  MYSQL {
+class Mysql implements  IMYSQL {
     guardar(item: any): void {
         throw new Error("Method not implemented.")
     }
@@ -39,6 +41,10 @@ class Mysql implements  MYSQL {
 
 class Sistema {
     constructor(private memoria: BaseDatos){}
+
+    Guardarensistema(item: any){
+        this.memoria.guardar(item)
+    }
 }
 
 const basededatos = new Ram()
