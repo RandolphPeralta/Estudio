@@ -41,6 +41,14 @@ class Mysql implements  IMYSQL {
     }
 }
 
+// LA INVERSION DE DEPENDENCIA LO QUE HARIA SERIA CREAR CADA DISEÑO, 
+// ES DECIR CREAR UNA CLASE PARA CADA ABSTRACION, 
+// PARA RESPETAR EL PRINCIPIO DE LISKOV?
+
+class Sistema {
+    constructor(){}
+}
+
 const basededatos = new Mysql()
 
 
