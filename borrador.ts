@@ -16,6 +16,7 @@ interface IMYSQL extends BaseDatos{
 //----------------------------
 
 class Ram implements IMemoriaRAM {
+    
     guardar(item: any): void {
         throw new Error("Method not implemented.")
     }
@@ -28,6 +29,7 @@ class Ram implements IMemoriaRAM {
 }
 
 class Mysql implements  IMYSQL {
+
     guardar(item: any): void {
         throw new Error("Method not implemented.")
     }
@@ -39,13 +41,50 @@ class Mysql implements  IMYSQL {
     }
 }
 
-class Sistema {
+class SistemaDB {
+
     constructor(private memoria: BaseDatos){}
 
-    Guardarensistema(item: any){
+    GuardarOrden<T>(item: T){
         this.memoria.guardar(item)
+    }
+
+    MostrarOrdenes(){
+        this.memoria.mostrar()
     }
 }
 
+class sistemaRAM {
+
+    constructor(private memoria: IMemoriaRAM){}
+
+    GuardarOrden<T>(item: T){
+        this.memoria.guardar(item)
+    }
+
+    MostrarOrdenes(){
+        this.memoria.mostrar()
+    }
+
+    ActualizarOrden<T>(item: T){
+        this.memoria.actualizar(item)
+    }
+}
+
+type Orden = {
+    pedido: string
+    direccion: string
+    estado: boolean
+}
+
 const basededatos = new Ram()
+const sistema = new SistemaDB(basededatos)
+
+const ordenhamburguesa: Orden = {
+    pedido: "Hamburguesas",
+    direccion: "Calle 10",
+    estado: true
+}
+
+sistema.GuardarOrden(ordenhamburguesa)
 
