@@ -1,22 +1,22 @@
 // Sistema de domicilio, este software va a guardar ordenes y decir si se lograron entregar o no
 
-interface BaseDatos {
-    guardar(item: any): void
+interface IBaseDatos {
+    guardar<T>(item: T): void
     mostrar(): any
 }
 
-interface IMemoriaRAM extends BaseDatos{
-    actualizar(item: any): void
+interface IMemoriaRAM extends IBaseDatos{
+    actualizar<T>(item: T): void
 }
 
-interface IMYSQL extends BaseDatos{
-    eliminar(item: any): void
+interface IMYSQL extends IBaseDatos{
+    eliminar<T>(item: T): void
 }
 
 //----------------------------
 
 class Ram implements IMemoriaRAM {
-    
+
     guardar(item: any): void {
         throw new Error("Method not implemented.")
     }
@@ -41,50 +41,7 @@ class Mysql implements  IMYSQL {
     }
 }
 
-class SistemaDB {
+const basededatos = new Mysql()
 
-    constructor(private memoria: BaseDatos){}
 
-    GuardarOrden<T>(item: T){
-        this.memoria.guardar(item)
-    }
-
-    MostrarOrdenes(){
-        this.memoria.mostrar()
-    }
-}
-
-class sistemaRAM {
-
-    constructor(private memoria: IMemoriaRAM){}
-
-    GuardarOrden<T>(item: T){
-        this.memoria.guardar(item)
-    }
-
-    MostrarOrdenes(){
-        this.memoria.mostrar()
-    }
-
-    ActualizarOrden<T>(item: T){
-        this.memoria.actualizar(item)
-    }
-}
-
-type Orden = {
-    pedido: string
-    direccion: string
-    estado: boolean
-}
-
-const basededatos = new Ram()
-const sistema = new SistemaDB(basededatos)
-
-const ordenhamburguesa: Orden = {
-    pedido: "Hamburguesas",
-    direccion: "Calle 10",
-    estado: true
-}
-
-sistema.GuardarOrden(ordenhamburguesa)
 
