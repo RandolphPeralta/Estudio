@@ -1,4 +1,3 @@
-// DIP 
 // Sistema para prender un ventilador
 
 interface Switch {
@@ -58,11 +57,9 @@ class DIPLight {
 
 // Aqui puedo presentar los principios SRP, OCP, LSP
 
-const fanfav = new FanFav()
-const fanlight: Switch = new FanLight()
-const dip = new DIPSwitch(fanfav)
+const fanfav = new FanFav() // SRP
+const fanlight: Switch = new FanLight() // SRP, OCP, LSP, ISP
+const dip = new DIPSwitch(fanfav) //DIP
 
-
-// Falta como puedo colocar el principio ISP (aunque ya colocando el contrato Switch al lado de fan ya cumpliria, pero bueno), DIP
 
 
