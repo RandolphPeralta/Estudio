@@ -6,28 +6,79 @@ interface AutomovilBase {
 }
 
 interface Nissan extends AutomovilBase{
-    Flotar(): void
+    Estacionar(): void
 }
 
 interface Tesla extends AutomovilBase {
     Reparar(): void
 }
 
-class DiseñoNissan implements Nissan {
-    Flotar(): void {
-        throw new Error("Method not implemented.")
+class DisenioNissan implements Nissan {
+    Estacionar(): void {
+        
     }
+
     Encender(): boolean {
-        throw new Error("Method not implemented.")
+       return true
     }
+
     Apagar(): boolean {
-        throw new Error("Method not implemented.")
+        return false
+    }
+}
+
+class DisenioTesla implements Tesla {
+    Reparar(): void {
+        
+    }
+
+     Encender(): boolean {
+       return true
+    }
+    
+    Apagar(): boolean {
+        return false
+    }
+}
+
+class AutoNissan {
+    constructor(private disenio: Nissan){}
+
+    Arrancar(){
+        return this.disenio.Encender()
+    }
+
+    Apagarse(){
+        this.disenio.Estacionar()
+        return this.disenio.Apagar()
+    }
+}
+
+class AutoTesla {
+    constructor(private disenio: Tesla){}
+
+    Arrancar(){
+        return this.disenio.Encender()
+    }
+
+    Apagarse(){
+        return this.disenio.Apagar()
+    }
+
+    AccionEspecial(){
+        return this.disenio.Reparar()
     }
 }
 
 
+// Aqui puedo presentar los principios
 
-
+const disenioNissan: Nissan= new DisenioNissan() // SRP, OCP
+const disenioTesla: Tesla = new DisenioTesla() // SRP, OCP
+const disenio = new DisenioNissan() // LSP
+const disenioTesla2: AutomovilBase = new DisenioTesla() //, ISP
+const autoNissan = new AutoNissan(disenioNissan) // DIP
+const dautoTesla = new AutoTesla(disenioTesla) // DIP
 
 
 
