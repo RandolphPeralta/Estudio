@@ -13,7 +13,17 @@ interface Tesla extends AutomovilBase {
     Reparar(): void
 }
 
-
+class DiseñoNissan implements Nissan {
+    Flotar(): void {
+        throw new Error("Method not implemented.")
+    }
+    Encender(): boolean {
+        throw new Error("Method not implemented.")
+    }
+    Apagar(): boolean {
+        throw new Error("Method not implemented.")
+    }
+}
 
 
 
