@@ -67,10 +67,10 @@ class DIPLight {
 
 // Aqui puedo presentar los principios
 
-const fanfav: Fav = new FanFav() // SRP, ocp
+const fanfav: Fav = new FanFav() // SRP, OCP
 const fanlight: Light = new FanLight() // SRP, OCP
-const fanlight2: Switch = new FanLight //, ISP
 const fan = new FanFav() // LSP
+const fanlight2: Switch = new FanLight //, ISP
 const dipswitch = new DIPfav(fanfav) // DIP
 const diplight = new DIPLight(fanlight) // DIP
 
