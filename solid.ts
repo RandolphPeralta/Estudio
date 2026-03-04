@@ -1,4 +1,4 @@
-// Sistema para prender un ventilador
+// Sistema para un ventilador
 
 interface Switch {
     TurnOn(): boolean
@@ -15,51 +15,64 @@ interface Fav extends Switch{
 
 class FanLight implements Light {
 
-    Selectnivel(): void {
-        throw new Error("Method not implemented.")
-    }
+    Selectnivel(): void { }
 
-    TurnOn() {
-        return true
-    }
+    TurnOn() { return true }
 
-    TurnOff() {
-        return false
-    }
+    TurnOff() { return false }
 }
 
 class FanFav implements Fav {
 
-    Plug(): void {
-        throw new Error("Method not implemented.")
-    }
+    Plug(): void { }
 
-    TurnOn() {
-        return true
-    }
+    TurnOn() { return true }
     
-    TurnOff() {
-        return false
-    }
-}
-
-class DIPSwitch {
-    constructor(private devace: Switch){}
+    TurnOff() { return false }
 }
 
 class DIPfav {
     constructor(private devace: Fav){}
+
+    turnOn(){
+        return this.devace.TurnOn()
+    }
+
+    turnOff(){
+        return this.devace.TurnOff()
+    }
+
+    Plug(){
+        return this.devace.Plug()
+    }
+
 }
 
 class DIPLight {
-    constructor(private device: Light){}
+    constructor(private devace: Light){}
+
+    turnOn(){
+        return this.devace.TurnOn()
+    }
+
+    turnOff(){
+        return this.devace.TurnOff()
+    }
+
+    select(){
+        return this.devace.Selectnivel()
+    }
+
 }
 
-// Aqui puedo presentar los principios SRP, OCP, LSP
+// Aqui puedo presentar los principios
 
-const fanfav = new FanFav() // SRP
-const fanlight: Switch = new FanLight() // SRP, OCP, LSP, ISP
-const dip = new DIPSwitch(fanfav) //DIP
+const fanfav: Fav = new FanFav() // SRP, ocp
+const fanlight: Light = new FanLight() // SRP, OCP
+const fanlight2: Switch = new FanLight //, ISP
+const fan = new FanFav() // LSP
+const dipswitch = new DIPfav(fanfav) // DIP
+const diplight = new DIPLight(fanlight) // DIP
 
 
 
