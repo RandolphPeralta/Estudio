@@ -70,7 +70,7 @@ class DIPLight {
 const fanfav: Fav = new FanFav() // SRP, OCP
 const fanlight: Light = new FanLight() // SRP, OCP
 const fan = new FanFav() // LSP
-const fanlight2: Switch = new FanLight //, ISP
+const fanlight2: Switch = new FanLight() //, ISP
 const dipswitch = new DIPfav(fanfav) // DIP
 const diplight = new DIPLight(fanlight) // DIP
 

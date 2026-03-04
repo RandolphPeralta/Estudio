@@ -1,3 +1,69 @@
+// Sistema para crear un automovil
+
+interface AutomovilBase {
+    Encender(): boolean
+    Apagar(): boolean
+}
+
+interface Nissan extends AutomovilBase{
+    Flotar(): void
+}
+
+interface Tesla extends AutomovilBase {
+    Reparar(): void
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Sistema de domicilio, este software va a guardar ordenes y decir si se lograron entregar o no
 
 interface IBaseDatos {
@@ -50,6 +116,3 @@ class Sistema {
 }
 
 const basededatos = new Mysql()
-
-
-
