@@ -14,9 +14,7 @@ interface Tesla extends AutomovilBase {
 }
 
 class DisenioNissan implements Nissan {
-    Estacionar(): void {
-        
-    }
+    Estacionar(): void { }
 
     Encender(): boolean {
        return true
@@ -28,9 +26,7 @@ class DisenioNissan implements Nissan {
 }
 
 class DisenioTesla implements Tesla {
-    Reparar(): void {
-        
-    }
+    Reparar(): void { }
 
      Encender(): boolean {
        return true
