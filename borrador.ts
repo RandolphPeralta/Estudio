@@ -70,9 +70,6 @@ class AutoTesla {
     }
 }
 
-
-// Aqui puedo presentar los principios
-
 const disenioNissan: Nissan= new DisenioNissan() // SRP, OCP
 const disenioTesla: Tesla = new DisenioTesla() // SRP, OCP
 const disenio = new DisenioNissan() // LSP
