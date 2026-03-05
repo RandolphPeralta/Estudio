@@ -6,15 +6,15 @@ interface AutomovilBase {
 }
 
 interface Nissan extends AutomovilBase{ 
-    Estacionar(): void
+    AutoEstacionar(): void
 }
 
 interface Tesla extends AutomovilBase {
-    Reparar(): void
+    Autopilot(): void
 }
 
 class DisenioNissan implements Nissan {
-    Estacionar(): void { }
+    AutoEstacionar(): void { }
 
     Encender(): boolean {
        return true
@@ -26,9 +26,9 @@ class DisenioNissan implements Nissan {
 }
 
 class DisenioTesla implements Tesla {
-    Reparar(): void { }
+    Autopilot(): void { }
 
-     Encender(): boolean {
+    Encender(): boolean {
        return true
     }
     
@@ -45,7 +45,7 @@ class AutoNissan {
     }
 
     Apagarse(){
-        this.disenio.Estacionar()
+        this.disenio.AutoEstacionar()
         return this.disenio.Apagar()
     }
 }
@@ -62,7 +62,7 @@ class AutoTesla {
     }
 
     AccionEspecial(){
-        return this.disenio.Reparar()
+        return this.disenio.Autopilot()
     }
 }
 

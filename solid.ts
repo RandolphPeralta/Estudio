@@ -5,15 +5,15 @@ interface Switch {
     TurnOff(): boolean
 }
 
-interface Light extends Switch{
+interface Samurai extends Switch{
     Selectnivel(): void
 }
 
-interface Fav extends Switch{
+interface Olimpo extends Switch{
     Plug(): void
 }
 
-class FanLight implements Light {
+class DisenioSamurai implements Samurai {
 
     Selectnivel(): void { }
 
@@ -22,7 +22,7 @@ class FanLight implements Light {
     TurnOff() { return false }
 }
 
-class FanFav implements Fav {
+class DisenioOlimpo implements Olimpo {
 
     Plug(): void { }
 
@@ -31,8 +31,8 @@ class FanFav implements Fav {
     TurnOff() { return false }
 }
 
-class DIPfav {
-    constructor(private devace: Fav){}
+class VentilatorOlimpo {
+    constructor(private devace: Olimpo){}
 
     turnOn(){
         return this.devace.TurnOn()
@@ -48,8 +48,8 @@ class DIPfav {
 
 }
 
-class DIPLight {
-    constructor(private devace: Light){}
+class VentilatorSamurai {
+    constructor(private devace: Samurai){}
 
     turnOn(){
         return this.devace.TurnOn()
@@ -67,12 +67,12 @@ class DIPLight {
 
 // Aqui puedo presentar los principios
 
-const fanfav: Fav = new FanFav() // SRP, OCP
-const fanlight: Light = new FanLight() // SRP, OCP
-const fan = new FanFav() // LSP
-const fanlight2: Switch = new FanLight() //, ISP
-const dipswitch = new DIPfav(fanfav) // DIP
-const diplight = new DIPLight(fanlight) // DIP
+const fanfav: Olimpo = new DisenioOlimpo() // SRP, OCP
+const fanlight: Samurai = new DisenioSamurai() // SRP, OCP
+const fan = new DisenioOlimpo() // LSP
+const fanlight2: Switch = new DisenioSamurai() //, ISP
+const dipswitch = new VentilatorOlimpo(fanfav) // DIP
+const diplight = new VentilatorSamurai(fanlight) // DIP
 
 
 
