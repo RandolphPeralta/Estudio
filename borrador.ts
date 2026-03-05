@@ -69,7 +69,7 @@ class AutoTesla {
 const disenioNissan: Nissan= new DisenioNissan() // SRP, OCP
 const disenioTesla: Tesla = new DisenioTesla() // SRP, OCP
 const disenio = new DisenioNissan() // LSP
-const disenioTesla2: AutomovilBase = new DisenioTesla() //, ISP
+const otrodisenioTesla: AutomovilBase = new DisenioTesla() //, ISP
 const autoNissan = new AutoNissan(disenioNissan) // DIP
 const dautoTesla = new AutoTesla(disenioTesla) // DIP
 
