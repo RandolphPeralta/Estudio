@@ -66,9 +66,18 @@ class AutoToyota {
     }
 }
 
+class Fabrica {
+
+    constructor(private auto: AutomovilBase) {}
+
+    probarAuto(): void {
+        this.auto.Encender()
+        this.auto.Apagar()
+    }
+}
+
 const disenioNissan: Nissan= new DisenioNissan()
 const disenioToyota: Toyota = new DisenioToyota()  
 const disenio = new DisenioNissan() 
 const otrodisenioToyota: AutomovilBase = new DisenioToyota()
-const autoNissan = new AutoNissan(disenioNissan) 
-const autoToyota = new AutoToyota(disenioToyota)
+const auto = new Fabrica(disenio)
