@@ -11,16 +11,20 @@ class CUsuario {
 }
 
 //Buen ejemplo:
-class Usuario {
+interface IUsuario {
+
+}
+
+class Usuario implements IUsuario{
     constructor(private nombre: string) { }
 }
 
 class UsuarioRepository {
-    guardar(usuario: Usuario) { }
+    guardar(usuario: IUsuario) { }
 }
 
 class EmailService {
-    enviar(usuario: Usuario) { }
+    enviar(usuario: IUsuario) { }
 }
 
 // 0 - OPEN/CLOSED 
