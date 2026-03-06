@@ -10,7 +10,7 @@ interface Nissan extends AutomovilBase{
 }
 
 interface Tesla extends AutomovilBase {
-    Autopilot(): void
+    AutoRepararse(): void
 }
 
 class DisenioNissan implements Nissan {
@@ -26,7 +26,7 @@ class DisenioNissan implements Nissan {
 }
 
 class DisenioTesla implements Tesla {
-    Autopilot(): void { }
+    AutoRepararse(): void { }
 
     Encender(): boolean {
        return true
@@ -62,7 +62,7 @@ class AutoTesla {
     }
 
     AccionEspecial(){
-        return this.disenio.Autopilot()
+        return this.disenio.AutoRepararse()
     }
 }
 
