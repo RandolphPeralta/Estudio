@@ -47,8 +47,6 @@ class Fabrica {
     }
 }
 
-const disenioNissan: Nissan= new DisenioNissan()
-const disenioToyota: Toyota = new DisenioToyota()  
-const disenio = new DisenioNissan() 
+const disenionissan = new DisenioNissan() 
 const otrodisenioToyota: AutomovilBase = new DisenioToyota()
-const primerauto = new Fabrica(disenio)
+const primerauto = new Fabrica(disenionissan)
