@@ -49,4 +49,4 @@ class Fabrica {
 
 const disenionissan = new DisenioNissan() 
 const otrodisenioToyota: AutomovilBase = new DisenioToyota()
-const primerauto = new Fabrica(disenionissan)
+const auto = new Fabrica(disenionissan)
