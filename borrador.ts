@@ -39,11 +39,11 @@ class DisenioToyota implements Toyota {
 
 class Fabrica {
 
-    constructor(private auto: AutomovilBase) {}
+    constructor(private disenioauto: AutomovilBase) {}
 
     probarAuto(): void {
-        this.auto.Encender()
-        this.auto.Apagar()
+        this.disenioauto.Encender()
+        this.disenioauto.Apagar()
     }
 }
 
@@ -51,4 +51,4 @@ const disenioNissan: Nissan= new DisenioNissan()
 const disenioToyota: Toyota = new DisenioToyota()  
 const disenio = new DisenioNissan() 
 const otrodisenioToyota: AutomovilBase = new DisenioToyota()
-const auto = new Fabrica(disenio)
+const primerauto = new Fabrica(disenio)
