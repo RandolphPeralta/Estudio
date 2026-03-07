@@ -37,35 +37,6 @@ class DisenioToyota implements Toyota {
     }
 }
 
-class AutoNissan {
-    constructor(private disenio: Nissan){}
-
-    Arrancar(){
-        return this.disenio.Encender()
-    }
-
-    Apagarse(){
-        this.disenio.AutoEstacionar()
-        return this.disenio.Apagar()
-    }
-}
-
-class AutoToyota {
-    constructor(private disenio: Toyota){}
-
-    Arrancar(){
-        return this.disenio.Encender()
-    }
-
-    Apagarse(){
-        return this.disenio.Apagar()
-    }
-
-    AccionEspecial(){
-        return this.disenio.AutoRepararse()
-    }
-}
-
 class Fabrica {
 
     constructor(private auto: AutomovilBase) {}
