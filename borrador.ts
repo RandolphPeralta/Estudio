@@ -5,7 +5,7 @@ interface AutomovilBase {
     Apagar(): boolean
 }
 
-interface Nissan extends AutomovilBase{ 
+interface Nissan extends AutomovilBase {
     AutoEstacionar(): void
 }
 
@@ -16,10 +16,10 @@ interface Toyota extends AutomovilBase {
 class DisenioNissan implements Nissan {
     AutoEstacionar(): void {
         // Logica de autoestacionar
-     }
+    }
 
     Encender(): boolean {
-       return true
+        return true
     }
 
     Apagar(): boolean {
@@ -31,9 +31,9 @@ class DisenioToyota implements Toyota {
     AutoRepararse(): void { }
 
     Encender(): boolean {
-       return true
+        return true
     }
-    
+
     Apagar(): boolean {
         return false
     }
@@ -41,7 +41,7 @@ class DisenioToyota implements Toyota {
 
 class Fabrica {
 
-    constructor(private disenioauto: AutomovilBase) {}
+    constructor(private disenioauto: AutomovilBase) { }
 
     probarAuto(): void {
         this.disenioauto.Encender()
@@ -49,6 +49,6 @@ class Fabrica {
     }
 }
 
-const disenionissan = new DisenioNissan() 
+const disenionissan = new DisenioNissan()
 const otrodisenioToyota: AutomovilBase = new DisenioToyota()
 const auto = new Fabrica(disenionissan)
