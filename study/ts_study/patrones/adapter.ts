@@ -22,7 +22,9 @@ class AdaptadorEspada implements Arma {
     
     constructor(private espada: Espada){}
     
-    usar(): void {}
+    usar(): void {
+        this.espada.cortar()
+    }
     
 }
 
@@ -32,6 +34,24 @@ class Mazo {
     }
 }
 
+class AdaptadorMazo implements Arma {
+    
+    constructor(private mazo: Mazo){}
+    
+    usar(): void {
+        this.mazo.aplastar()
+    }
+    
+}
+
 const paladin = new Paladin()
 const espada = new Espada()
+const espadaAdaptada = new AdaptadorEspada(espada)
+
+const mazo = new Mazo()
+const mazoAdaptado = new AdaptadorMazo(mazo)
+
+
+paladin.atacar(espadaAdaptada)
+paladin.atacar(mazoAdaptado)
 
