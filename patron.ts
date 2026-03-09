@@ -23,3 +23,15 @@ class Excalibur {
 }
 
 const espadaReyArturo = Excalibur.getInstance();
+const espadaPaladin = Excalibur.getInstance(); 
+
+espadaReyArturo.portarEspada();
+espadaPaladin.portarEspada();
+
+console.log( espadaReyArturo === espadaPaladin )
+console.log(espadaReyArturo, espadaPaladin)
+
+// ADAPTER  
+// Permite a 2 objetos de interfaces incompatibles 
+// colaborar mutuamente
+
