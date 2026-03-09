@@ -1,27 +1,7 @@
-// Sistema de correos
+class Mago {
+    private constructor(){}
 
-interface Database {
-
+    usar(){}
 }
 
-interface Mysql extends Database {
-
-}
-
-interface PostgrestSQL extends Database {
-    
-}
-
-//------------------------------
-
-class MSQL implements Mysql {
-
-}
-
-class PSQL implements PostgrestSQL {
-
-}
-
-class CorreoMSQL {
-    constructor(private memoria: MSQL){}
-}
+const maguito = Mago
