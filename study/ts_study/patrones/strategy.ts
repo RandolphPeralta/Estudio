@@ -7,19 +7,44 @@ interface EstrategiaPago {
     pagar(monto: number): void
 }
 
-class PagoTarjeta implements EstrategiaPago {
+interface Tarjeta extends EstrategiaPago {
+    guardarPlataTarjeta(monto: number): void
+}
+
+interface Paypal extends EstrategiaPago {
+    contenerPlata(monto: number): void
+}
+
+interface Cryptomoney extends EstrategiaPago {
+    protegerPlata(monto: number): void
+}
+
+class PagoTarjeta implements Tarjeta {
+
+    guardarPlataTarjeta(monto: number): void {
+        throw new Error("Method not implemented.")
+    }
+    
     pagar(monto: number): void {
         console.log("Pagando con tarjeta:", monto)
     }
 }
 
-class PagoPaypal implements EstrategiaPago {
+class PagoPaypal implements Paypal {
+    contenerPlata(monto: number): void {
+        throw new Error("Method not implemented.")
+    }
+
     pagar(monto: number): void {
         console.log("Pagando con PayPal:", monto)
     }
+
 }
 
-class PagoCrypto implements EstrategiaPago {
+class PagoCrypto implements Cryptomoney {
+    protegerPlata(monto: number): void {
+        throw new Error("Method not implemented.")
+    }
     pagar(monto: number): void {
         console.log("Pagando con Criptomonedas:", monto)
     }
