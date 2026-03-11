@@ -54,3 +54,4 @@ const estadoInicial = new SinMoneda(maquina)
 maquina.seleccionarProducto()
 maquina.insertarMoneda()
 maquina.seleccionarProducto()
+
