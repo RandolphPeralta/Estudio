@@ -3,8 +3,6 @@
 // a un objeto sin modificar 
 // su clase original.
 
-// NOTA: ARREGLAR ESTE EJERCICIO 
-// CON SOLID, POO Y LA ABSTRACCION
 interface Cafe {
     descripcion(): string
 }
