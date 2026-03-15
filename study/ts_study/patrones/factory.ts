@@ -4,30 +4,45 @@
 // subclases alterar el tipo de objetos 
 // que se crearán
 
-interface Forma {
-    dibujar(): void
+interface Transporte {
+    entregar(): void
 }
 
-class Triangulo implements Forma {
-    dibujar(): void {} 
-}
-
-class Circulo implements Forma {
-    dibujar(): void {}
-}
-
-class Cuadrado implements Forma {
-    dibujar(): void {}
-}
-
-class FactoryForm {
-    public obternerForm(form: string){
-        if (form === "triangulo"){
-            return new Triangulo()
-        }
+class Camion implements Transporte {
+    entregar(): void {
+        console.log("Entrega por carretera en camión")
     }
 }
 
-const factory = new FactoryForm()
-const forma = factory.obternerForm("triangulo")
-console.log(forma)
+class Barco implements Transporte {
+    entregar(): void {
+        console.log("Entrega por mar en barco")
+    }
+}
+
+abstract class Logistica {
+
+    abstract crearTransporte(): Transporte
+
+    planificarEntrega(): void {
+        const transporte = this.crearTransporte()
+        transporte.entregar()
+    }
+}
+
+class LogisticaTerrestre extends Logistica {
+
+    crearTransporte(): Transporte {
+        return new Camion()
+    }
+}
+
+class LogisticaMaritima extends Logistica {
+
+    crearTransporte(): Transporte {
+        return new Barco()
+    }
+}
+
+const logistica = new LogisticaTerrestre()
+logistica.planificarEntrega()
