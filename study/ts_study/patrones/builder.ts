@@ -1,17 +1,17 @@
 // BUILDER
 // permite construir objetos complejos paso a paso
 
-class Computadora {
-    cpu?: string
-    ram?: string
-    almacenamiento?: string
-}
-
 interface ComputadoraBuilder {
     setCPU(cpu: string): void
     setRAM(ram: string): void
     setAlmacenamiento(almacenamiento: string): void
     obtenerResultado(): Computadora
+}
+
+class Computadora {
+    cpu?: string
+    ram?: string
+    almacenamiento?: string
 }
 
 class ComputadoraGamerBuilder implements ComputadoraBuilder {
