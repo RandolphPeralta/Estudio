@@ -30,6 +30,8 @@ abstract class Logistica {
     }
 }
 
+//interface Terrestre extends Logistica {}
+
 class LogisticaTerrestre extends Logistica {
 
     crearTransporte(): Transporte {
