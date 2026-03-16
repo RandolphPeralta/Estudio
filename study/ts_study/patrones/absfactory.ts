@@ -18,25 +18,25 @@ interface UIFactory {
 
 class BotonWindows implements Boton {
     render(): void {
-        console.log("Renderizando botón de Windows")
+        //console.log("Renderizando botón de Windows")
     }
 }
 
 class CheckboxWindows implements Checkbox {
     marcar(): void {
-        console.log("Checkbox de Windows marcado")
+        //console.log("Checkbox de Windows marcado")
     }
 }
 
 class BotonMac implements Boton {
     render(): void {
-        console.log("Renderizando botón de Mac")
+        //console.log("Renderizando botón de Mac")
     }
 }
 
 class CheckboxMac implements Checkbox {
     marcar(): void {
-        console.log("Checkbox de Mac marcado")
+        //console.log("Checkbox de Mac marcado")
     }
 }
 
