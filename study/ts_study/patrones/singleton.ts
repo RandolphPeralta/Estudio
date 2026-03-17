@@ -8,7 +8,7 @@ class Excalibur {
 
     private constructor(){}
 
-    public static getInstance(): any {
+    public static getInstance(): Excalibur {
         if (!Excalibur.instance) {
             Excalibur.instance = new Excalibur();
             console.log("Se ha forjado la legendaria espada!")
