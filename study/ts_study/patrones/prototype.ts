@@ -1,11 +1,11 @@
 // PROTOTYPE
 // permite copiar objetos existentes sin que el código dependa de sus clases.
 
-interface Prototype<T> {
-    clone(): T
+interface Prototype {
+    clone(): Prototype
 }
 
-class Usuario implements Prototype<Usuario> {
+class Usuario implements Prototype {
 
     constructor(private nombre: string) { }
 
