@@ -18,7 +18,22 @@ class Usuario implements Prototype {
     }
 }
 
+class Usuarioclone extends Usuario {
+    
+}
+
 const usuario1 = new Usuario("Carlos")
 const usuario2 = usuario1.clone()
 
 usuario2.mostrar()
+
+class Prototypes {
+    public primitive: any;
+    public component!: Object;
+
+    public clone() {
+        const clone = Object.create(this);
+
+        clone.component = Object.create(this.component);
+    }
+}
