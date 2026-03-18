@@ -1,15 +1,11 @@
 // DECORATOR
 // permite agregar funcionalidades 
-// a un objeto sin modificar 
-// su clase original.
+// a un objeto en otro objeto encapsulado especial, 
+// que contienen estas funcionalidades
+// sin modificar su clase original.
 
 interface Cafe {
     descripcion(): string
-}
-
-abstract class DisenioCafe implements Cafe {
-    constructor(protected cafe: Cafe) { }
-    abstract descripcion(): string
 }
 
 class CafeSimple implements Cafe {
@@ -17,6 +13,11 @@ class CafeSimple implements Cafe {
     descripcion(): string {
         return "Café simple"
     }
+}
+
+abstract class DisenioCafe implements Cafe {
+    constructor(protected cafe: Cafe) { }
+    abstract descripcion(): string
 }
 
 class Leche extends DisenioCafe {
