@@ -17,19 +17,27 @@ interface UIFactory {
 }
 
 class BotonWindows implements Boton {
-    render(): void { }
+    render(): void { 
+
+    }
 }
 
 class CheckboxWindows implements Checkbox {
-    marcar(): void { }
+    marcar(): void { 
+
+    }
 }
 
 class BotonMac implements Boton {
-    render(): void { }
+    render(): void { 
+
+    }
 }
 
 class CheckboxMac implements Checkbox {
-    marcar(): void {}
+    marcar(): void {
+        
+    }
 }
 
 class WindowsFactory implements UIFactory {
