@@ -7,40 +7,49 @@ interface Boton {
     render(): void
 }
 
+interface IBotonWindows extends Boton { }
+interface IBotonMac extends Boton { }
+
 interface Checkbox {
     marcar(): void
 }
+
+interface IChekboxWindows extends Checkbox { }
+interface IChekboxMac extends Checkbox { }
 
 interface UIFactory {
     crearBoton(): Boton
     crearCheckbox(): Checkbox
 }
 
-class BotonWindows implements Boton {
-    render(): void { 
+interface UIFactoryWinndows extends UIFactory {}
+interface UIFactoryMac extends UIFactory {}
+
+class BotonWindows implements IBotonWindows {
+    render(): void {
 
     }
 }
 
-class CheckboxWindows implements Checkbox {
-    marcar(): void { 
-
-    }
-}
-
-class BotonMac implements Boton {
-    render(): void { 
-
-    }
-}
-
-class CheckboxMac implements Checkbox {
+class CheckboxWindows implements IChekboxWindows {
     marcar(): void {
-        
+
     }
 }
 
-class WindowsFactory implements UIFactory {
+class BotonMac implements IBotonMac {
+    render(): void {
+
+    }
+}
+
+class CheckboxMac implements IChekboxMac {
+    marcar(): void {
+
+    }
+}
+
+class WindowsFactory implements UIFactoryWinndows {
 
     crearBoton(): Boton {
         return new BotonWindows()
@@ -51,7 +60,7 @@ class WindowsFactory implements UIFactory {
     }
 }
 
-class MacFactory implements UIFactory {
+class MacFactory implements UIFactoryMac {
 
     crearBoton(): Boton {
         return new BotonMac()
@@ -64,7 +73,7 @@ class MacFactory implements UIFactory {
 
 class Aplicacion {
 
-    constructor(private factory: UIFactory) {}
+    constructor(private factory: UIFactory) { }
 
     renderUI() {
         const boton = this.factory.crearBoton()
