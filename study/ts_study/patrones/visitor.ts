@@ -46,3 +46,10 @@ class CalcularArea implements Visitante {
     }
 }
 
+const formas: Forma[] = [
+    new Circulo(10),
+    new Rectangulo(5, 20)
+];
+
+const exportador = new ExportarJSON();
+const calculador = new CalcularArea();
