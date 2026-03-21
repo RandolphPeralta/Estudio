@@ -3,12 +3,10 @@
 // y trabajar con esas estructuras como si 
 // fueran objetos individuales.
 
-// Componente (abstracción → clave del patrón)
 interface Componente {
     mostrar(indice: string): void
 }
 
-// Hoja (Leaf)
 class Archivo implements Componente {
 
     constructor(private nombre: string) {}
@@ -18,7 +16,6 @@ class Archivo implements Componente {
     }
 }
 
-// Compuesto (Composite)
 class Carpeta implements Componente {
 
     private elementos: Componente[] = []

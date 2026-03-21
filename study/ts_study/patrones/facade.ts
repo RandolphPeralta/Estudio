@@ -3,7 +3,6 @@
 // a una biblioteca, un framework o cualquier 
 // otro grupo complejo de clases.
 
-// Subsistemas (complejos)
 interface IProyector {
     proyectar(): void
 }
@@ -20,7 +19,6 @@ class Sonido {
     }
 }
 
-// Facade (fachada)
 class Reproductor {
     reproducir() {
         console.log("Reproduciendo película")

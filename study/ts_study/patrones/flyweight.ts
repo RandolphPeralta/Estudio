@@ -5,21 +5,10 @@
 // entre varios objetos en lugar de mantener 
 // toda la información en cada objeto.
 
-// Ejemplo: Caracteres de texto (editor)
-
-// Imagina que renderizas miles de letras:
-
-// A A A A A A A A A
-
-// Sin Flyweight → creas muchos objetos "A"
-// Con Flyweight → creas una sola "A" y la reutilizas
-
-// Flyweight (objeto compartido)
 interface Letra {
     mostrar(posX: number, posY: number): void
 }
 
-// Flyweight concreto
 class LetraConcreta implements Letra {
 
     constructor(private caracter: string) {}
@@ -29,7 +18,6 @@ class LetraConcreta implements Letra {
     }
 }
 
-// Fábrica de Flyweights
 class LetraFactory {
 
     private letras: { [key: string]: Letra } = {}

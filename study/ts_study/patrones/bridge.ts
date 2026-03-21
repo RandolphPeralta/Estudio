@@ -3,14 +3,12 @@
 // relacionadas, en dos jerarquías separadas (abstracción e implementación) 
 // que pueden desarrollarse independientemente la una de la otra.
 
-// Implementación (abstracción del dispositivo → DIP)
 interface Dispositivo {
     encender(): void
     apagar(): void
     setVolumen(vol: number): void
 }
 
-// Implementaciones concretas
 class TV implements Dispositivo {
 
     encender(): void {
@@ -41,7 +39,6 @@ class Radio implements Dispositivo {
     }
 }
 
-// Abstracción (Control remoto)
 class ControlRemoto {
 
     constructor(protected dispositivo: Dispositivo) {}
@@ -55,7 +52,6 @@ class ControlRemoto {
     }
 }
 
-// Abstracción refinada
 class ControlAvanzado extends ControlRemoto {
 
     subirVolumen() {
