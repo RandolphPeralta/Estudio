@@ -1,5 +1,5 @@
 // ADAPTER  
-// Permite a 2 objetos de interfaces incompatibles 
+// Permite a objetos de interfaces incompatibles 
 // colaborar mutuamente
 
 interface Arma {
