@@ -1,17 +1,14 @@
 // PROXY
 // permite proporcionar un sustituto o marcador de posición para otro objeto. 
-// Un proxy controla el acceso al objeto original, 
-// permitiéndote hacer algo antes o después 
-// de que la solicitud llegue al objeto original.
 
 interface VideoService {
-    reproducirVideo(nombre: string): void
+    reproducirVideo(): void
 }
 
 class VideoReal implements VideoService {
 
-    reproducirVideo(nombre: string): void {
-        console.log("Reproduciendo video:", nombre)
+    reproducirVideo(): void {
+        
     }
 }
 
@@ -23,11 +20,15 @@ class VideoProxy implements VideoService {
         this.videoReal = new VideoReal()
     }
 
-    reproducirVideo(nombre: string): void {
+    reproducirVideo(): void {
         if (this.tienePermiso) {
-            this.videoReal.reproducirVideo(nombre)
+            this.videoReal.reproducirVideo()
         } else {
             console.log("Acceso denegado")
         }
     }
 }
+
+const proxy = new VideoProxy(true)
+
+proxy.reproducirVideo()

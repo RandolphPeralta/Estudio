@@ -4,7 +4,7 @@
 // a esa única instancia.
 
 class Excalibur {
-    private static instance: Excalibur | null = null;
+    private static instance: Excalibur;
 
     private constructor(){}
 

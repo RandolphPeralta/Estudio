@@ -7,33 +7,14 @@ interface EstrategiaPago {
     pagar(monto: number): void
 }
 
-interface Tarjeta extends EstrategiaPago {
-    guardarPlataTarjeta(monto: number): void
-}
-
-interface Paypal extends EstrategiaPago {
-    contenerPlata(monto: number): void
-}
-
-interface Cryptomoney extends EstrategiaPago {
-    protegerPlata(monto: number): void
-}
-
-class PagoTarjeta implements Tarjeta {
-
-    guardarPlataTarjeta(monto: number): void {
-        throw new Error("Method not implemented.")
-    }
+class PagoTarjeta implements EstrategiaPago {
     
     pagar(monto: number): void {
         
     }
 }
 
-class PagoPaypal implements Paypal {
-    contenerPlata(monto: number): void {
-        throw new Error("Method not implemented.")
-    }
+class PagoPaypal implements EstrategiaPago {
 
     pagar(monto: number): void {
         
@@ -41,10 +22,8 @@ class PagoPaypal implements Paypal {
 
 }
 
-class PagoCrypto implements Cryptomoney {
-    protegerPlata(monto: number): void {
-        throw new Error("Method not implemented.")
-    }
+class PagoCrypto implements EstrategiaPago {
+
     pagar(monto: number): void {
         
     }
@@ -59,3 +38,9 @@ class CarritoCompra {
         this.estrategia.pagar(monto)
     }
 }
+
+const estrategia = new PagoTarjeta()
+
+const carrito = new CarritoCompra(estrategia)
+
+carrito.realizarPago(100)
