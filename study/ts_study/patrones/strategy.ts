@@ -26,7 +26,7 @@ class PagoTarjeta implements Tarjeta {
     }
     
     pagar(monto: number): void {
-        console.log("Pagando con tarjeta:", monto)
+        
     }
 }
 
@@ -36,7 +36,7 @@ class PagoPaypal implements Paypal {
     }
 
     pagar(monto: number): void {
-        console.log("Pagando con PayPal:", monto)
+        
     }
 
 }
@@ -46,7 +46,7 @@ class PagoCrypto implements Cryptomoney {
         throw new Error("Method not implemented.")
     }
     pagar(monto: number): void {
-        console.log("Pagando con Criptomonedas:", monto)
+        
     }
 }
 

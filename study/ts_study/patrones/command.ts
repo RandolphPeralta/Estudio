@@ -9,11 +9,11 @@ interface Command {
 class Luz {
 
     encender(): void {
-        console.log("Luz encendida")
+        
     }
 
     apagar(): void {
-        console.log("Luz apagada")
+        
     }
 }
 
@@ -37,11 +37,7 @@ class ApagarLuzCommand implements Command {
 
 class ControlRemoto {
 
-    private comando!: Command
-
-    setComando(comando: Command) {
-        this.comando = comando
-    }
+    constructor(private comando: Command){}
 
     presionarBoton() {
         this.comando.ejecutar()
@@ -53,10 +49,6 @@ const luz = new Luz()
 const encender = new EncenderLuzCommand(luz)
 const apagar = new ApagarLuzCommand(luz)
 
-const control = new ControlRemoto()
+const control = new ControlRemoto(encender)
 
-control.setComando(encender)
-control.presionarBoton()
-
-control.setComando(apagar)
 control.presionarBoton()

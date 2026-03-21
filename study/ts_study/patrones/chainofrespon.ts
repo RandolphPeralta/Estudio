@@ -4,7 +4,7 @@
 // si la pasa al siguiente manejador de la cadena.
 
 interface Handler {
-    setSiguiente(handler: Handler): Handler
+    Siguiente(handler: Handler): Handler
     manejar(solicitud: string): void
 }
 
@@ -12,7 +12,7 @@ abstract class BaseHandler implements Handler {
 
     private siguiente?: Handler
 
-    setSiguiente(handler: Handler): Handler {
+    Siguiente(handler: Handler): Handler {
         this.siguiente = handler
         return handler
     }
@@ -61,4 +61,4 @@ const basico = new SoporteBasico()
 const intermedio = new SoporteIntermedio()
 const avanzado = new SoporteAvanzado()
 
-basico.setSiguiente(intermedio).setSiguiente(avanzado)
+basico.Siguiente(intermedio).Siguiente(avanzado)

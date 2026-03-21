@@ -1,39 +1,45 @@
 // ITERATOR
-//  recorrer elementos de una colección 
-// sin exponer su representación subyacente (lista, pila, árbol, etc.).
+// Recorrer elementos de una colección 
+// sin exponer su representación subyacente.
 
-interface IIterator<T> {
-    siguiente(): T | null
-    tieneSiguiente(): boolean
+interface ProfileIterator {
+    geNext(): void
+    hasMore(): void
 }
 
-class ColeccionUsuarios {
+interface SocialNetwork {
+    createFriendsIterator(profileId: any): ProfileIterator;
+    createCoworkersIterator(profileId: any): ProfileIterator;
+}
 
-    private usuarios: string[] = []
+class FacebookIterator implements ProfileIterator {
+    geNext() { }
 
-    agregar(usuario: string) {
-        this.usuarios.push(usuario)
+    hasMore() { }
+}
+
+class Facebook implements SocialNetwork {
+
+    createFriendsIterator(profileId: any): ProfileIterator {
+        throw new Error("Method not implemented.");
+    }
+    createCoworkersIterator(profileId: any): ProfileIterator {
+        throw new Error("Method not implemented.");
     }
 
-    getUsuarios(): string[] {
-        return this.usuarios
+}
+
+class SocialSpammer {
+    constructor(private iterator: ProfileIterator) { }
+
+    sendSpam(iterator: ProfileIterator) {
+
     }
 }
 
-class UsuarioIterator implements IIterator<string> {
+class Application {
+    constructor(private network: SocialNetwork) { }
 
-    private indice: number = 0
-
-    constructor(private usuarios: string[]) {}
-
-    siguiente(): string | null {
-        if (this.tieneSiguiente()) {
-            return this.usuarios[this.indice++]
-        }
-        return null
-    }
-
-    tieneSiguiente(): boolean {
-        return this.indice < this.usuarios.length
-    }
+    send(iterator: SocialNetwork) { }
 }
+

@@ -2,9 +2,9 @@
 // permite construir objetos complejos paso a paso
 
 interface ComputadoraBuilder {
-    setCPU(cpu: string): void
-    setRAM(ram: string): void
-    setAlmacenamiento(almacenamiento: string): void
+    construirCPU(cpu: string): void
+    cnstruirRAM(ram: string): void
+    construirAlmacenamiento(almacenamiento: string): void
     obtenerResultado(): Computadora
 }
 
@@ -18,16 +18,16 @@ class ComputadoraGamerBuilder implements ComputadoraBuilder {
 
     private computadora: Computadora = new Computadora()
 
-    setCPU(cpu: string): void {
-        this.computadora.cpu = cpu
+    construirCPU(cpu: string): void {
+        
     }
 
-    setRAM(ram: string): void {
-        this.computadora.ram = ram
+    cnstruirRAM(ram: string): void {
+        
     }
 
-    setAlmacenamiento(almacenamiento: string): void {
-        this.computadora.almacenamiento = almacenamiento
+    construirAlmacenamiento(almacenamiento: string): void {
+       
     }
 
     obtenerResultado(): Computadora {
@@ -40,9 +40,9 @@ class DirectorComputadora {
     constructor(private builder: ComputadoraBuilder) {}
 
     construirComputadoraBasica(): Computadora {
-        this.builder.setCPU("Intel i5")
-        this.builder.setRAM("16GB")
-        this.builder.setAlmacenamiento("512GB SSD")
+        this.builder.construirCPU("Intel i5")
+        this.builder.cnstruirRAM("16GB")
+        this.builder.construirAlmacenamiento("512GB SSD")
         return this.builder.obtenerResultado()
     }
 }
