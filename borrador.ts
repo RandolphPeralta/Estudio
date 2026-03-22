@@ -15,7 +15,7 @@ interface Toyota extends AutomovilBase {
 
 class DisenioNissan implements Nissan {
     AutoEstacionar(): void {
-        // Logica de autoestacionar
+        
     }
 
     Encender(): boolean {
