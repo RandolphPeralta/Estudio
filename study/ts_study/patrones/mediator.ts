@@ -20,9 +20,7 @@ class ChatSala implements ChatMediator {
 
 class Usuario {
 
-    constructor(
-        private mediator: ChatMediator
-    ) {}
+    constructor(private mediator: ChatMediator) {}
 
     enviar(mensaje: string) {
         this.mediator.enviarMensaje(mensaje, this)
