@@ -18,10 +18,6 @@ class Usuario implements Prototype {
     }
 }
 
-class Usuarioclone extends Usuario {
-    
-}
-
 const usuario1 = new Usuario("Carlos")
 const usuario2 = usuario1.clone()
 
