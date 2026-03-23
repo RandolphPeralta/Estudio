@@ -7,19 +7,27 @@ interface IProyector {
     proyectar(): void
 }
 
-class Proyector implements IProyector{
+interface ISonido {
+    encender(): void
+}
+
+interface IReproductor {
+    reproducir(): void
+}
+
+class ProyectorSony implements IProyector{
     proyectar() {
         console.log("Proyector encendido")
     }
 }
 
-class Sonido {
+class SonidoSamsung implements ISonido {
     encender() {
         console.log("Sistema de sonido encendido")
     }
 }
 
-class Reproductor {
+class ReproductorLG implements IReproductor {
     reproducir() {
         console.log("Reproduciendo película")
     }
@@ -29,8 +37,8 @@ class CineFacade {
 
     constructor(
         private proyector: IProyector,
-        private sonido: Sonido,
-        private reproductor: Reproductor
+        private sonido: ISonido,
+        private reproductor: IReproductor
     ) {}
 
     verPelicula() {

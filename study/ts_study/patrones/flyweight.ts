@@ -5,35 +5,52 @@
 // entre varios objetos en lugar de mantener 
 // toda la información en cada objeto.
 
-interface Letra {
-    mostrar(posX: number, posY: number): void
-}
+class ArbolFlyweight {
 
-class LetraConcreta implements Letra {
+    constructor(
+        private tipo: string,
+        private color: string
+    ) {}
 
-    constructor(private caracter: string) {}
-
-    mostrar(posX: number, posY: number): void {
-        console.log(`Letra ${this.caracter} en (${posX}, ${posY})`)
+    dibujar(posicionhorizontal: number, posicionvertical: number) {
+        console.log(`Dibujando ${this.tipo} ${this.color} en (${posicionhorizontal}, ${posicionvertical})`)
     }
 }
 
-class LetraFactory {
+class ArbolFactory {
 
-    private letras: { [key: string]: Letra } = {}
+    private cache: { [key: string]: ArbolFlyweight } = {}
 
-    obtenerLetra(caracter: string): Letra {
-        if (!this.letras[caracter]) {
-            this.letras[caracter] = new LetraConcreta(caracter)
+    getArbol(tipo: string, color: string): ArbolFlyweight {
+        const key = tipo + color
+
+        if (!this.cache[key]) {
+            this.cache[key] = new ArbolFlyweight(tipo, color)
         }
-        return this.letras[caracter]
+
+        return this.cache[key]
     }
 }
 
-const factory = new LetraFactory()
-const texto = "ABA"
+class Arbol {
 
-for (let i = 0; i < texto.length; i++) {
-    const letra = factory.obtenerLetra(texto[i])
-    letra.mostrar(i, 0)
+    constructor(
+        private posicionhorizontal: number,
+        private posicionvertical: number,
+        private flyweight: ArbolFlyweight
+    ) {}
+
+    dibujar() {
+        this.flyweight.dibujar(this.posicionhorizontal, this.posicionvertical)
+    }
 }
+
+const factory = new ArbolFactory()
+
+const bosque: Arbol[] = []
+
+bosque.push(new Arbol(1, 2, factory.getArbol("roble", "verde")))
+bosque.push(new Arbol(3, 4, factory.getArbol("roble", "verde")))
+bosque.push(new Arbol(5, 6, factory.getArbol("pino", "oscuro")))
+
+bosque.forEach(arbol => arbol.dibujar())

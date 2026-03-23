@@ -4,39 +4,47 @@
 // que contienen estas funcionalidades
 // sin modificar su clase original.
 
-interface Cafe {
-    descripcion(): string
+interface Notificador {
+    enviar(mensaje: string): void;
 }
 
-class CafeSimple implements Cafe {
-
-    descripcion(): string {
-        return "Café simple"
+class NotificadorBase implements Notificador {
+    enviar(mensaje: string): void {
+        console.log(`Enviando notificación básica: ${mensaje}`);
     }
 }
 
-abstract class DisenioCafe implements Cafe {
-    constructor(protected cafe: Cafe) { }
-    abstract descripcion(): string
-}
+class NotificadorDecorator implements Notificador {
+    protected envuelto: Notificador;
 
-class Leche extends DisenioCafe {
+    constructor(notificador: Notificador) {
+        this.envuelto = notificador;
+    }
 
-    descripcion(): string {
-        return this.cafe.descripcion() + " + leche"
+    enviar(mensaje: string): void {
+        this.envuelto.enviar(mensaje);
     }
 }
 
-class Azucar extends DisenioCafe {
-
-    descripcion(): string {
-        return this.cafe.descripcion() + " + azúcar"
+// 4. Decoradores Concretos
+class WhatsAppDecorator extends NotificadorDecorator {
+    enviar(mensaje: string): void {
+        super.enviar(mensaje);
+        console.log(`Enviando WhatsApp: ${mensaje}`);
     }
 }
 
-let cafe: Cafe = new CafeSimple()
+class SMSDecorator extends NotificadorDecorator {
+    enviar(mensaje: string): void {
+        super.enviar(mensaje);
+        console.log(`Enviando SMS: ${mensaje}`);
+    }
+}
 
-cafe = new Leche(cafe)
-cafe = new Azucar(cafe)
 
-console.log(cafe.descripcion())
+let miNotificador: Notificador = new NotificadorBase();
+miNotificador = new WhatsAppDecorator(miNotificador);
+miNotificador = new SMSDecorator(miNotificador);
+
+miNotificador.enviar("Hola Mundo");
+

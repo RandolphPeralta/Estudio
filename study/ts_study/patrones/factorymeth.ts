@@ -10,13 +10,13 @@ interface Transporte {
 
 class Camion implements Transporte {
     entregar(): void {
-        console.log("Entrega por carretera en camión")
+        
     }
 }
 
 class Barco implements Transporte {
     entregar(): void {
-        console.log("Entrega por mar en barco")
+        
     }
 }
 
