@@ -14,7 +14,7 @@ class Newsletter {
         this.suscriptores.push(lector);
     }
 
-    enviarNoticia(noticia: string) {
+    enviarNoticia(noticia: any) {
         for (const subscriptor of this.suscriptores) {
             subscriptor.recibirNotificacion(noticia);
         }
@@ -22,12 +22,12 @@ class Newsletter {
 }
 
 class LectorFiel implements Suscriptor {
-    recibirNotificacion(noticia: string) {
+    recibirNotificacion(noticia: any) {
     }
 }
 
 class LectorCritico implements Suscriptor {
-    recibirNotificacion(noticia: string) {
+    recibirNotificacion(noticia: any) {
     }
 }
 

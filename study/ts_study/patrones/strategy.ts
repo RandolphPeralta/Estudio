@@ -9,30 +9,23 @@ interface EstrategiaPago {
 
 class PagoTarjeta implements EstrategiaPago {
     
-    pagar(monto: number): void {
-        
-    }
+    pagar(monto: number): void {}
 }
 
 class PagoPaypal implements EstrategiaPago {
 
-    pagar(monto: number): void {
-        
-    }
+    pagar(monto: number): void {}
 
 }
 
 class PagoCrypto implements EstrategiaPago {
 
-    pagar(monto: number): void {
-        
-    }
+    pagar(monto: number): void {}
 }
 
 class CarritoCompra {
 
-    constructor(private estrategia: EstrategiaPago) {
-    }
+    constructor(private estrategia: EstrategiaPago) { }
 
     realizarPago(monto: number) {
         this.estrategia.pagar(monto)
@@ -40,7 +33,5 @@ class CarritoCompra {
 }
 
 const estrategia = new PagoTarjeta()
-
 const carrito = new CarritoCompra(estrategia)
-
 carrito.realizarPago(100)

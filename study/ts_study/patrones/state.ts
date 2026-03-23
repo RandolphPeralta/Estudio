@@ -3,55 +3,45 @@
 // su comportamiento dependiendo 
 // de su estado interno
 
-interface EstadoMaquina {
-    insertarMoneda(): void
-    seleccionarProducto(): void
+interface EstadoSemaforo {
+    cambiar(item: any): void;
 }
 
-class MaquinaExpendedora {
-
-    constructor(private estado: EstadoMaquina) {}
-
-    insertarMoneda() {
-        this.estado.insertarMoneda()
-    }
-
-    seleccionarProducto() {
-        this.estado.seleccionarProducto()
+class EstadoVerde implements EstadoSemaforo {
+    cambiar(semaforo: Semaforo): void {
+        semaforo.setEstado(new EstadoAmarillo());
     }
 }
 
-class SinMoneda implements EstadoMaquina {
-
-    constructor(private maquina: MaquinaExpendedora) {}
-
-    insertarMoneda(): void {
-        console.log("Moneda insertada")
-    }
-
-    seleccionarProducto(): void {
-        console.log("Debes insertar una moneda")
+class EstadoAmarillo implements EstadoSemaforo {
+    cambiar(semaforo: Semaforo): void {
+        semaforo.setEstado(new EstadoRojo());
     }
 }
 
-class ConMoneda implements EstadoMaquina {
-
-    constructor(private maquina: MaquinaExpendedora) {}
-
-    insertarMoneda(): void {
-        console.log("Ya hay una moneda insertada")
-    }
-
-    seleccionarProducto(): void {
-        console.log("Producto entregado")
+class EstadoRojo implements EstadoSemaforo {
+    cambiar(semaforo: Semaforo): void {
+        semaforo.setEstado(new EstadoVerde());
     }
 }
 
-const maquina = new MaquinaExpendedora(null as any)
 
-const estadoInicial = new SinMoneda(maquina)
+class Semaforo {
+    private estado: EstadoSemaforo;
 
-maquina.seleccionarProducto()
-maquina.insertarMoneda()
-maquina.seleccionarProducto()
+    constructor() {
+        this.estado = new EstadoVerde(); 
+    }
 
+    public setEstado(estado: EstadoSemaforo): void {
+        this.estado = estado;
+    }
+
+    public accion(): void {
+        this.estado.cambiar(this);
+    }
+}
+
+
+const semaforo = new Semaforo();
+semaforo.accion(); 
