@@ -47,9 +47,8 @@ class DirectorComputadora {
     }
 }
 
-const builder = new ComputadoraGamerBuilder()
-
-const director = new DirectorComputadora(builder)
+const buildergamer = new ComputadoraGamerBuilder()
+const director = new DirectorComputadora(buildergamer)
 
 const pc = director.construirComputadoraBasica()
 
