@@ -13,7 +13,7 @@ interface Forma {
 class Circulo implements Forma {
     constructor(public radio: number) {}
 
-    public accept(visitante: Visitante): void {
+    accept(visitante: Visitante): void {
         visitante.visitarCirculo(this);
     }
 }
@@ -21,7 +21,7 @@ class Circulo implements Forma {
 class Rectangulo implements Forma {
     constructor(public ancho: number, public alto: number) {}
 
-    public accept(visitante: Visitante): void {
+    accept(visitante: Visitante): void {
         visitante.visitarRectangulo(this);
     }
 }
