@@ -20,16 +20,18 @@ abstract class GeneradorReporte {
 class ReportePDF extends GeneradorReporte {
 
     abrirArchivo(): void { }
-    alistarArchivo(): void { }
     analizarDatos(): void { }
+    alistarArchivo(): void { }
+    
 
 }
 
 class ReporteCSV extends GeneradorReporte {
 
     abrirArchivo(): void { }
-    alistarArchivo(): void { }
     analizarDatos(): void { }
+    alistarArchivo(): void { }
+    
 
 }
 
