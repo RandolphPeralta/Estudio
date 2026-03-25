@@ -9,9 +9,9 @@ interface ComputadoraBuilder {
 }
 
 class Computadora {
-    cpu?: string
-    ram?: string
-    almacenamiento?: string
+    cpu?: any
+    ram?: any
+    almacenamiento?: any
 }
 
 class ComputadoraGamerBuilder implements ComputadoraBuilder {
@@ -19,15 +19,15 @@ class ComputadoraGamerBuilder implements ComputadoraBuilder {
     private computadora: Computadora = new Computadora()
 
     construirCPU(): void {
-        
+        this.computadora.cpu
     }
 
     cnstruirRAM(): void {
-        
+        this.computadora.ram
     }
 
     construirAlmacenamiento(): void {
-       
+       this.computadora.almacenamiento
     }
 
     obtenerResultado(): Computadora {

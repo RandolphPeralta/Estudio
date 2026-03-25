@@ -6,36 +6,36 @@
 interface Dispositivo {
     encender(): void
     apagar(): void
-    setVolumen(vol: number): void
+    Volumen(vol: number): void
 }
 
 class TV implements Dispositivo {
 
     encender(): void {
-        console.log("TV encendida")
+        
     }
 
     apagar(): void {
-        console.log("TV apagada")
+        
     }
 
-    setVolumen(vol: number): void {
-        console.log("Volumen TV:", vol)
+    Volumen(vol: number): void {
+        
     }
 }
 
 class Radio implements Dispositivo {
 
     encender(): void {
-        console.log("Radio encendida")
+        
     }
 
     apagar(): void {
-        console.log("Radio apagada")
+        
     }
 
-    setVolumen(vol: number): void {
-        console.log("Volumen Radio:", vol)
+    Volumen(vol: number): void {
+        
     }
 }
 
@@ -55,6 +55,6 @@ class ControlRemoto {
 class ControlAvanzado extends ControlRemoto {
 
     subirVolumen() {
-        this.dispositivo.setVolumen(100)
+        this.dispositivo.Volumen(100)
     }
 }
