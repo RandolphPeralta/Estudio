@@ -6,42 +6,42 @@
 interface Dispositivo {
     encender(): void
     apagar(): void
-    Volumen(vol: number): void
+    Volumen(): void
 }
 
 class TV implements Dispositivo {
 
     encender(): void {
-        
+
     }
 
     apagar(): void {
-        
+
     }
 
-    Volumen(vol: number): void {
-        
+    Volumen(): void {
+
     }
 }
 
 class Radio implements Dispositivo {
 
     encender(): void {
-        
+
     }
 
     apagar(): void {
-        
+
     }
 
-    Volumen(vol: number): void {
-        
+    Volumen(): void {
+
     }
 }
 
 class ControlRemoto {
 
-    constructor(protected dispositivo: Dispositivo) {}
+    constructor(protected dispositivo: Dispositivo) { }
 
     encender() {
         this.dispositivo.encender()
@@ -55,6 +55,6 @@ class ControlRemoto {
 class ControlAvanzado extends ControlRemoto {
 
     subirVolumen() {
-        this.dispositivo.Volumen(100)
+        this.dispositivo.Volumen()
     }
 }

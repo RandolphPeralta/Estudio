@@ -7,51 +7,44 @@ interface Arma {
 }
 
 class Paladin {
-    atacar(arma: Arma){
+    atacar(arma: Arma) {
         arma.usar()
     }
 }
 
-class Espada {
-    cortar(){
-        console.log("Cortando con espada!")
-    }
-}
-
-class AdaptadorEspada implements Arma {
-    
-    constructor(private espada: Espada){}
-    
+class Espada implements Arma {
     usar(): void {
-        this.espada.cortar()
+        this.cortar()
     }
-    
-}
 
-class Mazo {
-    aplastar(){
-        console.log("Aplaztando con mazo!")
+    private cortar() {
+
     }
 }
 
-class AdaptadorMazo implements Arma {
-    
-    constructor(private mazo: Mazo){}
-    
+class Cuerda {
+
+    amarrar() {
+
+    }
+}
+
+class AdaptadorCuerda implements Arma {
+
+    constructor(private cuerda: Cuerda) { }
+
     usar(): void {
-        this.mazo.aplastar()
+        this.cuerda.amarrar()
     }
-    
+
 }
 
 const paladin = new Paladin()
 const espada = new Espada()
-const espadaAdaptada = new AdaptadorEspada(espada)
+const cuerda = new Cuerda()
+const cuerdaAdaptada = new AdaptadorCuerda(cuerda)
 
-const mazo = new Mazo()
-const mazoAdaptado = new AdaptadorMazo(mazo)
+paladin.atacar(espada)
+paladin.atacar(cuerdaAdaptada)
 
-
-paladin.atacar(espadaAdaptada)
-paladin.atacar(mazoAdaptado)
 
