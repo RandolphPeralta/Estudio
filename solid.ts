@@ -1,78 +1,56 @@
-// Sistema para un ventilador
+// Sistema para crear un automovil
 
-interface Switch {
-    TurnOn(): boolean
-    TurnOff(): boolean
+interface AutomovilBase {
+    Encender(): boolean
+    Apagar(): boolean
 }
 
-interface Samurai extends Switch{
-    Selectnivel(): void
+interface Nissan extends AutomovilBase {
+    AutoEstacionar(): void
 }
 
-interface Olimpo extends Switch{
-    Plug(): void
+interface Toyota extends AutomovilBase {
+    AutoRepararse(): void
 }
 
-class DisenioSamurai implements Samurai {
-
-    Selectnivel(): void { }
-
-    TurnOn() { return true }
-
-    TurnOff() { return false }
-}
-
-class DisenioOlimpo implements Olimpo {
-
-    Plug(): void { }
-
-    TurnOn() { return true }
-    
-    TurnOff() { return false }
-}
-
-class VentilatorOlimpo {
-    constructor(private devace: Olimpo){}
-
-    turnOn(){
-        return this.devace.TurnOn()
+class DisenioNissan implements Nissan {
+    AutoEstacionar(): void {
+        
     }
 
-    turnOff(){
-        return this.devace.TurnOff()
+    Encender(): boolean {
+        return true
     }
 
-    Plug(){
-        return this.devace.Plug()
+    Apagar(): boolean {
+        return false
     }
-
 }
 
-class VentilatorSamurai {
-    constructor(private devace: Samurai){}
+class DisenioToyota implements Toyota {
+    AutoRepararse(): void { }
 
-    turnOn(){
-        return this.devace.TurnOn()
+    Encender(): boolean {
+        return true
     }
 
-    turnOff(){
-        return this.devace.TurnOff()
+    Apagar(): boolean {
+        return false
     }
-
-    select(){
-        return this.devace.Selectnivel()
-    }
-
 }
 
-// Aqui puedo presentar los principios
+class Fabrica {
 
-const fanfav: Olimpo = new DisenioOlimpo() // SRP, OCP
-const fanlight: Samurai = new DisenioSamurai() // SRP, OCP
-const fan = new DisenioOlimpo() // LSP
-const fanlight2: Switch = new DisenioSamurai() //, ISP
-const dipswitch = new VentilatorOlimpo(fanfav) // DIP
-const diplight = new VentilatorSamurai(fanlight) // DIP
+    constructor(private disenioauto: AutomovilBase) { }
 
+    probarAuto(): void {
+        this.disenioauto.Encender()
+        this.disenioauto.Apagar()
+    }
+}
+
+const disenionissan = new DisenioNissan()
+const otrodisenioToyota: AutomovilBase = new DisenioToyota()
+const auto = new Fabrica(disenionissan)
 
 
