@@ -5,7 +5,7 @@ interface VideoService {
     reproducirVideo(): void
 }
 
-class VideoReal implements VideoService {
+class VideoCinema implements VideoService {
 
     reproducirVideo(): void {
         
@@ -14,10 +14,10 @@ class VideoReal implements VideoService {
 
 class VideoProxy implements VideoService {
 
-    private videoReal: VideoReal
+    private videoReal: VideoService
 
     constructor(private tienePermiso: boolean) {
-        this.videoReal = new VideoReal()
+        this.videoReal = new VideoCinema()
     }
 
     reproducirVideo(): void {
