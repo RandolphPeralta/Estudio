@@ -16,7 +16,7 @@ class Computadora {
 
 class ComputadoraGamerBuilder implements ComputadoraBuilder {
 
-    private computadora: Computadora = new Computadora()
+    private computadora = new Computadora()
 
     construirCPU(): void {
         this.computadora.cpu
