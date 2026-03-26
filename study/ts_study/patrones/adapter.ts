@@ -24,7 +24,7 @@ class Espada implements Arma {
 
 class Cuerda {
 
-    amarrar() {
+    amarrar(): void {
 
     }
 }
