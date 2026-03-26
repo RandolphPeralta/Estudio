@@ -3,70 +3,61 @@
 // relacionados sin especificar 
 // sus clases concretas.
 
-interface Boton {
+interface IBoton {
     render(): void
 }
 
-interface IBotonWindows extends Boton { }
-interface IBotonMac extends Boton { }
-
-interface Checkbox {
+interface ICheckbox {
     marcar(): void
 }
 
-interface IChekboxWindows extends Checkbox { }
-interface IChekboxMac extends Checkbox { }
-
 interface UIFactory {
-    crearBoton(): Boton
-    crearCheckbox(): Checkbox
+    crearBoton(): IBoton
+    crearCheckbox(): ICheckbox
 }
 
-interface UIFactoryWinndows extends UIFactory {}
-interface UIFactoryMac extends UIFactory {}
-
-class BotonWindows implements IBotonWindows {
+class BotonWindows implements IBoton {
     render(): void {
 
     }
 }
 
-class CheckboxWindows implements IChekboxWindows {
+class CheckboxWindows implements ICheckbox {
     marcar(): void {
 
     }
 }
 
-class BotonMac implements IBotonMac {
+class BotonMac implements IBoton {
     render(): void {
 
     }
 }
 
-class CheckboxMac implements IChekboxMac {
+class CheckboxMac implements ICheckbox {
     marcar(): void {
 
     }
 }
 
-class WindowsFactory implements UIFactoryWinndows {
+class WindowsFactory implements UIFactory {
 
-    crearBoton(): Boton {
+    crearBoton(): IBoton {
         return new BotonWindows()
     }
 
-    crearCheckbox(): Checkbox {
+    crearCheckbox(): ICheckbox {
         return new CheckboxWindows()
     }
 }
 
-class MacFactory implements UIFactoryMac {
+class MacFactory implements UIFactory {
 
-    crearBoton(): Boton {
+    crearBoton(): IBoton {
         return new BotonMac()
     }
 
-    crearCheckbox(): Checkbox {
+    crearCheckbox(): ICheckbox {
         return new CheckboxMac()
     }
 }

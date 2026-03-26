@@ -7,17 +7,15 @@ interface Prototype {
 
 class Usuario implements Prototype {
 
-    constructor(private nombre: string) { }
-
     clone(): Usuario {
-        return new Usuario(this.nombre)
+        return new Usuario()
     }
 
     mostrar() {
-        return this.nombre
+
     }
 }
 
-const usuario1 = new Usuario("Carlos")
+const usuario1 = new Usuario()
 const usuario2 = usuario1.clone()
 usuario2.mostrar()
