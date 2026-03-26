@@ -5,12 +5,12 @@
 // sin modificar su clase original.
 
 interface Notificador {
-    enviar(mensaje: string): void;
+    enviar(mensaje: any): void;
 }
 
 class NotificadorBase implements Notificador {
     enviar(mensaje: string): void {
-        console.log(`Enviando notificación básica: ${mensaje}`);
+
     }
 }
 
@@ -26,18 +26,15 @@ class NotificadorDecorator implements Notificador {
     }
 }
 
-// 4. Decoradores Concretos
 class WhatsAppDecorator extends NotificadorDecorator {
     enviar(mensaje: string): void {
         super.enviar(mensaje);
-        console.log(`Enviando WhatsApp: ${mensaje}`);
     }
 }
 
 class SMSDecorator extends NotificadorDecorator {
     enviar(mensaje: string): void {
         super.enviar(mensaje);
-        console.log(`Enviando SMS: ${mensaje}`);
     }
 }
 

@@ -4,15 +4,13 @@
 // fueran objetos individuales.
 
 interface Componente {
-    mostrar(indice: string): void
+    mostrar(): void
 }
 
 class Archivo implements Componente {
 
-    constructor(private nombre: string) {}
+    mostrar(): void {
 
-    mostrar(indice: string): void {
-        console.log(indice + "- Archivo: " + this.nombre)
     }
 }
 
@@ -20,17 +18,11 @@ class Carpeta implements Componente {
 
     private elementos: Componente[] = []
 
-    constructor(private nombre: string) {}
-
     agregar(componente: Componente): void {
         this.elementos.push(componente)
     }
 
-    mostrar(indice: string): void {
-        console.log(indice + "+ Carpeta: " + this.nombre)
+    mostrar(): void {
 
-        for (const elemento of this.elementos) {
-            elemento.mostrar(indice + "  ")
-        }
     }
 }
