@@ -6,6 +6,10 @@ interface Command {
     ejecutar(): void
 }
 
+interface Encender extends Command {}
+
+interface Apagar extends Command {}
+
 class Luz {
 
     encender(): void {
@@ -17,7 +21,7 @@ class Luz {
     }
 }
 
-class EncenderLuzCommand implements Command {
+class EncenderLuzCommand implements Encender {
 
     constructor(private luz: Luz) {}
 
@@ -26,7 +30,7 @@ class EncenderLuzCommand implements Command {
     }
 }
 
-class ApagarLuzCommand implements Command {
+class ApagarLuzCommand implements Apagar {
 
     constructor(private luz: Luz) {}
 
