@@ -8,12 +8,12 @@
 class ArbolFlyweight {
 
     constructor(
-        private tipo: string,
-        private color: string
+        private tipo: any,
+        private color: any
     ) {}
 
     dibujar(posicionhorizontal: number, posicionvertical: number) {
-        console.log(`Dibujando ${this.tipo} ${this.color} en (${posicionhorizontal}, ${posicionvertical})`)
+       
     }
 }
 
@@ -21,7 +21,7 @@ class ArbolFactory {
 
     private cache: { [key: string]: ArbolFlyweight } = {}
 
-    getArbol(tipo: string, color: string): ArbolFlyweight {
+    dameArbol(tipo: string, color: string): ArbolFlyweight {
         const key = tipo + color
 
         if (!this.cache[key]) {
@@ -35,8 +35,8 @@ class ArbolFactory {
 class Arbol {
 
     constructor(
-        private posicionhorizontal: number,
-        private posicionvertical: number,
+        private posicionhorizontal: any,
+        private posicionvertical: any,
         private flyweight: ArbolFlyweight
     ) {}
 
@@ -49,8 +49,8 @@ const factory = new ArbolFactory()
 
 const bosque: Arbol[] = []
 
-bosque.push(new Arbol(1, 2, factory.getArbol("roble", "verde")))
-bosque.push(new Arbol(3, 4, factory.getArbol("roble", "verde")))
-bosque.push(new Arbol(5, 6, factory.getArbol("pino", "oscuro")))
+bosque.push(new Arbol(1, 2, factory.dameArbol("roble", "verde")))
+bosque.push(new Arbol(3, 4, factory.dameArbol("roble", "verde")))
+bosque.push(new Arbol(5, 6, factory.dameArbol("pino", "oscuro")))
 
 bosque.forEach(arbol => arbol.dibujar())

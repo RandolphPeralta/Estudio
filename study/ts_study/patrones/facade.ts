@@ -47,3 +47,10 @@ class CineFacade {
         this.reproductor.reproducir()
     }
 }
+
+const proyectorsony = new ProyectorSony()
+const sonidosamsung = new SonidoSamsung()
+const reproductorlg = new ReproductorLG()
+
+const cine = new CineFacade(proyectorsony, sonidosamsung, reproductorlg)
+cine.verPelicula()
