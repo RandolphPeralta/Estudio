@@ -30,4 +30,59 @@ const visitor = new JSONExportVisitor();
 
 elements.forEach(elemento => elemento.accept(visitor));
 
+//--------------------------
+
+
+// 1. Interfaz Command
+interface Command {
+    execute(): void;
+    undo(): void; // Opcional: para revertir acciones
+}
+
+// 2. Receiver (Receptor)
+class Light {
+    turnOn() { console.log("Luz encendida"); }
+    turnOff() { console.log("Luz apagada"); }
+}
+
+// 3. Concrete Command
+class TurnOnCommand implements Command {
+    constructor(private light: Light) {}
+
+    execute() {
+        this.light.turnOn();
+    }
+    undo() {
+        this.light.turnOff();
+    }
+}
+
+// 4. Invoker (Invocador)
+class RemoteControl {
+    private history: Command[] = [];
+    private command!: Command;
+
+    setCommand(command: Command) {
+        this.command = command;
+    }
+
+    pressButton() {
+        this.command.execute();
+        this.history.push(this.command);
+    }
+
+    undoLast() {
+        const command = this.history.pop();
+        if (command) command.undo();
+    }
+}
+
+// 5. Uso (Cliente)
+const light = new Light();
+const turnOn = new TurnOnCommand(light);
+const remote = new RemoteControl();
+
+remote.setCommand(turnOn);
+remote.pressButton(); // Salida: Luz encendida
+remote.undoLast();    // Salida: Luz apagada
 

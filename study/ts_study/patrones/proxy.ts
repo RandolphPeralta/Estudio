@@ -14,21 +14,16 @@ class VideoCinema implements VideoService {
 
 class VideoProxy implements VideoService {
 
-    private videoReal: VideoService
-
-    constructor(private tienePermiso: boolean) {
-        this.videoReal = new VideoCinema()
+    constructor(private video: VideoService) {
+   
     }
 
     reproducirVideo(): void {
-        if (this.tienePermiso) {
-            this.videoReal.reproducirVideo()
-        } else {
-            console.log("Acceso denegado")
-        }
+        this.video.reproducirVideo()
     }
 }
 
-const proxy = new VideoProxy(true)
+const videocinema = new VideoCinema()
+const proxy = new VideoProxy(videocinema)
 
 proxy.reproducirVideo()
