@@ -9,19 +9,19 @@ interface EstadoSemaforo {
 
 class EstadoVerde implements EstadoSemaforo {
     cambiar(semaforo: Semaforo): void {
-        semaforo.setEstado(new EstadoAmarillo());
+        semaforo.cambiarEstado(new EstadoAmarillo());
     }
 }
 
 class EstadoAmarillo implements EstadoSemaforo {
     cambiar(semaforo: Semaforo): void {
-        semaforo.setEstado(new EstadoRojo());
+        semaforo.cambiarEstado(new EstadoRojo());
     }
 }
 
 class EstadoRojo implements EstadoSemaforo {
     cambiar(semaforo: Semaforo): void {
-        semaforo.setEstado(new EstadoVerde());
+        semaforo.cambiarEstado(new EstadoVerde());
     }
 }
 
@@ -33,7 +33,7 @@ class Semaforo {
         this.estado = new EstadoVerde(); 
     }
 
-    public setEstado(estado: EstadoSemaforo): void {
+    public cambiarEstado(estado: EstadoSemaforo): void {
         this.estado = estado;
     }
 

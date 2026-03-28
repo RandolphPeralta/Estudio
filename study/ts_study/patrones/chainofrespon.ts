@@ -26,7 +26,7 @@ class SoporteBasico extends BaseHandler {
 
     manejar(solicitud: string): void {
         if (solicitud === "basico") {
-            console.log("Soporte básico resolvió el problema")
+            
         } else {
             super.manejar(solicitud)
         }
@@ -37,7 +37,7 @@ class SoporteIntermedio extends BaseHandler {
 
     manejar(solicitud: string): void {
         if (solicitud === "intermedio") {
-            console.log("Soporte intermedio resolvió el problema")
+            
         } else {
             super.manejar(solicitud)
         }
@@ -48,7 +48,7 @@ class SoporteAvanzado extends BaseHandler {
 
     manejar(solicitud: string): void {
         if (solicitud === "avanzado") {
-            console.log("Soporte avanzado resolvió el problema")
+            
         } else {
             super.manejar(solicitud)
         }

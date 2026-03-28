@@ -13,9 +13,13 @@ interface SocialNetwork {
 }
 
 class FacebookIterator implements ProfileIterator {
-    geNext() { }
+    geNext() { 
 
-    hasMore() { }
+    }
+
+    hasMore() { 
+        
+    }
 }
 
 class Facebook implements SocialNetwork {

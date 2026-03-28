@@ -7,40 +7,50 @@ interface IBoton {
     render(): void
 }
 
+
+interface IBotonWindows extends IBoton {}
+interface IBotonMac extends IBoton {}
+
 interface ICheckbox {
     marcar(): void
 }
+
+interface ICheckboxWindows extends ICheckbox{}
+interface ICheckboxMac extends ICheckbox{}
 
 interface UIFactory {
     crearBoton(): IBoton
     crearCheckbox(): ICheckbox
 }
 
-class BotonWindows implements IBoton {
+interface UIFactoryWindows extends UIFactory{}
+interface UIFactorMac extends UIFactory{}
+
+class BotonWindows implements IBotonWindows {
     render(): void {
 
     }
 }
 
-class CheckboxWindows implements ICheckbox {
+class CheckboxWindows implements ICheckboxWindows {
     marcar(): void {
 
     }
 }
 
-class BotonMac implements IBoton {
+class BotonMac implements IBotonMac {
     render(): void {
 
     }
 }
 
-class CheckboxMac implements ICheckbox {
+class CheckboxMac implements ICheckboxMac {
     marcar(): void {
 
     }
 }
 
-class WindowsFactory implements UIFactory {
+class WindowsFactory implements UIFactoryWindows {
 
     crearBoton(): IBoton {
         return new BotonWindows()
@@ -51,7 +61,7 @@ class WindowsFactory implements UIFactory {
     }
 }
 
-class MacFactory implements UIFactory {
+class MacFactory implements UIFactorMac {
 
     crearBoton(): IBoton {
         return new BotonMac()

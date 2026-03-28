@@ -8,13 +8,16 @@ interface Transporte {
     entregar(): void
 }
 
-class Camion implements Transporte {
+interface Camion extends Transporte{}
+interface Barco extends Transporte {}
+
+class CamionRenault implements Transporte {
     entregar(): void {
         
     }
 }
 
-class Barco implements Transporte {
+class BarcoBenetau implements Barco{
     entregar(): void {
         
     }
@@ -33,14 +36,14 @@ abstract class Logistica {
 class LogisticaTerrestre extends Logistica {
 
     crearTransporte(): Transporte {
-        return new Camion()
+        return new CamionRenault()
     }
 }
 
 class LogisticaMaritima extends Logistica {
 
     crearTransporte(): Transporte {
-        return new Barco()
+        return new BarcoBenetau()
     }
 }
 
