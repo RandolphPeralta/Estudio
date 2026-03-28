@@ -4,9 +4,9 @@
 
 class EditorMemento {
 
-    constructor(private contenido: string) {}
+    constructor(private contenido: any) {}
 
-    getContenido(): string {
+    getContenido(): any {
         return this.contenido
     }
 }
