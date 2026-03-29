@@ -1,55 +1,45 @@
 // VISITOR
 // separa algoritmos de los objetos sobre los que operan.
 
-interface Visitante {
-    visitarCirculo(circulo: any): void;
-    visitarRectangulo(rectangulo: any): void;
+interface Visitor {
+    visitLibro(libro: any): void
+    visitElectronico(eletrico: any): void
 }
 
-interface Forma {
-    accept(visitante: Visitante): void;
+interface Elemento {
+    accept(visitor: Visitor): void
 }
 
-class Circulo implements Forma {
-    constructor(public radio: number) {}
+class Libro implements Elemento {
 
-    accept(visitante: Visitante): void {
-        visitante.visitarCirculo(this);
+    accept(visitor: Visitor): void {
+        visitor.visitLibro(this)
     }
 }
 
-class Rectangulo implements Forma {
-    constructor(public ancho: number, public alto: number) {}
+class Electronico implements Elemento {
 
-    accept(visitante: Visitante): void {
-        visitante.visitarRectangulo(this);
+    accept(visitor: Visitor): void {
+        visitor.visitElectronico(this)
     }
 }
 
-class ExportarJSON implements Visitante {
-    visitarCirculo(circulo: Circulo): void {
+class DescuentoVisitor implements Visitor {
+
+    visitLibro(libro: Libro): void {
         
     }
 
-    visitarRectangulo(rectangulo: Rectangulo): void {
+    visitElectronico(e: Electronico): void {
         
     }
 }
 
-class CalcularArea implements Visitante {
-    visitarCirculo(circulo: Circulo): void {
-        Math.PI * Math.pow(circulo.radio, 2);
-    }
+const productos: Elemento[] = [
+    new Libro(),
+    new Electronico()
+]
 
-    visitarRectangulo(rectangulo: Rectangulo): void {
-        rectangulo.ancho * rectangulo.alto;
-    }
-}
+const visitor = new DescuentoVisitor()
 
-const formas: Forma[] = [
-    new Circulo(10),
-    new Rectangulo(5, 20)
-];
-
-const exportador = new ExportarJSON();
-const calculador = new CalcularArea();
+productos.forEach(producto => producto.accept(visitor))
