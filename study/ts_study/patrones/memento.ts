@@ -6,7 +6,7 @@ class EditorMemento {
 
     constructor(private contenido: any) {}
 
-    getContenido(): any {
+    mostrarContenido(): any {
         return this.contenido
     }
 }
@@ -28,7 +28,7 @@ class Editor {
     }
 
     restaurar(memento: EditorMemento) {
-        this.contenido = memento.getContenido()
+        this.contenido = memento.mostrarContenido()
     }
 }
 
