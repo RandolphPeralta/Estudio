@@ -17,3 +17,5 @@ app.get("/", (req, res) =>
 app.listen(port, ()=> {
     console.log("Servidor de node escuchando en http://localhost:"+port)
 })
+
+// SE ESTABA ESTUDIANDO NODEJS, AHORA TOCA REPASAR JAVASCRIPT Y PYTHON
