@@ -1,3 +1,7 @@
-var nombre = "Randolph"
-const apellido = "Peralta"
-let anios = 30
+var aprobe = true;
+
+if (aprobe){
+    console.log("Puedo salir!!!")
+} else {
+    console.log("Tengo que estudiar")
+}
