@@ -1,3 +1,8 @@
-for (var i=0;i<10;i++){
-    console.log("Vuelta N° " + i)
+var contador = 0;
+
+do {
+    console.log("Vuelta N° " + contador);
+    contador ++;
 }
+
+while ( contador <= 10)
