@@ -1,8 +1,12 @@
-var contador = 0;
+var confirmacion = window.confirm("¿Quieres matricularte?")
 
-do {
-    console.log("Vuelta N° " + contador);
-    contador ++;
+if (confirmacion == true){
+    alert("Muchas gracias por matricularse")
+} 
+else {
+    alert("Ok, la matricula no se hizo")
 }
 
-while ( contador <= 10)
+// var respuesta = window.prompt("Ya te matriculaste?", "Si ya estoy matriculado");
+
+// alert("Su respuesta fue " + respuesta);
