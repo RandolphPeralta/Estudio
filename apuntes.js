@@ -1,7 +1,3 @@
-var aprobe = true;
-
-if (aprobe){
-    console.log("Puedo salir!!!")
-} else {
-    console.log("Tengo que estudiar")
+for (var i=0;i<10;i++){
+    console.log("Vuelta N° " + i)
 }
