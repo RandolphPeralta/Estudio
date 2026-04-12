@@ -1,6 +1,5 @@
 var fechaIngreso = prompt("Ingrese la fecha", "mm/dd/yyyy")
-
-
+var fecha = new Date(fechaIngreso)
 
 // var valor1 = parseInt(window.prompt("Ingrese un numero"));
 // var valor2 = parseInt(window.prompt("Ingrese otro numero"));
