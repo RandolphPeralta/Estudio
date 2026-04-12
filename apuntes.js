@@ -1,7 +1,23 @@
-const { Interface } = require("readline")
+let matriz = new Array(3);
 
-var fechaIngreso = prompt("Ingrese la fecha", "mm/dd/yyyy")
-var fecha = new Date(fechaIngreso)
+for ( let i=0; i<3; i++){
+    matriz[i] = new Array(3);
+}
+
+// let miVector = ["Luisiana", 3,4,5]
+
+// console.log(miVector[2])
+
+// let miMatriz = [[1,2,3], 
+//                 [4,5,6], 
+//                 [7,8,9]];
+
+// console.log(miMatriz[1][1]);
+
+// const { Interface } = require("readline")
+
+// var fechaIngreso = prompt("Ingrese la fecha", "mm/dd/yyyy")
+// var fecha = new Date(fechaIngreso)
 
 
 // var valor1 = parseInt(window.prompt("Ingrese un numero"));
