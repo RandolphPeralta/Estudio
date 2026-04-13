@@ -1,8 +1,17 @@
-function saludar() {
-    console.log("Hla")
+function sumar(num1, num2){
+    let resultado;
+    resultado = num1 + num2;
+    return resultado
 }
 
-saludar();
+let suma = sumar(5,2)
+console.log("El resultadop es: " + suma)
+
+// function saludar() {
+//     console.log("Hla")
+// }
+
+// saludar();
 
 // let matriz = new Array(3);
 
