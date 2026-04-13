@@ -1,8 +1,14 @@
-let matriz = new Array(3);
-
-for ( let i=0; i<3; i++){
-    matriz[i] = new Array(3);
+function saludar() {
+    console.log("Hla")
 }
+
+saludar();
+
+// let matriz = new Array(3);
+
+// for ( let i=0; i<3; i++){
+//     matriz[i] = new Array(3);
+// }
 
 // let miVector = ["Luisiana", 3,4,5]
 
