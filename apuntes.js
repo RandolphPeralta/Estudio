@@ -1,4 +1,13 @@
+let frase = "Bienvenido a la biblioteca";
+let posicion = frase.includes("biblioteca");
 
+if (posicion >= 0){
+    console.log("Encontre en la posicion: " + posicion);
+}
+
+else {
+    console.log("No encontre la palabra buscada")
+}
 
 
 
