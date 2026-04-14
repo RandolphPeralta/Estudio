@@ -1,8 +1,8 @@
 let frase = "Bienvenido a la biblioteca";
-let posicion = frase.includes("biblioteca");
+let bandera = frase.includes("biblioteca");
 
-if (posicion >= 0){
-    console.log("Encontre en la posicion: " + posicion);
+if (bandera == true){
+    console.log("Encontre en la posicion");
 }
 
 else {
