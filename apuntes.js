@@ -1,13 +1,29 @@
-let frase = "Bienvenido a la biblioteca";
-let bandera = frase.includes("biblioteca");
+let listaNombres = ["Luisiana", "Gabriel"]
 
-if (bandera == true){
-    console.log("Encontre en la posicion");
+let nombreBuscar = prompt("Ingresa el nombre: ")
+
+function buscarNombre(listaNombres, nombreBuscar){
+    return listaNombres.includes(nombreBuscar)
 }
 
-else {
-    console.log("No encontre la palabra buscada")
+let esono = buscarNombre(listaNombres, nombreBuscar);
+
+if (esono == true ){
+    console.log("El nombre esta")
 }
+else{
+    console.log("El nombre no esta")
+}
+// let frase = "Bienvenido a la biblioteca";
+// let bandera = frase.includes("biblioteca");
+
+// if (bandera == true){
+//     console.log("Encontre en la posicion");
+// }
+
+// else {
+//     console.log("No encontre la palabra buscada")
+// }
 
 
 
