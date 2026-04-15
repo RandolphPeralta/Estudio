@@ -102,6 +102,14 @@ type Estudiante = {
     grado: string
 }
 
+type Prestamo = {
+    id: string;
+    libro: Libro;
+    estudiante: Estudiante;
+    fechaPrestamo: Date;
+    fechaDevolucion?: Date;
+}
+
 type Prestamos = {
     idLibro: string,
     idCliente: string
