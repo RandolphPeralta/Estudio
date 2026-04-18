@@ -64,6 +64,61 @@ class Memoria<T> implements IAccion<T> {
     }
 }
 
+// Memoria Local storage
+
+export class LocalStorageService<T extends { id: string }> {
+    private database: T[] = []
+
+    constructor(private key: string) { }
+
+    private getData(): T[] {
+        const data = localStorage.getItem(this.key)
+        return data ? JSON.parse(data) : []
+    }
+
+    private saveData(data: T[]): void {
+        localStorage.setItem(this.key, JSON.stringify(data))
+    }
+
+    guardar(item: T): boolean {
+        const data = this.getData()
+        data.push(item)
+        this.saveData(data)
+        return true
+    }
+
+    mostrar(): T[] {
+        return this.getData()
+    }
+
+    actualizar(id: string, item: T): boolean {
+        const data = this.getData()
+        const index = data.findIndex(i => i.id === id)
+
+        if (index === -1) return false
+
+        data[index] = item
+        this.saveData(data)
+        return true
+    }
+
+    eliminar(id: string): boolean {
+        const data = this.getData()
+        const filtered = data.filter(i => i.id !== id)
+
+        if (data.length === filtered.length) return false
+
+        this.saveData(filtered)
+        return true
+    }
+
+    buscarPorId(id: string): T | null {
+        return this.getData().find(i => i.id === id) || null
+    }
+}
+
+//------------
+
 class Servicio<T> implements IAccion<T> {
     constructor(private memoria: IAccion<T>) { }
 
