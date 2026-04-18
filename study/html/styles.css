@@ -10,3 +10,12 @@ li{
     color:green;
     font-family: arial;
 }
+
+.textoimportante {
+    color:blueviolet
+}
+
+#facebook {
+    color:blue;
+    font-weight: bold;
+}
