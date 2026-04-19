@@ -1,21 +1,52 @@
-var lista = []
-const nombre = 'Randolph'
-localStorage.setItem('nombre', nombre)
-
 class Memoria<T> {
 
     guardar(key: T){
         let clave = String(key)
-        localStorage.setItem(clave, JSON.stringify(key))
+        return localStorage.setItem(clave, JSON.stringify(key))
     }
 
     eliminar(key: string){
-        localStorage.removeItem(key)
+        return localStorage.removeItem(key)
     }
 
-    actualizar(key: string, nuevoValor: T): void {
+    actualizar(key: string, nuevoValor: T) {
         if (localStorage.getItem(key)) {
-            localStorage.setItem(key, JSON.stringify(nuevoValor))
+            return localStorage.setItem(key, JSON.stringify(nuevoValor))
         }
     }
+
+    findbyid(id: string): T | null {
+        let data = localStorage.getItem(id)
+
+        if (data) {
+            return JSON.parse(data)
+        }
+
+        return null
+    }
+
+    read(): any[] {
+        let datos: any[] = []
+
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i)
+
+            if (key) {
+                let value = localStorage.getItem(key)
+                if (value) {
+                    datos.push(JSON.parse(value))
+                }
+            }
+        }
+
+        return datos
+    }
+
 }
+
+let memoria = new Memoria()
+
+memoria.guardar("Randolph")
+memoria.guardar("Sara")
+
+console.log(memoria.read());
