@@ -1,3 +1,5 @@
+const { LocalStorage } = require('node-localstorage');
+
 class Memoria<T> {
 
     guardar(key: T){
@@ -50,10 +52,3 @@ memoria.guardar("Randolph")
 memoria.guardar("Sara")
 
 console.log(memoria.read());
-
-
-localStorage.setItem('username', 'JohnDoe');
-
-
-const user = localStorage.getItem('username');
-console.log(user);
