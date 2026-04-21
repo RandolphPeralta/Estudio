@@ -1,21 +1,23 @@
 var LocalStorage = require('node-localstorage').LocalStorage;
+var storage = new LocalStorage('./scratch');
 var Memoria = /** @class */ (function () {
-    function Memoria() {
+    function Memoria(storage) {
+        this.storage = storage;
     }
     Memoria.prototype.guardar = function (key) {
         var clave = String(key);
-        return localStorage.setItem(clave, JSON.stringify(key));
+        return this.storage.setItem(clave, JSON.stringify(key));
     };
     Memoria.prototype.eliminar = function (key) {
-        return localStorage.removeItem(key);
+        return this.storage.removeItem(key);
     };
     Memoria.prototype.actualizar = function (key, nuevoValor) {
-        if (localStorage.getItem(key)) {
-            return localStorage.setItem(key, JSON.stringify(nuevoValor));
+        if (this.storage.getItem(key)) {
+            return this.storage.setItem(key, JSON.stringify(nuevoValor));
         }
     };
     Memoria.prototype.findbyid = function (id) {
-        var data = localStorage.getItem(id);
+        var data = this.storage.getItem(id);
         if (data) {
             return JSON.parse(data);
         }
@@ -23,10 +25,10 @@ var Memoria = /** @class */ (function () {
     };
     Memoria.prototype.read = function () {
         var datos = [];
-        for (var i = 0; i < localStorage.length; i++) {
-            var key = localStorage.key(i);
+        for (var i = 0; i < this.storage.length; i++) {
+            var key = this.storage.key(i);
             if (key) {
-                var value = localStorage.getItem(key);
+                var value = this.storage.getItem(key);
                 if (value) {
                     datos.push(JSON.parse(value));
                 }
@@ -36,7 +38,7 @@ var Memoria = /** @class */ (function () {
     };
     return Memoria;
 }());
-var memoria = new Memoria();
+var memoria = new Memoria(storage);
 memoria.guardar("Randolph");
 memoria.guardar("Sara");
 console.log(memoria.read());
