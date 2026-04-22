@@ -1,5 +1,3 @@
-let elemento;
-elemento = document;
-elemento = document.head;
-elemento = document.title;
+const elemento = document.getElementById("mensajes")
+
 console.log(elemento)
