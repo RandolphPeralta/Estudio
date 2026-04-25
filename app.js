@@ -1,3 +1,9 @@
-const elemento = document.getElementById("mensajes")
+const enviar = document.getElementById('mensaje')
 
-console.log(elemento)
+function mensaje_uno(){
+    alert('Mensaje enviado')
+}
+
+function mensaje_dos(){
+    alert('mensaje guardado')
+}

@@ -9,3 +9,13 @@ h1 {
     background: black;
     color: bisque;
 }
+
+input {
+    width:80%;
+    height: 30px;
+    margin: 10px;
+    color: white;
+    background: red;
+    border: none;
+    cursor: pointer;
+}
