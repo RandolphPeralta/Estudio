@@ -12,3 +12,15 @@ if (true){
 while (true){
 
 }
+
+console.log('a')
+
+setTimeout(()=>console.log('b'))
+
+var promise = new Promise(
+    (resolve, reject)=>
+        resolve(console.log('c')))
+
+promise.then((value) => console.log(value))
+
+console.log('d')
