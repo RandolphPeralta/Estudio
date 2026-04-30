@@ -2,6 +2,17 @@
 // ambitos - var, let, y const
 // closure
 // callbacks
+// XHR - AJAX
+// IIFE
+// Funcion de Declaración
+// Funcion de Expresion
+// Hoisting
+// getElementBy
+// call, bind, apply
+// HTML5
+// CSS
+// SASS
+// BEM
 
 if (true){
     // Javascript
