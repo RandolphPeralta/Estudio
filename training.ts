@@ -17,8 +17,12 @@
 // SASS
 // BEM
 
-class Persona {
-    constructor(private nombre: string, private apelido: string){}
+class Persona {}
+
+class Empleado extends Persona{
+    constructor(private nombre: string, private apelido: string){
+        super()
+    }
 
     miMetodo(){}
 
@@ -33,6 +37,6 @@ var OtraPersona = {
         this.nombre
     },
     otroMetodo: () => {
-        
+        console.log('hola')
     }
 }
