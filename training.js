@@ -1,7 +1,10 @@
 // DOM - Document Object Model
 // ambitos - var, let, y const
+// arrow functions
 // closure
 // callbacks
+// async/await
+// promise
 // XHR - AJAX
 // IIFE
 // Funcion de Declaración
