@@ -1,19 +1,42 @@
-let listaNombres = ["Luisiana", "Gabriel"]
+async function asincrona() {
 
-let nombreBuscar = prompt("Ingresa el nombre: ")
-
-function buscarNombre(listaNombres, nombreBuscar){
-    return listaNombres.includes(nombreBuscar)
+    const resultado = await promesa;
+    return resultado;
 }
 
-let esono = buscarNombre(listaNombres, nombreBuscar);
+function sincrona() {
+    return resultado;
+}
 
-if (esono == true ){
-    console.log("El nombre esta")
-}
-else{
-    console.log("El nombre no esta")
-}
+const client = new XMLHttpRequest();
+
+client.open("GET", "/robots.txt");    
+client.send();
+
+console.log(client.responseText);
+
+
+(function () {
+  statements;
+})();
+
+
+// let listaNombres = ["Luisiana", "Gabriel"]
+
+// let nombreBuscar = prompt("Ingresa el nombre: ")
+
+// function buscarNombre(listaNombres, nombreBuscar){
+//     return listaNombres.includes(nombreBuscar)
+// }
+
+// let esono = buscarNombre(listaNombres, nombreBuscar);
+
+// if (esono == true ){
+//     console.log("El nombre esta")
+// }
+// else{
+//     console.log("El nombre no esta")
+// }
 // let frase = "Bienvenido a la biblioteca";
 // let bandera = frase.includes("biblioteca");
 
