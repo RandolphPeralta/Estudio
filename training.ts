@@ -52,7 +52,9 @@ console.log('d')
 
 })()
 
-
+class Persona {
+    
+}
 
 
 const App = () =>{
