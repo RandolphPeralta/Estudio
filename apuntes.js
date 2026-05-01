@@ -17,9 +17,13 @@ console.log(client.responseText);
 
 
 (function () {
-  statements;
+  console.log('funcion IIFE clasica');
 })();
 
+
+(() => {
+  console.log('funcion IIFE');
+})();
 
 // let listaNombres = ["Luisiana", "Gabriel"]
 
