@@ -17,52 +17,22 @@
 // SASS
 // BEM
 
-if (true){
-    // Javascript
-    // VBScript
-    // W3C - ECMAScript
-}
-
-while (true){
-
-}
-
-console.log('a')
-
-setTimeout(()=>console.log('b'))   // HIGH ORDER PRIORITY
-
-var promise = new Promise(
-    (resolve, reject)=>
-        resolve(console.log('c')))
-
-var myFunction = function(){
-
-}
-
-function myOtherFunction(){
-
-}
-
-promise.then((value) => console.log(value))
-
-console.log('d')
-
-
-(()=> {
-
-})()
-
 class Persona {
-    
+    constructor(private nombre: string, private apelido: string){}
+
+    miMetodo(){}
+
+    otroMetodo(){}
+
 }
 
-
-const App = () =>{
-    const [status, stSttus] = useState(flase);
-
-    const sendEmail = ( ) => {
-        console.log('')
+var OtraPersona = {
+    nombre: '',
+    apellido: '',
+    miMetodo: function(){
+        this.nombre
+    },
+    otroMetodo: () => {
+        
     }
-
-    return ('')
 }
