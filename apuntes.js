@@ -35,6 +35,7 @@ client.send();
 console.log(client.responseText);
 
 
+// IIFE
 (function () {
   console.log('funcion IIFE clasica');
 })();
