@@ -1,3 +1,21 @@
+// Promises
+const miPromesa = new Promise((resolve, reject) => {
+  let exito = true;
+  if (exito) {
+    resolve("¡Operación exitosa!");
+  } else {
+    reject("Hubo un error");
+  }
+});
+
+
+miPromesa
+  .then((mensaje) => console.log(mensaje)) 
+  .catch((error) => console.error(error))
+  .finally(() => console.log("Operación finalizada"));
+
+
+// asincrono
 async function asincrona() {
 
     const resultado = await promesa;
@@ -8,6 +26,7 @@ function sincrona() {
     return resultado;
 }
 
+//XHR
 const client = new XMLHttpRequest();
 
 client.open("GET", "/robots.txt");    
@@ -24,6 +43,24 @@ console.log(client.responseText);
 (() => {
   console.log('funcion IIFE');
 })();
+
+// Declaration
+function hello(name){
+  console.log(`Hello ${name}`)
+}
+
+//expression
+const sayHello = function(name){
+  console.log(`Hello ${name}`)
+}
+
+
+
+
+
+
+
+
 
 // let listaNombres = ["Luisiana", "Gabriel"]
 
