@@ -14,6 +14,8 @@ miPromesa
   .catch((error) => console.error(error))
   .finally(() => console.log("Operación finalizada"));
 
+miPromesa.then((mensaje) => console.log(mensaje),
+(error) => console.error(error))
 
 // asincrono
 async function asincrona() {
@@ -45,12 +47,12 @@ console.log(client.responseText);
   console.log('funcion IIFE');
 })();
 
-// Declaration
+// Declaracion
 function hello(name){
   console.log(`Hello ${name}`)
 }
 
-//expression
+//Expresion
 const sayHello = function(name){
   console.log(`Hello ${name}`)
 }
