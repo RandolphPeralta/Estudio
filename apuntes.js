@@ -8,7 +8,6 @@ const miPromesa = new Promise((resolve, reject) => {
   }
 });
 
-
 miPromesa
   .then((mensaje) => console.log(mensaje)) 
   .catch((error) => console.error(error))
@@ -17,17 +16,6 @@ miPromesa
 miPromesa.then((mensaje) => console.log(mensaje),
 (error) => console.error(error))
 
-// asincrono
-async function asincrona() {
-
-    const resultado = await promesa;
-    return resultado;
-}
-
-function sincrona() {
-    return resultado;
-}
-
 //XHR
 const client = new XMLHttpRequest();
 
@@ -35,7 +23,6 @@ client.open("GET", "/robots.txt");
 client.send();
 
 console.log(client.responseText);
-
 
 // IIFE
 (function () {
