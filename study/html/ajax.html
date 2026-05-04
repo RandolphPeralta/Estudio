@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+</head>
+<body>
+
+    <button id="boton">Cargar sitio</button>
+    <div id="response"></div>
+
+    <script>
+        function ajax(){
+            const http = new XMLHttpRequest();
+            const url = 'pagina.html';
+
+            http.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    console.log(this.responseText);
+                    document.getElementById("response").innerHTML = this.responseText;
+                }
+            }
+
+            http.open("GET", url);
+            http.send();
+        }
+
+        document.getElementById("boton").addEventListener("click", function(){
+            ajax();
+        });
+    </script>
+
+</body>
+</html>
