@@ -1,5 +1,8 @@
 // APUNTES DE TYPESCRIPT
 
+
+
+
 // Toca consultar objetos, para investigar
 
 // 1. Objetos Literales Tipados (Interfaces y Types)}
