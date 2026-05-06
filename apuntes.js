@@ -16,6 +16,8 @@ miPromesa
 miPromesa.then((mensaje) => console.log(mensaje),
 (error) => console.error(error))
 
+
+
 //XHR
 const client = new XMLHttpRequest();
 
