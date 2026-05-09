@@ -21,6 +21,26 @@ function sayHi(){
 
     console.log(fullname)
 
+    const sayGoodBye = () => {
+        console.log("God bye");
+    } // Const y let no hacen hoisting
+
+    sayGoodBye() // Hoisting -> elevacion
+
 }
 
 sayHi();
+
+//Closures
+function greet(fname){
+    //Function Scope
+    let greeting = "Welcome! " + fname //Local variable
+    let message = function(){
+        //Function Scope
+        console.log(gretting);
+    }
+    return message
+}
+
+let sayHello = greet("Tzuzul");
+sayHello
