@@ -1,4 +1,6 @@
 // Promises
+
+//Ejemplo 1
 const miPromesa = new Promise((resolve, reject) => {
   let exito = true;
   if (exito) {
@@ -17,19 +19,21 @@ miPromesa.then((mensaje) => console.log(mensaje),
 (error) => console.error(error))
 
 
+// Ejemplo 2
 
-// TOCA BUSCAR LAS FUNCIONES DE EXPRESION Y DE DECLARACION
-// Y LUEGO EL HOISTING (EL ES MAS EXPRESIVO) PARA LOS EJEMPLOS Y REPASAR LOS ANTERIORES
+const obtenerDatosUsuario = (id) => {
+  return new Promise((resolve, reject) => {
+    console.log("Cargando usuario...");
+    setTimeout(() => {
+      if (id === 1) {
+        resolve({ id: 1, nombre: "Randolph" });
+      } else {
+        reject(new Error("Usuario no encontrado"));
+      }
+    }, 1500);
+  });
+};
 
-fetch('https://example.com') // Supongamos que esta API existe
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        return otroProcesoAsincrono(data); // Retornar otra promesa
-    })
-    .then(resultadoFinal => {
-        console.log(resultadoFinal);
-    })
-    .catch(error => {
-        console.error("Error en la cadena:", error);
-    });
+obtenerDatosUsuario(1)
+  .then((usuario) => console.log(usuario))
+  .catch((error) => console.error(error.message)); // "Usuario no encontrado"

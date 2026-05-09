@@ -1,53 +1,72 @@
+//callbacks
+const operation = (numero1, numero2, op)=>{
+    return op(numero1, numero2)
+}
+
+operation(1, 3, (a,b) => a+b)
+operation(1, 3, (a,b) => a*b)
+operation(1, 3, (a,b) => a-b)
+
+const operacionconpromesas = (numero1, numero2) => {
+    const resultado = numero1 + numero2
+    return new Promise(resolve => {
+        setTimeout(()=>{
+            resolve(resultado)
+        }, 5000)
+    })
+}
+
+const resultadoconpromesas = await operacionconpromesas(1,2)
 // arrow functions 
 
-function suma(x,y){
-    return x + y;
-}
+// function suma(x,y){
+//     return x + y;
+// }
 
-const sumaArrow = (x,y) => {
-    return x + y
-}
+// const sumaArrow = (x,y) => {
+//     return x + y
+// }
 
-const SumaArrowInLin = (x,y) => x + y
+// const SumaArrowInLin = (x,y) => x + y
 
 //------
-const data = [{name: 'John'},
-              {name: 'Mark'},
-              {name: 'Mike'},
-              {name: 'Anthony'}]
+// const data = [{name: 'John'},
+//               {name: 'Mark'},
+//               {name: 'Mike'},
+//               {name: 'Anthony'}]
 
-const d = data.map(function(v){
-    return v.name
-})
+// const d = data.map(function(v){
+//     return v.name
+// })
 
-const b = data.map((v => {
-    return v.name
-}))
+// const b = data.map((v => {
+//     return v.name
+// }))
 
-const c = data.map(v => v.name)
+// const c = data.map(v => v.name)
 
 //-----------------
-setTimeout(function (){
-    console.log('Hola')
-}, 500)
+// setTimeout(function (){
+//     console.log('Hola')
+// }, 500)
 
-setTimeout(() => {
-    console.log('Hola')
-}, 600)
+// setTimeout(() => {
+//     console.log('Hola')
+// }, 600)
 
-setTimeout(() => console.log('Hola'), 700)
+// setTimeout(() => console.log('Hola'), 700)
 
 //-------------
 
 //clousure
 
-function counter(){
-    let i = 0;
+// function counter(){
+//     let i = 0;
 
-    return () => {
-        i++
-    }
-}
+//     return () => {
+//         i++
+//     }
+// }
 
 
 
