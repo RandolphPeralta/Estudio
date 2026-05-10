@@ -1,17 +1,17 @@
-h1 {
-    font-family: arial;
-    padding:20 px;
+body {
     text-align: center;
+    font-family: Arial;
+}
+
+h1 {
+    padding: 20px;
 }
 
 p {
     color: blue;
-    font-family: arial;
-    padding:20 px;
-    text-align: center;
+    padding: 20px;
 }
 
 .Boton {
-    display: flex;
-    justify-content: center; /* Centrado horizontal */
+    padding: 10px 20px;
 }
