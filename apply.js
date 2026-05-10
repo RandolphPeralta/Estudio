@@ -3,9 +3,7 @@ function sayHello(greet, msg) {
 }
 
 const obj = {
-  name: "khriztianmoreno",
-};
+  name: "Randolph",
+}; 
 
-sayHello.call(obj, "Hello", "Good Morning"); 
-
-sayHello.apply(obj, ["Hello", "Good Morning"]); 
+sayHello.apply(obj, ["Hola", "Buenos dias"]); 

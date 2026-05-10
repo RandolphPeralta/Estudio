@@ -2,9 +2,8 @@ function sayHello() {
   console.log(this.name);
 }
 
-const obj = { name: "khriztianmoreno" };
+const obj = { name: "Randolph" };
 
-// it won't invoke, it just returns back the new function instance
 const newFunc = sayHello.bind(obj); 
 
-newFunc(); // khriztianmoreno
+newFunc();

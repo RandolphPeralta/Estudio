@@ -1,14 +1,14 @@
 const obj = {
-  myName: "khriztianmoreno",
+  myName: "Randolph",
   printName: function () {
     console.log(this.myName);
   },
 };
 
-obj.printName(); // khriztianmoreno
+obj.printName();
 
 const newObj = {
-  myName: "mafeserna",
+  myName: "Rafael",
 };
 
-obj.printName.call(newObj); //mafeserna
+obj.printName.call(newObj); 
