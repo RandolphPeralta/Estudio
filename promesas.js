@@ -36,4 +36,4 @@ const obtenerDatosUsuario = (id) => {
 
 obtenerDatosUsuario(1)
   .then((usuario) => console.log(usuario))
-  .catch((error) => console.error(error.message)); // "Usuario no encontrado"
+  .catch((error) => console.error(error.message)); 
