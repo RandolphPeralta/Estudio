@@ -1,9 +1,9 @@
-console.log(nombre); // Muestra: undefined
-var nombre = "Juan";
-console.log(nombre); // Muestra: "Juan"
-
-// Cómo lo interpreta JavaScript (fase de creación):
-var nombre; // La declaración se eleva
 console.log(nombre); 
-nombre = "Pedro"; // La asignación se queda en su sitio
+var nombre = "Juan";
+console.log(nombre); 
+
+
+var nombre; 
+console.log(nombre); 
+nombre = "Pedro";
 console.log(nombre);
