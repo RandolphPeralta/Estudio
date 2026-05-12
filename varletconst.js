@@ -9,3 +9,12 @@ function mostrar(){
 }
 
 mostrar();
+
+
+if (true){
+  var saludo = "Hola"
+  //let saludo="Hola"
+  
+}
+
+console.log(saludo)
