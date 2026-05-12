@@ -6,3 +6,5 @@ function crearSaludo(saludo) {
 
 const saludarHola = crearSaludo('Hola');
 saludarHola('Randolph');
+
+// CONSULTAR UN POCO MAS DE CLOUSURE
