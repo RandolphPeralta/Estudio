@@ -5,3 +5,5 @@ client.open("GET", "/robots.txt");
 client.send();
 
 console.log(client.responseText);
+
+// toca consultar un poco mas

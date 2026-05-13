@@ -1,19 +1,23 @@
-function ponerCabon(){
-  setTimeout(()=>{
-    console.log("2. El carbon esta listo");
-  }, 3000);
+async function ponerCarbon() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("2. El carbon esta listo");
+    }, 3000);
+  })
 }
 
 // console.log("1. Alguien enciende el carbon");
 // ponerCabon();
 // console.log("3. Colocamos la carne")
 
-async function prepararParrillada(){
+async function prepararParrillada() {
   console.log("1. Encendiendo carbon ...");
   const carbonlisto = await ponerCarbon();
   console.log(carbonlisto);
-  console.log("3. Ahora sí, pongo la carne en la parrillada")
+  console.log("3. Ahora sí, pongo la carne en la parrillada");
 }
+
+prepararParrillada();
 
 // -------------
 
@@ -56,8 +60,8 @@ async function prepararParrillada(){
 // //-----------
 
 // async function obtenerDatos() {
-//   const respuesta = await fetch('https://example.com'); 
-//   const datos = await respuesta.json(); 
+//   const respuesta = await fetch('https://example.com');
+//   const datos = await respuesta.json();
 //   console.log(datos);
 // }
 
