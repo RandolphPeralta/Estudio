@@ -10,10 +10,12 @@ function mostrar(){
 
 mostrar();
 
+//-------
 
 if (true){
   var saludo = "Hola"
   //let saludo="Hola"
+  //const saludo = "Hola"
   
 }
 
