@@ -7,11 +7,11 @@ function crearSaludo(saludo) {
 const saludarHola = crearSaludo('Hola');
 saludarHola('Randolph');
 
-// CONSULTAR UN POCO MAS DE CLOUSURE
+// ----------
 
 const miContador = (
   function(){
-  var _contador = 0;
+  let _contador = 0;
 
   function incrementar(){
     return ++_contador;
