@@ -1,0 +1,22 @@
+.page__button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.page__button:hover {
+  opacity: 0.8;
+}
+
+body {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.page__title {
+  padding: 20px;
+}
+.page__paragraph {
+  color: blue;
+  padding: 20px;
+}
+
+/*# sourceMappingURL=sty.css.map */

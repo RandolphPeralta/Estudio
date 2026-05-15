@@ -1,0 +1,17 @@
+body {
+    text-align: center;
+    font-family: Arial;
+}
+
+h1 {
+    padding: 20px;
+}
+
+p {
+    color: blue;
+    padding: 20px;
+}
+
+.Boton {
+    padding: 10px 20px;
+}
