@@ -1,0 +1,19 @@
+@use "variables";
+@use "button";
+
+body {
+    text-align: center;
+    font-family: variables.$font-main;
+}
+
+.page {
+
+    &__title {
+        padding: variables.$padding-main;
+    }
+
+    &__paragraph {
+        color: variables.$primary-color;
+        padding: variables.$padding-main;
+    }
+}
