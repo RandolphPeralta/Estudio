@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(187, 199, 199);
+}
+
+.container{
+    background-color: white;
+
+    width: 950px;
+    height: 600px;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    display: flex;
+
+}
