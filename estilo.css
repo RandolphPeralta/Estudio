@@ -1,23 +1,51 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background-color: rgb(187, 199, 199);
+    font-family: Arial;
+    justify-content: center;
+    display: flex;
 }
 
-.container{
+.container {
     background-color: white;
-
-    width: 950px;
+    width: 900px;
     height: 600px;
-
     padding: 20px;
-
     border-radius: 20px;
-
     display: flex;
+    
+}
 
+.list {
+    background-color: blue;
+    border-radius: 20px;
+}
+
+.list__items p {
+    color: white;
+}
+
+.formulary{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.formulary__title {
+    color: blue;
+}
+
+.formulary__item {
+    color: blue;
+}
+
+.formulary__buttom {
+    background-color: blue;
+    color: white;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+input {
+    padding: 15px;
+    border-radius: 10px;
 }
