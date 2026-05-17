@@ -1,23 +1,27 @@
 body {
     background-color: rgb(187, 199, 199);
     font-family: Arial;
-    justify-content: center;
     display: flex;
+    justify-content: center;
 }
 
-.container {
+ .container {
     background-color: white;
+    border-radius: 20px;
+    display: flex;
     width: 900px;
     height: 600px;
     padding: 20px;
-    border-radius: 20px;
-    display: flex;
-    
 }
 
 .list {
     background-color: blue;
     border-radius: 20px;
+    padding: 40px 30px;
+}
+
+.list__items h5 {
+    color: grey;
 }
 
 .list__items p {
@@ -26,26 +30,33 @@ body {
 
 .formulary{
     display: flex;
-    flex-direction: column;
-    padding: 20px;
+    flex-flow: column;
+    padding: 40px 120px;
 }
+
 
 .formulary__title {
     color: blue;
 }
 
+
 .formulary__item {
     color: blue;
 }
 
+
 .formulary__buttom {
+    align-self: flex-end;
     background-color: blue;
     color: white;
+    padding: 15px 25px;
     font-size: 15px;
     border-radius: 10px;
 }
 
+
 input {
     padding: 15px;
     border-radius: 10px;
+    flex-flow: column;
 }
