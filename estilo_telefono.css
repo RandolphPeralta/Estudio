@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(187, 199, 199);
+    font-family: Arial;
+}
+
+/* .container {
+    display: flex;
+    justify-content: center;
+}  */
+
+.numeric_head {
+    height: 180px;
+    background-color: rgb(69, 69, 225);
+    color: white;
+    display: flex;
+    justify-content: center;
+}

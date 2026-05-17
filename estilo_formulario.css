@@ -15,7 +15,7 @@ body {
 }
 
 .list {
-    background-color: blue;
+    background-color: rgb(95, 95, 233);
     border-radius: 20px;
     padding: 40px 30px;
 }
@@ -35,21 +35,20 @@ body {
 }
 
 .formulary__title {
-    color: blue;
+    color: rgb(12, 12, 96);
 }
 
 .formulary__item {
-    color: blue;
+    color: rgb(12, 12, 96);
 }
 
 .formulary__buttom {
     align-self: flex-end;
-    background-color: blue;
+    background-color: rgb(12, 12, 96);
     color: white;
     padding: 15px 25px;
     border-radius: 10px;
 }
-
 
 input {
     padding: 15px;
