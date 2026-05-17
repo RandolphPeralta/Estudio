@@ -5,7 +5,7 @@ body {
     justify-content: center;
 }
 
- .container {
+.container {
     background-color: white;
     border-radius: 20px;
     display: flex;
@@ -34,23 +34,19 @@ body {
     padding: 40px 120px;
 }
 
-
 .formulary__title {
     color: blue;
 }
 
-
 .formulary__item {
     color: blue;
 }
-
 
 .formulary__buttom {
     align-self: flex-end;
     background-color: blue;
     color: white;
     padding: 15px 25px;
-    font-size: 15px;
     border-radius: 10px;
 }
 
