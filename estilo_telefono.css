@@ -1,23 +1,38 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background-color: rgb(187, 199, 199);
     font-family: Arial;
 }
 
-/* .container {
+.numeric_head {
+    background-color: rgb(69, 69, 225);
     display: flex;
     justify-content: center;
-}  */
+    padding-top: 10px;
+}
 
-.numeric_head {
-    height: 180px;
-    background-color: rgb(69, 69, 225);
-    color: white;
+.numeric_head header{
     display: flex;
+}
+
+.numeric_head h2 {
+    color: white;
+    border-radius: 100px;
+    
+    background: linear-gradient(
+        to right,
+        #483eff,
+        #6259ff
+    );
+
+    gap: 20px;
+}
+
+.menu {
+    display: flex;
+    flex-flow: column;
+}
+
+.menu button {
+    padding: 20px;
     justify-content: center;
 }
