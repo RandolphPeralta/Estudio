@@ -57,14 +57,6 @@ body {
     color: white
 }
 
-/* .list__items h5 {
-    color: grey;
-}
-
-.list__items p {
-    color: white;
-} */
-
 .formulary{
     display: flex;
     flex-flow: column;
