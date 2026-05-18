@@ -10,14 +10,14 @@ body {
     border-radius: 20px;
     display: flex;
     width: 900px;
-    height: 600px;
+    height: 500px;
     padding: 20px;
 }
 
 .list {
     background-color: rgb(95, 95, 233);
     border-radius: 20px;
-    padding: 40px 30px;
+    padding: 40px 60px;
 }
 
 .list__items h5 {
@@ -38,8 +38,14 @@ body {
     color: rgb(12, 12, 96);
 }
 
+.formulary__paragraph {
+    color: grey
+}
+
 .formulary__item {
     color: rgb(12, 12, 96);
+    display: flex;
+    flex-flow: column;
 }
 
 .formulary__buttom {
