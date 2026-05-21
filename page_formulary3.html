@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Multi Step</title>
 
-    <link rel="stylesheet" href="style_formulary2.css">
+    <link rel="stylesheet" href="style_formulary3.css">
 </head>
 
 <body>
@@ -54,64 +54,68 @@
         </div>
 
         <div class="formulario">
-
-            <h1>Select your plan</h1>
+            <h1>Pick add-ons</h1>
 
             <p class="descripcion">
-                You have the option of monthly or yearly billing.
+                Add-ons help enhance your gaming experience.
             </p>
 
-            <!-- Contenedor de tarjetas -->
-            <div class="planes">
+            <!-- Contenedor de addons -->
+            <div class="addons">
 
-                <!-- Plan 1 -->
-                <div class="card-plan activo-plan">
+                <!-- Addon 1 -->
+                <div class="addon-card activo-addon">
 
-                    <img src="icon-arcade.svg" alt="Arcade">
+                    <div class="addon-left">
 
-                    <div>
-                        <h3>Arcade</h3>
-                        <p>$9/mo</p>
+                        <input type="checkbox" checked>
+
+                        <div>
+                            <h3>Online service</h3>
+                            <p>Access to multiplayer games</p>
+                        </div>
+
                     </div>
 
+                    <span>+$1/mo</span>
+
                 </div>
 
-                <!-- Plan 2 -->
-                <div class="card-plan">
+                <!-- Addon 2 -->
+                <div class="addon-card activo-addon">
 
-                    <img src="icon-advanced.svg" alt="Advanced">
+                    <div class="addon-left">
 
-                    <div>
-                        <h3>Advanced</h3>
-                        <p>$12/mo</p>
+                        <input type="checkbox" checked>
+
+                        <div>
+                            <h3>Larger storage</h3>
+                            <p>Extra 1TB of cloud save</p>
+                        </div>
+
                     </div>
 
+                    <span>+$2/mo</span>
+
                 </div>
 
-                <!-- Plan 3 -->
-                <div class="card-plan">
+                <!-- Addon 3 -->
+                <div class="addon-card">
 
-                    <img src="icon-pro.svg" alt="Pro">
+                    <div class="addon-left">
 
-                    <div>
-                        <h3>Pro</h3>
-                        <p>$15/mo</p>
+                        <input type="checkbox">
+
+                        <div>
+                            <h3>Customizable Profile</h3>
+                            <p>Custom theme on your profile</p>
+                        </div>
+
                     </div>
 
+                    <span>+$2/mo</span>
+
                 </div>
-
-            </div>
-
-            <!-- Selector -->
-            <div class="toggle">
-
-                <span class="activo-texto">Monthly</span>
-
-                <div class="switch">
-                    <div class="circle"></div>
-                </div>
-
-                <span>Yearly</span>
 
             </div>
 

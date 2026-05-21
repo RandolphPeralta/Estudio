@@ -104,121 +104,89 @@ body{
     margin-bottom: 40px;
 }
 
-.planes{
+/*-------------------*/
+
+.addons{
+    margin-top: 40px;
+
     display: flex;
 
-    gap: 20px;
+    flex-direction: column;
 
-    margin-top: 40px;
+    gap: 20px;
 }
 
-.card-plan{
-    width: 140px;
-
+.addon-card{
     border: 1px solid #d6d9e6;
 
     border-radius: 10px;
 
     padding: 20px;
 
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
     cursor: pointer;
 
     transition: 0.3s;
 }
 
-.card-plan:hover{
-    border-color: #473dff;
+.addon-card:hover{
     background-color: #f8f9ff;
+
+    border-color: #473dff;
 }
 
-/* .activo-plan{
-    border-color: #473dff;
-
+/* .activo-addon{
     background-color: #f8f9ff;
+
+    border-color: #473dff;
 } */
 
-.card-plan h3{
-    color: #02295a;
-
-    margin-bottom: 5px;
-}
-
-.card-plan img{
-    width: 40px;
-
-    margin-bottom: 40px;
-}
-
-.card-plan h3{
-    color: #02295a;
-
-    margin-bottom: 5px;
-}
-
- .card-plan p{
-    color: gray;
-}
-
-
-.toggle{
-    background-color: #f8f9ff;
-
-    margin-top: 30px;
-
-    padding: 15px;
-
-    border-radius: 10px;
-
+.addon-left{
     display: flex;
-
-    justify-content: center;
 
     align-items: center;
 
     gap: 20px;
 }
 
-
-.switch{
-    width: 50px;
-    height: 25px;
-
-    background-color: #02295a;
-
-    border-radius: 20px;
-
-    position: relative;
+.addon-left input{
+    width: 20px;
+    height: 20px;
 
     cursor: pointer;
 }
 
-.circle{
-    width: 18px;
-    height: 18px;
+.addon-left h3{
+    color: #02295a;
 
-    background-color: white;
-
-    border-radius: 50%;
-
-    position: absolute;
-
-    top: 3px;
-    left: 4px;
+    margin-bottom: 5px;
 }
 
-.activo-texto{
-    color: #02295a;
+.addon-left p{
+    color: gray;
+
+    font-size: 14px;
+}
+
+.addon-card span{
+    color: #473dff;
 
     font-weight: bold;
 }
 
+/*--------------------*/
 
 .botones{
     display: flex;
 
     justify-content: space-between;
 
-    margin-top: 120px;
+    margin-top: 40px;
 }
 
 .back{
@@ -245,4 +213,4 @@ body{
     border-radius: 8px;
 
     cursor: pointer;
-} 
+}
