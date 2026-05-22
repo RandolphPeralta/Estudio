@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.contenedor-formulario {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 400px;
+}
+
+/* Menú de pasos */
+.menu-pasos {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ddd;
+}
+
+.menu-pasos li {
+    padding-bottom: 10px;
+    color: #999;
+    font-weight: bold;
+}
+
+.menu-pasos .paso-activo {
+    color: #4CAF50;
+    border-bottom: 2px solid #4CAF50;
+}
+
+/* Ocultar todos los pasos por defecto */
+.paso-formulario {
+    display: none;
+    border: none;
+}
+
+/* Mostrar solo el paso activo */
+.paso-formulario.paso-activo {
+    display: block;
+}
+
+/* Estilos de inputs y botones */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-siguiente, .btn-enviar {
+    background-color: #4CAF50;
+    color: white;
+    float: right;
+}
+
+.btn-atras {
+    background-color: #f1f1f1;
+    color: black;
+    float: left;
+}

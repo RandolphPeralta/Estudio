@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Pasos</title>
+    <link rel="stylesheet" href="ejemplo_estilos.css">
+</head>
+<body>
+
+<div class="contenedor-formulario">
+    <!-- Menú de Pasos -->
+    <ul class="menu-pasos">
+        <li class="paso-activo" id="ind-paso-1">1. Cuenta</li>
+        <li id="ind-paso-2">2. Perfil</li>
+        <li id="ind-paso-3">3. Finalizar</li>
+    </ul>
+
+    <form id="formulario-multipasos">
+        
+        <!-- Paso 1 -->
+        <fieldset class="paso-formulario paso-activo" id="paso-1">
+            <h2>Paso 1: Información de la cuenta</h2>
+            <input type="email" placeholder="Correo electrónico" required>
+            <input type="password" placeholder="Contraseña" required>
+            <button type="button" class="btn-siguiente">Siguiente</button>
+        </fieldset>
+
+        <!-- Paso 2 -->
+        <fieldset class="paso-formulario" id="paso-2">
+            <h2>Paso 2: Información personal</h2>
+            <input type="text" placeholder="Nombre" required>
+            <input type="text" placeholder="Teléfono" required>
+            <button type="button" class="btn-atras">Atrás</button>
+            <button type="button" class="btn-siguiente">Siguiente</button>
+        </fieldset>
+
+        <!-- Paso 3 -->
+        <fieldset class="paso-formulario" id="paso-3">
+            <h2>Paso 3: ¡Listo!</h2>
+            <p>Acepta los términos y condiciones para enviar.</p>
+            <label>
+                <input type="checkbox" required> Acepto todo
+            </label>
+            <br><br>
+            <button type="button" class="btn-atras">Atrás</button>
+            <button type="submit" class="btn-enviar">Enviar</button>
+        </fieldset>
+
+    </form>
+</div>
+
+<script src="ejemplo_formulario.js"></script>
+</body>
+</html>
