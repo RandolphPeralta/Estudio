@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -6,45 +6,46 @@
 
 @font-face {
     font-family: 'Mifuente';
-    src: url('Ubuntu-Bold.ttf') format('truetype');;
+    src: url('Ubuntu-Bold.ttf') format('truetype');
+    ;
     font-weight: normal;
-    font-style:normal;
+    font-style: normal;
 }
 
-body{
+body {
     font-family: 'Mifuente', sans-serif;
     /* font-family: Arial, Helvetica, sans-serif; */
     background-color: #eef5ff;
 
-    display: flex; 
-    
+    display: flex;
+
     justify-content: center;
-    
+
     align-items: center;
 
-    height: 100vh;  
+    height: 100vh;
 }
 
-.contenedor{
-    
+.contenedor {
+
     width: 900px;
-    
-    height: 600px; 
+
+    height: 600px;
 
     background-color: white;
-    
+
     border-radius: 15px;
-    
+
     display: flex;
-    
+
     padding: 15px;
 }
 
-.sidebar{
-   
+.sidebar {
+
     background-image: url("bg-sidebar.svg");
 
-    width: 250px; 
+    width: 250px;
 
     background-repeat: no-repeat;
 
@@ -56,10 +57,10 @@ body{
 
     padding: 30px;
 
-    color: white; 
+    color: white;
 }
 
-.paso{
+.paso {
     display: flex;
 
     align-items: center;
@@ -69,12 +70,12 @@ body{
     margin-bottom: 30px;
 }
 
-.paso p{
+.paso p {
     font-size: 12px;
     color: #d6d6ff;
 }
 
-.numero{
+.numero {
     width: 40px;
     height: 40px;
 
@@ -86,25 +87,25 @@ body{
     align-items: center;
 }
 
-.formulario{
+.formulario {
     flex: 1;
 
     padding: 50px 80px;
 }
 
-.formulario h1{
+.formulario h1 {
     color: #02295a;
 
     margin-bottom: 10px;
 }
 
-.descripcion{
+.descripcion {
     color: gray;
 
     margin-bottom: 40px;
 }
 
-.planes{
+.planes {
     display: flex;
 
     gap: 20px;
@@ -112,7 +113,7 @@ body{
     margin-top: 40px;
 }
 
-.card-plan{
+.card-plan {
     width: 140px;
 
     border: 1px solid #d6d9e6;
@@ -126,7 +127,7 @@ body{
     transition: 0.3s;
 }
 
-.card-plan:hover{
+.card-plan:hover {
     border-color: #473dff;
     background-color: #f8f9ff;
 }
@@ -137,30 +138,30 @@ body{
     background-color: #f8f9ff;
 } */
 
-.card-plan h3{
+.card-plan h3 {
     color: #02295a;
 
     margin-bottom: 5px;
 }
 
-.card-plan img{
+.card-plan img {
     width: 40px;
 
     margin-bottom: 40px;
 }
 
-.card-plan h3{
+/* .card-plan h3 {
     color: #02295a;
 
     margin-bottom: 5px;
-}
+} */
 
- .card-plan p{
+.card-plan p {
     color: gray;
 }
 
 
-.toggle{
+.toggle {
     background-color: #f8f9ff;
 
     margin-top: 30px;
@@ -179,7 +180,7 @@ body{
 }
 
 
-.switch{
+.switch {
     width: 50px;
     height: 25px;
 
@@ -192,7 +193,7 @@ body{
     cursor: pointer;
 }
 
-.circle{
+.circle {
     width: 18px;
     height: 18px;
 
@@ -206,14 +207,13 @@ body{
     left: 4px;
 }
 
-.activo-texto{
+.activo-texto {
     color: #02295a;
 
     font-weight: bold;
 }
 
-
-.botones{
+.botones {
     display: flex;
 
     justify-content: space-between;
@@ -221,7 +221,7 @@ body{
     margin-top: 120px;
 }
 
-.back{
+.back {
     background: none;
 
     border: none;
@@ -233,7 +233,7 @@ body{
     cursor: pointer;
 }
 
-.next{
+.next {
     background-color: #02295a;
 
     color: white;
@@ -245,4 +245,230 @@ body{
     border-radius: 8px;
 
     cursor: pointer;
-} 
+}
+
+.gratis{
+    display: block;
+
+    margin-top: 5px;
+
+    color: #02295a;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.oculto{
+    display: none;
+}
+
+.circle{
+    transition: 0.3s;
+}
+
+.switch.activo .circle{
+    transform: translateX(24px);
+}
+
+.activo-texto{
+    color: #02295a;
+
+    font-weight: bold;
+}
+
+/*MOVIL*/
+
+@media(max-width: 768px) {
+
+    /* Body */
+    body {
+        height: auto;
+
+        display: block;
+
+        background-color: #eef5ff;
+    }
+
+    /* Contenedor principal */
+    .contenedor {
+        width: 100%;
+
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 0;
+
+        background: none;
+
+        border-radius: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 100%;
+
+        height: 170px;
+
+        border-radius: 0;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+        padding-top: 40px;
+
+        background-image: url("bg-sidebar-mobile.svg");
+
+        background-size: cover;
+
+        background-position: center;
+    }
+
+    /* Contenedor planes */
+    .planes {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        /* margin-top: 10px; */
+    }
+
+    /* Ocultar textos */
+    .paso div:last-child {
+        display: none;
+    }
+
+    /* Formulario */
+    .formulario {
+        width: 90%;
+
+        background-color: white;
+
+        margin: -70px auto 0 auto;
+
+        padding: 30px 25px;
+
+        border-radius: 15px;
+
+        position: relative;
+
+        z-index: 10;
+    }
+
+    /* Titulo */
+    .formulario h1 {
+        font-size: 32px;
+    }
+
+    /* Descripcion */
+    .descripcion {
+        font-size: 18px;
+
+        line-height: 28px;
+    }
+
+    .card-plan {
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 18px;
+
+        padding: 18px;
+    }
+
+    .card-plan img {
+        width: 40px;
+
+        margin-bottom: 0;
+    }
+
+    .card-plan h3 {
+        font-size: 20px;
+    }
+
+    .card-plan p {
+        font-size: 18px;
+    }
+
+    
+    .toggle {
+        height: 200%;
+
+        margin-top: 20px;
+
+        padding: 15px;
+    }
+
+    
+    .toggle span {
+        font-size: 15px;
+    }
+
+        
+    .switch {
+        width: 50px;
+
+        height: 25px;
+
+        background-color: #02295a;
+
+        border-radius: 20px;
+
+        position: relative;
+
+        cursor: pointer;
+    }
+
+    /*
+    .circle {
+        width: 20px;
+        height: 20px;
+
+        top: 4px;
+    } */
+
+    /* Botones */
+    .botones {
+        width: 100%;
+
+        background-color: white;
+
+        position: fixed;
+
+        bottom: 0;
+
+        left: 0;
+
+        padding: 20px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+    }
+
+    /* Boton back */
+    .back {
+        font-size: 16px;
+    }
+
+    /* Boton next */
+    .next {
+        padding: 14px 22px;
+
+        font-size: 16px;
+    }
+}
+
