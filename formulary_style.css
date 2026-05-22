@@ -82,7 +82,7 @@ body {
     margin-bottom: 30px;
 }
 
-.numero {
+.number {
     width: 40px;
     height: 40px;
 
@@ -94,7 +94,7 @@ body {
     align-items: center;
 }
 
-.activo {
+.on {
     background-color: #bfe2fd;
     color: black;
 }
@@ -366,7 +366,7 @@ button:hover {
     height: 28px;
 }
 
-.switch.activo .circle {
+.switch.activo.circle {
     transform: translateX(24px);
 }
 
@@ -647,7 +647,7 @@ hr {
         line-height: 28px;
     }
 
-        .botones {
+    .botones {
         width: 100%;
 
         background-color: white;

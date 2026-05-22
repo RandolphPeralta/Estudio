@@ -1,45 +1,28 @@
-// Capturar todos los steps
 const steps = document.querySelectorAll(".step");
 
-// Capturar circulos
-const numeros = document.querySelectorAll(".numero");
+const numeros = document.querySelectorAll(".number");
 
-// Botones next
 const nextBtns = document.querySelectorAll(".next");
 
-// Botones back
 const backBtns = document.querySelectorAll(".back");
 
-// Paso actual
 let currentStep = 0;
-
-// =========================
-// FUNCION MOSTRAR STEP
-// =========================
 
 function showStep(index) {
 
-    // Ocultar todos
     steps.forEach(step => {
         step.classList.remove("active");
     });
 
-    // Quitar active sidebar
     numeros.forEach(numero => {
-        numero.classList.remove("activo");
+        numero.classList.remove("on");
     });
 
-    // Mostrar actual
     steps[index].classList.add("active");
 
-    // Activar numero
-    numeros[index].classList.add("activo");
+    numeros[index].classList.add("on");
 
 }
-
-// =========================
-// NEXT
-// =========================
 
 nextBtns.forEach(button => {
 
@@ -55,10 +38,6 @@ nextBtns.forEach(button => {
     });
 
 });
-
-// =========================
-// BACK
-// =========================
 
 backBtns.forEach(button => {
 
@@ -77,19 +56,23 @@ backBtns.forEach(button => {
 
 //----------------------------
 
-// =========================
-// TOGGLE SWITCH STEP 2
-// =========================
-
-// Capturar switch
 const switchBtn = document.getElementById("switch");
 
-// Precios
 const arcadePrecio = document.querySelector(".arcade-precio");
 
 const advancedPrecio = document.querySelector(".advanced-precio");
 
 const proPrecio = document.querySelector(".pro-precio");
+
+const planTitle = document.querySelector(".plan-title");
+
+const planPrice = document.querySelector(".plan-price");
+
+const onlinePrice = document.querySelector(".online-price");
+
+const storagePrice = document.querySelector(".storage-price");
+
+const totalPrice = document.querySelector(".total-price");
 
 // Textos gratis
 const gratis = document.querySelectorAll(".gratis");
@@ -107,13 +90,13 @@ switchBtn.addEventListener("click", () => {
     yearly = !yearly;
 
     // Activar animacion
-    switchBtn.classList.toggle("activo");
+    switchBtn.classList.toggle("on");
 
     // =========================
     // YEARLY
     // =========================
 
-    if(yearly){
+    if (yearly) {
 
         // Cambiar precios
         arcadePrecio.textContent = "$90/yr";
@@ -122,7 +105,16 @@ switchBtn.addEventListener("click", () => {
 
         proPrecio.textContent = "$150/yr";
 
-        // Mostrar textos gratis
+        planTitle.textContent = "Arcade (Yearly)";
+
+        planPrice.textContent = "$90/yr";
+
+        onlinePrice.textContent = "+$10/yr";
+
+        storagePrice.textContent = "+$20/yr";
+
+        totalPrice.textContent = "+$120/yr";
+
         gratis.forEach(item => {
 
             item.classList.remove("oculto");
@@ -130,9 +122,9 @@ switchBtn.addEventListener("click", () => {
         });
 
         // Cambiar color texto
-        toggleTextos[0].classList.remove("activo-texto");
+        toggleTextos[0].classList.remove("on-texto");
 
-        toggleTextos[1].classList.add("activo-texto");
+        toggleTextos[1].classList.add("on-texto");
 
     }
 
@@ -140,7 +132,7 @@ switchBtn.addEventListener("click", () => {
     // MONTHLY
     // =========================
 
-    else{
+    else {
 
         // Cambiar precios
         arcadePrecio.textContent = "$9/mo";
@@ -149,7 +141,16 @@ switchBtn.addEventListener("click", () => {
 
         proPrecio.textContent = "$15/mo";
 
-        // Ocultar textos gratis
+        planTitle.textContent = "Arcade (Monthly)";
+
+        planPrice.textContent = "$9/mo";
+
+        onlinePrice.textContent = "+$1/mo";
+
+        storagePrice.textContent = "+$2/mo";
+
+        totalPrice.textContent = "+$12/mo";
+
         gratis.forEach(item => {
 
             item.classList.add("oculto");
@@ -157,10 +158,24 @@ switchBtn.addEventListener("click", () => {
         });
 
         // Cambiar color texto
-        toggleTextos[1].classList.remove("activo-texto");
+        toggleTextos[1].classList.remove("on-texto");
 
-        toggleTextos[0].classList.add("activo-texto");
+        toggleTextos[0].classList.add("on-texto");
 
     }
+
+});
+
+const changeBtn = document.querySelector(".change-btn");
+
+changeBtn.addEventListener("click", (e) => {
+
+    e.preventDefault();
+
+    // Ocultar step 4
+    step4.style.display = "none";
+
+    // Mostrar step 2
+    step2.style.display = "block";
 
 });
