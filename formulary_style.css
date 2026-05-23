@@ -58,8 +58,6 @@ body {
 
     background-image: url("bg-sidebar.svg");
 
-    background-repeat: no-repeat;
-
     background-size: cover;
 
     background-position: center;
@@ -75,8 +73,6 @@ body {
     display: flex;
 
     flex-direction: column;
-
-    gap: 30px;
 
 }
 
