@@ -1,8 +1,6 @@
 /*---FONDO-Y-SIDEBAR----*/
 
 * {
-    /* margin: 0;
-    padding: 0; */
     box-sizing: border-box;
 }
 
@@ -28,7 +26,7 @@
 }
 
 body {
-    font-family: 'Bold', sans-serif;
+    font-family: 'Medium', sans-serif;
     background-color: #eef5ff;
 
     display: flex;
@@ -49,10 +47,14 @@ body {
     display: flex;
 
     padding: 15px;
+
+    /*-----*/
+
+    gap: 60px;
 }
 
 .sidebar {
-    width: 250px;
+    width: 260px;
 
     background-image: url("bg-sidebar.svg");
 
@@ -67,6 +69,14 @@ body {
     padding: 30px;
 
     color: white;
+
+    /*-------*/
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 30px;
 
 }
 
@@ -121,13 +131,26 @@ body {
 
 .step.active {
     display: block;
+
+    /*------*/
+
+    flex-direction: column;
+
+    flex: 1;
+
+    padding: 40px 70px 30px 0;
 }
 
 /*-----TITULO-Y-PARRAFO-DERECHA-Y-BOTONES--------*/
 
 .title_paragraph {
-    width: 600px;
-    height: 150px;
+    /* width: 600px;
+    height: 150px; */
+
+    /*------*/
+
+    margin-bottom: 40px;
+
 }
 
 .titles {
@@ -136,7 +159,11 @@ body {
 
     /* margin-bottom: 10px; */
 
-    padding: 0px 80px;
+    /* padding: 0px 80px; */
+
+    font-size: 38px;
+
+    margin-bottom: 10px;
 }
 
 .description {
@@ -144,19 +171,41 @@ body {
 
     /* margin-bottom: 10px; */
 
-    padding: 0px 80px;
+    /* padding: 0px 80px; */
+
+    /*----*/
+
+    line-height: 1.5;
 }
 
 .actions {
-    height: 210px;
+    /* height: 210px; */
+
+    /*---*/
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 25px;
 }
 
 .botones {
     /* display: flex; */
 
-    /* justify-content: space-between; */
+    justify-content: space-between;
 
-    margin-top: 100px;
+    /* margin-top: 100px; */
+
+    /*---*/
+
+    margin-top: auto;
+
+    /* display: flex; */
+    /* justify-content: flex-end; */
+
+    display: flex;
+
+    justify-content: flex-end;
 }
 
 .next {
@@ -166,13 +215,15 @@ body {
 
     border: none;
 
-    padding: 15px 25px;
+    padding: 15px 28px;
 
     border-radius: 8px;
 
     cursor: pointer;
 
-    float: right;
+    font-size: 15px;
+
+    /* float: right; */
 }
 
 .back {
@@ -190,7 +241,7 @@ body {
 
     cursor: pointer;
 
-    float: left;
+    /* float: left; */
 }
 
 button:hover {
@@ -203,17 +254,22 @@ button:hover {
     display: flex;
     flex-direction: column;
 
-    margin: 20px;
+    /* margin: 20px; */
 
-    /* margin-bottom: 25px; */
+    /*---*/
+    margin-bottom: 10px;
 }
 
 .grupo label {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+
+    /* margin-bottom: 20px; */
 
     color: #02295a;
 
     font-weight: bold;
+
+    /* font-weight: bold; */
 }
 
 .grupo input {
@@ -224,6 +280,13 @@ button:hover {
     border: 1px solid #ccc;
 
     font-size: 16px;
+
+    /*---*/
+    outline: none;
+}
+
+.grupo input:focus {
+    border-color: #473dff;
 }
 
 /*-----STEP2----------*/
@@ -290,7 +353,7 @@ button:hover {
     
     /* margin-top: 100px; */
 
-    margin: 80px;
+    margin: 0px 24px 0px;
 
     padding: 15px;
 
@@ -358,24 +421,15 @@ button:hover {
     transition: 0.3s;
 }
 
-/* Toggle */
 .toggle {
     margin-top: 25px;
 
     padding: 18px;
 }
 
-/* Textos toggle */
 .toggle span {
     font-size: 18px;
 }
-
-/* Switch
-.switch {
-    width: 50px;
-
-    height: 28px;
-} */
 
 .switch.activo.circle {
     transform: translateX(24px);
@@ -465,7 +519,6 @@ button:hover {
     font-weight: bold;
 }
 
-
 /*-------STEP4--------*/
 
 .summary-box {
@@ -475,7 +528,7 @@ button:hover {
 
     border-radius: 10px;
 
-    margin-left: 80px;
+    /* margin-left: 80px; */
 }
 
 .plan-info {
@@ -527,9 +580,9 @@ hr {
 
     align-items: center;
 
-    margin-top: 20px;
+    margin-top: 0px;
 
-    margin-left: 80px;
+    /* margin-left: 80px; */
 
     padding: 0 20px;
 }
@@ -580,8 +633,6 @@ hr {
 @media(max-width: 768px) {
 
     *{
-        padding: 0;
-        margin: 0;
         box-sizing: border-box;
     }
 
@@ -640,7 +691,7 @@ hr {
     }
 
     /* Formulario */
-    .formulario {
+    .title_paragraph {
         width: 90%;
 
         background-color: white;
@@ -657,12 +708,12 @@ hr {
     }
 
     /* Titulo */
-    .formulario h1 {
+    .titles {
         font-size: 32px;
     }
 
     /* Descripcion */
-    .descripcion {
+    .description {
         font-size: 18px;
 
         line-height: 28px;
