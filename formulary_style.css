@@ -1,15 +1,14 @@
 /*---FONDO-Y-SIDEBAR----*/
 
 * {
-    margin: 0;
-    padding: 0;
+    /* margin: 0;
+    padding: 0; */
     box-sizing: border-box;
 }
 
 @font-face {
     font-family: 'Bold';
     src: url('Ubuntu-Bold.ttf') format('truetype');
-    ;
     font-weight: normal;
     font-style: normal;
 }
@@ -17,7 +16,6 @@
 @font-face {
     font-family: 'Medium';
     src: url('Ubuntu-Medium.ttf') format('truetype');
-    ;
     font-weight: normal;
     font-style: normal;
 }
@@ -25,7 +23,6 @@
 @font-face {
     font-family: 'Regular';
     src: url('Ubuntu-Regular.ttf') format('truetype');
-    ;
     font-weight: normal;
     font-style: normal;
 }
@@ -70,6 +67,7 @@ body {
     padding: 30px;
 
     color: white;
+
 }
 
 .paso {
@@ -77,9 +75,16 @@ body {
 
     align-items: center;
 
-    gap: 15px;
+    gap: 0px 15px;
 
-    margin-bottom: 30px;
+}
+
+.paso_parrafo p {
+    margin-bottom: 0px;
+}
+
+.paso_parrafo h4 {
+    margin-top: 0px;
 }
 
 .number {
@@ -92,6 +97,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.number h4 {
+    margin: 0px 10px;
 }
 
 .on {
@@ -114,24 +123,78 @@ body {
     display: block;
 }
 
-/*-----TITULO-Y-PARRAFO-DERECHA---------*/
+/*-----TITULO-Y-PARRAFO-DERECHA-Y-BOTONES--------*/
 
-.formulario {
-    flex: 1;
-
-    padding: 50px 80px;
+.title_paragraph {
+    width: 600px;
+    height: 150px;
 }
 
-.formulario h1 {
+.titles {
+    /* flex: 1; */
     color: #02295a;
 
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
+
+    padding: 0px 80px;
 }
 
-.descripcion {
+.description {
     color: gray;
 
-    margin-bottom: 40px;
+    /* margin-bottom: 10px; */
+
+    padding: 0px 80px;
+}
+
+.actions {
+    height: 210px;
+}
+
+.botones {
+    /* display: flex; */
+
+    /* justify-content: space-between; */
+
+    margin-top: 100px;
+}
+
+.next {
+    background-color: #02295a;
+
+    color: white;
+
+    border: none;
+
+    padding: 15px 25px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    float: right;
+}
+
+.back {
+    background: none;
+
+    color: gray;
+
+    border: none;
+
+    padding: 15px 25px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    float: left;
+}
+
+button:hover {
+    background-color: #174a8b;
 }
 
 /*-----STEP1---------*/
@@ -140,11 +203,13 @@ body {
     display: flex;
     flex-direction: column;
 
-    margin-bottom: 25px;
+    margin: 20px;
+
+    /* margin-bottom: 25px; */
 }
 
 .grupo label {
-    margin-bottom: 8px;
+    margin-bottom: 20px;
 
     color: #02295a;
 
@@ -161,38 +226,26 @@ body {
     font-size: 16px;
 }
 
-button {
-    background-color: #02295a;
-
-    color: white;
-
-    border: none;
-
-    padding: 15px 25px;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    float: right;
-}
-
-button:hover {
-    background-color: #174a8b;
-}
-
 /*-----STEP2----------*/
 
 .planes {
     display: flex;
 
-    gap: 20px;
+    gap: 10px;
 
-    margin-top: 40px;
+    margin-bottom: 90;
+
+    justify-content: center;
+
 }
 
 .card-plan {
+    
+    margin:0px;
+
     width: 140px;
+
+    /* display:flex; */
 
     border: 1px solid #d6d9e6;
 
@@ -216,33 +269,28 @@ button:hover {
     background-color: #f8f9ff;
 } */
 
-.card-plan h3 {
-    color: #02295a;
-
-    margin-bottom: 5px;
-}
-
 .card-plan img {
     width: 40px;
 
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
-/* .card-plan h3 {
+.card-plan h3 {
     color: #02295a;
-
-    margin-bottom: 5px;
-} */
+}
 
 .card-plan p {
     color: gray;
-}
-
+} 
 
 .toggle {
-    background-color: #f8f9ff;
+    /* width: 100px; */
 
-    margin-top: 30px;
+    background-color: #f8f9ff;
+    
+    /* margin-top: 100px; */
+
+    margin: 80px;
 
     padding: 15px;
 
@@ -257,9 +305,8 @@ button:hover {
     gap: 20px;
 }
 
-
 .switch {
-    width: 50px;
+    width: 40px;
     height: 25px;
 
     background-color: #02295a;
@@ -290,42 +337,6 @@ button:hover {
 
     font-weight: bold;
 }
-
-.botones {
-    /* display: flex; */
-
-    /* justify-content: space-between; */
-
-    margin-top: 50px;
-}
-
-.back {
-    background: none;
-
-    border: none;
-
-    color: gray;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    float: left;
-}
-
-/* .next {
-    background-color: #02295a;
-
-    color: white;
-
-    border: none;
-
-    padding: 15px 25px;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-} */
 
 .gratis {
     display: block;
@@ -359,12 +370,12 @@ button:hover {
     font-size: 18px;
 }
 
-/* Switch */
+/* Switch
 .switch {
-    width: 52px;
+    width: 50px;
 
     height: 28px;
-}
+} */
 
 .switch.activo.circle {
     transform: translateX(24px);
@@ -379,13 +390,13 @@ button:hover {
 /*--------STEP3-----------*/
 
 .addons {
-    margin-top: 40px;
+    margin-top: 0px;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 20px;
+    gap: 10px;
 }
 
 .addon-card {
@@ -393,7 +404,7 @@ button:hover {
 
     border-radius: 10px;
 
-    padding: 20px;
+    padding: 10px;
 
     display: flex;
 
@@ -404,6 +415,9 @@ button:hover {
     cursor: pointer;
 
     transition: 0.3s;
+
+    flex-grow: 1;
+
 }
 
 .addon-card:hover {
@@ -457,11 +471,11 @@ button:hover {
 .summary-box {
     background-color: #f8f9ff;
 
-    padding: 25px;
+    padding: 30px;
 
     border-radius: 10px;
 
-    margin-top: 40px;
+    margin-left: 80px;
 }
 
 .plan-info {
@@ -470,8 +484,6 @@ button:hover {
     justify-content: space-between;
 
     align-items: center;
-
-    margin-bottom: 20px;
 }
 
 .plan-info h3 {
@@ -515,7 +527,9 @@ hr {
 
     align-items: center;
 
-    margin-top: 30px;
+    margin-top: 20px;
+
+    margin-left: 80px;
 
     padding: 0 20px;
 }
@@ -528,22 +542,24 @@ hr {
     color: #473dff;
 }
 
-/*---------------*/
-
-/*---------------*/
+/*--------THANK-YOU-------*/
 
 .thank-you {
+
+    margin: 0;
     text-align: center;
 
-    margin-top: 100px;
+    /* margin-top: 100px; */
 
-    flex: 1;
+    /* flex: 1; */
+    padding:100px;
 
-    padding: 50px 80px;
+
+    /* padding: 50px 80px; */
 }
 
 .thank-you img {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .thank-you h1 {
@@ -551,18 +567,23 @@ hr {
 
     color: #02295a;
 
-    margin-bottom: 10px;
 }
 
 .thank-you p {
     color: gray;
 
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 }
 
 /*--version_movil--*/
 
 @media(max-width: 768px) {
+
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
 
     /* Body */
     body {
