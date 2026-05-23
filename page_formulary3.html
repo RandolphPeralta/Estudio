@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Multi Step</title>
+
+    <link rel="stylesheet" href="style_formulary3.css">
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <div class="sidebar">
+
+            <div class="paso">
+                <div class="numero activo">1</div>
+
+                <div>
+                    <p>STEP 1</p>
+                    <h4>YOUR INFO</h4>
+                </div>
+            </div>
+
+            <div class="paso">
+                <div class="numero">2</div>
+
+                <div>
+                    <p>STEP 2</p>
+                    <h4>SELECT PLAN</h4>
+                </div>
+            </div>
+
+            <div class="paso">
+                <div class="numero">3</div>
+
+                <div>
+                    <p>STEP 3</p>
+                    <h4>ADD-ONS</h4>
+                </div>
+            </div>
+
+            <div class="paso">
+                <div class="numero">4</div>
+
+                <div>
+                    <p>STEP 4</p>
+                    <h4>SUMMARY</h4>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="formulario">
+            <h1>Pick add-ons</h1>
+
+            <p class="descripcion">
+                Add-ons help enhance your gaming experience.
+            </p>
+
+            <!-- Contenedor de addons -->
+            <div class="addons">
+
+                <!-- Addon 1 -->
+                <div class="addon-card activo-addon">
+
+                    <div class="addon-left">
+
+                        <input type="checkbox" checked>
+
+                        <div>
+                            <h3>Online service</h3>
+                            <p>Access to multiplayer games</p>
+                        </div>
+
+                    </div>
+
+                    <span>+$1/mo</span>
+
+                </div>
+
+                <!-- Addon 2 -->
+                <div class="addon-card activo-addon">
+
+                    <div class="addon-left">
+
+                        <input type="checkbox" checked>
+
+                        <div>
+                            <h3>Larger storage</h3>
+                            <p>Extra 1TB of cloud save</p>
+                        </div>
+
+                    </div>
+
+                    <span>+$2/mo</span>
+
+                </div>
+
+                <!-- Addon 3 -->
+                <div class="addon-card">
+
+                    <div class="addon-left">
+
+                        <input type="checkbox">
+
+                        <div>
+                            <h3>Customizable Profile</h3>
+                            <p>Custom theme on your profile</p>
+                        </div>
+
+                    </div>
+
+                    <span>+$2/mo</span>
+
+                </div>
+
+            </div>
+
+            <!-- Botones -->
+            <div class="botones">
+
+                <button class="back">Go Back</button>
+
+                <button class="next">Next Step</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

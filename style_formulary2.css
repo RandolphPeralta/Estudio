@@ -1,0 +1,474 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Mifuente';
+    src: url('Ubuntu-Bold.ttf') format('truetype');
+    ;
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Mifuente', sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    background-color: #eef5ff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    height: 100vh;
+}
+
+.contenedor {
+
+    width: 900px;
+
+    height: 600px;
+
+    background-color: white;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    padding: 15px;
+}
+
+.sidebar {
+
+    background-image: url("bg-sidebar.svg");
+
+    width: 250px;
+
+    background-repeat: no-repeat;
+
+    background-size: cover;
+
+    background-position: center;
+
+    border-radius: 10px;
+
+    padding: 30px;
+
+    color: white;
+}
+
+.paso {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+}
+
+.paso p {
+    font-size: 12px;
+    color: #d6d6ff;
+}
+
+.numero {
+    width: 40px;
+    height: 40px;
+
+    border: 1px solid white;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formulario {
+    flex: 1;
+
+    padding: 50px 80px;
+}
+
+.formulario h1 {
+    color: #02295a;
+
+    margin-bottom: 10px;
+}
+
+.descripcion {
+    color: gray;
+
+    margin-bottom: 40px;
+}
+
+.planes {
+    display: flex;
+
+    gap: 20px;
+
+    margin-top: 40px;
+}
+
+.card-plan {
+    width: 140px;
+
+    border: 1px solid #d6d9e6;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.card-plan:hover {
+    border-color: #473dff;
+    background-color: #f8f9ff;
+}
+
+/* .activo-plan{
+    border-color: #473dff;
+
+    background-color: #f8f9ff;
+} */
+
+.card-plan h3 {
+    color: #02295a;
+
+    margin-bottom: 5px;
+}
+
+.card-plan img {
+    width: 40px;
+
+    margin-bottom: 40px;
+}
+
+/* .card-plan h3 {
+    color: #02295a;
+
+    margin-bottom: 5px;
+} */
+
+.card-plan p {
+    color: gray;
+}
+
+
+.toggle {
+    background-color: #f8f9ff;
+
+    margin-top: 30px;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+.switch {
+    width: 50px;
+    height: 25px;
+
+    background-color: #02295a;
+
+    border-radius: 20px;
+
+    position: relative;
+
+    cursor: pointer;
+}
+
+.circle {
+    width: 18px;
+    height: 18px;
+
+    background-color: white;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    top: 3px;
+    left: 4px;
+}
+
+.activo-texto {
+    color: #02295a;
+
+    font-weight: bold;
+}
+
+.botones {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 120px;
+}
+
+.back {
+    background: none;
+
+    border: none;
+
+    color: gray;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.next {
+    background-color: #02295a;
+
+    color: white;
+
+    border: none;
+
+    padding: 15px 25px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.gratis{
+    display: block;
+
+    margin-top: 5px;
+
+    color: #02295a;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.oculto{
+    display: none;
+}
+
+.circle{
+    transition: 0.3s;
+}
+
+.switch.activo .circle{
+    transform: translateX(24px);
+}
+
+.activo-texto{
+    color: #02295a;
+
+    font-weight: bold;
+}
+
+/*MOVIL*/
+
+@media(max-width: 768px) {
+
+    /* Body */
+    body {
+        height: auto;
+
+        display: block;
+
+        background-color: #eef5ff;
+    }
+
+    /* Contenedor principal */
+    .contenedor {
+        width: 100%;
+
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 0;
+
+        background: none;
+
+        border-radius: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 100%;
+
+        height: 170px;
+
+        border-radius: 0;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+        padding-top: 40px;
+
+        background-image: url("bg-sidebar-mobile.svg");
+
+        background-size: cover;
+
+        background-position: center;
+    }
+
+    /* Contenedor planes */
+    .planes {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        /* margin-top: 10px; */
+    }
+
+    /* Ocultar textos */
+    .paso div:last-child {
+        display: none;
+    }
+
+    /* Formulario */
+    .formulario {
+        width: 90%;
+
+        background-color: white;
+
+        margin: -70px auto 0 auto;
+
+        padding: 30px 25px;
+
+        border-radius: 15px;
+
+        position: relative;
+
+        z-index: 10;
+    }
+
+    /* Titulo */
+    .formulario h1 {
+        font-size: 32px;
+    }
+
+    /* Descripcion */
+    .descripcion {
+        font-size: 18px;
+
+        line-height: 28px;
+    }
+
+    .card-plan {
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 18px;
+
+        padding: 18px;
+    }
+
+    .card-plan img {
+        width: 40px;
+
+        margin-bottom: 0;
+    }
+
+    .card-plan h3 {
+        font-size: 20px;
+    }
+
+    .card-plan p {
+        font-size: 18px;
+    }
+
+    
+    .toggle {
+        height: 200%;
+
+        margin-top: 20px;
+
+        padding: 15px;
+    }
+
+    
+    .toggle span {
+        font-size: 15px;
+    }
+
+        
+    .switch {
+        width: 50px;
+
+        height: 25px;
+
+        background-color: #02295a;
+
+        border-radius: 20px;
+
+        position: relative;
+
+        cursor: pointer;
+    }
+
+    /*
+    .circle {
+        width: 20px;
+        height: 20px;
+
+        top: 4px;
+    } */
+
+    /* Botones */
+    .botones {
+        width: 100%;
+
+        background-color: white;
+
+        position: fixed;
+
+        bottom: 0;
+
+        left: 0;
+
+        padding: 20px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+    }
+
+    /* Boton back */
+    .back {
+        font-size: 16px;
+    }
+
+    /* Boton next */
+    .next {
+        padding: 14px 22px;
+
+        font-size: 16px;
+    }
+}
+

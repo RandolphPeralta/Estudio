@@ -1,6 +1,8 @@
 /*---FONDO-Y-SIDEBAR----*/
 
 * {
+    /* margin: 0;
+    padding: 0; */
     box-sizing: border-box;
 }
 
@@ -26,7 +28,7 @@
 }
 
 body {
-    font-family: 'Medium', sans-serif;
+    font-family: 'Bold', sans-serif;
     background-color: #eef5ff;
 
     display: flex;
@@ -47,14 +49,10 @@ body {
     display: flex;
 
     padding: 15px;
-
-    /*-----*/
-
-    gap: 60px;
 }
 
 .sidebar {
-    width: 260px;
+    width: 250px;
 
     background-image: url("bg-sidebar.svg");
 
@@ -68,12 +66,15 @@ body {
 
     color: white;
 
+<<<<<<< HEAD
     /*-------*/
 
     display: flex;
 
     flex-direction: column;
 
+=======
+>>>>>>> parent of 9a24187 (Summary)
 }
 
 .paso {
@@ -127,26 +128,13 @@ body {
 
 .step.active {
     display: block;
-
-    /*------*/
-
-    flex-direction: column;
-
-    flex: 1;
-
-    padding: 40px 70px 30px 0;
 }
 
 /*-----TITULO-Y-PARRAFO-DERECHA-Y-BOTONES--------*/
 
 .title_paragraph {
-    /* width: 600px;
-    height: 150px; */
-
-    /*------*/
-
-    margin-bottom: 40px;
-
+    width: 600px;
+    height: 150px;
 }
 
 .titles {
@@ -155,11 +143,7 @@ body {
 
     /* margin-bottom: 10px; */
 
-    /* padding: 0px 80px; */
-
-    font-size: 38px;
-
-    margin-bottom: 10px;
+    padding: 0px 80px;
 }
 
 .description {
@@ -167,41 +151,19 @@ body {
 
     /* margin-bottom: 10px; */
 
-    /* padding: 0px 80px; */
-
-    /*----*/
-
-    line-height: 1.5;
+    padding: 0px 80px;
 }
 
 .actions {
-    /* height: 210px; */
-
-    /*---*/
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 25px;
+    height: 210px;
 }
 
 .botones {
     /* display: flex; */
 
-    justify-content: space-between;
+    /* justify-content: space-between; */
 
-    /* margin-top: 100px; */
-
-    /*---*/
-
-    margin-top: auto;
-
-    /* display: flex; */
-    /* justify-content: flex-end; */
-
-    display: flex;
-
-    justify-content: flex-end;
+    margin-top: 100px;
 }
 
 .next {
@@ -211,15 +173,13 @@ body {
 
     border: none;
 
-    padding: 15px 28px;
+    padding: 15px 25px;
 
     border-radius: 8px;
 
     cursor: pointer;
 
-    font-size: 15px;
-
-    /* float: right; */
+    float: right;
 }
 
 .back {
@@ -237,7 +197,7 @@ body {
 
     cursor: pointer;
 
-    /* float: left; */
+    float: left;
 }
 
 button:hover {
@@ -250,22 +210,17 @@ button:hover {
     display: flex;
     flex-direction: column;
 
-    /* margin: 20px; */
+    margin: 20px;
 
-    /*---*/
-    margin-bottom: 10px;
+    /* margin-bottom: 25px; */
 }
 
 .grupo label {
-    margin-bottom: 10px;
-
-    /* margin-bottom: 20px; */
+    margin-bottom: 20px;
 
     color: #02295a;
 
     font-weight: bold;
-
-    /* font-weight: bold; */
 }
 
 .grupo input {
@@ -276,13 +231,6 @@ button:hover {
     border: 1px solid #ccc;
 
     font-size: 16px;
-
-    /*---*/
-    outline: none;
-}
-
-.grupo input:focus {
-    border-color: #473dff;
 }
 
 /*-----STEP2----------*/
@@ -349,7 +297,7 @@ button:hover {
     
     /* margin-top: 100px; */
 
-    margin: 0px 24px 0px;
+    margin: 80px;
 
     padding: 15px;
 
@@ -417,15 +365,24 @@ button:hover {
     transition: 0.3s;
 }
 
+/* Toggle */
 .toggle {
     margin-top: 25px;
 
     padding: 18px;
 }
 
+/* Textos toggle */
 .toggle span {
     font-size: 18px;
 }
+
+/* Switch
+.switch {
+    width: 50px;
+
+    height: 28px;
+} */
 
 .switch.activo.circle {
     transform: translateX(24px);
@@ -515,6 +472,7 @@ button:hover {
     font-weight: bold;
 }
 
+
 /*-------STEP4--------*/
 
 .summary-box {
@@ -524,7 +482,7 @@ button:hover {
 
     border-radius: 10px;
 
-    /* margin-left: 80px; */
+    margin-left: 80px;
 }
 
 .plan-info {
@@ -576,9 +534,9 @@ hr {
 
     align-items: center;
 
-    margin-top: 0px;
+    margin-top: 20px;
 
-    /* margin-left: 80px; */
+    margin-left: 80px;
 
     padding: 0 20px;
 }
@@ -622,4 +580,122 @@ hr {
     color: gray;
 
     /* margin-bottom: 40px; */
+<<<<<<< HEAD
+=======
+}
+
+/*--version_movil--*/
+
+@media(max-width: 768px) {
+
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    /* Body */
+    body {
+        height: auto;
+
+        display: block;
+
+        background-color: #eef5ff;
+    }
+
+    /* Contenedor principal */
+    .contenedor {
+        width: 100%;
+
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 0;
+
+        background: none;
+
+        border-radius: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 100%;
+
+        height: 170px;
+
+        border-radius: 0;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+        padding-top: 40px;
+
+        background-image: url("bg-sidebar-mobile.svg");
+
+        background-size: cover;
+
+        background-position: center;
+    }
+
+    /* Ocultar textos */
+    .paso div:last-child {
+        display: none;
+    }
+
+    /* Formulario */
+    .formulario {
+        width: 90%;
+
+        background-color: white;
+
+        margin: -70px auto 0 auto;
+
+        padding: 30px 25px;
+
+        border-radius: 15px;
+
+        position: relative;
+
+        z-index: 10;
+    }
+
+    /* Titulo */
+    .formulario h1 {
+        font-size: 32px;
+    }
+
+    /* Descripcion */
+    .descripcion {
+        font-size: 18px;
+
+        line-height: 28px;
+    }
+
+    .botones {
+        width: 100%;
+
+        background-color: white;
+
+        position: fixed;
+
+        bottom: 0;
+
+        left: 0;
+
+        padding: 20px;
+
+        /* display: flex;
+
+        justify-content: space-between;
+
+        align-items: center; */
+    }
+
+>>>>>>> parent of 9a24187 (Summary)
 }
