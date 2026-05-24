@@ -1,0 +1,9 @@
+input{
+  display: block;
+  margin: 5px;
+}
+
+input:invalid {
+   border: 5px solid #ed3548;
+}
+
