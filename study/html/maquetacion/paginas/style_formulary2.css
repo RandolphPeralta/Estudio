@@ -87,13 +87,13 @@ body {
     align-items: center;
 }
 
-.formulario {
+.actions {
     flex: 1;
 
     padding: 50px 80px;
 }
 
-.formulario h1 {
+.actions h1 {
     color: #02295a;
 
     margin-bottom: 10px;
