@@ -121,8 +121,32 @@ body{
     
 }
 
-.grupo input:valid {
+.top{
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 8px;
+}
+
+.error{
+    display: none;
+
+    color: #ed3548;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.grupo input:user-invalid{
     border: 1px solid #ed3548;
+}
+
+.grupo:has(input:user-invalid) .error{
+    display: block;
 }
 
 .grupo h4{
@@ -135,13 +159,13 @@ body{
 
 }
 
-.grupo label{
+/* .grupo label{
     margin-bottom: 8px;
 
     color: #02295a;
 
     font-weight: bold;
-}
+} */
 
 .grupo input{
     padding: 15px;

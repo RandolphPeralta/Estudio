@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Multi Step</title>
     <link rel="stylesheet" href="style_formulary.css">
 </head>
+
 <body>
 
     <div class="contenedor">
@@ -60,32 +62,46 @@
 
             <form action="">
 
-            <div class="grupo">
-                <h4>Nombre</h4>
-                <input type="text" placeholder="e.g. Stephen King" pattern="text" required>
-            </div>
+                <div class="grupo">
+                    <div class="top">
+                        <h4>Nombre</h4>
+                        <span class="error">This field is required</span>
+                    </div>
+                    <input type="text" placeholder="e.g. Stephen King" required>
+                </div>
 
-            <div class="grupo">
-                <h4>Email</h4>
-                <input type="email" placeholder="e.g. stephenking@lorem.com" pattern="text" required>
-            </div>
+                <div class="grupo">
+                    <div class="top">
+                        <h4>Email</h4>
+                        <span class="error">This field is required</span>
+                    </div>
+                    <input type="email" placeholder="e.g. stephenking@lorem.com" required>
+                </div>
 
-            <div class="grupo">
-                <h4>Teléfono</h4>
-                <input type="text" placeholder="e.g. +1 234 567 890" pattern="text" required>
-            </div>
+                <div class="grupo">
+                    <div class="top">
+                        <h4>Teléfono</h4>
+                        <span class="error">This field is required</span>
+                    </div>
+                    <input type="text" placeholder="e.g. +1 234 567 890" required>
+                </div>
+
+
+                <div type="submit" class="botones">
+
+                    <button class="next">Next Step</button>
+
+                </div>
+
             </form>
 
-            <div class="botones">
 
-                <button class="next">Next Step</button>
 
-            </div>
-            
 
         </div>
 
     </div>
 
 </body>
+
 </html>
