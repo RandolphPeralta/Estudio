@@ -121,37 +121,9 @@ body{
     
 }
 
-/* .label-error{
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 8px;
-}
-
-.error{
-    color: #ed3548;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    display: none;
-} */
-
 .grupo input:valid {
     border: 1px solid #ed3548;
 }
-
-/* .grupo input:invalid + .error{
-    display: block;
-} */
-
-/* .grupo:has(input:invalid) .error{
-    display: block;
-} */
 
 .grupo h4{
 
