@@ -141,7 +141,7 @@ body{
     display: none;
 } */
 
-.grupo input:invalid {
+.grupo input:valid {
     border: 1px solid #ed3548;
 }
 
