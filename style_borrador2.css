@@ -197,6 +197,7 @@ button{
 .next{
     background-color: #02295a;
     color: white;
+     margin-left: auto;
 }
 
 .back{
