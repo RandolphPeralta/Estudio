@@ -85,6 +85,8 @@ body{
     color: #d6d6ff;
 }
 
+/*-----------*/
+
 .step-actions{
     flex: 1;
 
@@ -197,7 +199,7 @@ button{
 .next{
     background-color: #02295a;
     color: white;
-     margin-left: auto;
+    margin-left: auto;
 }
 
 .back{
