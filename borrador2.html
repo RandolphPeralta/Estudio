@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="stylesheet" href="style_borrador2.css">
+    <title>Frontend Mentor | Multi-step form</title>
+</head>
+
+<body>
+
+    <input type="radio" name="step" id="step1" checked>
+    <input type="radio" name="step" id="step2">
+    <input type="radio" name="step" id="step3">
+    <input type="radio" name="step" id="step4">
+    <div class="contenedor">
+
+        <div class="sidebar">
+
+            <div class="paso">
+                <div class="number number1">1</div>
+                <div class="paso_parrafo">
+                    <p>STEP 1</p>
+                    <h4>YOUR INFO</h4>
+                </div>
+            </div>
+
+            <div class="paso">
+                <div class="number number2">2</div>
+
+                <div class="paso_parrafo">
+                    <p>STEP 2</p>
+                    <h4>SELECT PLAN</h4>
+                </div>
+            </div>
+
+            <div class="paso">
+                <div class="number number3">3</div>
+
+                <div class="paso_parrafo">
+                    <p>STEP 3</p>
+                    <h4>ADD-ONS</h4>
+                </div>
+            </div>
+
+            <div class="paso">
+                <div class="number number4">4</div>
+
+                <div class="paso_parrafo">
+                    <p>STEP 4</p>
+                    <h4>SUMMARY</h4>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="step-actions">
+            <div class="step step1">
+
+            <h1>Personal info</h1>
+
+            <p>Please provide your name, email address, and phone number.</p>
+
+            <div class="step-actions__contenido">
+            </div>
+
+            <div class="botones">
+
+                <label for="step2" class="next">Next Step</label>
+
+            </div>
+
+        </div>
+
+        <div class="step step2">
+
+                <h1>Select your plan</h1>
+
+                <p>You have the option of monthly or yearly billing.</p>
+
+                <div class="step-actions__contenido">
+
+                </div>
+
+                <div class="botones">
+
+                    <label for="step1" class="back">
+                        Go Back
+                    </label>
+
+                    <label for="step3" class="next">
+                        Next Step
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="step step3">
+
+                <h1>Pick add-ons</h1>
+
+                <p>Add-ons help enhance your gaming experience.</p>
+
+                <div class="step-actions__contenido">
+
+                </div>
+
+                <div class="botones">
+
+                    <label for="step2" class="back">
+                        Go Back
+                    </label>
+
+                    <label for="step4" class="next">
+                        Next Step
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="step step4">
+
+                <h1>Finishing up</h1>
+
+                <p>Double-check everything looks OK before confirming.</p>
+
+                <div class="step-actions__contenido">
+
+                </div>
+
+                <div class="botones">
+
+                    <label for="step3" class="back">
+                        Go Back
+                    </label>
+
+                    <label>
+                        Confirm
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
