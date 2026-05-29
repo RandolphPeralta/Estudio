@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -6,12 +6,13 @@
 
 @font-face {
     font-family: 'Mifuente';
-    src: url('Ubuntu-Regular.ttf') format('truetype');;
+    src: url('Ubuntu-Regular.ttf') format('truetype');
+    ;
     font-weight: normal;
-    font-style:normal;
+    font-style: normal;
 }
 
-body{
+body {
     font-family: 'Mifuente', sans-serif;
     background-color: #eef5ff;
 
@@ -22,7 +23,7 @@ body{
     height: 100vh;
 }
 
-.contenedor{
+.contenedor {
     width: 930px;
     height: 600px;
 
@@ -35,12 +36,12 @@ body{
     padding: 15px;
 }
 
-.sidebar{
+.sidebar {
     width: 265px;
 
     background-image: url("bg-sidebar.svg");
 
-    /* background-repeat: no-repeat; */
+    background-repeat: no-repeat;
 
     background-size: cover;
 
@@ -53,7 +54,7 @@ body{
     color: white;
 }
 
-.paso{
+.paso {
     display: flex;
 
     align-items: center;
@@ -63,7 +64,7 @@ body{
     margin-bottom: 30px;
 }
 
-.number{
+.number {
     width: 40px;
     height: 40px;
     display: flex;
@@ -71,31 +72,31 @@ body{
     border: 1px solid white;
     border-radius: 50%;
 
-    
+
     justify-content: center;
     align-items: center;
 }
 
-.on{
+.on {
     background-color: #bfe2fd;
     color: black;
 }
 
-.paso p{
+.paso p {
     font-size: 12px;
     color: #d6d6ff;
 }
 
 /*-----------*/
 
-.step-actions{
+.step-actions {
     flex: 1;
 
-    margin:0px 80px;
+    margin: 0px 80px;
 
 }
 
-.step-actions h1{
+.step-actions h1 {
     color: #02295a;
 
     margin-bottom: 10px;
@@ -106,7 +107,7 @@ body{
 
 }
 
-.step-actions p{
+.step-actions p {
     color: gray;
 
     margin-bottom: 40px;
@@ -115,7 +116,7 @@ body{
 /*------*/
 
 .step-actions__contenido {
-   width: 100%;
+    width: 100%;
     height: 300px;
     position: relative;
 }
@@ -131,45 +132,45 @@ body{
 
 }
 
-button:hover{
+button:hover {
     background-color: #174a8b;
 }
 
-input[type="radio"]{
+input[type="radio"] {
     display: none;
 }
 
-.step{
+.step {
     display: none;
 }
 
-#step1:checked ~ .contenedor .step1{
+#step1:checked~.contenedor .step1 {
     display: block;
 }
 
-#step2:checked ~ .contenedor .step2{
+#step2:checked~.contenedor .step2 {
     display: block;
 }
 
-#step3:checked ~ .contenedor .step3{
+#step3:checked~.contenedor .step3 {
     display: block;
 }
 
-#step4:checked ~ .contenedor .step4{
+#step4:checked~.contenedor .step4 {
     display: block;
 }
 
-#step1:checked ~ .contenedor .number1,
-#step2:checked ~ .contenedor .number2,
-#step3:checked ~ .contenedor .number3,
-#step4:checked ~ .contenedor .number4{
+#step1:checked~.contenedor .number1,
+#step2:checked~.contenedor .number2,
+#step3:checked~.contenedor .number3,
+#step4:checked~.contenedor .number4 {
 
     background-color: #bfe2fd;
     color: black;
 }
 
 .next,
-.back{
+.back {
 
     padding: 15px 25px;
 
@@ -180,13 +181,13 @@ input[type="radio"]{
     user-select: none;
 }
 
-.next{
+.next {
     background-color: #02295a;
     color: white;
     margin-left: auto;
 }
 
-.back{
+.back {
     color: gray;
 }
 
@@ -194,14 +195,14 @@ input[type="radio"]{
 
 .grupo {
     display: flex;
-    
+
     flex-direction: column;
 
     margin-bottom: 20px;
-    
+
 }
 
-.top{
+.top {
     display: flex;
 
     justify-content: space-between;
@@ -211,7 +212,7 @@ input[type="radio"]{
     margin-bottom: 8px;
 }
 
-.error{
+.error {
     display: none;
 
     color: #ed3548;
@@ -221,15 +222,15 @@ input[type="radio"]{
     font-weight: bold;
 }
 
-.grupo input:user-invalid{
+.grupo input:user-invalid {
     border: 1px solid #ed3548;
 }
 
-.grupo:has(input:user-invalid) .error{
+.grupo:has(input:user-invalid) .error {
     display: block;
 }
 
-.grupo h4{
+.grupo h4 {
 
     margin-bottom: 8px;
 
@@ -237,7 +238,7 @@ input[type="radio"]{
 
 }
 
-.grupo input{
+.grupo input {
     padding: 15px;
 
     border-radius: 8px;
@@ -290,9 +291,10 @@ input[type="radio"]{
 
 .card-plan p {
     color: gray;
+    margin-bottom: 0px;
 }
 
-.gratis{
+.gratis {
     display: block;
 
     margin-top: 5px;
@@ -304,7 +306,7 @@ input[type="radio"]{
     font-weight: bold;
 }
 
-.oculto{
+.oculto {
     display: none;
 }
 
@@ -364,7 +366,7 @@ input[type="radio"]{
     gap: 20px;
 } */
 
-.addon-card{
+.addon-card {
     border: 1px solid #d6d9e6;
 
     border-radius: 10px;
@@ -384,13 +386,13 @@ input[type="radio"]{
     transition: 0.3s;
 }
 
-.addon-card:hover{
+.addon-card:hover {
     background-color: #f8f9ff;
 
     border-color: #473dff;
 }
 
-.addon-left{
+.addon-left {
     display: flex;
 
     align-items: center;
@@ -398,26 +400,26 @@ input[type="radio"]{
     gap: 20px;
 }
 
-.addon-left input{
+.addon-left input {
     width: 20px;
     height: 20px;
 
     cursor: pointer;
 }
 
-.addon-left h3{
+.addon-left h3 {
     color: #02295a;
 
     margin-bottom: 5px;
 }
 
-.addon-left p{
+.addon-left p {
     color: gray;
 
     font-size: 14px;
 }
 
-.addon-card span{
+.addon-card span {
     color: #473dff;
 
     font-weight: bold;
@@ -427,7 +429,7 @@ input[type="radio"]{
 
 /*---STEP4-----*/
 
-.summary-box{
+.summary-box {
     background-color: #f8f9ff;
 
     padding: 25px;
@@ -437,7 +439,7 @@ input[type="radio"]{
     margin-top: 40px;
 }
 
-.plan-info{
+.plan-info {
     display: flex;
 
     justify-content: space-between;
@@ -447,17 +449,17 @@ input[type="radio"]{
     /* margin-bottom: 20px; */
 }
 
-.plan-info h3{
+.plan-info h3 {
     color: #02295a;
 }
 
-.plan-info a{
+.plan-info a {
     color: #473dff;
 
     font-size: 14px;
 }
 
-hr{
+hr {
     border: none;
 
     border-top: 1px solid #d6d9e6;
@@ -465,7 +467,7 @@ hr{
     /* margin-bottom: 20px; */
 }
 
-.addon-summary{
+.addon-summary {
     display: flex;
 
     justify-content: space-between;
@@ -473,15 +475,15 @@ hr{
     /* margin-bottom: 15px; */
 }
 
-.addon-summary p{
+.addon-summary p {
     color: gray;
 }
 
-.addon-summary span{
+.addon-summary span {
     color: #02295a;
 }
 
-.total{
+.total {
     display: flex;
 
     justify-content: space-between;
@@ -490,15 +492,15 @@ hr{
 
     margin-top: 30px;
 
-    padding: 0 20px; 
+    padding: 0 20px;
 }
 
-.total p{
+.total p {
     margin-bottom: 0px;
     color: gray;
 }
 
-.total h2{
+.total h2 {
     color: #473dff;
 }
 
