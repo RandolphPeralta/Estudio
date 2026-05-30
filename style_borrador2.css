@@ -22,7 +22,7 @@
 
 body {
     font-family: 'Regular', sans-serif;
-    background-color: #eef5ff;
+    background-color: hsl(218, 100%, 97%);
 
     display: flex;
     justify-content: center;
@@ -35,7 +35,7 @@ body {
     width: 930px;
     height: 600px;
 
-    background-color: white;
+    background-color: hsl(0, 100%, 100%);
 
     border-radius: 15px;
 
@@ -59,7 +59,7 @@ body {
 
     padding: 30px;
 
-    color: white;
+    color: hsl(0, 100%, 100%);
 }
 
 .phase {
@@ -77,7 +77,7 @@ body {
     height: 40px;
     display: flex;
 
-    border: 1px solid white;
+    border: 1px solid hsl(0, 100%, 100%);
     border-radius: 50%;
 
 
@@ -138,7 +138,7 @@ body {
 /*------*/
 
 .botones {
-    margin-top: 70px;
+    margin-top: 60px;
 
     display: flex;
     justify-content: space-between;
@@ -162,17 +162,17 @@ button:hover {
 
 
 .next {
-    background-color: #02295a;
-    color: white;
+    background-color:  hsl(213, 96%, 18%);
+    color: hsl(0, 100%, 100%);
     margin-left: auto;
 }
 
 .next:hover{
-    background-color: #174a8b;
+    background-color: hsl(243, 100%, 62%);
 }
 
 .back {
-    color: gray;
+    color:hsl(231, 11%, 63%);
 }
 
 .back:hover{
@@ -241,7 +241,7 @@ input[type="radio"] {
 .error {
     display: none;
 
-    color: #ed3548;
+    color:  hsl(354, 84%, 57%);
 
     font-size: 14px;
 
@@ -249,7 +249,7 @@ input[type="radio"] {
 }
 
 .grupo input:user-invalid {
-    border: 1px solid #ed3548;
+    border: 1px solid hsl(354, 84%, 57%);
 }
 
 .grupo:has(input:user-invalid) .error {
@@ -260,7 +260,7 @@ input[type="radio"] {
 
     margin-bottom: 8px;
 
-    color: #02295a;
+    color: hsl(213, 96%, 18%);
 
 }
 
@@ -299,12 +299,12 @@ input[type="radio"] {
 }
 
 .card-plan:hover {
-    border-color: #473dff;
+    border-color:hsl(243, 100%, 62%);
     background-color: #f8f9ff;
 }
 
 .card-plan h3 {
-    color: #02295a;
+    color: hsl(213, 96%, 18%);
 
     margin-bottom: 5px;
 }
@@ -316,7 +316,7 @@ input[type="radio"] {
 }
 
 .card-plan p {
-    color: gray;
+    color: hsl(231, 11%, 63%);
     margin-bottom: 0px;
 }
 
@@ -325,7 +325,7 @@ input[type="radio"] {
 
     margin-top: 5px;
 
-    color: #02295a;
+    color: hsl(213, 96%, 18%);
 
     font-size: 14px;
 
@@ -358,7 +358,7 @@ input[type="radio"] {
     width: 50px;
     height: 25px;
 
-    background-color: #02295a;
+    background-color: hsl(213, 96%, 18%);
 
     border-radius: 20px;
 
@@ -371,7 +371,7 @@ input[type="radio"] {
     width: 18px;
     height: 18px;
 
-    background-color: white;
+    background-color: hsl(0, 100%, 100%);
 
     border-radius: 50%;
 
@@ -382,7 +382,7 @@ input[type="radio"] {
 }
 
 .activo-texto {
-    color: #02295a;
+    color: hsl(213, 96%, 18%);
 
     font-weight: bold;
 }
@@ -398,16 +398,16 @@ input[type="radio"] {
 
 .monthly,
 .yearly{
-    color: gray;
+    color: hsl(231, 11%, 63%);
 }
 
 #billing:not(:checked) ~ .contenedor .monthly{
-    color:#02295a;
+    color:hsl(213, 96%, 18%);
     font-weight:bold;
 }
 
 #billing:checked ~ .contenedor .yearly{
-    color:#02295a;
+    color:hsl(213, 96%, 18%);
     font-weight:bold;
 }
 
@@ -465,7 +465,7 @@ input[type="radio"] {
 .addon-card:hover {
     background-color: #f8f9ff;
 
-    border-color: #473dff;
+    border-color: hsl(243, 100%, 62%);
 }
 
 .addon-left {
@@ -484,13 +484,13 @@ input[type="radio"] {
 }
 
 .addon-left h3 {
-    color: #02295a;
+    color: hsl(213, 96%, 18%);
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
 .addon-left p {
-    color: gray;
+    color: hsl(231, 11%, 63%);
 
     font-size: 14px;
     margin-top: 5px;
@@ -498,7 +498,7 @@ input[type="radio"] {
 }
 
 .addon-card span {
-    color: #473dff;
+    color: hsl(243, 100%, 62%);
 
     font-weight: bold;
 }
@@ -538,11 +538,11 @@ input[type="radio"] {
 }
 
 .plan-info h3 {
-    color: #02295a;
+    color: hsl(213, 96%, 18%);
 }
 
 .plan-info a {
-    color: #473dff;
+    color: hsl(243, 100%, 62%);
 
     font-size: 14px;
 }
@@ -564,12 +564,12 @@ hr {
 }
 
 .addon-summary p {
-    color: gray;
+    color: hsl(231, 11%, 63%);
     margin-bottom: 15px;
 }
 
 .addon-summary span {
-    color: #02295a;
+    color: hsl(213, 96%, 18%);
 }
 
 .total {
@@ -590,7 +590,7 @@ hr {
 }
 
 .total h3 {
-    color: #473dff;
+    color: hsl(243, 100%, 62%);
 }
 
 .plan-yearly{
@@ -603,6 +603,12 @@ hr {
 
 #billing:checked ~ .contenedor .plan-yearly{
     display:block;
+}
+
+.change{
+    color:#473dff;
+    cursor:pointer;
+    text-decoration:underline;
 }
 
 /*---THANK-------*/
@@ -622,7 +628,7 @@ hr {
 
 .thank-you h1 {
 
-    color: #02295a;
+    color:  hsl(213, 96%, 18%);
 
     margin-bottom: 10px;
 
@@ -630,7 +636,7 @@ hr {
 
 .thank-you p {
     display:flex;
-    color: gray;
+    color: hsl(231, 11%, 63%);
     gap: 10px
     /* margin-bottom: 40px; */
 
