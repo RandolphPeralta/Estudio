@@ -53,7 +53,7 @@ body {
 
     background-size: cover;
 
-    /* background-position: center; */
+    background-position: center;
 
     border-radius: 10px;
 
@@ -123,7 +123,6 @@ body {
 
 }
 
-
 .step-actions p {
     color: gray;
 
@@ -163,6 +162,7 @@ button:hover {
 
     user-select: none;
 }
+
 
 .next {
     background-color: #02295a;
@@ -206,16 +206,19 @@ input[type="radio"] {
     display: block;
 }
 
+#step5:checked~.contenedor .step5 {
+    display: block;
+}
+
 #step1:checked~.contenedor .number1,
 #step2:checked~.contenedor .number2,
 #step3:checked~.contenedor .number3,
-#step4:checked~.contenedor .number4 {
+#step4:checked~.contenedor .number4,
+#step5:checked~.contenedor .number4{
 
     background-color: #bfe2fd;
     color: black;
 }
-
-
 
 /*---STEP1---*/
 
@@ -511,6 +514,7 @@ hr {
 
 .addon-summary p {
     color: gray;
+    margin-bottom: 15px;
 }
 
 .addon-summary span {
@@ -534,8 +538,37 @@ hr {
     color: gray;
 }
 
-.total h2 {
+.total h3 {
     color: #473dff;
 }
 
-/*----------*/
+/*---THANK-------*/
+
+.thank-you {
+
+    /* margin: 0; */
+    text-align: center;
+
+    margin-top: 120px;
+
+    /* flex: 1; */
+    padding:20px;
+
+    /* padding: 50px 80px; */
+}
+
+.thank-you h1 {
+
+    color: #02295a;
+
+    margin-bottom: 10px;
+
+}
+
+.thank-you p {
+    display:flex;
+    color: gray;
+    gap: 10px
+    /* margin-bottom: 40px; */
+
+}
