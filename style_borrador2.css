@@ -127,7 +127,6 @@ body {
     color: gray;
 
     margin-bottom: 40px;
-
 }
 
 .step-actions__content {
@@ -144,7 +143,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
 }
 
 button:hover {
@@ -153,7 +151,6 @@ button:hover {
 
 .next,
 .back {
-
     padding: 15px 25px;
 
     border-radius: 8px;
@@ -390,6 +387,50 @@ input[type="radio"] {
     font-weight: bold;
 }
 
+
+#billing{
+    display:none;
+}
+
+#billing:checked ~ .contenedor .circle{
+    left:28px;
+}
+
+.monthly,
+.yearly{
+    color: gray;
+}
+
+#billing:not(:checked) ~ .contenedor .monthly{
+    color:#02295a;
+    font-weight:bold;
+}
+
+#billing:checked ~ .contenedor .yearly{
+    color:#02295a;
+    font-weight:bold;
+}
+
+.yearly-price{
+    display:none;
+}
+
+#billing:checked ~ .contenedor .monthly-price{
+    display:none;
+}
+
+#billing:checked ~ .contenedor .yearly-price{
+    display:block;
+}
+
+.gratis{
+    display:none;
+}
+
+#billing:checked ~ .contenedor .gratis{
+    display:block;
+}
+
 /*----STEP3----*/
 
 /* .addons{
@@ -462,7 +503,17 @@ input[type="radio"] {
     font-weight: bold;
 }
 
+.addon-yearly{
+    display:none;
+}
 
+#billing:checked ~ .contenedor .addon-monthly{
+    display:none;
+}
+
+#billing:checked ~ .contenedor .addon-yearly{
+    display:inline;
+}
 
 /*---STEP4-----*/
 
@@ -540,6 +591,18 @@ hr {
 
 .total h3 {
     color: #473dff;
+}
+
+.plan-yearly{
+    display:none;
+}
+
+#billing:checked ~ .contenedor .plan-monthly{
+    display:none;
+}
+
+#billing:checked ~ .contenedor .plan-yearly{
+    display:block;
 }
 
 /*---THANK-------*/
