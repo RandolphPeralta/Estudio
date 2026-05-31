@@ -468,6 +468,11 @@ input[type="radio"] {
     border-color: hsl(243, 100%, 62%);
 }
 
+.addon-card:has(input:checked) {
+    background-color: #f8f9ff;
+    border-color: hsl(243, 100%, 62%);
+}
+
 .addon-left {
     display: flex;
 
@@ -481,6 +486,12 @@ input[type="radio"] {
     height: 20px;
 
     cursor: pointer;
+}
+
+.addon-left input:checked{
+    background-color: #f8f9ff;
+
+    border-color: hsl(243, 100%, 62%);
 }
 
 .addon-left h3 {
