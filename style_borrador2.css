@@ -320,6 +320,20 @@ input[type="radio"] {
     margin-bottom: 0px;
 }
 
+/* #arcade:checked ~ .contenedor label[for="arcade"]{
+    background-color: #f8f9ff;
+    border-color: hsl(243, 100%, 62%);
+} */
+
+.card-plan input{
+    display:none;
+}
+
+.card-plan:has(input:checked){
+    background-color:#f8f9ff;
+    border-color:hsl(243, 100%, 62%);
+}
+
 .gratis {
     display: block;
 
@@ -387,6 +401,9 @@ input[type="radio"] {
     font-weight: bold;
 }
 
+#arcade{
+    display:none;
+}
 
 #billing{
     display:none;
