@@ -72,6 +72,12 @@ body {
     margin-bottom: 30px;
 }
 
+.phase_paragraph {
+    display:flex;
+    flex-flow: column;
+    gap: 3px;
+}
+
 .number {
     width: 40px;
     height: 40px;
@@ -83,12 +89,6 @@ body {
 
     justify-content: center;
     align-items: center;
-}
-
-.phase_paragraph {
-    display:flex;
-    flex-flow: column;
-    gap: 3px;
 }
 
 .on {
@@ -667,5 +667,18 @@ hr {
     color: hsl(231, 11%, 63%);
     gap: 10px
     /* margin-bottom: 40px; */
+
+}
+
+/*-------Version-Movil------*/
+
+@media(max-width: 768px){
+    body{
+        height: auto;
+
+        display: block;
+
+        background-color: hsl(218, 100%, 97%);
+    }
 
 }
