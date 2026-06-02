@@ -712,69 +712,79 @@ hr {
         padding-top: 30px;
     }
 
-    .phase{
-        margin:0;
+    .phase {
+        margin: 0;
     }
 
     .phase_paragraph {
         display: none;
     }
 
-    .step-actions{
-        margin:0;
-        position:relative;
+    .step-actions {
+        margin: 0;
+        position: relative;
     }
 
-    .step{
-        width:90%;
+    .step {
+        width: 90%;
 
-        margin:-70px auto 0;
+        margin: -70px auto 0;
 
-        background:white;
+        background: hsl(0, 100%, 100%);
 
-        border-radius:12px;
+        border-radius: 12px;
 
-        padding:25px;
+        padding: 25px;
 
-        box-shadow:0 10px 25px rgba(0,0,0,.08);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
     }
 
-    .step-actions h1{
-        padding-top:0;
-        font-size:1.6rem;
+    .step-actions h1 {
+        padding-top: 0;
+        font-size: 1.6rem;
     }
 
-    .step-actions p{
-        line-height:1.6;
-        margin-bottom:20px;
+    .step-actions p {
+        line-height: 1.6;
+        margin-bottom: 20px;
     }
 
-     .step-actions__content{
-        height:auto;
+    .step-actions__content {
+        height: auto;
     }
 
-    .botones{
-        position:fixed;
+    .botones {
+        position: fixed;
 
-        left:0;
-        right:0;
-        bottom:0;
+        left: 0;
+        right: 0;
+        bottom: 0;
 
-        background:white;
+        /* background: white; */
 
-        padding:15px;
+        padding: 15px;
 
-        margin:0;
+        margin: 0;
 
-        z-index:100;
+        z-index: 100;
     }
 
     /*----STEP1---*/
     .grupo h4 {
         margin-bottom: 0px;
+        font-size: 16px;
     }
-    .grupo input{
-        width:100%;
+
+    .grupo input {
+        width: 100%;
+
+        padding: 10px;
+
+        border-radius: 8px;
+
+        border: 1px solid #ccc;
+
+        font-size: 16px;
     }
 
     .top {
