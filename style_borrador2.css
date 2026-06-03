@@ -875,6 +875,40 @@ hr {
         white-space: nowrap;
     }
 
+    /*-----STEP4-----*/
+
+    .summary-box {
+        margin-top: 20px;
+        padding: 18px;
+    }
+
+    .plan-info h3 {
+        font-size: 15px;
+    }
+
+    .change {
+        font-size: 14px;
+    }
+
+    .addon-summary p,
+    .addon-summary span {
+        font-size: 14px;
+    }
+
+    .total {
+        padding: 0 10px;
+        margin-top: 20px;
+    }
+
+    .total p {
+        font-size: 14px;
+    }
+
+    .total h3 {
+        font-size: 20px;
+    }
+
+
 }
 
 /*---Toca mirar el responsive*/
