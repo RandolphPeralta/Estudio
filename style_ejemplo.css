@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Regular';
+    src: url('Ubuntu-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bold';
+    src: url('Ubuntu-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Regular', sans-serif;
+    background-color: hsl(218, 100%, 97%);
+}
+
+.sidebar {
+    background-image: url("bg-sidebar.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.number {
+    border: 1px solid white;
+}
+
+.on, #step1:checked ~ div .number1,
+#step2:checked ~ div .number2,
+#step3:checked ~ div .number3,
+#step4:checked ~ div .number4,
+#step5:checked ~ div .number4 {
+    background-color: #bfe2fd;
+    color: black;
+}
+
+input[type="radio"], #billing {
+    display: none;
+}
+
+.step {
+    display: none;
+}
+
+#step1:checked ~ div .step1 { display: block; }
+#step2:checked ~ div .step2 { display: block; }
+#step3:checked ~ div .step3 { display: block; }
+#step4:checked ~ div .step4 { display: block; }
+#step5:checked ~ div .step5 { display: block; }
+
+/* Validación */
+.error { display: none; }
+.grupo input:user-invalid { border-color: hsl(354, 84%, 57%); }
+.grupo:has(input:user-invalid) .error { display: block; }
+
+/* Planes seleccionados */
+.card-plan:has(input:checked) {
+    background-color: #f8f9ff;
+    border-color: hsl(243, 100%, 62%);
+}
+
+/* Toggle billing */
+#billing:checked ~ div .circle { left: 28px; }
+#billing:checked ~ div .monthly { color: #02295a; font-weight: bold; }
+#billing:not(:checked) ~ div .yearly { color: #02295a; font-weight: bold; }
+#billing:checked ~ div .monthly-price { display: none; }
+#billing:checked ~ div .yearly-price { display: block; }
+#billing:checked ~ div .gratis { display: block; }
+#billing:checked ~ div .addon-monthly { display: none; }
+#billing:checked ~ div .addon-yearly { display: inline; }
+#billing:checked ~ div .plan-monthly { display: none; }
+#billing:checked ~ div .plan-yearly { display: block; }
+
+/* Add-ons seleccionados */
+.addon-card:has(input:checked) {
+    background-color: #f8f9ff;
+    border-color: hsl(243, 100%, 62%);
+}
+
+/* Hovers */
+.card-plan:hover, .addon-card:hover {
+    border-color: hsl(243, 100%, 62%);
+}
+
+.back { cursor: pointer; }
+.back:hover { color: #02295a !important; }
+
+/* Mobile */
+@media (max-width: 768px) {
+    body { display: block; }
+    .sidebar {
+        background-image: url("bg-sidebar-mobile.svg");
+        min-height: 170px;
+    }
+}
