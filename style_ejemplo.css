@@ -96,7 +96,7 @@ input[type="radio"], #billing {
 
 .next:hover{background-color: hsl(243, 100%, 62%);}
 .back { cursor: pointer; }
-.back:hover { color: #02295a !important; }
+.back:hover { color: #02295a; }
 
 .grupo h4 {
     color: #02295a
