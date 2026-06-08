@@ -94,8 +94,13 @@ input[type="radio"], #billing {
     border-color: hsl(243, 100%, 62%);
 }
 
+.next:hover{background-color: hsl(243, 100%, 62%);}
 .back { cursor: pointer; }
 .back:hover { color: #02295a !important; }
+
+.grupo h4 {
+    color: #02295a
+}
 
 @media (max-width: 768px) {
 
