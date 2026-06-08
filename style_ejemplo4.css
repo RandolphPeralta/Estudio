@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Regular';
+    src: url('Ubuntu-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bold';
+    src: url('Ubuntu-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Regular', sans-serif;
+    background-color: hsl(218, 100%, 97%);
+}
+
+.sidebar {
+    background-image: url("bg-sidebar.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    body { display: block; }
+    .sidebar {
+        background-image: url("bg-sidebar-mobile.svg");
+        min-height: 170px;
+    }
+}

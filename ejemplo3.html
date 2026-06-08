@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="png" sizes="32x32" href="favicon-32x32.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style_ejemplo3.css">
+    <title>Frontend Mentor | Multi-step form</title>
+</head>
+
+<body class="d-flex justify-content-center align-items-center min-vh-100">
+
+    <input type="radio" name="step" id="step1" checked>
+    <input type="radio" name="step" id="step2">
+    <input type="radio" name="step" id="step3">
+    <input type="radio" name="step" id="step4">
+    <input type="radio" name="step" id="step5">
+    <input type="checkbox" id="billing">
+
+    <!-- Contenedor principal desktop -->
+    <div class="container d-none d-md-block p-0" style="max-width: 1000px;">
+        <div class="bg-white rounded-4 shadow-lg p-3">
+            <div class="row g-0">
+                <!-- Sidebar fijo en desktop -->
+                <div class="col-md-4 sidebar-desktop p-4" style="min-height: 550px;">
+                    <div class="d-flex flex-column gap-4">
+                        <div class="phase d-flex align-items-center gap-3">
+                            <div class="number number1 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">1</div>
+                            <div class="phase_paragraph">
+                                <p class="small text-white-50 mb-0">STEP 1</p>
+                                <h5 class="text-white mb-0">YOUR INFO</h5>
+                            </div>
+                        </div>
+                        <div class="phase d-flex align-items-center gap-3">
+                            <div class="number number2 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">2</div>
+                            <div class="phase_paragraph">
+                                <p class="small text-white-50 mb-0">STEP 2</p>
+                                <h5 class="text-white mb-0">SELECT PLAN</h5>
+                            </div>
+                        </div>
+                        <div class="phase d-flex align-items-center gap-3">
+                            <div class="number number3 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">3</div>
+                            <div class="phase_paragraph">
+                                <p class="small text-white-50 mb-0">STEP 3</p>
+                                <h5 class="text-white mb-0">ADD-ONS</h5>
+                            </div>
+                        </div>
+                        <div class="phase d-flex align-items-center gap-3">
+                            <div class="number number4 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">4</div>
+                            <div class="phase_paragraph">
+                                <p class="small text-white-50 mb-0">STEP 4</p>
+                                <h5 class="text-white mb-0">SUMMARY</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Steps content desktop -->
+                <div class="col-md-8 p-4">
+                    <div class="step step1">
+                        <h1 class="h3 mb-2" style="color: #02295a;">Personal info</h1>
+                        <p class="text-secondary mb-4">Please provide your name, email address, and phone number.</p>
+
+                        <form>
+                            <div class="grupo mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="h6 mb-0">Name</label>
+                                    <span class="error text-danger small fw-bold">This field is required</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="e.g. Stephen King" required>
+                            </div>
+                            <div class="grupo mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="h6 mb-0">Email Address</label>
+                                    <span class="error text-danger small fw-bold">This field is required</span>
+                                </div>
+                                <input type="email" class="form-control" placeholder="e.g. stephenking@lorem.com" required>
+                            </div>
+                            <div class="grupo mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="h6 mb-0">Phone Number</label>
+                                    <span class="error text-danger small fw-bold">This field is required</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="e.g. +1 234 567 890" required>
+                            </div>
+                        </form>
+
+                        <div class="d-flex justify-content-end mt-4 pt-3">
+                            <label for="step2" class="next btn btn-primary px-4 py-2">Next Step</label>
+                        </div>
+                    </div>
+
+                    <div class="step step2">
+                        <h1 class="h3 mb-2" style="color: #02295a;">Select your plan</h1>
+                        <p class="text-secondary mb-4">You have the option of monthly or yearly billing.</p>
+
+                        <div class="planes row g-3 mb-4">
+                            <div class="col-12">
+                                <label class="card-plan border rounded-3 p-3 d-flex align-items-center gap-3 w-100">
+                                    <input type="radio" name="plan" class="d-none">
+                                    <img src="icon-arcade.svg" alt="Arcade" style="width: 40px;">
+                                    <div class="flex-grow-1">
+                                        <h3 class="h6 mb-1">Arcade</h3>
+                                        <p class="monthly-price text-secondary small mb-0">$9/mo</p>
+                                        <p class="yearly-price text-secondary small mb-0 d-none">$90/yr</p>
+                                        <small class="gratis text-dark fw-bold d-none">2 months free</small>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <label class="card-plan border rounded-3 p-3 d-flex align-items-center gap-3 w-100">
+                                    <input type="radio" name="plan" class="d-none">
+                                    <img src="icon-advanced.svg" alt="Advanced" style="width: 40px;">
+                                    <div class="flex-grow-1">
+                                        <h3 class="h6 mb-1">Advanced</h3>
+                                        <p class="monthly-price text-secondary small mb-0">$12/mo</p>
+                                        <p class="yearly-price text-secondary small mb-0 d-none">$120/yr</p>
+                                        <small class="gratis text-dark fw-bold d-none">2 months free</small>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <label class="card-plan border rounded-3 p-3 d-flex align-items-center gap-3 w-100">
+                                    <input type="radio" name="plan" class="d-none">
+                                    <img src="icon-pro.svg" alt="Pro" style="width: 40px;">
+                                    <div class="flex-grow-1">
+                                        <h3 class="h6 mb-1">Pro</h3>
+                                        <p class="monthly-price text-secondary small mb-0">$15/mo</p>
+                                        <p class="yearly-price text-secondary small mb-0 d-none">$150/yr</p>
+                                        <small class="gratis text-dark fw-bold d-none">2 months free</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="toggle bg-light rounded-3 p-3 d-flex justify-content-center align-items-center gap-3">
+                            <span class="monthly text-secondary">Monthly</span>
+                            <label for="billing" class="switch position-relative d-inline-block" style="width: 50px; height: 25px; background-color: #02295a; border-radius: 20px; cursor: pointer;">
+                                <div class="circle position-absolute bg-white rounded-circle" style="width: 18px; height: 18px; top: 3px; left: 4px;"></div>
+                            </label>
+                            <span class="yearly text-secondary">Yearly</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4 pt-3">
+                            <label for="step1" class="back text-secondary text-decoration-none">Go Back</label>
+                            <label for="step3" class="next btn btn-primary px-4 py-2">Next Step</label>
+                        </div>
+                    </div>
+
+                    <div class="step step3">
+                        <h1 class="h3 mb-2" style="color: #02295a;">Pick add-ons</h1>
+                        <p class="text-secondary mb-4">Add-ons help enhance your gaming experience.</p>
+
+                        <div class="addons">
+                            <label class="addon-card border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
+                                <div class="addon-left d-flex align-items-center gap-3">
+                                    <input type="checkbox" class="addon-check form-check-input m-0">
+                                    <div>
+                                        <h3 class="h6 mb-1">Online service</h3>
+                                        <p class="small text-secondary mb-0">Access to multiplayer games</p>
+                                    </div>
+                                </div>
+                                <span class="addon-monthly text-primary fw-bold">+$1/mo</span>
+                                <span class="addon-yearly text-primary fw-bold d-none">+$10/yr</span>
+                            </label>
+                            <label class="addon-card border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
+                                <div class="addon-left d-flex align-items-center gap-3">
+                                    <input type="checkbox" class="addon-check form-check-input m-0">
+                                    <div>
+                                        <h3 class="h6 mb-1">Larger storage</h3>
+                                        <p class="small text-secondary mb-0">Extra 1TB of cloud save</p>
+                                    </div>
+                                </div>
+                                <span class="addon-monthly text-primary fw-bold">+$2/mo</span>
+                                <span class="addon-yearly text-primary fw-bold d-none">+$20/yr</span>
+                            </label>
+                            <label class="addon-card border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
+                                <div class="addon-left d-flex align-items-center gap-3">
+                                    <input type="checkbox" class="addon-check form-check-input m-0">
+                                    <div>
+                                        <h3 class="h6 mb-1">Customizable Profile</h3>
+                                        <p class="small text-secondary mb-0">Custom theme on your profile</p>
+                                    </div>
+                                </div>
+                                <span class="addon-monthly text-primary fw-bold">+$2/mo</span>
+                                <span class="addon-yearly text-primary fw-bold d-none">+$20/yr</span>
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4 pt-3">
+                            <label for="step2" class="back text-secondary text-decoration-none">Go Back</label>
+                            <label for="step4" class="next btn btn-primary px-4 py-2">Next Step</label>
+                        </div>
+                    </div>
+
+                    <div class="step step4">
+                        <h1 class="h3 mb-2" style="color: #02295a;">Finishing up</h1>
+                        <p class="text-secondary mb-4">Double-check everything looks OK before confirming.</p>
+
+                        <div class="summary-box bg-light rounded-3 p-4">
+                            <div class="plan-info d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="plan-monthly h6 mb-1">Arcade (Monthly)</h3>
+                                    <h3 class="plan-yearly h6 mb-1 d-none">Arcade (Yearly)</h3>
+                                    <label for="step2" class="change small text-primary text-decoration-underline" style="cursor: pointer;">Change</label>
+                                </div>
+                                <h3 class="plan-monthly h6 mb-0">$9/mo</h3>
+                                <h3 class="plan-yearly h6 mb-0 d-none">$90/yr</h3>
+                            </div>
+                            <hr class="my-3">
+                            <div class="addon-summary d-flex justify-content-between mb-2">
+                                <p class="text-secondary small mb-0">Online service</p>
+                                <span class="plan-monthly small fw-bold">+$1/mo</span>
+                                <span class="plan-yearly small fw-bold d-none">+$10/yr</span>
+                            </div>
+                            <div class="addon-summary d-flex justify-content-between">
+                                <p class="text-secondary small mb-0">Larger storage</p>
+                                <span class="plan-monthly small fw-bold">+$2/mo</span>
+                                <span class="plan-yearly small fw-bold d-none">+$20/yr</span>
+                            </div>
+                        </div>
+
+                        <div class="total d-flex justify-content-between align-items-center mt-3 px-3">
+                            <p class="text-secondary mb-0">Total (per month)</p>
+                            <h3 class="plan-monthly h5 text-primary mb-0">+$12/mo</h3>
+                            <h3 class="plan-yearly h5 text-primary mb-0 d-none">+$120/yr</h3>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4 pt-3">
+                            <label for="step3" class="back text-secondary text-decoration-none">Go Back</label>
+                            <label for="step5" class="next btn btn-primary px-4 py-2">Confirm</label>
+                        </div>
+                    </div>
+
+                    <div class="step step5 text-center py-5">
+                        <img src="icon-thank-you.svg" alt="Thank you" class="mb-4">
+                        <h1 class="h3 mb-3" style="color: #02295a;">Thank you!</h1>
+                        <p class="text-secondary">Thanks for confirming your subscription! We hope you have fun using our platform. If you ever need support, please feel free to email us at support@loremgaming.com.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Versión mobile -->
+    <div class="d-md-none position-relative" style="min-height: 100vh;">
+        <!-- Sidebar mobile header -->
+        <div class="sidebar-mobile w-100" style="height: 180px;">
+            <div class="d-flex justify-content-center gap-4 pt-4">
+                <div class="number number1 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">1</div>
+                <div class="number number2 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">2</div>
+                <div class="number number3 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">3</div>
+                <div class="number number4 d-flex align-items-center justify-content-center rounded-circle border border-white" style="width: 40px; height: 40px;">4</div>
+            </div>
+        </div>
+
+        <!-- Contenedor de pasos superpuesto -->
+        <div class="position-absolute top-0 start-0 end-0 p-3" style="margin-top: 100px;">
+            <div class="bg-white rounded-4 shadow-lg p-4" style="min-height: 450px;">
+                <div class="step step1">
+                    <h1 class="h3 mb-2" style="color: #02295a;">Personal info</h1>
+                    <p class="text-secondary mb-3">Please provide your name, email address, and phone number.</p>
+
+                    <form>
+                        <div class="grupo mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="h6 mb-0">Name</label>
+                                <span class="error text-danger small fw-bold">This field is required</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="e.g. Stephen King" required>
+                        </div>
+                        <div class="grupo mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="h6 mb-0">Email Address</label>
+                                <span class="error text-danger small fw-bold">This field is required</span>
+                            </div>
+                            <input type="email" class="form-control" placeholder="e.g. stephenking@lorem.com" required>
+                        </div>
+                        <div class="grupo mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="h6 mb-0">Phone Number</label>
+                                <span class="error text-danger small fw-bold">This field is required</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="e.g. +1 234 567 890" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="step step2">
+                    <h1 class="h3 mb-2" style="color: #02295a;">Select your plan</h1>
+                    <p class="text-secondary mb-3">You have the option of monthly or yearly billing.</p>
+
+                    <div class="planes mb-3">
+                        <div class="mb-2">
+                            <label class="card-plan border rounded-3 p-2 d-flex align-items-center gap-3 w-100">
+                                <input type="radio" name="plan-mobile" class="d-none">
+                                <img src="icon-arcade.svg" alt="Arcade" style="width: 35px;">
+                                <div class="flex-grow-1">
+                                    <h3 class="h6 mb-0">Arcade</h3>
+                                    <p class="monthly-price text-secondary small mb-0">$9/mo</p>
+                                    <p class="yearly-price text-secondary small mb-0 d-none">$90/yr</p>
+                                    <small class="gratis text-dark fw-bold d-none">2 months free</small>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="mb-2">
+                            <label class="card-plan border rounded-3 p-2 d-flex align-items-center gap-3 w-100">
+                                <input type="radio" name="plan-mobile" class="d-none">
+                                <img src="icon-advanced.svg" alt="Advanced" style="width: 35px;">
+                                <div class="flex-grow-1">
+                                    <h3 class="h6 mb-0">Advanced</h3>
+                                    <p class="monthly-price text-secondary small mb-0">$12/mo</p>
+                                    <p class="yearly-price text-secondary small mb-0 d-none">$120/yr</p>
+                                    <small class="gratis text-dark fw-bold d-none">2 months free</small>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="mb-2">
+                            <label class="card-plan border rounded-3 p-2 d-flex align-items-center gap-3 w-100">
+                                <input type="radio" name="plan-mobile" class="d-none">
+                                <img src="icon-pro.svg" alt="Pro" style="width: 35px;">
+                                <div class="flex-grow-1">
+                                    <h3 class="h6 mb-0">Pro</h3>
+                                    <p class="monthly-price text-secondary small mb-0">$15/mo</p>
+                                    <p class="yearly-price text-secondary small mb-0 d-none">$150/yr</p>
+                                    <small class="gratis text-dark fw-bold d-none">2 months free</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="toggle bg-light rounded-3 p-2 d-flex justify-content-center align-items-center gap-3">
+                        <span class="monthly text-secondary small">Monthly</span>
+                        <label for="billing" class="switch position-relative d-inline-block" style="width: 45px; height: 22px; background-color: #02295a; border-radius: 20px; cursor: pointer;">
+                            <div class="circle position-absolute bg-white rounded-circle" style="width: 16px; height: 16px; top: 3px; left: 4px;"></div>
+                        </label>
+                        <span class="yearly text-secondary small">Yearly</span>
+                    </div>
+                </div>
+
+                <div class="step step3">
+                    <h1 class="h3 mb-2" style="color: #02295a;">Pick add-ons</h1>
+                    <p class="text-secondary mb-3">Add-ons help enhance your gaming experience.</p>
+
+                    <div class="addons">
+                        <label class="addon-card border rounded-3 p-2 mb-2 d-flex justify-content-between align-items-center">
+                            <div class="addon-left d-flex align-items-center gap-2">
+                                <input type="checkbox" class="addon-check form-check-input m-0">
+                                <div>
+                                    <h3 class="h6 mb-0">Online service</h3>
+                                    <p class="small text-secondary mb-0">Access to multiplayer games</p>
+                                </div>
+                            </div>
+                            <span class="addon-monthly text-primary fw-bold small">+$1/mo</span>
+                            <span class="addon-yearly text-primary fw-bold d-none small">+$10/yr</span>
+                        </label>
+                        <label class="addon-card border rounded-3 p-2 mb-2 d-flex justify-content-between align-items-center">
+                            <div class="addon-left d-flex align-items-center gap-2">
+                                <input type="checkbox" class="addon-check form-check-input m-0">
+                                <div>
+                                    <h3 class="h6 mb-0">Larger storage</h3>
+                                    <p class="small text-secondary mb-0">Extra 1TB of cloud save</p>
+                                </div>
+                            </div>
+                            <span class="addon-monthly text-primary fw-bold small">+$2/mo</span>
+                            <span class="addon-yearly text-primary fw-bold d-none small">+$20/yr</span>
+                        </label>
+                        <label class="addon-card border rounded-3 p-2 mb-2 d-flex justify-content-between align-items-center">
+                            <div class="addon-left d-flex align-items-center gap-2">
+                                <input type="checkbox" class="addon-check form-check-input m-0">
+                                <div>
+                                    <h3 class="h6 mb-0">Customizable Profile</h3>
+                                    <p class="small text-secondary mb-0">Custom theme on your profile</p>
+                                </div>
+                            </div>
+                            <span class="addon-monthly text-primary fw-bold small">+$2/mo</span>
+                            <span class="addon-yearly text-primary fw-bold d-none small">+$20/yr</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="step step4">
+                    <h1 class="h3 mb-2" style="color: #02295a;">Finishing up</h1>
+                    <p class="text-secondary mb-3">Double-check everything looks OK before confirming.</p>
+
+                    <div class="summary-box bg-light rounded-3 p-3">
+                        <div class="plan-info d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="plan-monthly h6 mb-0">Arcade (Monthly)</h3>
+                                <h3 class="plan-yearly h6 mb-0 d-none">Arcade (Yearly)</h3>
+                                <label for="step2" class="change small text-primary text-decoration-underline" style="cursor: pointer;">Change</label>
+                            </div>
+                            <h3 class="plan-monthly h6 mb-0">$9/mo</h3>
+                            <h3 class="plan-yearly h6 mb-0 d-none">$90/yr</h3>
+                        </div>
+                        <hr class="my-2">
+                        <div class="addon-summary d-flex justify-content-between mb-1">
+                            <p class="text-secondary small mb-0">Online service</p>
+                            <span class="plan-monthly small fw-bold">+$1/mo</span>
+                            <span class="plan-yearly small fw-bold d-none">+$10/yr</span>
+                        </div>
+                        <div class="addon-summary d-flex justify-content-between">
+                            <p class="text-secondary small mb-0">Larger storage</p>
+                            <span class="plan-monthly small fw-bold">+$2/mo</span>
+                            <span class="plan-yearly small fw-bold d-none">+$20/yr</span>
+                        </div>
+                    </div>
+
+                    <div class="total d-flex justify-content-between align-items-center mt-3 px-2">
+                        <p class="text-secondary mb-0 small">Total (per month)</p>
+                        <h3 class="plan-monthly h6 text-primary mb-0">+$12/mo</h3>
+                        <h3 class="plan-yearly h6 text-primary mb-0 d-none">+$120/yr</h3>
+                    </div>
+                </div>
+
+                <div class="step step5 text-center py-4">
+                    <img src="icon-thank-you.svg" alt="Thank you" class="mb-3" style="width: 60px;">
+                    <h1 class="h3 mb-2" style="color: #02295a;">Thank you!</h1>
+                    <p class="text-secondary small">Thanks for confirming your subscription! We hope you have fun using our platform.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones fijos en mobile -->
+        <div class="position-fixed bottom-0 start-0 end-0 bg-white p-3 shadow" style="z-index: 1000;">
+            <div class="step-buttons step1-buttons d-flex justify-content-end">
+                <label for="step2" class="next btn btn-primary px-4 py-2">Next Step</label>
+            </div>
+            <div class="step-buttons step2-buttons d-none justify-content-between">
+                <label for="step1" class="back btn btn-link text-secondary text-decoration-none">Go Back</label>
+                <label for="step3" class="next btn btn-primary px-4 py-2">Next Step</label>
+            </div>
+            <div class="step-buttons step3-buttons d-none justify-content-between">
+                <label for="step2" class="back btn btn-link text-secondary text-decoration-none">Go Back</label>
+                <label for="step4" class="next btn btn-primary px-4 py-2">Next Step</label>
+            </div>
+            <div class="step-buttons step4-buttons d-none justify-content-between">
+                <label for="step3" class="back btn btn-link text-secondary text-decoration-none">Go Back</label>
+                <label for="step5" class="next btn btn-primary px-4 py-2">Confirm</label>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
