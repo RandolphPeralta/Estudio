@@ -11,10 +11,10 @@
 <body class="bg-secondary-subtle">
 
     <div class="container vh-100 d-none d-md-flex justify-content-center align-items-center">
-        <div class="bg-white rounded-4 shadow-lg col-10">
+        <div class="bg-white rounded-4 shadow-lg col-8">
             <div class="row p-3">
 
-                <div class="col-3 position-relative">
+                <div class="col-4 position-relative">
                     <img src="bg-sidebar.svg" class="img-fluid rounded-3 w-100" alt="Sidebar">
                     <div class="position-absolute top-0 start-0 w-100 h-100">
                         <div class="p-4">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <div class="col-9">
+                <div class="col-8">
                     <div id="desktopCarousel" class="carousel slide h-100" data-bs-interval="false">
                         <div class="carousel-inner h-100">
 
@@ -59,24 +59,29 @@
                                     <div class="col-8 d-flex flex-column justify-content-between h-100 py-3">
                                         <div class="flex-grow-1">
                                             <h1 class="fw-bold text-primary">Personal Info</h1>
-                                            <p class="text-secondary mb-4">Please provide your name, email address, and phone number.</p>
+                                            <p class="text-secondary mb-4">Please provide your name, email address, and
+                                                phone number.</p>
                                             <form>
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">Name</label>
-                                                    <input type="text" class="form-control" id="name" placeholder="e.g. Stephen King">
+                                                    <input type="text" class="form-control" id="name"
+                                                        placeholder="e.g. Stephen King">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="email" class="form-label">Email Address</label>
-                                                    <input type="email" class="form-control" id="email" placeholder="e.g. stephenking@lorem.com">
+                                                    <input type="email" class="form-control" id="email"
+                                                        placeholder="e.g. stephenking@lorem.com">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="phone" class="form-label">Phone Number</label>
-                                                    <input type="tel" class="form-control" id="phone" placeholder="e.g. +1 234 567 890">
+                                                    <input type="tel" class="form-control" id="phone"
+                                                        placeholder="e.g. +1 234 567 890">
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="text-end mt-4">
-                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="next" class="btn btn-primary px-4">Next Step</button>
+                                        <div class="text-end mt-5">
+                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="next"
+                                                class="btn btn-primary px-4">Next Step</button>
                                         </div>
                                     </div>
                                 </div>
@@ -87,13 +92,14 @@
                                     <div class="col-8 d-flex flex-column justify-content-between h-100 py-3">
                                         <div class="flex-grow-1">
                                             <h1 class="fw-bold text-primary">Select your plan</h1>
-                                            <p class="text-secondary mb-4">You have the option of monthly or yearly billing.</p>
-                                            <div class="row g-3 mb-4">
+                                            <p class="text-secondary mb-4">You have the option of monthly or yearly
+                                                billing.</p>
+                                            <div class="row g-3 mb-5">
                                                 <div class="col-md-4">
-                                                    <div class="card h-100 border-primary bg-light-subtle">
+                                                    <div class="card h-100">
                                                         <div class="card-body">
                                                             <img src="icon-arcade.svg" alt="Arcade" class="mb-4">
-                                                            <h5 class="card-title mb-1 fw-bold">Arcade</h5>
+                                                            <h6 class="card-title text-primary mb-1">Arcade</h6>
                                                             <p class="text-secondary mb-0">$9/mo</p>
                                                         </div>
                                                     </div>
@@ -102,7 +108,7 @@
                                                     <div class="card h-100">
                                                         <div class="card-body">
                                                             <img src="icon-advanced.svg" alt="Advanced" class="mb-4">
-                                                            <h5 class="card-title mb-1">Advanced</h5>
+                                                            <h6 class="card-title mb-1">Advanced</h6>
                                                             <p class="text-secondary mb-0">$12/mo</p>
                                                         </div>
                                                     </div>
@@ -111,13 +117,13 @@
                                                     <div class="card h-100">
                                                         <div class="card-body">
                                                             <img src="icon-pro.svg" alt="Pro" class="mb-4">
-                                                            <h5 class="card-title mb-1">Pro</h5>
+                                                            <h6 class="card-title mb-1">Pro</h6>
                                                             <p class="text-secondary mb-0">$15/mo</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="bg-light rounded p-3">
+                                            <div class="bg-light rounded p-3 mb-4">
                                                 <div class="d-flex justify-content-center align-items-center gap-3">
                                                     <span class="fw-semibold">Monthly</span>
                                                     <div class="form-check form-switch m-0">
@@ -128,8 +134,11 @@
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between mt-4">
-                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="prev" class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go Back</button>
-                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="next" class="btn btn-primary px-4">Next Step</button>
+                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="prev"
+                                                class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go
+                                                Back</button>
+                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="next"
+                                                class="btn btn-primary px-4">Next Step</button>
                                         </div>
                                     </div>
                                 </div>
@@ -140,15 +149,17 @@
                                     <div class="col-8 d-flex flex-column justify-content-between h-100 py-3">
                                         <div class="flex-grow-1">
                                             <h1 class="fw-bold text-primary">Pick add-ons</h1>
-                                            <p class="text-secondary mb-4">Add-ons help enhance your gaming experience.</p>
+                                            <p class="text-secondary mb-4">Add-ons help enhance your gaming experience.
+                                            </p>
                                             <div class="d-flex flex-column gap-3">
-                                                <div class="card p-3 border-primary bg-light-subtle">
+                                                <div class="card p-3">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div class="d-flex align-items-center gap-3">
-                                                            <input type="checkbox" class="form-check-input" checked>
+                                                            <input type="checkbox" class="form-check-input">
                                                             <div>
                                                                 <h6 class="fw-bold mb-0">Online service</h6>
-                                                                <small class="text-muted">Access to multiplayer games</small>
+                                                                <small class="text-muted">Access to multiplayer
+                                                                    games</small>
                                                             </div>
                                                         </div>
                                                         <span class="text-primary small">+$1/mo</span>
@@ -160,7 +171,21 @@
                                                             <input type="checkbox" class="form-check-input">
                                                             <div>
                                                                 <h6 class="fw-bold mb-0">Larger storage</h6>
-                                                                <small class="text-muted">Extra 1TB of cloud save</small>
+                                                                <small class="text-muted">Extra 1TB of cloud
+                                                                    save</small>
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-primary small">+$2/mo</span>
+                                                    </div>
+                                                </div>
+                                                <div class="card p-3">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <input type="checkbox" class="form-check-input">
+                                                            <div>
+                                                                <h6 class="fw-bold mb-0">Customizable Profile</h6>
+                                                                <small class="text-muted">Custom theme on your
+                                                                    profile</small>
                                                             </div>
                                                         </div>
                                                         <span class="text-primary small">+$2/mo</span>
@@ -168,9 +193,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between mt-4">
-                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="prev" class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go Back</button>
-                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="next" class="btn btn-primary px-4">Next Step</button>
+                                        <div class="d-flex justify-content-between mt-5">
+                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="prev"
+                                                class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go
+                                                Back</button>
+                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="next"
+                                                class="btn btn-primary px-4">Next Step</button>
                                         </div>
                                     </div>
                                 </div>
@@ -181,28 +209,61 @@
                                     <div class="col-8 d-flex flex-column justify-content-between h-100 py-3">
                                         <div class="flex-grow-1">
                                             <h1 class="fw-bold text-primary">Finishing up</h1>
-                                            <p class="text-secondary mb-4">Double-check if everything looks correct before confirming.</p>
+                                            <p class="text-secondary mb-4">Double-check if everything looks correct
+                                                before confirming.</p>
                                             <div class="bg-light p-4 rounded-3 mb-4">
-                                                <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                                                     <div>
                                                         <h6 class="fw-bold text-primary mb-0">Arcade (Monthly)</h6>
-                                                        <button type="button" data-bs-target="#desktopCarousel" data-bs-slide-to="1" class="btn btn-link p-0 small text-secondary">Change</button>
+                                                        <button type="button" data-bs-target="#desktopCarousel"
+                                                            data-bs-slide-to="1"
+                                                            class="btn btn-link p-0 small text-secondary">Change</button>
                                                     </div>
                                                     <span class="fw-bold text-primary">$9/mo</span>
                                                 </div>
+                                                <br>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <span class="text-muted small">Online service</span>
                                                     <span class="text-primary small">+$1/mo</span>
                                                 </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="text-muted small">Larger storage</span>
+                                                    <span class="text-primary small">+$2/mo</span>
+                                                </div>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center px-4">
                                                 <span class="text-muted">Total (per month)</span>
-                                                <span class="fw-bold text-primary fs-4">+$10/mo</span>
+                                                <span class="fw-bold text-primary fs-4">+$12/mo</span>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between mt-4">
-                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="prev" class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go Back</button>
-                                            <button type="button" class="btn btn-success px-4" onclick="alert('¡Suscripción Completada!')">Confirm</button>
+                                        <div class="d-flex justify-content-between mt-5">
+                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="prev"
+                                                class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go
+                                                Back</button>
+                                            <button type="button" data-bs-target="#desktopCarousel" data-bs-slide="next"
+                                                class="btn btn-primary px-4">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="carousel-item">
+                                <div class="row h-100 justify-content-center">
+                                    <div class="col-8 d-flex flex-column justify-content-between h-100 py-3">
+                                        <div class="flex-grow-1">
+                                            <div class="thank-you">
+
+                                                <img src="icon-thank-you.svg">
+
+                                                <h1>Thank you!</h1>
+
+                                                <p>
+                                                    Thanks for confirming your subscription! We hope you have fun
+                                                    using our platform. If you ever need support, please feel free
+                                                    to email us at support@loremgaming.com.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -218,7 +279,7 @@
 
 
     <div class="d-md-none min-vh-100 d-flex flex-column bg-light-subtle">
-        
+
         <div class="position-relative">
             <img src="bg-sidebar-mobile.svg" class="img-fluid w-100" alt="Mobile Sidebar">
             <div class="position-absolute top-0 start-50 translate-middle-x mt-4">
@@ -231,32 +292,38 @@
             </div>
         </div>
 
-        <div class="container flex-grow-1 px-4 structural-wrapper" style="margin-top: -40px; z-index: 10; margin-bottom: 100px;">
+        <div class="container flex-grow-1 px-4 structural-wrapper"
+            style="margin-top: -40px; z-index: 10; margin-bottom: 100px;">
             <div id="mobileCarousel" class="carousel slide" data-bs-interval="false">
                 <div class="carousel-inner">
 
                     <div class="carousel-item active">
                         <div class="bg-white rounded-4 shadow p-4">
                             <h2 class="fw-bold text-primary fs-3">Personal info</h2>
-                            <p class="text-secondary mb-4 small">Please provide your name, email address, and phone number.</p>
+                            <p class="text-secondary mb-4 small">Please provide your name, email address, and phone
+                                number.</p>
                             <form>
                                 <div class="mb-3">
                                     <label for="mobile-name" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="mobile-name" placeholder="e.g. Stephen King">
+                                    <input type="text" class="form-control" id="mobile-name"
+                                        placeholder="e.g. Stephen King">
                                 </div>
                                 <div class="mb-3">
                                     <label for="mobile-email" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" id="mobile-email" placeholder="e.g. stephenking@lorem.com">
+                                    <input type="email" class="form-control" id="mobile-email"
+                                        placeholder="e.g. stephenking@lorem.com">
                                 </div>
                                 <div class="mb-3">
                                     <label for="mobile-phone" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" id="mobile-phone" placeholder="e.g. +1 234 567 890">
+                                    <input type="tel" class="form-control" id="mobile-phone"
+                                        placeholder="e.g. +1 234 567 890">
                                 </div>
                             </form>
                         </div>
                         <div class="fixed-bottom bg-white p-3 shadow-lg">
                             <div class="d-flex justify-content-end container">
-                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="next" class="btn btn-primary px-4">Next Step</button>
+                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="next"
+                                    class="btn btn-primary px-4">Next Step</button>
                             </div>
                         </div>
                     </div>
@@ -306,8 +373,11 @@
                         </div>
                         <div class="fixed-bottom bg-white p-3 shadow-lg">
                             <div class="d-flex justify-content-between align-items-center container">
-                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev" class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go Back</button>
-                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="next" class="btn btn-primary px-4">Next Step</button>
+                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev"
+                                    class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go
+                                    Back</button>
+                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="next"
+                                    class="btn btn-primary px-4">Next Step</button>
                             </div>
                         </div>
                     </div>
@@ -317,7 +387,8 @@
                             <h2 class="fw-bold text-primary fs-3">Pick add-ons</h2>
                             <p class="text-secondary mb-4 small">Enhance your gaming experience.</p>
                             <div class="d-flex flex-column gap-3">
-                                <div class="border border-primary rounded-3 p-3 bg-light-subtle d-flex justify-content-between align-items-center">
+                                <div
+                                    class="border border-primary rounded-3 p-3 bg-light-subtle d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center gap-3">
                                         <input type="checkbox" class="form-check-input" checked>
                                         <div>
@@ -341,8 +412,11 @@
                         </div>
                         <div class="fixed-bottom bg-white p-3 shadow-lg">
                             <div class="d-flex justify-content-between align-items-center container">
-                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev" class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go Back</button>
-                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="next" class="btn btn-primary px-4">Next Step</button>
+                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev"
+                                    class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go
+                                    Back</button>
+                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="next"
+                                    class="btn btn-primary px-4">Next Step</button>
                             </div>
                         </div>
                     </div>
@@ -359,7 +433,8 @@
                                     <span class="fw-bold text-primary small">$9/mo</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted extra-small" style="font-size: 0.8rem;">Online service</span>
+                                    <span class="text-muted extra-small" style="font-size: 0.8rem;">Online
+                                        service</span>
                                     <span class="text-primary small">+$1/mo</span>
                                 </div>
                             </div>
@@ -370,10 +445,19 @@
                         </div>
                         <div class="fixed-bottom bg-white p-3 shadow-lg">
                             <div class="d-flex justify-content-between align-items-center container">
-                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev" class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go Back</button>
-                                <button type="button" class="btn btn-success px-4" onclick="alert('¡Suscripción Completada!')">Confirm</button>
+                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev"
+                                    class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">Go
+                                    Back</button>
+                                <button type="button" data-bs-target="#mobileCarousel" data-bs-slide="next" class="btn btn-success px-4">Confirm</button>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="bg-white rounded-4 shadow p-4">
+
+                        </div>
+
                     </div>
 
                 </div>

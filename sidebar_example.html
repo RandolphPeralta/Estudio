@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multi-step Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-3">
+      <ul class="nav flex-column nav-pills" id="stepTabs" role="tablist">
+        <li class="nav-item">
+          <button class="nav-link active" id="tab1" data-bs-toggle="pill" data-bs-target="#step1" type="button" role="tab">
+            <span class="badge rounded-circle bg-primary">1</span> Step 1
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="tab2" data-bs-toggle="pill" data-bs-target="#step2" type="button" role="tab">
+            <span class="badge rounded-circle bg-primary">2</span> Step 2
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="tab3" data-bs-toggle="pill" data-bs-target="#step3" type="button" role="tab">
+            <span class="badge rounded-circle bg-primary">3</span> Step 3
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="tab4" data-bs-toggle="pill" data-bs-target="#step4" type="button" role="tab">
+            <span class="badge rounded-circle bg-primary">4</span> Step 4
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="col-9">
+      <div class="tab-content">
+        <!-- Step 1 -->
+        <div class="tab-pane fade show active" id="step1" role="tabpanel">
+          <h3>Step 1: Your Info</h3>
+          <p>Provide your personal information.</p>
+          <button class="btn btn-primary" data-bs-toggle="pill" data-bs-target="#step2">Next Step</button>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="tab-pane fade" id="step2" role="tabpanel">
+          <h3>Step 2: Select Plan</h3>
+          <p>Choose your subscription plan.</p>
+          <button class="btn btn-secondary" data-bs-toggle="pill" data-bs-target="#step1">Go Back</button>
+          <button class="btn btn-primary" data-bs-toggle="pill" data-bs-target="#step3">Next Step</button>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="tab-pane fade" id="step3" role="tabpanel">
+          <h3>Step 3: Add-ons</h3>
+          <p>Select additional features.</p>
+          <button class="btn btn-secondary" data-bs-toggle="pill" data-bs-target="#step2">Go Back</button>
+          <button class="btn btn-primary" data-bs-toggle="pill" data-bs-target="#step4">Next Step</button>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="tab-pane fade" id="step4" role="tabpanel">
+          <h3>Step 4: Summary</h3>
+          <p>Review and confirm your choices.</p>
+          <button class="btn btn-secondary" data-bs-toggle="pill" data-bs-target="#step3">Go Back</button>
+          <button class="btn btn-success">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS (necesario para que los botones funcionen) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
