@@ -190,97 +190,94 @@
 
     <!--Version-Movil-->
 
-    <div class="d-md-none position-relative">
+    <div class="d-md-none min-vh-100 d-flex flex-column bg-light-subtle pb-5">
 
-        <img src="bg-sidebar-mobile.svg" class="img-fluid w-100" alt="Mobile Sidebar">
+                <div class="position-relative">
 
-        <div class="position-absolute top-0 start-50 translate-middle-x mt-4">
+            <img src="bg-sidebar-mobile.svg" class="img-fluid w-100" alt="Mobile Sidebar">
 
-            <div class="d-flex gap-3">
+            <div class="position-absolute top-0 start-50 translate-middle-x mt-4">
 
-                <span class="badge rounded-circle text-bg-light">1</span>
-
-                <span class="badge rounded-circle border border-white">
-                    2
-                </span>
-
-                <span class="badge rounded-circle border border-white">
-                    3
-                </span>
-
-                <span class="badge rounded-circle border border-white">
-                    4
-                </span>
-
-            </div>
-
-        </div>
-
-        <div class="position-absolute start-50 translate-middle-x w-100 px-3">
-
-            <div class="card border-0 shadow rounded-4">
-
-                <div class="card-body">
-
-                    <h1 class="fw-bold fs-2">Select your plan</h1>
-                    <p class="text-secondary mb-4">You have the option of monthly or yearly billing.</p>
-
-                    <div class="mb-4">
-
-                        <!-- Plan Arcade -->
-                        <div class="card border mb-3">
-                            <div class="card-body d-flex align-items-center gap-3">
-                                <img src="icon-arcade.svg" alt="Arcade" width="40" height="40">
-                                <div>
-                                    <h5 class="card-title fw-bold mb-0">Arcade</h5>
-                                    <p class="text-secondary mb-0">$9/mo</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Plan Advanced -->
-                        <div class="card border mb-3">
-                            <div class="card-body d-flex align-items-center gap-3">
-                                <img src="icon-advanced.svg" alt="Advanced" width="40" height="40">
-                                <div>
-                                    <h5 class="card-title fw-bold mb-0">Advanced</h5>
-                                    <p class="text-secondary mb-0">$12/mo</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Plan Pro -->
-                        <div class="card border">
-                            <div class="card-body d-flex align-items-center gap-3">
-                                <img src="icon-pro.svg" alt="Pro" width="40" height="40">
-                                <div>
-                                    <h5 class="card-title fw-bold mb-0">Pro</h5>
-                                    <p class="text-secondary mb-0">$15/mo</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- contenido -->
-
+                <div class="d-flex gap-3">
+                    <span class="badge rounded-circle border border-white">1</span>
+                    <span class="badge rounded-circle text-bg-light">2</span>
+                    <span class="badge rounded-circle border border-white">3</span>
+                    <span class="badge rounded-circle border border-white">4</span>
                 </div>
 
             </div>
 
         </div>
 
-        <div class="d-md-none fixed-bottom bg-white p-3">
+        <div class="container flex-grow-1 px-4" >
+            
+            <div class="bg-white rounded-4 shadow p-4 mb-5">
 
-            <div class="d-flex justify-content-between">
+                <h2 class="fw-bold text-primary fs-3">Select your plan</h2>
+                
+                <p class="text-secondary mb-4 small">
+                    You have the option of monthly or yearly billing.
+                </p>
 
-                <button class="btn btn-link text-secondary">
+                <div class="d-flex flex-column gap-3 mb-4">
+
+                    <div class="border border-primary rounded-3 p-3 bg-light-subtle">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="icon-arcade.svg" alt="Arcade" width="40" height="40">
+                            <div>
+                                <h6 class="fw-bold text-primary mb-0">Arcade</h6>
+                                <small class="text-secondary">$9/mo</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-3 p-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="icon-advanced.svg" alt="Advanced" width="40" height="40">
+                            <div>
+                                <h6 class="fw-bold text-primary mb-0">Advanced</h6>
+                                <small class="text-secondary">$12/mo</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-3 p-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="icon-pro.svg" alt="Pro" width="40" height="40">
+                            <div>
+                                <h6 class="fw-bold text-primary mb-0">Pro</h6>
+                                <small class="text-secondary">$15/mo</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="bg-light rounded p-3 mb-2">
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <span class="fw-semibold small text-primary">Monthly</span>
+                        <div class="form-check form-switch m-0 fs-5">
+                            <input class="form-check-input" type="checkbox" id="billingMobile">
+                        </div>
+                        <span class="text-secondary small">Yearly</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+                <div class="fixed-bottom bg-white p-3 shadow-lg">
+
+            <div class="d-flex justify-content-between align-items-center container">
+
+                <a href="index_bs.html" class="btn btn-link text-secondary text-decoration-none fw-semibold px-0">
                     Go Back
-                </button>
+                </a>
 
-                <button class="btn btn-primary">
+                <a href="index_bs3.html" class="btn btn-primary px-4">
                     Next Step
-                </button>
+                </a>
 
             </div>
 
