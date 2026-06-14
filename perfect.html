@@ -65,7 +65,8 @@
                                             </div>
                                             <form>
                                                 <div class="mb-3">
-                                                    <label for="name" class="fw-bold form-label text-primary">Name</label>
+                                                    <label for="name"
+                                                        class="fw-bold form-label text-primary">Name</label>
                                                     <input type="text" class="form-control" id="name"
                                                         placeholder="e.g. Stephen King">
                                                 </div>
@@ -282,190 +283,214 @@
         </div>
     </div>
 
- <div class="d-md-none min-vh-100 d-flex flex-column bg-light-subtle position-relative">
+    <div class="d-md-none min-vh-100 d-flex flex-column bg-light-subtle position-relative">
 
-    <div class="position-relative">
-        <img src="bg-sidebar-mobile.svg" class="img-fluid w-100" alt="Mobile Sidebar">
+        <div class="position-relative">
+            <img src="bg-sidebar-mobile.svg" class="img-fluid w-100" alt="Mobile Sidebar">
 
-        <div class="position-absolute top-0 start-50 translate-middle-x mt-4">
-            <div class="d-flex gap-3">
-                <span class="badge rounded-circle border border-white">1</span>
-                <span class="badge rounded-circle border border-white">2</span>
-                <span class="badge rounded-circle border border-white">3</span>
-                <span class="badge rounded-circle border border-white">4</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Contenedor superpuesto al sidebar -->
-    <div class="position-absolute top-0 start-50 translate-middle-x w-100 mt-5 pt-4">
-        <div class="container px-4">
-            <div id="mobileCarousel"
-                 class="carousel slide"
-                 data-bs-touch="false"
-                 data-bs-interval="false">
-
-                <div class="carousel-inner">
-
-                    <div class="carousel-item active">
-                        <div class="bg-white rounded-4 shadow p-4">
-                            <h2 class="fw-bold text-primary fs-3">
-                                Personal info
-                            </h2>
-                            <p class="text-secondary mb-4 small">
-                                Please provide your name, email address,
-                                and phone number.
-                            </p>
-                            <form>
-                                <div class="mb-3">
-                                    <label class="form-label">Name</label>
-                                    <input type="text" class="form-control" placeholder="e.g. Stephen King">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" placeholder="e.g. stephenking@lorem.com">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" placeholder="e.g. +1 234 567 890">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="bg-white rounded-4 shadow p-4">
-                            <h2 class="fw-bold text-primary fs-3">
-                                Select your plan
-                            </h2>
-                            <p class="text-secondary mb-4 small">
-                                You have the option of monthly or yearly billing.
-                            </p>
-                            <div class="d-flex flex-column gap-3 mb-3">
-                                <div class="border rounded-3 p-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <img src="icon-arcade.svg" width="40">
-                                        <div>
-                                            <h6 class="fw-bold mb-0">Arcade</h6>
-                                            <small>$9/mo</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="border rounded-3 p-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <img src="icon-advanced.svg" width="40">
-                                        <div>
-                                            <h6 class="fw-bold mb-0">Advanced</h6>
-                                            <small>$12/mo</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="border rounded-3 p-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <img src="icon-pro.svg" width="40">
-                                        <div>
-                                            <h6 class="fw-bold mb-0">Pro</h6>
-                                            <small>$15/mo</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-light rounded p-3">
-                                <div class="d-flex justify-content-center align-items-center gap-3">
-                                    <span class="fw-semibold small">Monthly</span>
-                                    <div class="form-check form-switch m-0">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                    <span class="small text-secondary">Yearly</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="bg-white rounded-4 shadow p-4">
-                            <h2 class="fw-bold text-primary fs-3">
-                                Pick add-ons
-                            </h2>
-                            <p class="text-secondary mb-4 small">
-                                Enhance your gaming experience.
-                            </p>
-                            <div class="d-flex flex-column gap-3">
-                                <div class="border rounded-3 p-3 d-flex justify-content-between align-items-center">
-                                    <span>Online service</span>
-                                    <span>+$1/mo</span>
-                                </div>
-                                <div class="border rounded-3 p-3 d-flex justify-content-between align-items-center">
-                                    <span>Larger storage</span>
-                                    <span>+$2/mo</span>
-                                </div>
-                                <div class="border rounded-3 p-3 d-flex justify-content-between align-items-center">
-                                    <span>Customizable Profile</span>
-                                    <span>+$2/mo</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="bg-white rounded-4 shadow p-4">
-                            <h2 class="fw-bold text-primary fs-3">
-                                Finishing up
-                            </h2>
-                            <p class="text-secondary mb-4 small">
-                                Double-check if everything looks correct.
-                            </p>
-                            <div class="bg-light rounded-3 p-3">
-                                <div class="d-flex justify-content-between">
-                                    <span>Arcade (Monthly)</span>
-                                    <strong>$9/mo</strong>
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span>Online service</span>
-                                    <span>+$1/mo</span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Larger storage</span>
-                                    <span>+$2/mo</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="bg-white rounded-4 p-4 text-center">
-                            <img src="icon-thank-you.svg" class="mb-4">
-                            <h1 class="fw-bold text-primary">Thank you!</h1>
-                            <p class="text-secondary">
-                                Thanks for confirming your subscription! We hope you have fun using our
-                                platform. If you ever need support, please feel free to email us at
-                                support@loremgaming.com.
-                            </p>
-                        </div>
-                    </div>
-
+            <div class="position-absolute top-0 start-50 translate-middle-x mt-4">
+                <div class="d-flex gap-3">
+                    <span class="badge rounded-circle border border-white">1</span>
+                    <span class="badge rounded-circle border border-white">2</span>
+                    <span class="badge rounded-circle border border-white">3</span>
+                    <span class="badge rounded-circle border border-white">4</span>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="fixed-bottom bg-white p-3 shadow-lg">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <button type="button" class="btn btn-link text-decoration-none" data-bs-target="#mobileCarousel" data-bs-slide="prev">
-                    Go Back
-                </button>
-                <button type="button" class="btn btn-primary" data-bs-target="#mobileCarousel" data-bs-slide="next">
-                    Next Step
-                </button>
+        <div class="position-absolute top-0 start-50 translate-middle-x w-100 mt-5 pt-4">
+            <div class="container px-4">
+                <div id="mobileCarousel" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
+
+                    <div class="carousel-inner">
+
+                        <div class="carousel-item active">
+                            <div class="bg-white rounded-4 shadow p-4">
+                                <h2 class="fw-bold text-primary fs-3">
+                                    Personal info
+                                </h2>
+                                <p class="text-secondary mb-4 small">
+                                    Please provide your name, email address,
+                                    and phone number.
+                                </p>
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" placeholder="e.g. Stephen King">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address</label>
+                                        <input type="email" class="form-control"
+                                            placeholder="e.g. stephenking@lorem.com">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" placeholder="e.g. +1 234 567 890">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="bg-white rounded-4 shadow p-4">
+                                <h2 class="fw-bold text-primary fs-3">
+                                    Select your plan
+                                </h2>
+                                <p class="text-secondary mb-4 small">
+                                    You have the option of monthly or yearly billing.
+                                </p>
+                                <div class="d-flex flex-column gap-3 mb-3">
+                                    <div class="border rounded-3 p-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img src="icon-arcade.svg" width="40">
+                                            <div>
+                                                <h6 class="fw-bold mb-0">Arcade</h6>
+                                                <small>$9/mo</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border rounded-3 p-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img src="icon-advanced.svg" width="40">
+                                            <div>
+                                                <h6 class="fw-bold mb-0">Advanced</h6>
+                                                <small>$12/mo</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border rounded-3 p-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img src="icon-pro.svg" width="40">
+                                            <div>
+                                                <h6 class="fw-bold mb-0">Pro</h6>
+                                                <small>$15/mo</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-light rounded p-3">
+                                    <div class="d-flex justify-content-center align-items-center gap-3">
+                                        <span class="fw-semibold small">Monthly</span>
+                                        <div class="form-check form-switch m-0">
+                                            <input class="form-check-input" type="checkbox">
+                                        </div>
+                                        <span class="small text-secondary">Yearly</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="bg-white rounded-4 shadow p-4">
+                                <h2 class="fw-bold text-primary fs-3">
+                                    Pick add-ons
+                                </h2>
+                                <p class="text-secondary mb-4 small">
+                                    Enhance your gaming experience.
+                                </p>
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="border rounded-3 p-3 d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <input type="checkbox" class="form-check-input">
+                                            <div>
+                                                <h6 class="fw-bold mb-0 fs-6">Online service</h6>
+                                                <small class="text-muted">Multiplayer access</small>
+                                            </div>
+                                        </div>
+                                        <span class="text-primary small">+$1/mo</span>
+                                    </div>
+                                    <div class="border rounded-3 p-3 d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <input type="checkbox" class="form-check-input">
+                                            <div>
+                                                <h6 class="fw-bold mb-0 fs-6">Larger storage</h6>
+                                                <small class="text-muted">Extra 1TB save</small>
+                                            </div>
+                                        </div>
+                                        <span class="text-primary small">+$2/mo</span>
+                                    </div>
+                                    <div class="border rounded-3 p-3 d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <input type="checkbox" class="form-check-input">
+                                            <div>
+                                                <h6 class="fw-bold mb-0 fs-6">Customizable Profile</h6>
+                                                <small class="text-muted">Custom theme on your profile</small>
+                                            </div>
+                                        </div>
+                                        <span class="text-primary small">+$2/mo</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="bg-white rounded-4 shadow p-4">
+                                <h2 class="fw-bold text-primary fs-3">
+                                    Finishing up
+                                </h2>
+                                <p class="text-secondary mb-4 small">
+                                    Double-check if everything looks correct.
+                                </p>
+                                <div class="bg-light p-3 rounded-3 mb-4">
+                                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                    <div>
+                                        <h6 class="fw-bold text-primary mb-0 small">Arcade (Monthly)</h6>
+                                        <button type="button" data-bs-target="#desktopCarousel"
+                                                            data-bs-slide-to="1"
+                                                            class="btn btn-link p-0 small text-secondary">Change</button>
+                                    </div>
+                                    <span class="fw-bold text-primary small">$9/mo</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted extra-small">Online service</span>
+                                    <span class="text-primary small">+$1/mo</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted extra-small">Larger storage</span>
+                                    <span class="text-primary small">+$2/mo</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center px-2">
+                                <span class="text-muted small">Total</span>
+                                <span class="fw-bold text-primary fs-5">+$12/mo</span>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="bg-white rounded-4 p-4 text-center">
+                                <img src="icon-thank-you.svg" class="mb-4">
+                                <h1 class="fw-bold text-primary">Thank you!</h1>
+                                <p class="text-secondary">
+                                    Thanks for confirming your subscription! We hope you have fun using our
+                                    platform. If you ever need support, please feel free to email us at
+                                    support@loremgaming.com.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="fixed-bottom bg-white p-3 shadow-lg">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-link text-decoration-none" data-bs-target="#mobileCarousel"
+                        data-bs-slide="prev">
+                        Go Back
+                    </button>
+                    <button type="button" class="btn btn-primary" data-bs-target="#mobileCarousel" data-bs-slide="next">
+                        Next Step
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
