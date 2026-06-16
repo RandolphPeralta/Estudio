@@ -46,7 +46,7 @@ body{
 .sidebar{
     width: 265px;
 
-    background-image: url("bg-sidebar.svg");
+    background-image: url("bg-sidebar-desktop.svg");
 
     background-repeat: no-repeat;
 
