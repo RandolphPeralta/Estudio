@@ -1,0 +1,36 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f5f6fa;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.card h1 {
+  color: #6c5ce7;
+}
+.card p {
+  color: #2d3436;
+}
+.card button {
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.card button:hover {
+  opacity: 0.8;
+}
+
+/*# sourceMappingURL=style.css.map */
