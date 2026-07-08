@@ -15,10 +15,6 @@ export interface IAccionadicional<T> extends IAccion<T> {
   buscarporid(id: string): Array<T>
 }
 
-export interface ICommand {
-  execute(): any;
-}
-
 export class Memoria<T> implements IAccionadicional<T> {
 
   private memoria: T[] = [];
