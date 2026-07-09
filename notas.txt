@@ -2,3 +2,5 @@ Toca estudiar full la raiz y saber organizar todo
 1. Entregar el programa de la biblioteca con su respectiva raiz
 2. Que pueda funcionar tanto en la consola como en la web
 3. Que pueda cambiar la persistencia, de memoria RAM, a localstorage y luego base de datos
+
+Toca mirar como puedo cambiar de consola a web sin alterarmi negocio y ordenar mi app
