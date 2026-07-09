@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.App = exports.ConsoleView = exports.MenuAccion = exports.Memoria = void 0;
+exports.App = exports.MenuAccion = exports.Memoria = void 0;
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
 var Memoria = /** @class */ (function () {
@@ -360,37 +360,6 @@ var MenuAccion = /** @class */ (function () {
     return MenuAccion;
 }());
 exports.MenuAccion = MenuAccion;
-var ConsoleView = /** @class */ (function () {
-    function ConsoleView() {
-    }
-    ConsoleView.prototype.mensaje = function () {
-        var opciones = [
-            "1. Registrar Estudiante",
-            "2. Eliminar Estudiante",
-            "3. Ver Estudiantes",
-            "4. Actualizar Estudiante",
-            "5. Buscar Estudiante",
-            "6. Registrar Libro",
-            "7. Eliminar Libro",
-            "8. Ver Libros",
-            "9. Actualizar Libros",
-            "10. Buscar Libro",
-            "11. Prestar Libro",
-            "12. Devolver Libro",
-            "13. Mostrar Prestamos",
-            "14. Buscar Prestamo",
-            "15. Actualizar Prestamo",
-            "0. Salir"
-        ];
-        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
-        for (var _i = 0, opciones_2 = opciones; _i < opciones_2.length; _i++) {
-            var opcion = opciones_2[_i];
-            console.log(opcion);
-        }
-    };
-    return ConsoleView;
-}());
-exports.ConsoleView = ConsoleView;
 var App = /** @class */ (function () {
     function App(menu) {
         this.menu = menu;
