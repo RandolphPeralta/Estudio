@@ -44,74 +44,107 @@ var MenuAccion = /** @class */ (function () {
         this.servicioLibro = servicioLibro;
         this.servicioPrestamo = servicioPrestamo;
     }
-    MenuAccion.prototype.ejecutar = function (opcion) {
-        switch (opcion) {
-            case 1:
-                this.registrarEstudiante();
-                this.pause();
-                break;
-            case 2:
-                this.eliminarEstudiante();
-                this.pause();
-                break;
-            case 3:
-                console.table(this.servicioEstudiante.mostrar());
-                this.pause();
-                break;
-            case 4:
-                this.actualizarEstudiante();
-                this.pause();
-                break;
-            case 5:
-                this.buscarEstudiante();
-                this.pause();
-                break;
-            case 6:
-                this.registrarLibro();
-                this.pause();
-                break;
-            case 7:
-                this.elmiminarLibro();
-                this.pause();
-                break;
-            case 8:
-                this.mostrarLibros();
-                this.pause();
-                break;
-            case 9:
-                this.actualizarlibro();
-                this.pause();
-                break;
-            case 10:
-                this.buscarLibro();
-                this.pause();
-                break;
-            case 11:
-                this.prestarLibrob();
-                this.pause();
-                break;
-            case 12:
-                this.devolverLibrob();
-                this.pause();
-                break;
-            case 13:
-                this.mostrarPrestamos();
-                this.pause();
-                break;
-            case 14:
-                this.encontrarPrestamoPorLibro();
-                this.pause();
-                break;
-            case 15:
-                this.actualizarPrestamo();
-                this.pause();
-                break;
-            case 0:
-                return false;
-            default:
-                console.log("Opción inválida");
+    MenuAccion.prototype.ejecutar = function () {
+        var continuar = true;
+        while (continuar) {
+            this.mostrarMenu();
+            var opcion = Number(prompt("Seleccione opción: "));
+            switch (opcion) {
+                case 1:
+                    this.registrarEstudiante();
+                    this.pause();
+                    break;
+                case 2:
+                    this.eliminarEstudiante();
+                    this.pause();
+                    break;
+                case 3:
+                    console.table(this.servicioEstudiante.mostrar());
+                    this.pause();
+                    break;
+                case 4:
+                    this.actualizarEstudiante();
+                    this.pause();
+                    break;
+                case 5:
+                    this.buscarEstudiante();
+                    this.pause();
+                    break;
+                case 6:
+                    this.registrarLibro();
+                    this.pause();
+                    break;
+                case 7:
+                    this.elmiminarLibro();
+                    this.pause();
+                    break;
+                case 8:
+                    this.mostrarLibros();
+                    this.pause();
+                    break;
+                case 9:
+                    this.actualizarlibro();
+                    this.pause();
+                    break;
+                case 10:
+                    this.buscarLibro();
+                    this.pause();
+                    break;
+                case 11:
+                    this.prestarLibrob();
+                    this.pause();
+                    break;
+                case 12:
+                    this.devolverLibrob();
+                    this.pause();
+                    break;
+                case 13:
+                    this.mostrarPrestamos();
+                    this.pause();
+                    break;
+                case 14:
+                    this.encontrarPrestamoPorLibro();
+                    this.pause();
+                    break;
+                case 15:
+                    this.actualizarPrestamo();
+                    this.pause();
+                    break;
+                case 0:
+                    continuar = false;
+                    break;
+                default:
+                    console.log("Opción inválida");
+                    this.pause();
+            }
         }
-        return true;
+    };
+    MenuAccion.prototype.mostrarMenu = function () {
+        console.log("\n=============================================");
+        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+        console.log("=============================================");
+        var opciones = [
+            "1. Registrar Estudiante",
+            "2. Eliminar Estudiante",
+            "3. Ver Estudiantes",
+            "4. Actualizar Estudiante",
+            "5. Buscar Estudiante",
+            "6. Registrar Libro",
+            "7. Eliminar Libro",
+            "8. Ver Libros",
+            "9. Actualizar Libros",
+            "10. Buscar Libro",
+            "11. Prestar Libro",
+            "12. Devolver Libro",
+            "13. Mostrar Prestamos",
+            "14. Buscar Prestamo",
+            "15. Actualizar Prestamo",
+            "0. Salir"
+        ];
+        for (var _i = 0, opciones_1 = opciones; _i < opciones_1.length; _i++) {
+            var opcion = opciones_1[_i];
+            console.log(opcion);
+        }
     };
     MenuAccion.prototype.registrarEstudiante = function () {
         var id = String(prompt("ID: "));
@@ -350,8 +383,8 @@ var ConsoleView = /** @class */ (function () {
             "0. Salir"
         ];
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
-        for (var _i = 0, opciones_1 = opciones; _i < opciones_1.length; _i++) {
-            var opcion = opciones_1[_i];
+        for (var _i = 0, opciones_2 = opciones; _i < opciones_2.length; _i++) {
+            var opcion = opciones_2[_i];
             console.log(opcion);
         }
     };
@@ -359,17 +392,11 @@ var ConsoleView = /** @class */ (function () {
 }());
 exports.ConsoleView = ConsoleView;
 var App = /** @class */ (function () {
-    function App(menu, view) {
+    function App(menu) {
         this.menu = menu;
-        this.view = view;
     }
     App.prototype.run = function () {
-        var continuar = true;
-        while (continuar) {
-            this.view.mensaje();
-            var opcion = Number(prompt("Seleccione opción: "));
-            continuar = this.menu.ejecutar(opcion);
-        }
+        this.menu.ejecutar();
     };
     return App;
 }());
@@ -378,6 +405,5 @@ var memoriaLibro = new Memoria();
 var memoriaEstudiante = new Memoria();
 var memoriaPrestamo = new Memoria();
 var menu = new MenuAccion(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
-var view = new ConsoleView();
-var app = new App(menu, view);
+var app = new App(menu);
 app.run();
