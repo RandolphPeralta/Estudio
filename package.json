@@ -9,6 +9,8 @@
     "@types/node": "^24.13.3",
     "@types/prompt-sync": "^4.2.3",
     "sass": "^1.99.0",
-    "webpack": "^5.108.4"
+    "webpack": "^5.108.4",
+    "webpack-cli": "^7.2.1",
+    "webpack-dev-server": "^6.0.0"
   }
 }

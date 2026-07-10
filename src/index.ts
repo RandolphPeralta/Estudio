@@ -1,5 +1,5 @@
-import * as promptSync from "prompt-sync";
-const prompt = (promptSync as any)();
+import promptSync from "prompt-sync";
+export const prompt = promptSync();
 
 export interface IGuardado<T> {
   guardar(some: T): any;
