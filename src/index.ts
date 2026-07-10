@@ -1,6 +1,9 @@
 import promptSync from "prompt-sync";
 export const prompt = promptSync();
 
+import * as dotenv from "dotenv";
+dotenv.config();
+
 export interface IGuardado<T> {
   guardar(some: T): any;
   eliminar(id: any): any;
@@ -504,9 +507,6 @@ export class App {
     this.menu.ejecutar();
   }
 }
-
-import * as dotenv from "dotenv";
-dotenv.config();
 
 const memoriaLibro = new Memoria<Libro>();
 const memoriaEstudiante = new Memoria<Estudiante>();

@@ -1,4 +1,16 @@
 {
+  "name": "Estudio",
+  "version": "1.0.0",
+  "description": "Este repositorio sirve para estudiar respecto a la programacion",
+  "main": "src/index.ts",
+  "scripts": {
+    "start:terminal": "tsx src/index.ts",
+    "build:web": "webpack --mode production --env archivo=.env.local",
+    "dev:web": "webpack serve --mode development --env archivo=.env.local"
+  },
+  "keywords": [],
+  "author": "Randolph",
+  "license": "ISC",
   "dependencies": {
     "dotenv": "^17.4.2",
     "node-localstorage": "^3.0.5",
@@ -9,6 +21,7 @@
     "@types/node": "^24.13.3",
     "@types/prompt-sync": "^4.2.3",
     "sass": "^1.99.0",
+    "ts-loader": "^9.6.2",
     "webpack": "^5.108.4",
     "webpack-cli": "^7.2.1",
     "webpack-dev-server": "^6.0.0"

@@ -1,13 +1,12 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-  entry: "./src/index.ts",
-
+  entry: "./src/index.ts", // tu único punto de entrada
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
+    clean: true
   },
-
   module: {
     rules: [
       {
@@ -17,25 +16,13 @@ module.exports = {
       }
     ]
   },
-
   resolve: {
-    extensions: [".ts", ".js"],
-    fallback: {
-      fs: false,
-      path: false,
-    }
+    extensions: [".ts", ".js"]
   },
 
-  externals: {
-        "prompt-sync": "commonjs prompt-sync"
-    },
-
   devServer: {
-    static: {
-      directory: path.join(__dirname, "src")
-    },
+    directory: path.join(__dirname, "src/ui/web"),
     open: true,
     port: 8000
-  }
-  
+  },
 };
