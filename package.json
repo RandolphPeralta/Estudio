@@ -5,7 +5,7 @@
     "scanf": "^1.2.0"
   },
   "devDependencies": {
-    "@types/node": "^24.10.13",
+    "@types/node": "^24.13.3",
     "@types/prompt-sync": "^4.2.3",
     "sass": "^1.99.0"
   }

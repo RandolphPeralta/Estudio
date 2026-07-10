@@ -79,7 +79,7 @@ export type Prestamo = {
     fechaDevolucion?: Date;
 }
 
-export class MenuAccion {
+export class MenuConsola {
   constructor(
     private servicioEstudiante: IAccionadicional<Estudiante>,
     private servicioLibro: IAccionadicional<Libro>,
@@ -481,9 +481,38 @@ export class MenuAccion {
 
 }
 
+export class MenuWeb{
+
+    constructor(
+        private servicioEstudiante: IAccionadicional<Estudiante>,
+        private servicioLibro: IAccionadicional<Libro>,
+        private servicioPrestamo: IAccionadicional<Prestamo>
+    ){}
+
+    ejecutar(): void{
+        document.body.innerHTML = `
+            <h1>Hola Mundo</h1>
+        `;
+
+    }
+}
+
+export class MenuFactory {
+
+    static crear() {
+
+        if (process.env.ENVIRONMENT === "WEB") {
+            return new MenuWeb(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
+        }
+
+        return new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
+
+    }
+
+}
 
 export class App {
-  constructor(private menu: MenuAccion) { }
+  constructor(private menu: MenuConsola) { }
 
   run(): void {
     this.menu.ejecutar();
@@ -494,7 +523,7 @@ const memoriaLibro = new Memoria<Libro>();
 const memoriaEstudiante = new Memoria<Estudiante>();
 const memoriaPrestamo = new Memoria<Prestamo>();
 
-const menu = new MenuAccion(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
+const menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
 
 const app = new App(menu);
 
