@@ -5,7 +5,7 @@
     "types": ["node"],
     "strict": true,
     "esModuleInterop": true,
-    "rootDir": "./study",
+    "rootDir": "./src",
     "outDir": "./dist",
   }
 }

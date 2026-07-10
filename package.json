@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dotenv": "^17.4.2",
     "node-localstorage": "^3.0.5",
     "prompt-sync": "^4.2.0",
     "scanf": "^1.2.0"
@@ -7,6 +8,7 @@
   "devDependencies": {
     "@types/node": "^24.13.3",
     "@types/prompt-sync": "^4.2.3",
-    "sass": "^1.99.0"
+    "sass": "^1.99.0",
+    "webpack": "^5.108.4"
   }
 }
