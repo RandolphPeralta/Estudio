@@ -1,21 +1,22 @@
 import promptSync from "prompt-sync";
 export const prompt = promptSync();
 
-import * as dotenv from "dotenv";
-dotenv.config();
-
 export interface IGuardado<T> {
   guardar(some: T): any;
   eliminar(id: any): any;
 }
 
-export interface IAccion<T> extends IGuardado<T>{
+export interface IAccion<T> extends IGuardado<T> {
   actualizar(some: any): any;
   mostrar(): T[];
 }
 
 export interface IAccionadicional<T> extends IAccion<T> {
   buscarporid(id: string): Array<T>
+}
+
+export interface IMenu {
+  ejecutar(): any
 }
 
 export class Memoria<T> implements IAccionadicional<T> {
@@ -54,10 +55,10 @@ export class Memoria<T> implements IAccionadicional<T> {
   mostrar(): T[] {
     return this.memoria;
   }
-  
+
   buscarporid(id: string) {
-        return this.memoria.filter((item: any) => item.id === id)
-    }
+    return this.memoria.filter((item: any) => item.id === id)
+  }
 }
 
 export type Estudiante = {
@@ -75,14 +76,14 @@ export type Libro = {
 };
 
 export type Prestamo = {
-    id: string,
-    libro: Libro,
-    estudiante: Estudiante,
-    fechaPrestamo: Date; 
-    fechaDevolucion?: Date;
+  id: string,
+  libro: Libro,
+  estudiante: Estudiante,
+  fechaPrestamo: Date;
+  fechaDevolucion?: Date;
 }
 
-export class MenuConsola {
+export class MenuConsola implements IMenu {
   constructor(
     private servicioEstudiante: IAccionadicional<Estudiante>,
     private servicioLibro: IAccionadicional<Libro>,
@@ -94,8 +95,8 @@ export class MenuConsola {
 
     while (continuar) {
       this.mostrarMenu();
-      const opcion =  Number(prompt("Seleccione opción: "));
-      
+      const opcion = Number(prompt("Seleccione opción: "));
+
       switch (opcion) {
         case 1:
           this.registrarEstudiante();
@@ -484,24 +485,24 @@ export class MenuConsola {
 
 }
 
-export class MenuWeb{
+export class MenuWeb implements IMenu {
 
-    constructor(
-        private servicioEstudiante: IAccionadicional<Estudiante>,
-        private servicioLibro: IAccionadicional<Libro>,
-        private servicioPrestamo: IAccionadicional<Prestamo>
-    ){}
+  constructor(
+    private servicioEstudiante: IAccionadicional<Estudiante>,
+    private servicioLibro: IAccionadicional<Libro>,
+    private servicioPrestamo: IAccionadicional<Prestamo>
+  ) { }
 
-    ejecutar(): void{
-        document.body.innerHTML = `
+  ejecutar(): void {
+    document.body.innerHTML = `
             <h1>Hola Mundo</h1>
         `;
 
-    }
+  }
 }
 
 export class App {
-  constructor(private menu: MenuConsola) { }
+  constructor(private menu: IMenu) { }
 
   run(): void {
     this.menu.ejecutar();
@@ -512,13 +513,7 @@ const memoriaLibro = new Memoria<Libro>();
 const memoriaEstudiante = new Memoria<Estudiante>();
 const memoriaPrestamo = new Memoria<Prestamo>();
 
-let menu: any;
-
-if (process.env.PLATFORM === "web") {
-  menu = new MenuWeb(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
-} else {
-  menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
-}
+const  menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
 
 const app = new App(menu);
 app.run();

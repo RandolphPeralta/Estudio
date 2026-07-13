@@ -1,7 +1,24 @@
 const path = require("path");
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+
+const env = dotenv.config({
+    path: "./.env.local"
+}).parsed;
 
 module.exports = {
     entry: "./src/index.ts",
+
+    output: {
+        filename: "bundle.js",
+        path: path.resolve(__dirname, "dist"),
+        clean: true
+    },
+
+    resolve: {
+        extensions: [".ts", ".js"]
+    },
+
     module: {
         rules: [
             {
@@ -11,19 +28,10 @@ module.exports = {
             }
         ]
     },
-    resolve: {
-        extensions: [".ts", ".js"]
-    },
-    output: {
-        filename: "bundle.js",
-        path: path.resolve(__dirname, "dist")
-    },
 
-    devServer: {
-        static: {
-            directory: path.join(__dirname, "src/ui/web")
-        },
-        open: true,
-        port: 8000
-    },
+    plugins: [
+        new webpack.DefinePlugin({
+            "process.env.PLATFORM": JSON.stringify(env.PLATFORM)
+        })
+    ]
 };
