@@ -4,3 +4,5 @@ Toca estudiar full la raiz y saber organizar todo
 3. Que pueda cambiar la persistencia, de memoria RAM, a localstorage y luego base de datos
 
 Toca mirar como puedo cambiar de consola a web sin alterar mi negocio y ordenar mi app
+
+Tarea: Aplicar los conceptos en clean arquitecture: regla de la dependencia y limite dentro de mi proyecto  y mas...
