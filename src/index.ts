@@ -445,7 +445,6 @@ export class MenuConsoleInvoker implements IMenu {
     _PersistenceBook: IAccionadicional<Libro>,
     _PersistenceLoan: IAccionadicional<Prestamo>
   ) {
-
     this.comandos.set(1, new CreateStudentCommand(_PersistenceStudent));
     this.comandos.set(2, new DeleteStudentCommand(_PersistenceStudent));
     this.comandos.set(3, new ShowStudentCommand(_PersistenceStudent));
@@ -539,12 +538,3 @@ const menu = new MenuConsoleInvoker(memoriaStudent, memoriaBook, memoriaLoan);
 const app = new App(menu);
 
 app.run();
-
-// const memoriaLibro = new Memoria<Libro>();
-// const memoriaEstudiante = new Memoria<Estudiante>();
-// const memoriaPrestamo = new Memoria<Prestamo>();
-
-// const  menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
-
-// const app = new App(menu);
-// app.run();
