@@ -19,6 +19,18 @@ export interface IMenu {
   ejecutar(): any
 }
 
+interface ICommandRepository {
+
+  registrar(id: number, comando: IMenu): any;
+
+  eliminar(id: number): any;
+
+  obtener(id: number): IMenu | undefined;
+
+}
+
+//----------------------------
+
 export class MemoryRAM<T> implements IAccionadicional<T> {
 
   private memoria: T[] = [];
@@ -61,6 +73,8 @@ export class MemoryRAM<T> implements IAccionadicional<T> {
   }
 }
 
+//------------------------
+
 export type Estudiante = {
   id: string;
   nombre: string;
@@ -82,6 +96,8 @@ export type Prestamo = {
   fechaPrestamo: Date;
   fechaDevolucion?: Date;
 }
+
+//------------------------------
 
 export class CreateStudentCommand implements IMenu {
   constructor(private _StudentPersistence: IAccionadicional<Estudiante>) { }
@@ -149,7 +165,7 @@ export class UpdateStudentCommand implements IMenu {
 
 }
 
-export class ShowStudentCommand implements IMenu {
+export class ReadStudentCommand implements IMenu {
 
   constructor(private _StudentPersistence: IAccionadicional<Estudiante>) { }
 
@@ -238,7 +254,7 @@ export class UpdateBookCommand implements IMenu {
 
 }
 
-export class ShowBookCommand implements IMenu {
+export class ReadBookCommand implements IMenu {
 
   constructor(private _bookPersistence: IAccionadicional<Libro>) { }
 
@@ -353,7 +369,7 @@ export class ReturnBookCommand implements IMenu {
   }
 }
 
-export class ShowLoanCommand implements IMenu {
+export class ReadLoanCommand implements IMenu {
 
   constructor(private _loanPersistence: IAccionadicional<Prestamo>) { }
 
@@ -435,58 +451,52 @@ export class FindLoanCommand implements IMenu {
   }
 }
 
+class MemoryCommandRepository implements ICommandRepository {
 
-export class MenuConsoleInvoker implements IMenu {
+  private comandos = new Map<number, IMenu>();
 
-  private comandos: Map<number, IMenu> = new Map();
+  registrar(id: number, comando: IMenu) {
+    this.comandos.set(id, comando);
+  }
+
+  eliminar(id: number) {
+    this.comandos.delete(id);
+  }
+
+  obtener(id: number) {
+    return this.comandos.get(id);
+  }
+
+}
+
+class MenuInvoker implements IMenu {
 
   constructor(
-    _PersistenceStudent: IAccionadicional<Estudiante>,
-    _PersistenceBook: IAccionadicional<Libro>,
-    _PersistenceLoan: IAccionadicional<Prestamo>
-  ) {
-    this.comandos.set(1, new CreateStudentCommand(_PersistenceStudent));
-    this.comandos.set(2, new DeleteStudentCommand(_PersistenceStudent));
-    this.comandos.set(3, new ShowStudentCommand(_PersistenceStudent));
-    this.comandos.set(4, new UpdateStudentCommand(_PersistenceStudent));
-    this.comandos.set(5, new FindStudentCommand(_PersistenceStudent));
+    private repository: ICommandRepository
+  ) { }
 
-    this.comandos.set(6, new CreateBookCommand(_PersistenceBook));
-    this.comandos.set(7, new DeleteBookCommand(_PersistenceBook));
-    this.comandos.set(8, new ShowBookCommand(_PersistenceBook));
-    this.comandos.set(9, new UpdateBookCommand(_PersistenceBook));
-    this.comandos.set(10, new SearchBookCommand(_PersistenceBook));
+  ejecutar(): boolean {
 
-    this.comandos.set(11, new LendBookCommand(_PersistenceStudent, _PersistenceBook, _PersistenceLoan));
-    this.comandos.set(12, new ReturnBookCommand(_PersistenceBook, _PersistenceLoan));
-    this.comandos.set(13, new ShowLoanCommand(_PersistenceLoan));
-    this.comandos.set(14, new UpdateLoanCommand(_PersistenceLoan));
-    this.comandos.set(15, new FindLoanCommand(_PersistenceLoan));
-  }
+        this.mostrarMenu();
 
-  ejecutar(): void {
-    let continuar = true;
+        const choice = Number(prompt("Opción: "));
 
-    while (continuar) {
-      this.mostrarMenu();
-      const opcion = Number(prompt("Seleccione opción: "));
+        if (choice === 0) {
+            return false;
+        }
 
-      if (opcion === 0) {
-        continuar = false;
-        break;
-      }
+        const command = this.repository.obtener(choice);
 
-      const comando = this.comandos.get(opcion);
+        if (!command) {
+            console.log("Opción inválida");
+        } else {
+            command.ejecutar();
+        }
 
-      if (comando) {
-        comando.ejecutar();
-      } else {
-        console.log("Opción inválida");
-      }
+        this.pause();
 
-      this.pause();
+        return true;
     }
-  }
 
   private mostrarMenu(): void {
     console.log("\n=============================================");
@@ -522,19 +532,45 @@ export class MenuConsoleInvoker implements IMenu {
 }
 
 export class App {
-  constructor(private menu: IMenu) { }
 
-  run() {
-    this.menu.ejecutar()
-  }
+    constructor(private menu: IMenu) {}
+
+    run() {
+
+        while (this.menu.ejecutar()) {
+            
+        }
+
+        console.log("Aplicación finalizada");
+    }
+
 }
 
 const memoriaBook = new MemoryRAM<Libro>();
 const memoriaStudent = new MemoryRAM<Estudiante>();
 const memoriaLoan = new MemoryRAM<Prestamo>();
 
-const menu = new MenuConsoleInvoker(memoriaStudent, memoriaBook, memoriaLoan);
+const menu = new MemoryCommandRepository();
 
-const app = new App(menu);
+menu.registrar(1, new CreateStudentCommand(memoriaStudent));
+menu.registrar(2, new DeleteStudentCommand(memoriaStudent));
+menu.registrar(3, new ReadStudentCommand(memoriaStudent));
+menu.registrar(4, new UpdateStudentCommand(memoriaStudent));
+menu.registrar(5, new FindStudentCommand(memoriaStudent));
 
-app.run();
+menu.registrar(6, new CreateBookCommand(memoriaBook));
+menu.registrar(7, new DeleteBookCommand(memoriaBook));
+menu.registrar(8, new ReadBookCommand(memoriaBook));
+menu.registrar(9, new UpdateBookCommand(memoriaBook));
+menu.registrar(10, new SearchBookCommand(memoriaBook));
+
+menu.registrar(11, new LendBookCommand(memoriaStudent, memoriaBook, memoriaLoan));
+menu.registrar(12, new ReturnBookCommand(memoriaBook, memoriaLoan));
+menu.registrar(13, new ReadLoanCommand(memoriaLoan));
+menu.registrar(14, new FindLoanCommand(memoriaLoan));
+menu.registrar(15, new UpdateLoanCommand(memoriaLoan));
+
+const menuprincipal = new MenuInvoker(menu);
+const app = new App(menuprincipal)
+
+app.run()
