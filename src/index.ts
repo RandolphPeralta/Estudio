@@ -101,13 +101,12 @@ export class CreateStudentCommand implements IMenu {
   constructor(private _StudentPersistence: IAccionadicional<Estudiante>) { }
 
   ejecutar() {
-    const id = String(prompt("ID: "));
     const name = String(prompt("Nombre: "));
     const identification = String(prompt("Identificación: "));
     const schoolgrade = String(prompt("Grado Escolar: "));
 
     const registrandoStudent: Estudiante = {
-      id: id,
+      id: Math.random().toString(),
       nombre: name,
       identificacion: identification,
       grado: schoolgrade
@@ -196,12 +195,11 @@ export class CreateBookCommand implements IMenu {
   constructor(private _bookPersistence: IAccionadicional<Libro>) { }
 
   ejecutar() {
-    const id = String(prompt("ID: "));
     const title = String(prompt("Título: "));
     const author = String(prompt("Autor: "));
 
     const registrandoBook: Libro = {
-      id: id,
+      id: Math.random().toString(),
       titulo: title,
       autor: author,
       disponible: true
@@ -467,28 +465,37 @@ class MenuInvoker implements IMenu {
 
   constructor(private repository: ICommandRepository) { }
 
-  ejecutar(): boolean {
+  ejecutar() {
 
-    this.mostrarMenu();
+    while (true) {
 
-    const choice = Number(prompt("Opción: "));
+      this.mostrarMenu();
 
-    if (choice === 0) {
-      return false;
+      const choice = Number(prompt("Seleccione una opción: "));
+
+      if (Number.isNaN(choice)) {
+        console.log("Opción inválida");
+        this.pause();
+        continue;
+      }
+
+      if (choice === 0) {
+        console.log("Hasta luego");
+        break;
+      }
+
+      const command = this.repository.obtener(choice);
+
+      if (!command) {
+        console.log("Opción inexistente");
+      } else {
+        command.ejecutar();
+      }
+
+      this.pause();
     }
-
-    const command = this.repository.obtener(choice);
-
-    if (!command) {
-      console.log("Opción inválida");
-    } else {
-      command.ejecutar();
-    }
-
-    this.pause();
-
-    return true;
   }
+
 
   private mostrarMenu(): void {
     console.log("\n=============================================");
@@ -525,16 +532,11 @@ class MenuInvoker implements IMenu {
 
 export class App {
 
-  constructor(private menu: IMenu) { }
+    constructor(private menu: IMenu){}
 
-  run() {
-
-    while (this.menu.ejecutar()) {
-
+    run(){
+        this.menu.ejecutar();
     }
-
-    console.log("Aplicación finalizada");
-  }
 
 }
 
