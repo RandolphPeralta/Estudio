@@ -465,9 +465,7 @@ class MemoryCommandRepository implements ICommandRepository {
 
 class MenuInvoker implements IMenu {
 
-  constructor(
-    private repository: ICommandRepository
-  ) { }
+  constructor(private repository: ICommandRepository) { }
 
   ejecutar(): boolean {
 
