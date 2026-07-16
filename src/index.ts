@@ -487,11 +487,11 @@ class MenuInvoker implements IMenu {
 
     const command = this.repository.obtener(choice);
 
-        if (!command) {
-            console.log("Opción inválida");
-        } else {
-            command.ejecutar();
-        }
+    if (!command) {
+      console.log("Opción inválida");
+    } else {
+      command.ejecutar();
+    }
 
     this.pause();
 
