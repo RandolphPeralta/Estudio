@@ -550,27 +550,27 @@ const memoriaBook = new MemoryRAM<Libro>();
 const memoriaStudent = new MemoryRAM<Estudiante>();
 const memoriaLoan = new MemoryRAM<Prestamo>();
 
-const menu = new MemoryCommandRepository();
+const menucommand = new MemoryCommandRepository();
 
-menu.registrar(1, new CreateStudentCommand(memoriaStudent));
-menu.registrar(2, new DeleteStudentCommand(memoriaStudent));
-menu.registrar(3, new ReadStudentCommand(memoriaStudent));
-menu.registrar(4, new UpdateStudentCommand(memoriaStudent));
-menu.registrar(5, new FindStudentCommand(memoriaStudent));
+menucommand.registrar(1, new CreateStudentCommand(memoriaStudent));
+menucommand.registrar(2, new DeleteStudentCommand(memoriaStudent));
+menucommand.registrar(3, new ReadStudentCommand(memoriaStudent));
+menucommand.registrar(4, new UpdateStudentCommand(memoriaStudent));
+menucommand.registrar(5, new FindStudentCommand(memoriaStudent));
 
-menu.registrar(6, new CreateBookCommand(memoriaBook));
-menu.registrar(7, new DeleteBookCommand(memoriaBook));
-menu.registrar(8, new ReadBookCommand(memoriaBook));
-menu.registrar(9, new UpdateBookCommand(memoriaBook));
-menu.registrar(10, new SearchBookCommand(memoriaBook));
+menucommand.registrar(6, new CreateBookCommand(memoriaBook));
+menucommand.registrar(7, new DeleteBookCommand(memoriaBook));
+menucommand.registrar(8, new ReadBookCommand(memoriaBook));
+menucommand.registrar(9, new UpdateBookCommand(memoriaBook));
+menucommand.registrar(10, new SearchBookCommand(memoriaBook));
 
-menu.registrar(11, new LendBookCommand(memoriaStudent, memoriaBook, memoriaLoan));
-menu.registrar(12, new ReturnBookCommand(memoriaBook, memoriaLoan));
-menu.registrar(13, new ReadLoanCommand(memoriaLoan));
-menu.registrar(14, new FindLoanCommand(memoriaLoan));
-menu.registrar(15, new UpdateLoanCommand(memoriaLoan));
+menucommand.registrar(11, new LendBookCommand(memoriaStudent, memoriaBook, memoriaLoan));
+menucommand.registrar(12, new ReturnBookCommand(memoriaBook, memoriaLoan));
+menucommand.registrar(13, new ReadLoanCommand(memoriaLoan));
+menucommand.registrar(14, new FindLoanCommand(memoriaLoan));
+menucommand.registrar(15, new UpdateLoanCommand(memoriaLoan));
 
-const menuprincipal = new MenuInvoker(menu);
+const menuprincipal = new MenuInvoker(menucommand);
 const app = new App(menuprincipal)
 
 app.run()
