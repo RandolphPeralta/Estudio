@@ -477,15 +477,15 @@ class MenuInvoker implements IMenu {
 
   ejecutar(): boolean {
 
-        this.mostrarMenu();
+    this.mostrarMenu();
 
-        const choice = Number(prompt("Opción: "));
+    const choice = Number(prompt("Opción: "));
 
-        if (choice === 0) {
-            return false;
-        }
+    if (choice === 0) {
+      return false;
+    }
 
-        const command = this.repository.obtener(choice);
+    const command = this.repository.obtener(choice);
 
         if (!command) {
             console.log("Opción inválida");
@@ -493,10 +493,10 @@ class MenuInvoker implements IMenu {
             command.ejecutar();
         }
 
-        this.pause();
+    this.pause();
 
-        return true;
-    }
+    return true;
+  }
 
   private mostrarMenu(): void {
     console.log("\n=============================================");
@@ -533,16 +533,16 @@ class MenuInvoker implements IMenu {
 
 export class App {
 
-    constructor(private menu: IMenu) {}
+  constructor(private menu: IMenu) { }
 
-    run() {
+  run() {
 
-        while (this.menu.ejecutar()) {
-            
-        }
+    while (this.menu.ejecutar()) {
 
-        console.log("Aplicación finalizada");
     }
+
+    console.log("Aplicación finalizada");
+  }
 
 }
 
