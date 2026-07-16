@@ -19,11 +19,9 @@ export interface IMenu {
   ejecutar(): any
 }
 
-interface ICommandRepository {
+export interface ICommandRepository {
 
   registrar(id: number, comando: IMenu): any;
-
-  eliminar(id: number): any;
 
   obtener(id: number): IMenu | undefined;
 
@@ -457,10 +455,6 @@ class MemoryCommandRepository implements ICommandRepository {
 
   registrar(id: number, comando: IMenu) {
     this.comandos.set(id, comando);
-  }
-
-  eliminar(id: number) {
-    this.comandos.delete(id);
   }
 
   obtener(id: number) {
