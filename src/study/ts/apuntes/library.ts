@@ -15,6 +15,10 @@ export interface IAccionadicional<T> extends IAccion<T> {
   buscarporid(id: string): Array<T>
 }
 
+export interface IMenu {
+  ejecutar(): any
+}
+
 export class Memoria<T> implements IAccionadicional<T> {
 
   private memoria: T[] = [];
@@ -79,7 +83,7 @@ export type Prestamo = {
     fechaDevolucion?: Date;
 }
 
-export class MenuConsola {
+export class MenuConsola implements IMenu {
   constructor(
     private servicioEstudiante: IAccionadicional<Estudiante>,
     private servicioLibro: IAccionadicional<Libro>,
@@ -481,44 +485,19 @@ export class MenuConsola {
 
 }
 
-export class MenuWeb{
-
-    constructor(
-        private servicioEstudiante: IAccionadicional<Estudiante>,
-        private servicioLibro: IAccionadicional<Libro>,
-        private servicioPrestamo: IAccionadicional<Prestamo>
-    ){}
-
-    ejecutar(): void{
-        document.body.innerHTML = `
-            <h1>Hola Mundo</h1>
-        `;
-
-    }
-}
-
 export class App {
-  constructor(private menu: MenuConsola) { }
+  constructor(private menu: IMenu) { }
 
   run(): void {
     this.menu.ejecutar();
   }
 }
 
-import * as dotenv from "dotenv";
-dotenv.config();
-
 const memoriaLibro = new Memoria<Libro>();
 const memoriaEstudiante = new Memoria<Estudiante>();
 const memoriaPrestamo = new Memoria<Prestamo>();
 
-let menu: any;
-
-if (process.env.PLATFORM === "web") {
-  menu = new MenuWeb(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
-} else {
-  menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
-}
+const menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
 
 const app = new App(menu);
 app.run();
