@@ -19,7 +19,7 @@ export interface IMenu {
   ejecutar(): any
 }
 
-export interface ICommandRepository {
+export interface ICommand {
 
   registrar(id: number, comando: IMenu): any;
 
@@ -447,7 +447,7 @@ export class FindLoanCommand implements IMenu {
   }
 }
 
-class MemoryCommandRepository implements ICommandRepository {
+class MemoryCommand implements ICommand {
 
   private comandos = new Map<number, IMenu>();
 
@@ -463,7 +463,7 @@ class MemoryCommandRepository implements ICommandRepository {
 
 class MenuInvoker implements IMenu {
 
-  constructor(private repository: ICommandRepository) { }
+  constructor(private repository: ICommand) { }
 
   ejecutar() {
 
@@ -544,7 +544,7 @@ const memoriaBook = new MemoryRAM<Libro>();
 const memoriaStudent = new MemoryRAM<Estudiante>();
 const memoriaLoan = new MemoryRAM<Prestamo>();
 
-const menucommand = new MemoryCommandRepository();
+const menucommand = new MemoryCommand();
 
 menucommand.registrar(1, new CreateStudentCommand(memoriaStudent));
 menucommand.registrar(2, new DeleteStudentCommand(memoriaStudent));

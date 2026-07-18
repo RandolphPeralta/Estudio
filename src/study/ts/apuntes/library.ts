@@ -1,63 +1,63 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
-export interface IGuardado<T> {
-  guardar(some: T): any;
-  eliminar(id: any): any;
+export interface ISave<T> {
+  create(some: T): any;
+  delete(id: any): any;
 }
 
-export interface IAccion<T> extends IGuardado<T>{
-  actualizar(some: any): any;
-  mostrar(): T[];
+export interface IAccion<T> extends ISave<T>{
+  update(some: any): any;
+  read(): T[];
 }
 
 export interface IAccionadicional<T> extends IAccion<T> {
-  buscarporid(id: string): Array<T>
+  findbyid(id: string): Array<T>
 }
 
 export interface IMenu {
-  ejecutar(): any
+  execute(): any
 }
 
-export class Memoria<T> implements IAccionadicional<T> {
+export class Memory<T> implements IAccionadicional<T> {
 
-  private memoria: T[] = [];
+  private memory: T[] = [];
 
-  guardar(some: any): boolean {
-    let index = this.memoria.findIndex((item: any) => item.id === some.id);
+  create(some: any): boolean {
+    let index = this.memory.findIndex((item: any) => item.id === some.id);
 
     if (index !== -1) {
       return false;
     }
 
-    this.memoria.push(some)
+    this.memory.push(some)
     return true;
   }
 
-  eliminar(id: any) {
-    let index = this.memoria.findIndex((item: any) => item.id === id);
+  delete(id: any) {
+    let index = this.memory.findIndex((item: any) => item.id === id);
     if (index !== -1) {
-      this.memoria.splice(index, 1);
+      this.memory.splice(index, 1);
     }
   }
 
-  actualizar(some: any): boolean {
-    let index = this.memoria.findIndex((item: any) => item.id === some.id);
+  update(some: any): boolean {
+    let index = this.memory.findIndex((item: any) => item.id === some.id);
 
     if (index === -1) {
       return false;
     }
 
-    this.memoria[index] = some;
+    this.memory[index] = some;
     return true;
   }
 
-  mostrar(): T[] {
-    return this.memoria;
+  read(): T[] {
+    return this.memory;
   }
   
-  buscarporid(id: string) {
-        return this.memoria.filter((item: any) => item.id === id)
+  findbyid(id: string) {
+        return this.memory.filter((item: any) => item.id === id)
     }
 }
 
@@ -83,18 +83,18 @@ export type Prestamo = {
     fechaDevolucion?: Date;
 }
 
-export class MenuConsola implements IMenu {
+export class MenuConsole implements IMenu {
   constructor(
     private servicioEstudiante: IAccionadicional<Estudiante>,
     private servicioLibro: IAccionadicional<Libro>,
     private servicioPrestamo: IAccionadicional<Prestamo>
   ) { }
 
-  ejecutar(): void {
+  execute(): void {
     let continuar = true;
 
     while (continuar) {
-      this.mostrarMenu();
+      this.readMenu();
       const opcion =  Number(prompt("Seleccione opción: "));
       
       switch (opcion) {
@@ -104,17 +104,17 @@ export class MenuConsola implements IMenu {
           break;
 
         case 2:
-          this.eliminarEstudiante();
+          this.deleteEstudiante();
           this.pause();
           break;
 
         case 3:
-          console.table(this.servicioEstudiante.mostrar());
+          console.table(this.servicioEstudiante.read());
           this.pause();
           break;
 
         case 4:
-          this.actualizarEstudiante();
+          this.updateEstudiante();
           this.pause();
           break;
 
@@ -134,12 +134,12 @@ export class MenuConsola implements IMenu {
           break;
 
         case 8:
-          this.mostrarLibros();
+          this.readLibros();
           this.pause();
           break;
 
         case 9:
-          this.actualizarlibro();
+          this.updatelibro();
           this.pause();
           break;
 
@@ -159,7 +159,7 @@ export class MenuConsola implements IMenu {
           break;
 
         case 13:
-          this.mostrarPrestamos();
+          this.readPrestamos();
           this.pause();
           break;
 
@@ -169,7 +169,7 @@ export class MenuConsola implements IMenu {
           break;
 
         case 15:
-          this.actualizarPrestamo();
+          this.updatePrestamo();
           this.pause();
           break;
 
@@ -184,26 +184,26 @@ export class MenuConsola implements IMenu {
     }
   }
 
-  private mostrarMenu(): void {
+  private readMenu(): void {
     console.log("\n=============================================");
     console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
     console.log("=============================================");
     const opciones: string[] = [
       "1. Registrar Estudiante",
-      "2. Eliminar Estudiante",
+      "2. delete Estudiante",
       "3. Ver Estudiantes",
-      "4. Actualizar Estudiante",
+      "4. update Estudiante",
       "5. Buscar Estudiante",
       "6. Registrar Libro",
-      "7. Eliminar Libro",
+      "7. delete Libro",
       "8. Ver Libros",
-      "9. Actualizar Libros",
+      "9. update Libros",
       "10. Buscar Libro",
       "11. Prestar Libro",
       "12. Devolver Libro",
-      "13. Mostrar Prestamos",
+      "13. read Prestamos",
       "14. Buscar Prestamo",
-      "15. Actualizar Prestamo",
+      "15. update Prestamo",
       "0. Salir"
     ];
     for (const opcion of opciones) {
@@ -224,7 +224,7 @@ export class MenuConsola implements IMenu {
       grado: grado
     }
 
-    const estudianteregistrado = this.servicioEstudiante.guardar(registrandoestudiante);
+    const estudianteregistrado = this.servicioEstudiante.create(registrandoestudiante);
 
     if (estudianteregistrado) {
       console.log("Estudiante registrado");
@@ -233,13 +233,13 @@ export class MenuConsola implements IMenu {
     }
   }
 
-  private eliminarEstudiante() {
+  private deleteEstudiante() {
     const id = String(prompt("ID: "));
-    this.servicioEstudiante.eliminar(id)
+    this.servicioEstudiante.delete(id)
     console.log("Estudiante Eliminado")
   }
 
-  private actualizarEstudiante() {
+  private updateEstudiante() {
     const id = String(prompt("ID: "));
     const nombre = String(prompt("Nombre: "));
     const identificacion = String(prompt("Identificación: "));
@@ -252,7 +252,7 @@ export class MenuConsola implements IMenu {
       grado: grado
     };
 
-    const estudianteactualizado = this.servicioEstudiante.actualizar(estudiantexistente);
+    const estudianteactualizado = this.servicioEstudiante.update(estudiantexistente);
 
     if (estudianteactualizado) {
       console.log("Libro actualizado");
@@ -263,7 +263,7 @@ export class MenuConsola implements IMenu {
 
   private buscarEstudiante() {
     const id = String(prompt("ID Estudiante: "));
-    const result = this.servicioEstudiante.buscarporid(id)
+    const result = this.servicioEstudiante.findbyid(id)
 
     if (result.length === 0) {
       console.log("Estudiante no encontrado")
@@ -286,7 +286,7 @@ export class MenuConsola implements IMenu {
       disponible: true
     }
 
-    const libroregistrado = this.servicioLibro.guardar(registrandolibro);
+    const libroregistrado = this.servicioLibro.create(registrandolibro);
     if (libroregistrado) {
       console.log("Libro registrado");
     } else {
@@ -296,10 +296,10 @@ export class MenuConsola implements IMenu {
 
   private elmiminarLibro() {
     const idLibro = String(prompt("ID Libro: "));
-    this.servicioLibro.eliminar(idLibro)
+    this.servicioLibro.delete(idLibro)
   }
 
-  private actualizarlibro() {
+  private updatelibro() {
     const id = String(prompt("ID Libro: "));
     const titulo = String(prompt("Título: "));
     const autor = String(prompt("Autor: "));
@@ -311,7 +311,7 @@ export class MenuConsola implements IMenu {
       disponible: true
     };
 
-    const libroactualizado = this.servicioLibro.actualizar(libroexistente);
+    const libroactualizado = this.servicioLibro.update(libroexistente);
 
     if (libroactualizado) {
       console.log("Libro actualizado");
@@ -320,8 +320,8 @@ export class MenuConsola implements IMenu {
     }
   }
 
-  private mostrarLibros() {
-    const libros = this.servicioLibro.mostrar();
+  private readLibros() {
+    const libros = this.servicioLibro.read();
 
     const librosVista = libros.map(libro => ({
       id: libro.id,
@@ -335,7 +335,7 @@ export class MenuConsola implements IMenu {
 
   private buscarLibro() {
     const id = String(prompt("ID Libro: "));
-    const result = this.servicioLibro.buscarporid(id)
+    const result = this.servicioLibro.findbyid(id)
 
     if (result.length === 0) {
       console.log("Libro no encontrado")
@@ -350,7 +350,7 @@ export class MenuConsola implements IMenu {
     const idLibro = String(prompt("ID Libro: "));
     const idEstudiante = String(prompt("ID Estudiante: "));
 
-    const libro = this.servicioLibro.buscarporid(idLibro)[0]
+    const libro = this.servicioLibro.findbyid(idLibro)[0]
 
     if (!libro) {
       console.log("Libro no existe")
@@ -362,7 +362,7 @@ export class MenuConsola implements IMenu {
       return
     }
 
-    const estudiante = this.servicioEstudiante.buscarporid(idEstudiante)[0]
+    const estudiante = this.servicioEstudiante.findbyid(idEstudiante)[0]
 
     if (!estudiante) {
       console.log("Estudiante no existe")
@@ -376,7 +376,7 @@ export class MenuConsola implements IMenu {
       fechaPrestamo: new Date()
     }
 
-    const estado = this.servicioPrestamo.guardar(prestamo)
+    const estado = this.servicioPrestamo.create(prestamo)
 
     if (!estado) {
       console.log("Error al prestar libro")
@@ -384,14 +384,14 @@ export class MenuConsola implements IMenu {
     }
 
     libro.disponible = false
-    this.servicioLibro.actualizar(libro)
+    this.servicioLibro.update(libro)
 
     console.log("Libro prestado correctamente")
   }
 
   private devolverLibrob() {
     const idLibro = String(prompt("ID Libro: "));
-    const prestamos = this.servicioPrestamo.mostrar()
+    const prestamos = this.servicioPrestamo.read()
 
     const prestamo = prestamos.find(prestado =>
       prestado.libro.id === idLibro && !prestado.fechaDevolucion
@@ -404,17 +404,17 @@ export class MenuConsola implements IMenu {
 
     prestamo.fechaDevolucion = new Date()
 
-    this.servicioPrestamo.actualizar(prestamo)
+    this.servicioPrestamo.update(prestamo)
 
     prestamo.libro.disponible = true
-    this.servicioLibro.actualizar(prestamo.libro)
+    this.servicioLibro.update(prestamo.libro)
 
     console.log("Libro devuelto correctamente")
   }
 
-  private mostrarPrestamos(): void {
+  private readPrestamos(): void {
 
-    const prestamos = this.servicioPrestamo.mostrar()
+    const prestamos = this.servicioPrestamo.read()
 
     console.log("\n===== PRÉSTAMOS =====")
 
@@ -438,7 +438,7 @@ export class MenuConsola implements IMenu {
 
     const idLibro = String(prompt("ID Libro: "));
 
-    const prestamos = this.servicioPrestamo.mostrar()
+    const prestamos = this.servicioPrestamo.read()
 
     const prestamo = prestamos.find(p =>
       p.libro.id === idLibro && !p.fechaDevolucion
@@ -457,11 +457,11 @@ export class MenuConsola implements IMenu {
     })
   }
 
-  private actualizarPrestamo(): void {
+  private updatePrestamo(): void {
 
     const id = String(prompt("ID del prestamo: "));
 
-    const prestamos = this.servicioPrestamo.mostrar()
+    const prestamos = this.servicioPrestamo.read()
 
     const prestamo = prestamos.find(prestado => prestado.id === id)
 
@@ -474,7 +474,7 @@ export class MenuConsola implements IMenu {
 
     prestamo.fechaDevolucion = new Date(fecha)
 
-    const status = this.servicioPrestamo.actualizar(prestamo)
+    const status = this.servicioPrestamo.update(prestamo)
 
     console.log(status ? "Préstamo actualizado" : "Error")
   }
@@ -489,15 +489,15 @@ export class App {
   constructor(private menu: IMenu) { }
 
   run(): void {
-    this.menu.ejecutar();
+    this.menu.execute();
   }
 }
 
-const memoriaLibro = new Memoria<Libro>();
-const memoriaEstudiante = new Memoria<Estudiante>();
-const memoriaPrestamo = new Memoria<Prestamo>();
+const MemoryLibro = new Memory<Libro>();
+const MemoryEstudiante = new Memory<Estudiante>();
+const MemoryPrestamo = new Memory<Prestamo>();
 
-const menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
+const menu = new MenuConsole(MemoryEstudiante, MemoryLibro, MemoryPrestamo);
 
 const app = new App(menu);
 app.run();
