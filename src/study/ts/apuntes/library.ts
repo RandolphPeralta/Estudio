@@ -6,20 +6,22 @@ export interface ISave<T> {
   delete(id: any): any;
 }
 
-export interface IAccion<T> extends ISave<T>{
+export interface IAction<T> extends ISave<T>{
   update(some: any): any;
   read(): T[];
 }
 
-export interface IAccionadicional<T> extends IAccion<T> {
+export interface IAdditionalAction<T> extends IAction<T> {
   findbyid(id: string): Array<T>
 }
 
-export interface IMenu {
-  execute(): any
+export interface IView {
+  execute(): any;
 }
 
-export class Memory<T> implements IAccionadicional<T> {
+//---------------------------------------
+
+export class MemoryRAM<T> implements IAdditionalAction<T> {
 
   private memory: T[] = [];
 
@@ -38,6 +40,9 @@ export class Memory<T> implements IAccionadicional<T> {
     let index = this.memory.findIndex((item: any) => item.id === id);
     if (index !== -1) {
       this.memory.splice(index, 1);
+      return true
+    } else {
+      return false
     }
   }
 
@@ -55,126 +60,130 @@ export class Memory<T> implements IAccionadicional<T> {
   read(): T[] {
     return this.memory;
   }
-  
+
   findbyid(id: string) {
-        return this.memory.filter((item: any) => item.id === id)
-    }
+    return this.memory.filter((item: any) => item.id === id)
+  }
 }
 
-export type Estudiante = {
+//------------------------------
+
+export type Student = {
   id: string;
-  nombre: string;
-  identificacion: string;
-  grado: string;
+  name: string;
+  identification: string;
+  schoolgrade: string;
 };
 
-export type Libro = {
+export type Book = {
   id: string;
-  titulo: string;
-  autor: string;
-  disponible: boolean;
+  title: string;
+  author: string;
+  available: boolean;
 };
 
-export type Prestamo = {
+export type Loan = {
     id: string,
-    libro: Libro,
-    estudiante: Estudiante,
-    fechaPrestamo: Date; 
-    fechaDevolucion?: Date;
+    book: Book,
+    student: Student,
+    loanDate: Date;
+    returndate?: Date;
 }
 
-export class MenuConsole implements IMenu {
+//---------------------------
+
+export class MenuConsole implements IView {
   constructor(
-    private servicioEstudiante: IAccionadicional<Estudiante>,
-    private servicioLibro: IAccionadicional<Libro>,
-    private servicioPrestamo: IAccionadicional<Prestamo>
+    private StudentPersistence: IAdditionalAction<Student>,
+    private BookPersistence: IAdditionalAction<Book>,
+    private LoanPersistence: IAdditionalAction<Loan>
   ) { }
 
   execute(): void {
-    let continuar = true;
+    let star = true;
 
-    while (continuar) {
-      this.readMenu();
-      const opcion =  Number(prompt("Seleccione opción: "));
-      
+    while (star) {
+      this.showMenu();
+      const opcion = Number(prompt("Seleccione opción: "));
+
       switch (opcion) {
         case 1:
-          this.registrarEstudiante();
+          this.Registerstudent();
           this.pause();
           break;
 
         case 2:
-          this.deleteEstudiante();
+          this.deletestudent();
           this.pause();
           break;
 
         case 3:
-          console.table(this.servicioEstudiante.read());
+          console.table(this.StudentPersistence.read());
           this.pause();
           break;
 
         case 4:
-          this.updateEstudiante();
+          this.Updatestudent();
           this.pause();
           break;
 
         case 5:
-          this.buscarEstudiante();
+          this.Findstudent();
           this.pause();
           break;
 
         case 6:
-          this.registrarLibro();
+          this.Registerbook();
           this.pause();
           break;
 
         case 7:
-          this.elmiminarLibro();
+          this.Deletebook();
           this.pause();
           break;
 
         case 8:
-          this.readLibros();
+          this.readbooks();
           this.pause();
           break;
 
         case 9:
-          this.updatelibro();
+          this.Updatebook();
           this.pause();
           break;
 
         case 10:
-          this.buscarLibro();
+          this.Searchforbook();
           this.pause();
           break;
 
         case 11:
-          this.prestarLibrob();
+          this.Lendbook();
           this.pause();
           break;
 
         case 12:
-          this.devolverLibrob();
+          this.Returnbook();
           this.pause();
           break;
 
         case 13:
-          this.readPrestamos();
+          this.readLoans();
           this.pause();
           break;
 
         case 14:
-          this.encontrarPrestamoPorLibro();
+          this.Findaloan();
           this.pause();
           break;
 
         case 15:
-          this.updatePrestamo();
+          this.updateLoan();
           this.pause();
           break;
 
         case 0:
-          continuar = false;
+          star = false;
           break;
 
         default:
@@ -184,26 +193,26 @@ export class MenuConsole implements IMenu {
     }
   }
 
-  private readMenu(): void {
+  private showMenu(): void {
     console.log("\n=============================================");
     console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
     console.log("=============================================");
     const opciones: string[] = [
-      "1. Registrar Estudiante",
-      "2. delete Estudiante",
-      "3. Ver Estudiantes",
-      "4. update Estudiante",
-      "5. Buscar Estudiante",
-      "6. Registrar Libro",
-      "7. delete Libro",
-      "8. Ver Libros",
-      "9. update Libros",
-      "10. Buscar Libro",
-      "11. Prestar Libro",
-      "12. Devolver Libro",
-      "13. read Prestamos",
+      "1. Registrar estudiante",
+      "2. Eliminar estudiante",
+      "3. Ver estudiante",
+      "4. Actualizar estudiante",
+      "5. Buscar estudiante",
+      "6. Registrar libro",
+      "7. Eliminar libro",
+      "8. Ver libros",
+      "9. Actualizar libro",
+      "10. Buscar libro",
+      "11. Prestar libro",
+      "12. Devolver libro",
+      "13. Mostrar prestamos",
       "14. Buscar Prestamo",
-      "15. update Prestamo",
+      "15. Actualizar Prestamo",
       "0. Salir"
     ];
     for (const opcion of opciones) {
@@ -211,59 +220,64 @@ export class MenuConsole implements IMenu {
     }
   }
 
-  private registrarEstudiante() {
+  private Registerstudent() {
     const id = String(prompt("ID: "));
-    const nombre = String(prompt("Nombre: "));
-    const identificacion = String(prompt("Identificación: "));
-    const grado = String(prompt("Grado: "));
+    const name = String(prompt("Nombre: "));
+    const identification = String(prompt("Identificación: "));
+    const schoolgrade = String(prompt("Grado Escolar: "));
 
-    const registrandoestudiante: Estudiante = {
+    const RegisteringStudent: Student = {
       id: id,
-      nombre: nombre,
-      identificacion: identificacion,
-      grado: grado
+      name: name,
+      identification: identification,
+      schoolgrade: schoolgrade
     }
 
-    const estudianteregistrado = this.servicioEstudiante.create(registrandoestudiante);
+    const Registeredstudent = this.StudentPersistence.create(RegisteringStudent);
 
-    if (estudianteregistrado) {
+    if (Registeredstudent) {
       console.log("Estudiante registrado");
     } else {
-      console.log("El estudiante ya existe con este ID");
+      console.log("El Estudiante ya existe con este ID");
     }
   }
 
-  private deleteEstudiante() {
+  private deletestudent() {
     const id = String(prompt("ID: "));
-    this.servicioEstudiante.delete(id)
-    console.log("Estudiante Eliminado")
+    const Eliminatestudent = this.StudentPersistence.delete(id)
+
+     if (Eliminatestudent) {
+      console.log("Estudiante Estudiante Eliminado");
+    } else {
+      console.log("No existe un estudiante con ese ID");
+    }
   }
 
-  private updateEstudiante() {
+  private Updatestudent() {
     const id = String(prompt("ID: "));
-    const nombre = String(prompt("Nombre: "));
-    const identificacion = String(prompt("Identificación: "));
-    const grado = String(prompt("Grado: "));
+    const name = String(prompt("Nombre: "));
+    const identification = String(prompt("Identificación: "));
+    const schoolgrade = String(prompt("Grado Escolar: "));
 
-    const estudiantexistente: Estudiante = {
+    const Existingstudent: Student = {
       id: id,
-      nombre: nombre,
-      identificacion: identificacion,
-      grado: grado
+      name: name,
+      identification: identification,
+      schoolgrade: schoolgrade
     };
 
-    const estudianteactualizado = this.servicioEstudiante.update(estudiantexistente);
+    const Updatedstudent = this.StudentPersistence.update(Existingstudent);
 
-    if (estudianteactualizado) {
-      console.log("Libro actualizado");
+    if (Updatedstudent) {
+      console.log("Estudiante actualizado");
     } else {
-      console.log("No existe un libro con ese ID");
+      console.log("No existe un estudiante con ese ID");
     }
   }
 
-  private buscarEstudiante() {
+  private Findstudent() {
     const id = String(prompt("ID Estudiante: "));
-    const result = this.servicioEstudiante.findbyid(id)
+    const result = this.StudentPersistence.findbyid(id)
 
     if (result.length === 0) {
       console.log("Estudiante no encontrado")
@@ -271,71 +285,77 @@ export class MenuConsole implements IMenu {
     }
 
     console.log("\n===== RESULTADO =====")
-    result.forEach(estudiante => console.log(estudiante))
+    result.forEach(Student => console.log(Student))
   }
 
-  private registrarLibro() {
-    const id = String(prompt("ID Libro: "));
-    const titulo = String(prompt("Título: "));
-    const autor = String(prompt("Autor: "));
+  private Registerbook() {
+    const id = String(prompt("ID: "));
+    const title = String(prompt("Título: "));
+    const author = String(prompt("Autor: "));
 
-    const registrandolibro: Libro = {
+    const registeringBook: Book = {
       id: id,
-      titulo: titulo,
-      autor: autor,
-      disponible: true
+      title: title,
+      author: author,
+      available: true
     }
 
-    const libroregistrado = this.servicioLibro.create(registrandolibro);
-    if (libroregistrado) {
+    const Bookregistered = this.BookPersistence.create(registeringBook);
+    if (Bookregistered) {
       console.log("Libro registrado");
     } else {
       console.log("El Libro ya existe con este ID");
     }
   }
 
-  private elmiminarLibro() {
-    const idLibro = String(prompt("ID Libro: "));
-    this.servicioLibro.delete(idLibro)
+  private Deletebook() {
+    const idBook = String(prompt("ID Libro: "));
+    const Eliminatebook = this.BookPersistence.delete(idBook);
+
+    if (Eliminatebook) {
+      console.log("Libro eliminado");
+    } else {
+      console.log("No existe un libro con ese ID");
+    }
   }
 
-  private updatelibro() {
-    const id = String(prompt("ID Libro: "));
-    const titulo = String(prompt("Título: "));
-    const autor = String(prompt("Autor: "));
+  private Updatebook() {
+    const id = String(prompt("ID del libro: "));
+    const title = String(prompt("Título: "));
+    const author = String(prompt("Autor: "));
 
-    const libroexistente: Libro = {
+    const ExistingBook: Book = {
       id: id,
-      titulo: titulo,
-      autor: autor,
-      disponible: true
+      title: title,
+      author: author,
+      available: true
     };
 
-    const libroactualizado = this.servicioLibro.update(libroexistente);
+    const UpdateBook = this.BookPersistence.update(ExistingBook);
 
-    if (libroactualizado) {
+    if (UpdateBook) {
       console.log("Libro actualizado");
     } else {
       console.log("No existe un libro con ese ID");
     }
   }
 
-  private readLibros() {
-    const libros = this.servicioLibro.read();
+  private readbooks() {
+    const Books = this.BookPersistence.read();
 
-    const librosVista = libros.map(libro => ({
-      id: libro.id,
-      titulo: libro.titulo,
-      autor: libro.autor,
-      disponible: libro.disponible ? "Sí" : "No"
+    const readBooks = Books.map(Book => ({
+      id: Book.id,
+      title: Book.title,
+      author: Book.author,
+      available: Book.available ? "Sí" : "No"
     }));
 
-    console.table(librosVista);
+    console.table(readBooks);
   }
 
-  private buscarLibro() {
-    const id = String(prompt("ID Libro: "));
-    const result = this.servicioLibro.findbyid(id)
+  private Searchforbook() {
+    const id = String(prompt("ID del libro: "));
+    const result = this.BookPersistence.findbyid(id)
 
     if (result.length === 0) {
       console.log("Libro no encontrado")
@@ -343,138 +363,138 @@ export class MenuConsole implements IMenu {
     }
 
     console.log("\n===== RESULTADO =====")
-    result.forEach(libro => console.log(libro))
+    result.forEach(Book => console.log(Book))
   }
 
-  private prestarLibrob() {
-    const idLibro = String(prompt("ID Libro: "));
-    const idEstudiante = String(prompt("ID Estudiante: "));
+  private Lendbook() {
+    const idBook = String(prompt("ID del Libro: "));
+    const idStudent = String(prompt("ID del Estudiante: "));
 
-    const libro = this.servicioLibro.findbyid(idLibro)[0]
+    const book = this.BookPersistence.findbyid(idBook)[0]
 
-    if (!libro) {
-      console.log("Libro no existe")
+    if (!book) {
+      console.log("El libro no existe")
       return
     }
 
-    if (!libro.disponible) {
+    if (!book.available) {
       console.log("Libro no disponible")
       return
     }
 
-    const estudiante = this.servicioEstudiante.findbyid(idEstudiante)[0]
+    const student = this.StudentPersistence.findbyid(idStudent)[0]
 
-    if (!estudiante) {
-      console.log("Estudiante no existe")
+    if (!student) {
+      console.log("EL estudiante no existe")
       return
     }
 
-    const prestamo: Prestamo = {
+    const Loan: Loan = {
       id: Math.random().toString(),
-      libro,
-      estudiante,
-      fechaPrestamo: new Date()
+      book,
+      student,
+      loanDate: new Date()
     }
 
-    const estado = this.servicioPrestamo.create(prestamo)
+    const estado = this.LoanPersistence.create(Loan)
 
     if (!estado) {
-      console.log("Error al prestar libro")
+      console.log("Error al prestar al libro")
       return
     }
 
-    libro.disponible = false
-    this.servicioLibro.update(libro)
+    book.available = false
+    this.BookPersistence.update(book)
 
     console.log("Libro prestado correctamente")
   }
 
-  private devolverLibrob() {
-    const idLibro = String(prompt("ID Libro: "));
-    const prestamos = this.servicioPrestamo.read()
+  private Returnbook() {
+    const idBook = String(prompt("ID del libro: "));
+    const Loans = this.LoanPersistence.read()
 
-    const prestamo = prestamos.find(prestado =>
-      prestado.libro.id === idLibro && !prestado.fechaDevolucion
+    const Loan = Loans.find(borrowed =>
+      borrowed.book.id === idBook && !borrowed.returndate
     )
 
-    if (!prestamo) {
+    if (!Loan) {
       console.log("No hay préstamo activo para este libro")
       return
     }
 
-    prestamo.fechaDevolucion = new Date()
+    Loan.returndate = new Date()
 
-    this.servicioPrestamo.update(prestamo)
+    this.LoanPersistence.update(Loan)
 
-    prestamo.libro.disponible = true
-    this.servicioLibro.update(prestamo.libro)
+    Loan.book.available = true
+    this.BookPersistence.update(Loan.book)
 
-    console.log("Libro devuelto correctamente")
+    console.log("Libo devuelto correctamente")
   }
 
-  private readPrestamos(): void {
+  private readLoans(): void {
 
-    const prestamos = this.servicioPrestamo.read()
+    const Loans = this.LoanPersistence.read()
 
     console.log("\n===== PRÉSTAMOS =====")
 
-    if (prestamos.length === 0) {
+    if (Loans.length === 0) {
       console.log("No hay préstamos")
       return
     }
 
-    prestamos.forEach(p => {
+    Loans.forEach(loan => {
       console.log({
-        id: p.id,
-        libro: p.libro.titulo,
-        estudiante: p.estudiante.nombre,
-        fechaPrestamo: p.fechaPrestamo,
-        fechaDevolucion: p.fechaDevolucion || "Pendiente"
+        id: loan.id,
+        Book: loan.book.title,
+        Student: loan.student.name,
+        fechaLoan: loan.loanDate,
+        fechaDevolucion: loan.returndate || "Pendiente"
       })
     })
   }
 
-  private encontrarPrestamoPorLibro(): void {
+  private Findaloan(): void {
 
-    const idLibro = String(prompt("ID Libro: "));
+    const idBook = String(prompt("ID del Libro: "));
 
-    const prestamos = this.servicioPrestamo.read()
+    const Loans = this.LoanPersistence.read()
 
-    const prestamo = prestamos.find(p =>
-      p.libro.id === idLibro && !p.fechaDevolucion
+    const Loan = Loans.find(loan =>
+      loan.book.id === idBook && !loan.returndate
     )
 
-    if (!prestamo) {
+    if (!Loan) {
       console.log("Libro disponible (no prestado)")
       return
     }
 
     console.log("\n===== PRÉSTAMO ACTIVO =====")
     console.log({
-      libro: prestamo.libro.titulo,
-      estudiante: prestamo.estudiante.nombre,
-      fecha: prestamo.fechaPrestamo
+      Book: Loan.book.title,
+      Student: Loan.student.name,
+      fecha: Loan.loanDate
     })
   }
 
-  private updatePrestamo(): void {
+  private updateLoan(): void {
 
-    const id = String(prompt("ID del prestamo: "));
+    const id = String(prompt("ID del Prestamo: "));
 
-    const prestamos = this.servicioPrestamo.read()
+    const Loans = this.LoanPersistence.read()
 
-    const prestamo = prestamos.find(prestado => prestado.id === id)
+    const Loan = Loans.find(borrowed => borrowed.id === id)
 
-    if (!prestamo) {
+    if (!Loan) {
       console.log("Préstamo no encontrado")
       return
     }
 
     const fecha = prompt("Ingrese nueva fecha devolución (YYYY-MM-DD):")
 
-    prestamo.fechaDevolucion = new Date(fecha)
+    Loan.loanDate = new Date(fecha)
 
-    const status = this.servicioPrestamo.update(prestamo)
+    const status = this.LoanPersistence.update(Loan)
 
     console.log(status ? "Préstamo actualizado" : "Error")
   }
@@ -482,22 +502,23 @@ export class MenuConsole implements IMenu {
   private pause() {
     prompt("\nPresiona ENTER para continuar...");
   }
-
 }
 
+//-------------------
+
 export class App {
-  constructor(private menu: IMenu) { }
+  constructor(private menu: IView) { }
 
   run(): void {
     this.menu.execute();
   }
 }
 
-const MemoryLibro = new Memory<Libro>();
-const MemoryEstudiante = new Memory<Estudiante>();
-const MemoryPrestamo = new Memory<Prestamo>();
+const MemoryBook = new MemoryRAM<Book>();
+const MemoryStudent = new MemoryRAM<Student>();
+const MemoryLoan = new MemoryRAM<Loan>();
 
-const menu = new MenuConsole(MemoryEstudiante, MemoryLibro, MemoryPrestamo);
+const menu = new MenuConsole(MemoryStudent, MemoryBook, MemoryLoan);
 
 const app = new App(menu);
 app.run();

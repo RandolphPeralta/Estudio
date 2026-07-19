@@ -1,117 +1,123 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.App = exports.MenuConsola = exports.Memoria = void 0;
+exports.App = exports.MenuConsole = exports.MemoryRAM = void 0;
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
-var Memoria = /** @class */ (function () {
-    function Memoria() {
-        this.memoria = [];
+//---------------------------------------
+var MemoryRAM = /** @class */ (function () {
+    function MemoryRAM() {
+        this.memory = [];
     }
-    Memoria.prototype.guardar = function (some) {
-        var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
+    MemoryRAM.prototype.create = function (some) {
+        var index = this.memory.findIndex(function (item) { return item.id === some.id; });
         if (index !== -1) {
             return false;
         }
-        this.memoria.push(some);
+        this.memory.push(some);
         return true;
     };
-    Memoria.prototype.eliminar = function (id) {
-        var index = this.memoria.findIndex(function (item) { return item.id === id; });
+    MemoryRAM.prototype.delete = function (id) {
+        var index = this.memory.findIndex(function (item) { return item.id === id; });
         if (index !== -1) {
-            this.memoria.splice(index, 1);
+            this.memory.splice(index, 1);
+            return true;
+        }
+        else {
+            return false;
         }
     };
-    Memoria.prototype.actualizar = function (some) {
-        var index = this.memoria.findIndex(function (item) { return item.id === some.id; });
+    MemoryRAM.prototype.update = function (some) {
+        var index = this.memory.findIndex(function (item) { return item.id === some.id; });
         if (index === -1) {
             return false;
         }
-        this.memoria[index] = some;
+        this.memory[index] = some;
         return true;
     };
-    Memoria.prototype.mostrar = function () {
-        return this.memoria;
+    MemoryRAM.prototype.read = function () {
+        return this.memory;
     };
-    Memoria.prototype.buscarporid = function (id) {
-        return this.memoria.filter(function (item) { return item.id === id; });
+    MemoryRAM.prototype.findbyid = function (id) {
+        return this.memory.filter(function (item) { return item.id === id; });
     };
-    return Memoria;
+    return MemoryRAM;
 }());
-exports.Memoria = Memoria;
-var MenuConsola = /** @class */ (function () {
-    function MenuConsola(servicioEstudiante, servicioLibro, servicioPrestamo) {
-        this.servicioEstudiante = servicioEstudiante;
-        this.servicioLibro = servicioLibro;
-        this.servicioPrestamo = servicioPrestamo;
+exports.MemoryRAM = MemoryRAM;
+//---------------------------
+var MenuConsole = /** @class */ (function () {
+    function MenuConsole(StudentPersistence, BookPersistence, LoanPersistence) {
+        this.StudentPersistence = StudentPersistence;
+        this.BookPersistence = BookPersistence;
+        this.LoanPersistence = LoanPersistence;
     }
-    MenuConsola.prototype.ejecutar = function () {
-        var continuar = true;
-        while (continuar) {
-            this.mostrarMenu();
+    MenuConsole.prototype.execute = function () {
+        var star = true;
+        while (star) {
+            this.showMenu();
             var opcion = Number(prompt("Seleccione opción: "));
             switch (opcion) {
                 case 1:
-                    this.registrarEstudiante();
+                    this.Registerstudent();
                     this.pause();
                     break;
                 case 2:
-                    this.eliminarEstudiante();
+                    this.deletestudent();
                     this.pause();
                     break;
                 case 3:
-                    console.table(this.servicioEstudiante.mostrar());
+                    console.table(this.StudentPersistence.read());
                     this.pause();
                     break;
                 case 4:
-                    this.actualizarEstudiante();
+                    this.Updatestudent();
                     this.pause();
                     break;
                 case 5:
-                    this.buscarEstudiante();
+                    this.Findstudent();
                     this.pause();
                     break;
                 case 6:
-                    this.registrarLibro();
+                    this.Registerbook();
                     this.pause();
                     break;
                 case 7:
-                    this.elmiminarLibro();
+                    this.Deletebook();
                     this.pause();
                     break;
                 case 8:
-                    this.mostrarLibros();
+                    this.readbooks();
                     this.pause();
                     break;
                 case 9:
-                    this.actualizarlibro();
+                    this.Updatebook();
                     this.pause();
                     break;
                 case 10:
-                    this.buscarLibro();
+                    this.Searchforbook();
                     this.pause();
                     break;
                 case 11:
-                    this.prestarLibrob();
+                    this.Lendbook();
                     this.pause();
                     break;
                 case 12:
-                    this.devolverLibrob();
+                    this.Returnbook();
                     this.pause();
                     break;
                 case 13:
-                    this.mostrarPrestamos();
+                    this.readLoans();
                     this.pause();
                     break;
                 case 14:
-                    this.encontrarPrestamoPorLibro();
+                    this.Findaloan();
                     this.pause();
                     break;
                 case 15:
-                    this.actualizarPrestamo();
+                    this.updateLoan();
                     this.pause();
                     break;
                 case 0:
-                    continuar = false;
+                    star = false;
                     break;
                 default:
                     console.log("Opción inválida");
@@ -119,24 +125,24 @@ var MenuConsola = /** @class */ (function () {
             }
         }
     };
-    MenuConsola.prototype.mostrarMenu = function () {
+    MenuConsole.prototype.showMenu = function () {
         console.log("\n=============================================");
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
         console.log("=============================================");
         var opciones = [
-            "1. Registrar Estudiante",
-            "2. Eliminar Estudiante",
-            "3. Ver Estudiantes",
-            "4. Actualizar Estudiante",
-            "5. Buscar Estudiante",
-            "6. Registrar Libro",
-            "7. Eliminar Libro",
-            "8. Ver Libros",
-            "9. Actualizar Libros",
-            "10. Buscar Libro",
-            "11. Prestar Libro",
-            "12. Devolver Libro",
-            "13. Mostrar Prestamos",
+            "1. Registrar estudiante",
+            "2. Eliminar estudiante",
+            "3. Ver estudiante",
+            "4. Actualizar estudiante",
+            "5. Buscar estudiante",
+            "6. Registrar libro",
+            "7. Eliminar libro",
+            "8. Ver libros",
+            "9. Actualizar libro",
+            "10. Buscar libro",
+            "11. Prestar libro",
+            "12. Devolver libro",
+            "13. Mostrar prestamos",
             "14. Buscar Prestamo",
             "15. Actualizar Prestamo",
             "0. Salir"
@@ -146,233 +152,245 @@ var MenuConsola = /** @class */ (function () {
             console.log(opcion);
         }
     };
-    MenuConsola.prototype.registrarEstudiante = function () {
+    MenuConsole.prototype.Registerstudent = function () {
         var id = String(prompt("ID: "));
-        var nombre = String(prompt("Nombre: "));
-        var identificacion = String(prompt("Identificación: "));
-        var grado = String(prompt("Grado: "));
-        var registrandoestudiante = {
+        var name = String(prompt("Nombre: "));
+        var identification = String(prompt("Identificación: "));
+        var schoolgrade = String(prompt("Grado Escolar: "));
+        var RegisteringStudent = {
             id: id,
-            nombre: nombre,
-            identificacion: identificacion,
-            grado: grado
+            name: name,
+            identification: identification,
+            schoolgrade: schoolgrade
         };
-        var estudianteregistrado = this.servicioEstudiante.guardar(registrandoestudiante);
-        if (estudianteregistrado) {
+        var Registeredstudent = this.StudentPersistence.create(RegisteringStudent);
+        if (Registeredstudent) {
             console.log("Estudiante registrado");
         }
         else {
-            console.log("El estudiante ya existe con este ID");
+            console.log("El Estudiante ya existe con este ID");
         }
     };
-    MenuConsola.prototype.eliminarEstudiante = function () {
+    MenuConsole.prototype.deletestudent = function () {
         var id = String(prompt("ID: "));
-        this.servicioEstudiante.eliminar(id);
-        console.log("Estudiante Eliminado");
-    };
-    MenuConsola.prototype.actualizarEstudiante = function () {
-        var id = String(prompt("ID: "));
-        var nombre = String(prompt("Nombre: "));
-        var identificacion = String(prompt("Identificación: "));
-        var grado = String(prompt("Grado: "));
-        var estudiantexistente = {
-            id: id,
-            nombre: nombre,
-            identificacion: identificacion,
-            grado: grado
-        };
-        var estudianteactualizado = this.servicioEstudiante.actualizar(estudiantexistente);
-        if (estudianteactualizado) {
-            console.log("Libro actualizado");
+        var Eliminatestudent = this.StudentPersistence.delete(id);
+        if (Eliminatestudent) {
+            console.log("Estudiante Estudiante Eliminado");
         }
         else {
-            console.log("No existe un libro con ese ID");
+            console.log("No existe un estudiante con ese ID");
         }
     };
-    MenuConsola.prototype.buscarEstudiante = function () {
+    MenuConsole.prototype.Updatestudent = function () {
+        var id = String(prompt("ID: "));
+        var name = String(prompt("Nombre: "));
+        var identification = String(prompt("Identificación: "));
+        var schoolgrade = String(prompt("Grado Escolar: "));
+        var Existingstudent = {
+            id: id,
+            name: name,
+            identification: identification,
+            schoolgrade: schoolgrade
+        };
+        var Updatedstudent = this.StudentPersistence.update(Existingstudent);
+        if (Updatedstudent) {
+            console.log("Estudiante actualizado");
+        }
+        else {
+            console.log("No existe un estudiante con ese ID");
+        }
+    };
+    MenuConsole.prototype.Findstudent = function () {
         var id = String(prompt("ID Estudiante: "));
-        var result = this.servicioEstudiante.buscarporid(id);
+        var result = this.StudentPersistence.findbyid(id);
         if (result.length === 0) {
             console.log("Estudiante no encontrado");
             return;
         }
         console.log("\n===== RESULTADO =====");
-        result.forEach(function (estudiante) { return console.log(estudiante); });
+        result.forEach(function (Student) { return console.log(Student); });
     };
-    MenuConsola.prototype.registrarLibro = function () {
-        var id = String(prompt("ID Libro: "));
-        var titulo = String(prompt("Título: "));
-        var autor = String(prompt("Autor: "));
-        var registrandolibro = {
+    MenuConsole.prototype.Registerbook = function () {
+        var id = String(prompt("ID: "));
+        var title = String(prompt("Título: "));
+        var author = String(prompt("Autor: "));
+        var registeringBook = {
             id: id,
-            titulo: titulo,
-            autor: autor,
-            disponible: true
+            title: title,
+            author: author,
+            available: true
         };
-        var libroregistrado = this.servicioLibro.guardar(registrandolibro);
-        if (libroregistrado) {
+        var Bookregistered = this.BookPersistence.create(registeringBook);
+        if (Bookregistered) {
             console.log("Libro registrado");
         }
         else {
             console.log("El Libro ya existe con este ID");
         }
     };
-    MenuConsola.prototype.elmiminarLibro = function () {
-        var idLibro = String(prompt("ID Libro: "));
-        this.servicioLibro.eliminar(idLibro);
+    MenuConsole.prototype.Deletebook = function () {
+        var idBook = String(prompt("ID Libro: "));
+        var Eliminatebook = this.BookPersistence.delete(idBook);
+        if (Eliminatebook) {
+            console.log("Libro eliminado");
+        }
+        else {
+            console.log("No existe un libro con ese ID");
+        }
     };
-    MenuConsola.prototype.actualizarlibro = function () {
-        var id = String(prompt("ID Libro: "));
-        var titulo = String(prompt("Título: "));
-        var autor = String(prompt("Autor: "));
-        var libroexistente = {
+    MenuConsole.prototype.Updatebook = function () {
+        var id = String(prompt("ID del libro: "));
+        var title = String(prompt("Título: "));
+        var author = String(prompt("Autor: "));
+        var ExistingBook = {
             id: id,
-            titulo: titulo,
-            autor: autor,
-            disponible: true
+            title: title,
+            author: author,
+            available: true
         };
-        var libroactualizado = this.servicioLibro.actualizar(libroexistente);
-        if (libroactualizado) {
+        var UpdateBook = this.BookPersistence.update(ExistingBook);
+        if (UpdateBook) {
             console.log("Libro actualizado");
         }
         else {
             console.log("No existe un libro con ese ID");
         }
     };
-    MenuConsola.prototype.mostrarLibros = function () {
-        var libros = this.servicioLibro.mostrar();
-        var librosVista = libros.map(function (libro) { return ({
-            id: libro.id,
-            titulo: libro.titulo,
-            autor: libro.autor,
-            disponible: libro.disponible ? "Sí" : "No"
+    MenuConsole.prototype.readbooks = function () {
+        var Books = this.BookPersistence.read();
+        var readBooks = Books.map(function (Book) { return ({
+            id: Book.id,
+            title: Book.title,
+            author: Book.author,
+            available: Book.available ? "Sí" : "No"
         }); });
-        console.table(librosVista);
+        console.table(readBooks);
     };
-    MenuConsola.prototype.buscarLibro = function () {
-        var id = String(prompt("ID Libro: "));
-        var result = this.servicioLibro.buscarporid(id);
+    MenuConsole.prototype.Searchforbook = function () {
+        var id = String(prompt("ID del libro: "));
+        var result = this.BookPersistence.findbyid(id);
         if (result.length === 0) {
             console.log("Libro no encontrado");
             return;
         }
         console.log("\n===== RESULTADO =====");
-        result.forEach(function (libro) { return console.log(libro); });
+        result.forEach(function (Book) { return console.log(Book); });
     };
-    MenuConsola.prototype.prestarLibrob = function () {
-        var idLibro = String(prompt("ID Libro: "));
-        var idEstudiante = String(prompt("ID Estudiante: "));
-        var libro = this.servicioLibro.buscarporid(idLibro)[0];
-        if (!libro) {
-            console.log("Libro no existe");
+    MenuConsole.prototype.Lendbook = function () {
+        var idBook = String(prompt("ID del Libro: "));
+        var idStudent = String(prompt("ID del Estudiante: "));
+        var book = this.BookPersistence.findbyid(idBook)[0];
+        if (!book) {
+            console.log("El libro no existe");
             return;
         }
-        if (!libro.disponible) {
+        if (!book.available) {
             console.log("Libro no disponible");
             return;
         }
-        var estudiante = this.servicioEstudiante.buscarporid(idEstudiante)[0];
-        if (!estudiante) {
-            console.log("Estudiante no existe");
+        var student = this.StudentPersistence.findbyid(idStudent)[0];
+        if (!student) {
+            console.log("EL estudiante no existe");
             return;
         }
-        var prestamo = {
+        var Loan = {
             id: Math.random().toString(),
-            libro: libro,
-            estudiante: estudiante,
-            fechaPrestamo: new Date()
+            book: book,
+            student: student,
+            loanDate: new Date()
         };
-        var estado = this.servicioPrestamo.guardar(prestamo);
+        var estado = this.LoanPersistence.create(Loan);
         if (!estado) {
-            console.log("Error al prestar libro");
+            console.log("Error al prestar al libro");
             return;
         }
-        libro.disponible = false;
-        this.servicioLibro.actualizar(libro);
+        book.available = false;
+        this.BookPersistence.update(book);
         console.log("Libro prestado correctamente");
     };
-    MenuConsola.prototype.devolverLibrob = function () {
-        var idLibro = String(prompt("ID Libro: "));
-        var prestamos = this.servicioPrestamo.mostrar();
-        var prestamo = prestamos.find(function (prestado) {
-            return prestado.libro.id === idLibro && !prestado.fechaDevolucion;
+    MenuConsole.prototype.Returnbook = function () {
+        var idBook = String(prompt("ID del libro: "));
+        var Loans = this.LoanPersistence.read();
+        var Loan = Loans.find(function (borrowed) {
+            return borrowed.book.id === idBook && !borrowed.returndate;
         });
-        if (!prestamo) {
+        if (!Loan) {
             console.log("No hay préstamo activo para este libro");
             return;
         }
-        prestamo.fechaDevolucion = new Date();
-        this.servicioPrestamo.actualizar(prestamo);
-        prestamo.libro.disponible = true;
-        this.servicioLibro.actualizar(prestamo.libro);
-        console.log("Libro devuelto correctamente");
+        Loan.returndate = new Date();
+        this.LoanPersistence.update(Loan);
+        Loan.book.available = true;
+        this.BookPersistence.update(Loan.book);
+        console.log("Libo devuelto correctamente");
     };
-    MenuConsola.prototype.mostrarPrestamos = function () {
-        var prestamos = this.servicioPrestamo.mostrar();
+    MenuConsole.prototype.readLoans = function () {
+        var Loans = this.LoanPersistence.read();
         console.log("\n===== PRÉSTAMOS =====");
-        if (prestamos.length === 0) {
+        if (Loans.length === 0) {
             console.log("No hay préstamos");
             return;
         }
-        prestamos.forEach(function (p) {
+        Loans.forEach(function (loan) {
             console.log({
-                id: p.id,
-                libro: p.libro.titulo,
-                estudiante: p.estudiante.nombre,
-                fechaPrestamo: p.fechaPrestamo,
-                fechaDevolucion: p.fechaDevolucion || "Pendiente"
+                id: loan.id,
+                Book: loan.book.title,
+                Student: loan.student.name,
+                fechaLoan: loan.loanDate,
+                fechaDevolucion: loan.returndate || "Pendiente"
             });
         });
     };
-    MenuConsola.prototype.encontrarPrestamoPorLibro = function () {
-        var idLibro = String(prompt("ID Libro: "));
-        var prestamos = this.servicioPrestamo.mostrar();
-        var prestamo = prestamos.find(function (p) {
-            return p.libro.id === idLibro && !p.fechaDevolucion;
+    MenuConsole.prototype.Findaloan = function () {
+        var idBook = String(prompt("ID del Libro: "));
+        var Loans = this.LoanPersistence.read();
+        var Loan = Loans.find(function (loan) {
+            return loan.book.id === idBook && !loan.returndate;
         });
-        if (!prestamo) {
+        if (!Loan) {
             console.log("Libro disponible (no prestado)");
             return;
         }
         console.log("\n===== PRÉSTAMO ACTIVO =====");
         console.log({
-            libro: prestamo.libro.titulo,
-            estudiante: prestamo.estudiante.nombre,
-            fecha: prestamo.fechaPrestamo
+            Book: Loan.book.title,
+            Student: Loan.student.name,
+            fecha: Loan.loanDate
         });
     };
-    MenuConsola.prototype.actualizarPrestamo = function () {
-        var id = String(prompt("ID del prestamo: "));
-        var prestamos = this.servicioPrestamo.mostrar();
-        var prestamo = prestamos.find(function (prestado) { return prestado.id === id; });
-        if (!prestamo) {
+    MenuConsole.prototype.updateLoan = function () {
+        var id = String(prompt("ID del Prestamo: "));
+        var Loans = this.LoanPersistence.read();
+        var Loan = Loans.find(function (borrowed) { return borrowed.id === id; });
+        if (!Loan) {
             console.log("Préstamo no encontrado");
             return;
         }
         var fecha = prompt("Ingrese nueva fecha devolución (YYYY-MM-DD):");
-        prestamo.fechaDevolucion = new Date(fecha);
-        var status = this.servicioPrestamo.actualizar(prestamo);
+        Loan.loanDate = new Date(fecha);
+        var status = this.LoanPersistence.update(Loan);
         console.log(status ? "Préstamo actualizado" : "Error");
     };
-    MenuConsola.prototype.pause = function () {
+    MenuConsole.prototype.pause = function () {
         prompt("\nPresiona ENTER para continuar...");
     };
-    return MenuConsola;
+    return MenuConsole;
 }());
-exports.MenuConsola = MenuConsola;
+exports.MenuConsole = MenuConsole;
+//-------------------
 var App = /** @class */ (function () {
     function App(menu) {
         this.menu = menu;
     }
     App.prototype.run = function () {
-        this.menu.ejecutar();
+        this.menu.execute();
     };
     return App;
 }());
 exports.App = App;
-var memoriaLibro = new Memoria();
-var memoriaEstudiante = new Memoria();
-var memoriaPrestamo = new Memoria();
-var menu = new MenuConsola(memoriaEstudiante, memoriaLibro, memoriaPrestamo);
+var MemoryBook = new MemoryRAM();
+var MemoryStudent = new MemoryRAM();
+var MemoryLoan = new MemoryRAM();
+var menu = new MenuConsole(MemoryStudent, MemoryBook, MemoryLoan);
 var app = new App(menu);
 app.run();
