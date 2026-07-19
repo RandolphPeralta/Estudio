@@ -243,22 +243,22 @@ var BookUseCase = /** @class */ (function () {
     function BookUseCase(bookservice) {
         this.bookservice = bookservice;
     }
-    BookUseCase.prototype.create = function (student) {
-        var existing = this.bookservice.findbyid(student.id);
+    BookUseCase.prototype.create = function (book) {
+        var existing = this.bookservice.findbyid(book.id);
         if (existing.length > 0) {
             return false;
         }
-        return this.bookservice.create(student);
+        return this.bookservice.create(book);
     };
     BookUseCase.prototype.delete = function (id) {
         return this.bookservice.delete(id);
     };
-    BookUseCase.prototype.update = function (student) {
-        var existing = this.bookservice.findbyid(student.id);
+    BookUseCase.prototype.update = function (book) {
+        var existing = this.bookservice.findbyid(book.id);
         if (existing.length === 0) {
             return false;
         }
-        return this.bookservice.update(student);
+        return this.bookservice.update(book);
     };
     BookUseCase.prototype.read = function () {
         return this.bookservice.read();
@@ -347,8 +347,8 @@ var BookConsole = /** @class */ (function () {
         }
     };
     BookConsole.prototype.update = function () {
-        var student = this.readBook();
-        var status = this.bookservice.update(student);
+        var book = this.readBook();
+        var status = this.bookservice.update(book);
         if (status) {
             console.log("Libro actualizado");
         }
@@ -358,12 +358,12 @@ var BookConsole = /** @class */ (function () {
     };
     BookConsole.prototype.findbyid = function () {
         var id = prompt("ID: ");
-        var students = this.bookservice.findbyid(id);
-        if (students.length === 0) {
+        var books = this.bookservice.findbyid(id);
+        if (books.length === 0) {
             console.log("No encontrado");
             return;
         }
-        console.table(students);
+        console.table(books);
     };
     BookConsole.prototype.read = function () {
         console.table(this.bookservice.read());

@@ -172,46 +172,48 @@ export class MenuConsole implements IView {
 
 export class StudentUseCase implements IAdditionalAction<Student> {
 
-    constructor(private studentPersistence: IAdditionalAction<Student>) { }
+    constructor(private studentservice: IAdditionalAction<Student>) { }
 
     create(student: Student): boolean {
 
-        const existing = this.studentPersistence.findbyid(student.id);
+        const existing = this.studentservice.findbyid(student.id);
 
         if (existing.length > 0) {
             return false;
         }
 
-        return this.studentPersistence.create(student);
+        return this.studentservice.create(student);
     }
 
     delete(id: string): boolean {
 
-        return this.studentPersistence.delete(id);
+        return this.studentservice.delete(id);
 
     }
 
     update(student: Student): boolean {
 
-        const existing = this.studentPersistence.findbyid(student.id);
+        const existing = this.studentservice.findbyid(student.id);
 
         if (existing.length === 0) {
             return false;
         }
 
-        return this.studentPersistence.update(student);
+        return this.studentservice.update(student);
 
     }
 
     read(): Student[] {
 
-        return this.studentPersistence.read();
+        return this.studentservice.read();
 
     }
 
     findbyid(id: string): Student[] {
 
-        return this.studentPersistence.findbyid(id);
+        const student = this.studentservice.findbyid(id)
+
+        return this.studentservice.findbyid(id);
 
     }
 
@@ -234,23 +236,23 @@ export class StudentConsole implements IView {
             switch (option) {
 
                 case 1:
-                    this.create();
+                    this.createstudent();
                     break;
 
                 case 2:
-                    this.delete();
+                    this.deletestudent();
                     break;
 
                 case 3:
-                    this.read();
+                    this.readstudents();
                     break;
 
                 case 4:
-                    this.update();
+                    this.updatestudent();
                     break;
 
                 case 5:
-                    this.findbyid();
+                    this.findbyidstudent();
                     break;
 
                 case 0:
@@ -293,7 +295,7 @@ export class StudentConsole implements IView {
 
     }
 
-    private create() {
+    private createstudent() {
 
         const student = this.readStudent();
 
@@ -307,7 +309,7 @@ export class StudentConsole implements IView {
 
     }
 
-    private delete() {
+    private deletestudent() {
 
         const id = prompt("ID: ");
 
@@ -321,7 +323,7 @@ export class StudentConsole implements IView {
 
     }
 
-    private update() {
+    private updatestudent() {
 
         const student = this.readStudent();
 
@@ -335,7 +337,7 @@ export class StudentConsole implements IView {
 
     }
 
-    private findbyid() {
+    private findbyidstudent() {
 
         const id = prompt("ID: ");
 
@@ -352,7 +354,7 @@ export class StudentConsole implements IView {
 
     }
 
-    private read() {
+    private readstudents() {
 
         console.table(
             this.studentservice.read()
@@ -557,7 +559,6 @@ export class BookConsole implements IView {
     }
 
 }
-
 
 //----------------------
 
