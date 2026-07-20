@@ -15,18 +15,13 @@ export interface IAdditionalAction<T> extends IAction<T> {
     findbyid(id: string): Array<T>
 }
 
-export interface IExtraAction<T> extends IAdditionalAction<T> {
-    createbyid(id: any, some: any): any;
-    updatebyid(id: any, some: any): any;
-}
-
 export interface IView {
     execute(): any;
 }
 
 //---------------------------------------
 
-export class MemoryRAM<T> implements IExtraAction<T> {
+export class MemoryRAM<T> implements IAdditionalAction<T> {
 
     private memory: T[] = [];
 
@@ -39,13 +34,6 @@ export class MemoryRAM<T> implements IExtraAction<T> {
 
         this.memory.push(some)
         return true;
-    }
-
-    createbyid(id: any, some: T): boolean {
-        return this.create({
-            ...some,
-            id
-        });
     }
 
     delete(id: any) {
@@ -67,13 +55,6 @@ export class MemoryRAM<T> implements IExtraAction<T> {
 
         this.memory[index] = some;
         return true;
-    }
-
-    updatebyid(id: any, some: T): boolean {
-        return this.update({
-            ...some,
-            id
-        });
     }
 
     read(): T[] {
@@ -172,52 +153,52 @@ export class MenuConsole implements IView {
 
 export class StudentUseCase implements IAdditionalAction<Student> {
 
-    constructor(private studentservice: IAdditionalAction<Student>) { }
+    constructor(private studentPersistence: IAdditionalAction<Student>) { }
 
     create(student: Student): boolean {
 
-        const existing = this.studentservice.findbyid(student.id);
+        const existing = this.studentPersistence.findbyid(student.id);
 
         if (existing.length > 0) {
             return false;
         }
 
-        return this.studentservice.create(student);
+        return this.studentPersistence.create(student);
     }
 
     delete(id: string): boolean {
 
-        return this.studentservice.delete(id);
+        return this.studentPersistence.delete(id);
 
     }
 
     update(student: Student): boolean {
 
-        const existing = this.studentservice.findbyid(student.id);
+        const existing = this.studentPersistence.findbyid(student.id);
 
         if (existing.length === 0) {
             return false;
         }
 
-        return this.studentservice.update(student);
+        return this.studentPersistence.update(student);
 
     }
 
     read(): Student[] {
 
-        return this.studentservice.read();
+        return this.studentPersistence.read();
 
     }
 
     findbyid(id: string): Student[] {
 
-        const student = this.studentservice.findbyid(id)
-
-        return this.studentservice.findbyid(id);
+        return this.studentPersistence.findbyid(id);
 
     }
 
 }
+
+//----------------------------
 
 export class StudentConsole implements IView {
 
@@ -244,7 +225,7 @@ export class StudentConsole implements IView {
                     break;
 
                 case 3:
-                    this.readstudents();
+                    this.readstudent();
                     break;
 
                 case 4:
@@ -278,7 +259,7 @@ export class StudentConsole implements IView {
         }
     }
 
-    private readStudent(): Student {
+    private inputstudent(): Student {
 
         const id = prompt("ID: ");
         const name = prompt("Nombre: ");
@@ -297,7 +278,7 @@ export class StudentConsole implements IView {
 
     private createstudent() {
 
-        const student = this.readStudent();
+        const student = this.inputstudent();
 
         const status = this.studentservice.create(student);
 
@@ -325,7 +306,7 @@ export class StudentConsole implements IView {
 
     private updatestudent() {
 
-        const student = this.readStudent();
+        const student = this.inputstudent();
 
         const status = this.studentservice.update(student);
 
@@ -354,7 +335,7 @@ export class StudentConsole implements IView {
 
     }
 
-    private readstudents() {
+    private readstudent() {
 
         console.table(
             this.studentservice.read()
@@ -364,7 +345,7 @@ export class StudentConsole implements IView {
 
 }
 
-//------------------------
+//-------------------------------
 
 export class BookUseCase implements IAdditionalAction<Book> {
 
@@ -415,6 +396,8 @@ export class BookUseCase implements IAdditionalAction<Book> {
 
 }
 
+//------------------------------------
+
 export class BookConsole implements IView {
 
     constructor(private bookservice: IAdditionalAction<Book>) { }
@@ -432,19 +415,19 @@ export class BookConsole implements IView {
             switch (option) {
 
                 case 1:
-                    this.create();
+                    this.createbook();
                     break;
 
                 case 2:
-                    this.delete();
+                    this.deletebook();
                     break;
 
                 case 3:
-                    this.read();
+                    this.readbook();
                     break;
 
                 case 4:
-                    this.update();
+                    this.updatebook();
                     break;
 
                 case 5:
@@ -474,7 +457,7 @@ export class BookConsole implements IView {
         }
     }
 
-    private readBook(): Book {
+    private inputbook(): Book {
 
         const id = prompt("ID: ");
         const title = prompt("Titulo: ");
@@ -491,9 +474,9 @@ export class BookConsole implements IView {
 
     }
 
-    private create() {
+    private createbook() {
 
-        const student = this.readBook();
+        const student = this.inputbook();
 
         const status = this.bookservice.create(student);
 
@@ -505,7 +488,29 @@ export class BookConsole implements IView {
 
     }
 
-    private delete() {
+    private readbook() {
+
+        console.table(
+            this.bookservice.read()
+        );
+
+    }
+
+    private updatebook() {
+
+        const book = this.inputbook();
+
+        const status = this.bookservice.update(book);
+
+        if (status) {
+            console.log("Libro actualizado");
+        } else {
+            console.log("No existe un libro con ese ID.");
+        }
+
+    }
+
+    private deletebook() {
 
         const id = prompt("ID: ");
 
@@ -519,19 +524,7 @@ export class BookConsole implements IView {
 
     }
 
-    private update() {
 
-        const book = this.readBook();
-
-        const status = this.bookservice.update(book);
-
-        if (status) {
-            console.log("Libro actualizado");
-        } else {
-            console.log("No existe un libro con ese ID.");
-        }
-
-    }
 
     private findbyid() {
 
@@ -550,70 +543,52 @@ export class BookConsole implements IView {
 
     }
 
-    private read() {
 
-        console.table(
-            this.bookservice.read()
-        );
-
-    }
 
 }
 
+
 //----------------------
 
-export class LoanUseCase implements IExtraAction<Loan> {
+export class LoanUseCase implements IAdditionalAction<Loan> {
 
-    constructor(private loanservice: IExtraAction<Loan>, private bookservice: IExtraAction<Book>, private studentservice: IExtraAction<Student>) { }
+    constructor(private loanservice: IAdditionalAction<Loan>, private bookservice: IAdditionalAction<Book>, private studentservice: IAdditionalAction<Student>) { }
 
-    create(Loan: Loan) {
-        const existingLoan = this.loanservice.findbyid(Loan.id);
-        if (existingLoan.length > 0) {
-            return false
-        }
-        this.loanservice.create(Loan);
-        return true
-    }
-
-    createbyid(idBook: string, idStudent: string): boolean {
-
-        const book = this.bookservice.findbyid(idBook)[0];
-
-        if (!book) {
+    create(loan: Loan): boolean {
+        const book = loan.book;
+        if (!book || !book.available) {
             return false;
         }
 
-        if (!book.available) {
+        const findbook = this.bookservice.findbyid(book.id)[0];
+        if (!findbook) {
             return false;
         }
 
-        const student = this.studentservice.findbyid(idStudent)[0];
-
+        const student = loan.student;
         if (!student) {
             return false;
         }
 
-        const loan: Loan = {
+        const existingLoan = this.loanservice.findbyid(loan.id);
+        if (existingLoan.length > 0) {
+            return false;
+        }
 
-            id: Math.random().toString(),
-            book,
-            student,
-            loanDate: new Date()
-
-        };
-
-        const status = this.create(loan);
-
+        const status = this.loanservice.create(loan);
         if (!status) {
             return false;
         }
 
         book.available = false;
-
         this.bookservice.update(book);
 
         return true;
+    }
 
+
+    findbyid(idloan: string): Loan[] {
+        return this.loanservice.findbyid(idloan)
     }
 
     update(loan: Loan) {
@@ -626,24 +601,12 @@ export class LoanUseCase implements IExtraAction<Loan> {
         }
     }
 
-    updatebyid(id: any, date: Date) {
-        const loan = this.loanservice.findbyid(id)[0];
-
-        if (!loan) {
-            return false;
-        }
-
-        loan.loanDate = date;
-
-        return this.update(loan);
+    read(): Loan[] {
+        return this.loanservice.read();
     }
-
-    findbyid(idBook: string): Loan[] {
-        return this.loanservice.findbyid(idBook);
-    }
-
-    delete(idBook: string) {
-        const loan = this.loanservice.read().find(loan => loan.book.id === idBook && !loan.returndate);
+    
+    delete(idbook: any) {
+        const loan = this.loanservice.read().find(loan => loan.book.id === idbook && !loan.returndate);
 
         if (!loan) {
             return false;
@@ -659,15 +622,13 @@ export class LoanUseCase implements IExtraAction<Loan> {
 
         return true;
     }
-    read(): Loan[] {
-        return this.loanservice.read();
-    }
 
 }
 
+//-----------------------
 export class LoanConsole implements IView {
 
-    constructor(private loanservice: IExtraAction<Loan>) { }
+    constructor(private loanservice: IAdditionalAction<Loan>, private bookservice: IAdditionalAction<Book>, private studentservice: IAdditionalAction<Student>) { }
 
     execute() {
         let run = true;
@@ -681,11 +642,11 @@ export class LoanConsole implements IView {
             switch (option) {
 
                 case 1:
-                    this.create();
+                    this.lendbook();
                     break;
 
                 case 2:
-                    this.delete();
+                    this.returnbook();
                     break;
 
                 case 3:
@@ -723,13 +684,22 @@ export class LoanConsole implements IView {
         }
     }
 
-    private create() {
+    private lendbook() {
 
-        const idBook = prompt("ID Libro: ");
+        const idbook = prompt("ID Libro: ");
 
-        const idStudent = prompt("ID Estudiante: ");
+        const idstudent = prompt("ID Estudiante: ");
 
-        const status = this.loanservice.createbyid(idBook, idStudent);
+        const loan: Loan = {
+
+            id: Math.random().toString(),
+            book: this.bookservice.findbyid(idbook)[0],
+            student: this.studentservice.findbyid(idstudent)[0],
+            loanDate: new Date()
+
+        };
+
+        const status = this.loanservice.create(loan);
 
         if (status) {
 
@@ -743,7 +713,7 @@ export class LoanConsole implements IView {
 
     }
 
-    private delete() {
+    private returnbook() {
 
         const idBook = prompt("ID Libro: ");
 
@@ -788,7 +758,15 @@ export class LoanConsole implements IView {
             prompt("Fecha (YYYY-MM-DD): ")
         );
 
-        const status = this.loanservice.updatebyid(id, date);
+        const loan: Loan = {
+            id: id,
+            book: this.loanservice.findbyid(id)[0].book,
+            student: this.loanservice.findbyid(id)[0].student,
+            loanDate: this.loanservice.findbyid(id)[0].loanDate,
+            returndate: date
+        };
+
+        const status = this.loanservice.update(loan);
 
         console.log(
             status
@@ -800,9 +778,9 @@ export class LoanConsole implements IView {
 
     private findbyid() {
 
-        const idBook = prompt("ID Libro: ");
+        const idloan = prompt("ID del prestamo: ");
 
-        const loan = this.loanservice.findbyid(idBook);
+        const loan = this.loanservice.findbyid(idloan);
 
         if (!loan) {
 
@@ -812,11 +790,19 @@ export class LoanConsole implements IView {
 
         }
 
-        console.table(loan);
+        loan.forEach(loan => {
+            console.log({
+                id: loan.id,
+                Book: loan.book.title,
+                Student: loan.student.name,
+                fechaLoan: loan.loanDate,
+                fechaDevolucion: loan.returndate || "Pendiente"
+            })
+        })
 
     }
 }
-//-------------------
+// //-------------------
 
 export class App {
     constructor(private menu: IView) { }
@@ -836,7 +822,7 @@ const loanusecase = new LoanUseCase(MemoryLoan, MemoryBook, MemoryStudent);
 
 const studentconsole = new StudentConsole(studentusecase);
 const bookconsole = new BookConsole(bookusecase);
-const loanconsole = new LoanConsole(loanusecase);
+const loanconsole = new LoanConsole(loanusecase, bookusecase, studentusecase);
 
 const menu = new MenuConsole(studentconsole, bookconsole, loanconsole);
 
