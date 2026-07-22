@@ -9,16 +9,12 @@ var MemoryRAM = /** @class */ (function () {
         this.memory = [];
     }
     MemoryRAM.prototype.create = function (some) {
-        var index = this.memory.findIndex(function (item) { return item.id === some.id; });
-        if (index !== -1) {
-            return false;
-        }
         this.memory.push(some);
         return true;
     };
     MemoryRAM.prototype.delete = function (id) {
         var index = this.memory.findIndex(function (item) { return item.id === id; });
-        if (index !== -1) {
+        if (index !== 0) {
             this.memory.splice(index, 1);
             return true;
         }
@@ -119,6 +115,7 @@ var StudentUseCase = /** @class */ (function () {
     return StudentUseCase;
 }());
 exports.StudentUseCase = StudentUseCase;
+//----------------------------
 var StudentConsole = /** @class */ (function () {
     function StudentConsole(studentservice) {
         this.studentservice = studentservice;
@@ -221,6 +218,7 @@ var StudentConsole = /** @class */ (function () {
     return StudentConsole;
 }());
 exports.StudentConsole = StudentConsole;
+//-------------------------------
 var BookUseCase = /** @class */ (function () {
     function BookUseCase(bookservice) {
         this.bookservice = bookservice;
@@ -251,6 +249,7 @@ var BookUseCase = /** @class */ (function () {
     return BookUseCase;
 }());
 exports.BookUseCase = BookUseCase;
+//------------------------------------
 var BookConsole = /** @class */ (function () {
     function BookConsole(bookservice) {
         this.bookservice = bookservice;

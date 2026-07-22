@@ -26,17 +26,11 @@ export class MemoryRAM<T> implements IAdditionalAction<T> {
     private memory: T[] = [];
 
     create(some: any): boolean {
-        let index = this.memory.findIndex((item: any) => item.id === some.id);
-
-        if (index !== -1) {
-            return false;
-        }
-
         this.memory.push(some)
         return true;
     }
 
-    delete(id: any) {
+    delete(id: any): boolean {
         let index = this.memory.findIndex((item: any) => item.id === id);
         if (index !== -1) {
             this.memory.splice(index, 1);
