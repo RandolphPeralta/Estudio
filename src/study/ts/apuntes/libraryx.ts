@@ -42,7 +42,6 @@ export class MemoryRAM<T> implements IAdditionalAction<T> {
 
     update(some: any): boolean {
         let index = this.memory.findIndex((item: any) => item.id === some.id);
-
         if (index === -1) {
             return false;
         }

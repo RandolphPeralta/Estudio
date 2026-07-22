@@ -14,7 +14,7 @@ var MemoryRAM = /** @class */ (function () {
     };
     MemoryRAM.prototype.delete = function (id) {
         var index = this.memory.findIndex(function (item) { return item.id === id; });
-        if (index !== 0) {
+        if (index !== -1) {
             this.memory.splice(index, 1);
             return true;
         }
