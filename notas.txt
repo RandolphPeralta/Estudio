@@ -8,3 +8,5 @@ Toca mirar como puedo cambiar de consola a web sin alterar mi negocio y ordenar 
 Tarea: Aplicar los conceptos en clean arquitecture: regla de la dependencia y limite dentro de mi proyecto  y mas...
 
 TAREA : YA SE ORGANIZO LAS CARPETAS PERO TOCA VERIFICAR Y CONSULTAR LA ARQUITECTURA Y LA HEXAGONAL
+
+Leer libro clean arquitecture
