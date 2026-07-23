@@ -380,8 +380,8 @@ var LoanUseCase = /** @class */ (function () {
         if (!status) {
             return false;
         }
-        book.available = false;
-        this.bookservice.update(book);
+        findbook.available = false;
+        this.bookservice.update(findbook);
         return true;
     };
     LoanUseCase.prototype.findbyid = function (idloan) {
@@ -401,7 +401,7 @@ var LoanUseCase = /** @class */ (function () {
         return this.loanservice.read();
     };
     LoanUseCase.prototype.delete = function (idbook) {
-        var loan = this.loanservice.read().find(function (loan) { return loan.book.id === idbook && !loan.returndate; });
+        var loan = this.loanservice.read().find(function (loan) { return loan.book.id === idbook; });
         if (!loan) {
             return false;
         }
@@ -465,19 +465,20 @@ var LoanConsole = /** @class */ (function () {
     LoanConsole.prototype.lendbook = function () {
         var idbook = prompt("ID Libro: ");
         var idstudent = prompt("ID Estudiante: ");
+        var loanDate = new Date();
+        var returndate = new Date(loanDate);
+        returndate.setDate(loanDate.getDate() + 3);
         var loan = {
             id: Math.random().toString(),
             book: this.bookservice.findbyid(idbook)[0],
             student: this.studentservice.findbyid(idstudent)[0],
-            loanDate: new Date()
+            loanDate: loanDate,
+            returndate: returndate
         };
         var status = this.loanservice.create(loan);
-        if (status) {
-            console.log("Libro prestado");
-        }
-        else {
-            console.log("No fue posible realizar el préstamo");
-        }
+        console.log(status
+            ? "Libro prestado con devolución en 3 días"
+            : "No fue posible realizar el préstamo");
     };
     LoanConsole.prototype.returnbook = function () {
         var idBook = prompt("ID Libro: ");

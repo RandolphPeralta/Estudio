@@ -573,8 +573,8 @@ export class LoanUseCase implements IAdditionalAction<Loan> {
             return false;
         }
 
-        book.available = false;
-        this.bookservice.update(book);
+        findbook.available = false;
+        this.bookservice.update(findbook);
 
         return true;
     }
@@ -597,9 +597,9 @@ export class LoanUseCase implements IAdditionalAction<Loan> {
     read(): Loan[] {
         return this.loanservice.read();
     }
-    
+
     delete(idbook: any) {
-        const loan = this.loanservice.read().find(loan => loan.book.id === idbook && !loan.returndate);
+        const loan = this.loanservice.read().find(loan => loan.book.id === idbook);
 
         if (!loan) {
             return false;
@@ -683,26 +683,27 @@ export class LoanConsole implements IView {
 
         const idstudent = prompt("ID Estudiante: ");
 
+        const loanDate = new Date();
+
+        const returndate = new Date(loanDate);
+        returndate.setDate(loanDate.getDate() + 3);
+
         const loan: Loan = {
 
             id: Math.random().toString(),
             book: this.bookservice.findbyid(idbook)[0],
             student: this.studentservice.findbyid(idstudent)[0],
-            loanDate: new Date()
-
+            loanDate: loanDate,
+            returndate: returndate
         };
 
         const status = this.loanservice.create(loan);
 
-        if (status) {
-
-            console.log("Libro prestado");
-
-        } else {
-
-            console.log("No fue posible realizar el préstamo");
-
-        }
+        console.log(
+            status
+                ? "Libro prestado con devolución en 3 días"
+                : "No fue posible realizar el préstamo"
+        );
 
     }
 
