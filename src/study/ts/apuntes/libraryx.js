@@ -472,6 +472,7 @@ var LoanConsole = /** @class */ (function () {
             id: Math.random().toString(),
             book: this.bookservice.findbyid(idbook)[0],
             student: this.studentservice.findbyid(idstudent)[0],
+            loanDate: loanDate,
             returndate: returndate
         };
         var status = this.loanservice.create(loan);
@@ -498,6 +499,7 @@ var LoanConsole = /** @class */ (function () {
                 id: loan.id,
                 Book: loan.book.title,
                 Student: loan.student.name,
+                fechaLoan: loan.loanDate,
                 fechaDevolucion: loan.returndate || "Pendiente"
             });
         });
@@ -509,6 +511,7 @@ var LoanConsole = /** @class */ (function () {
             id: id,
             book: this.loanservice.findbyid(id)[0].book,
             student: this.loanservice.findbyid(id)[0].student,
+            loanDate: this.loanservice.findbyid(id)[0].loanDate,
             returndate: date
         };
         var status = this.loanservice.update(loan);
@@ -528,6 +531,7 @@ var LoanConsole = /** @class */ (function () {
                 id: loan.id,
                 Book: loan.book.title,
                 Student: loan.student.name,
+                fechaLoan: loan.loanDate,
                 fechaDevolucion: loan.returndate || "Pendiente"
             });
         });
