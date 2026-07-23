@@ -9,4 +9,4 @@ Tarea: Aplicar los conceptos en clean arquitecture: regla de la dependencia y li
 
 TAREA : YA SE ORGANIZO LAS CARPETAS PERO TOCA VERIFICAR Y CONSULTAR LA ARQUITECTURA Y LA HEXAGONAL
 
-Leer libro clean arquitecture
+Leer libro clean arquitecture y comparar un poco la aquitectura limpia con la arquitectura hexagonal
