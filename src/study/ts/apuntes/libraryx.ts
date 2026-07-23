@@ -79,7 +79,6 @@ export type Loan = {
     id: string,
     book: Book,
     student: Student,
-    loanDate: Date;
     returndate?: Date;
 }
 
@@ -693,7 +692,6 @@ export class LoanConsole implements IView {
             id: Math.random().toString(),
             book: this.bookservice.findbyid(idbook)[0],
             student: this.studentservice.findbyid(idstudent)[0],
-            loanDate: loanDate,
             returndate: returndate
         };
 
@@ -737,7 +735,6 @@ export class LoanConsole implements IView {
                 id: loan.id,
                 Book: loan.book.title,
                 Student: loan.student.name,
-                fechaLoan: loan.loanDate,
                 fechaDevolucion: loan.returndate || "Pendiente"
             })
         })
@@ -756,7 +753,6 @@ export class LoanConsole implements IView {
             id: id,
             book: this.loanservice.findbyid(id)[0].book,
             student: this.loanservice.findbyid(id)[0].student,
-            loanDate: this.loanservice.findbyid(id)[0].loanDate,
             returndate: date
         };
 
@@ -789,7 +785,6 @@ export class LoanConsole implements IView {
                 id: loan.id,
                 Book: loan.book.title,
                 Student: loan.student.name,
-                fechaLoan: loan.loanDate,
                 fechaDevolucion: loan.returndate || "Pendiente"
             })
         })
