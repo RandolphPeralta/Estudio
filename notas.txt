@@ -10,3 +10,12 @@ Tarea: Aplicar los conceptos en clean arquitecture: regla de la dependencia y li
 TAREA : YA SE ORGANIZO LAS CARPETAS PERO TOCA VERIFICAR Y CONSULTAR LA ARQUITECTURA Y LA HEXAGONAL
 
 Leer libro clean arquitecture y comparar un poco la aquitectura limpia con la arquitectura hexagonal
+
+//------------
+La arquitectura limpia (clean arquitecture): es un enfoque de diseño de software 
+introducido por Robert C.Martin que organiza el codigo en capas concentricas.
+
+Sus tres ideas principales son:
+1. Seprar la logia de negocio de los detalles tecnicos.
+2. Hacer que las dependencias apunten solo hacia el interior
+3. Facilitar pruebas unitarias sin depender de bases de datos o interfaces
