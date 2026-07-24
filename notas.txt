@@ -12,7 +12,7 @@ TAREA : YA SE ORGANIZO LAS CARPETAS PERO TOCA VERIFICAR Y CONSULTAR LA ARQUITECT
 Leer libro clean arquitecture y comparar un poco la aquitectura limpia con la arquitectura hexagonal
 
 //------------
-La arquitectura limpia (clean arquitecture): es un enfoque de diseño de software 
+La Arquitectura Limpia (clean arquitecture): es un enfoque de diseño de software 
 introducido por Robert C.Martin que organiza el codigo en capas concentricas.
 
 Sus tres ideas principales son:
