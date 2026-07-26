@@ -378,10 +378,10 @@ var LoanConsole = /** @class */ (function () {
                     this.returnbook();
                     break;
                 case 3:
-                    this.read();
+                    this.readloan();
                     break;
                 case 4:
-                    this.update();
+                    this.updateloan();
                     break;
                 case 5:
                     this.findbyid();
@@ -445,12 +445,18 @@ var LoanConsole = /** @class */ (function () {
     };
     LoanConsole.prototype.returnbook = function () {
         var idBook = prompt("ID Libro: ");
-        var status = this.loanrepository.delete(idBook);
-        console.log(status
-            ? "Libro devuelto"
-            : "No existe préstamo activo");
+        var loan = this.loanrepository.read().find(function (loan) { return loan.book.id === idBook; });
+        if (!loan) {
+            console.log("No existe préstamo activo");
+            return;
+        }
+        loan.returndate = new Date();
+        this.loanrepository.update(loan);
+        loan.book.available = true;
+        this.bookrepository.update(loan.book);
+        console.log("Libro devuelto");
     };
-    LoanConsole.prototype.read = function () {
+    LoanConsole.prototype.readloan = function () {
         var Loans = this.loanrepository.read();
         console.log("\n===== PRÉSTAMOS =====");
         if (Loans.length === 0) {
@@ -467,35 +473,32 @@ var LoanConsole = /** @class */ (function () {
             });
         });
     };
-    LoanConsole.prototype.update = function () {
+    LoanConsole.prototype.updateloan = function () {
         var id = prompt("ID préstamo: ");
-        var date = new Date(prompt("Fecha (YYYY-MM-DD): "));
-        var loan = {
-            id: id,
-            book: this.loanrepository.findbyid(id)[0].book,
-            student: this.loanrepository.findbyid(id)[0].student,
-            loanDate: this.loanrepository.findbyid(id)[0].loanDate,
-            returndate: date
-        };
-        var status = this.loanrepository.update(loan);
-        console.log(status
-            ? "Préstamo actualizado"
-            : "No encontrado");
-    };
-    LoanConsole.prototype.findbyid = function () {
-        var idloan = prompt("ID del prestamo: ");
-        var loan = this.loanrepository.findbyid(idloan);
-        if (!loan) {
-            console.log("Libro disponible");
+        var existing = this.loanrepository.findbyid(id);
+        if (existing.length === 0) {
+            console.log("Préstamo no encontrado");
             return;
         }
-        loan.forEach(function (loan) {
+        var loan = existing[0];
+        loan.returndate = new Date(prompt("Fecha (YYYY-MM-DD): "));
+        this.loanrepository.update(loan);
+        console.log("Préstamo actualizado");
+    };
+    LoanConsole.prototype.findbyid = function () {
+        var idloan = prompt("ID préstamo: ");
+        var loans = this.loanrepository.findbyid(idloan);
+        if (loans.length === 0) {
+            console.log("No encontrado");
+            return;
+        }
+        loans.forEach(function (loan) {
             console.log({
                 id: loan.id,
                 Book: loan.book.title,
                 Student: loan.student.name,
                 fechaLoan: loan.loanDate,
-                fechaDevolucion: loan.returndate || "Pendiente"
+                fechaDevolucion: loan.returndate
             });
         });
     };
@@ -516,10 +519,9 @@ exports.App = App;
 var MemoryBook = new MemoryRAM();
 var MemoryStudent = new MemoryRAM();
 var MemoryLoan = new MemoryRAM();
-var loanusecase = new LoanUseCase(MemoryLoan, MemoryBook, MemoryStudent);
 var studentconsole = new StudentConsole(MemoryStudent);
 var bookconsole = new BookConsole(MemoryBook);
-var loanconsole = new LoanConsole(loanusecase, MemoryBook, MemoryStudent);
+var loanconsole = new LoanConsole(MemoryLoan, MemoryBook, MemoryStudent);
 var menu = new MenuConsole(studentconsole, bookconsole, loanconsole);
 var app = new App(menu);
 app.run();

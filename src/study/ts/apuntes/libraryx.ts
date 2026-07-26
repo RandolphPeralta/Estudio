@@ -511,11 +511,11 @@ export class LoanConsole implements IView {
                     break;
 
                 case 3:
-                    this.read();
+                    this.readloan();
                     break;
 
                 case 4:
-                    this.update();
+                    this.updateloan();
                     break;
 
                 case 5:
@@ -598,22 +598,26 @@ export class LoanConsole implements IView {
     private returnbook() {
 
         const idBook = prompt("ID Libro: ");
-        const status = this.loanrepository.delete(idBook);
+        const loan = this.loanrepository.read().find(loan => loan.book.id === idBook);
 
-        console.log(
-            status
-                ? "Libro devuelto"
-                : "No existe préstamo activo"
-        );
+        if (!loan) {
+            console.log("No existe préstamo activo");
+            return;
+        }
 
+        loan.returndate = new Date();
+        this.loanrepository.update(loan);
+        loan.book.available = true;
+        this.bookrepository.update(loan.book);
+
+        console.log("Libro devuelto");
     }
 
-    private read() {
+    private readloan() {
 
         const Loans = this.loanrepository.read()
 
         console.log("\n===== PRÉSTAMOS =====")
-
         if (Loans.length === 0) {
             console.log("No hay préstamos")
             return
@@ -631,56 +635,43 @@ export class LoanConsole implements IView {
 
     }
 
-    private update() {
+    private updateloan() {
 
         const id = prompt("ID préstamo: ");
 
-        const date = new Date(
+        const existing = this.loanrepository.findbyid(id);
+        if (existing.length === 0) {
+            console.log("Préstamo no encontrado");
+            return;
+        }
+
+        const loan = existing[0];
+        loan.returndate = new Date(
             prompt("Fecha (YYYY-MM-DD): ")
         );
-
-        const loan: Loan = {
-            id: id,
-            book: this.loanrepository.findbyid(id)[0].book,
-            student: this.loanrepository.findbyid(id)[0].student,
-            loanDate: this.loanrepository.findbyid(id)[0].loanDate,
-            returndate: date
-        };
-
-        const status = this.loanrepository.update(loan);
-
-        console.log(
-            status
-                ? "Préstamo actualizado"
-                : "No encontrado"
-        );
-
+        this.loanrepository.update(loan);
+        console.log("Préstamo actualizado");
     }
 
     private findbyid() {
 
-        const idloan = prompt("ID del prestamo: ");
+        const idloan = prompt("ID préstamo: ");
+        const loans = this.loanrepository.findbyid(idloan);
 
-        const loan = this.loanrepository.findbyid(idloan);
-
-        if (!loan) {
-
-            console.log("Libro disponible");
-
+        if (loans.length === 0) {
+            console.log("No encontrado");
             return;
-
         }
 
-        loan.forEach(loan => {
+        loans.forEach(loan => {
             console.log({
                 id: loan.id,
                 Book: loan.book.title,
                 Student: loan.student.name,
                 fechaLoan: loan.loanDate,
-                fechaDevolucion: loan.returndate || "Pendiente"
-            })
-        })
-
+                fechaDevolucion: loan.returndate
+            });
+        });
     }
 }
 // //-------------------
@@ -697,11 +688,9 @@ const MemoryBook = new MemoryRAM<Book>();
 const MemoryStudent = new MemoryRAM<Student>();
 const MemoryLoan = new MemoryRAM<Loan>();
 
-const loanusecase = new LoanUseCase(MemoryLoan, MemoryBook, MemoryStudent);
-
 const studentconsole = new StudentConsole(MemoryStudent);
 const bookconsole = new BookConsole(MemoryBook);
-const loanconsole = new LoanConsole(loanusecase, MemoryBook, MemoryStudent);
+const loanconsole = new LoanConsole(MemoryLoan, MemoryBook, MemoryStudent);
 
 const menu = new MenuConsole(studentconsole, bookconsole, loanconsole);
 
