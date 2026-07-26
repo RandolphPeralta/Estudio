@@ -1,6 +1,7 @@
 import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
+//------DOMAIN-----------
 export interface ISave<T> {
     create(some: T): any;
     delete(id: any): any;
@@ -19,7 +20,31 @@ export interface IView {
     execute(): any;
 }
 
-//---------------------------------------
+//------------------------------
+
+export type Student = {
+    id: string;
+    name: string;
+    identification: string;
+    schoolgrade: string;
+};
+
+export type Book = {
+    id: string;
+    title: string;
+    author: string;
+    available: boolean;
+};
+
+export type Loan = {
+    id: string,
+    book: Book,
+    student: Student,
+    loanDate: Date;
+    returndate?: Date;
+}
+
+//----------INFRAESTRUCTURE/PERSISTENCIE--------------
 
 export class MemoryRAM<T> implements IAdditionalAction<T> {
 
@@ -59,31 +84,9 @@ export class MemoryRAM<T> implements IAdditionalAction<T> {
     }
 }
 
-//------------------------------
 
-export type Student = {
-    id: string;
-    name: string;
-    identification: string;
-    schoolgrade: string;
-};
 
-export type Book = {
-    id: string;
-    title: string;
-    author: string;
-    available: boolean;
-};
-
-export type Loan = {
-    id: string,
-    book: Book,
-    student: Student,
-    loanDate: Date;
-    returndate?: Date;
-}
-
-//---------------
+//------UI---------
 
 export class MenuConsole implements IView {
 
@@ -141,8 +144,6 @@ export class MenuConsole implements IView {
     }
 
 }
-
-//-----------------------------
 
 //----------------------------
 
@@ -243,7 +244,6 @@ export class StudentConsole implements IView {
         } else {
             console.log("No existe un estudiante.");
         }
-
     }
 
     private updatestudent() {
@@ -277,8 +277,6 @@ export class StudentConsole implements IView {
     }
 
 }
-
-//-------------------------------
 
 //------------------------------------
 
@@ -408,85 +406,8 @@ export class BookConsole implements IView {
     }
 }
 
-
-//----------------------
-
-export class LoanUseCase implements IAdditionalAction<Loan> {
-
-    constructor(private loanrepository: IAdditionalAction<Loan>, private bookrepository: IAdditionalAction<Book>, private studentrepository: IAdditionalAction<Student>) { }
-
-    create(loan: Loan): boolean {
-        const book = loan.book;
-        if (!book || !book.available) {
-            return false;
-        }
-
-        const findbook = this.bookrepository.findbyid(book.id)[0];
-        if (!findbook) {
-            return false;
-        }
-
-        const student = loan.student;
-        if (!student) {
-            return false;
-        }
-
-        const existingLoan = this.loanrepository.findbyid(loan.id);
-        if (existingLoan.length > 0) {
-            return false;
-        }
-
-        const status = this.loanrepository.create(loan);
-        if (!status) {
-            return false;
-        }
-
-        findbook.available = false;
-        this.bookrepository.update(findbook);
-
-        return true;
-    }
-
-
-    findbyid(idloan: string): Loan[] {
-        return this.loanrepository.findbyid(idloan)
-    }
-
-    update(loan: Loan) {
-        const existingLoan = this.loanrepository.findbyid(loan.id);
-        if (existingLoan.length > 0) {
-            this.loanrepository.update(loan)
-            return true
-        } else {
-            return false
-        }
-    }
-
-    read(): Loan[] {
-        return this.loanrepository.read();
-    }
-
-    delete(idbook: any) {
-        const loan = this.loanrepository.read().find(loan => loan.book.id === idbook);
-
-        if (!loan) {
-            return false;
-        }
-
-        loan.returndate = new Date();
-
-        this.loanrepository.update(loan);
-
-        loan.book.available = true;
-
-        this.bookrepository.update(loan.book);
-
-        return true;
-    }
-
-}
-
 //-----------------------
+
 export class LoanConsole implements IView {
 
     constructor(private loanrepository: IAdditionalAction<Loan>, private bookrepository: IAdditionalAction<Book>, private studentrepository: IAdditionalAction<Student>) { }
@@ -519,7 +440,7 @@ export class LoanConsole implements IView {
                     break;
 
                 case 5:
-                    this.findbyid();
+                    this.findbyidloan();
                     break;
 
                 case 0:
@@ -653,7 +574,7 @@ export class LoanConsole implements IView {
         console.log("Préstamo actualizado");
     }
 
-    private findbyid() {
+    private findbyidloan() {
 
         const idloan = prompt("ID préstamo: ");
         const loans = this.loanrepository.findbyid(idloan);
@@ -674,7 +595,8 @@ export class LoanConsole implements IView {
         });
     }
 }
-// //-------------------
+
+//-----CLASE-CONSUMIDORA-APP--------------
 
 export class App {
     constructor(private menu: IView) { }
@@ -683,6 +605,8 @@ export class App {
         this.menu.execute();
     }
 }
+
+//-----PUNTO-DE-ENTRADA--------------
 
 const MemoryBook = new MemoryRAM<Book>();
 const MemoryStudent = new MemoryRAM<Student>();

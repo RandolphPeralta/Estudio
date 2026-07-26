@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.App = exports.LoanConsole = exports.LoanUseCase = exports.BookConsole = exports.StudentConsole = exports.MenuConsole = exports.MemoryRAM = void 0;
+exports.App = exports.LoanConsole = exports.BookConsole = exports.StudentConsole = exports.MenuConsole = exports.MemoryRAM = void 0;
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
-//---------------------------------------
+//----------INFRAESTRUCTURE/PERSISTENCIE--------------
 var MemoryRAM = /** @class */ (function () {
     function MemoryRAM() {
         this.memory = [];
@@ -39,7 +39,7 @@ var MemoryRAM = /** @class */ (function () {
     return MemoryRAM;
 }());
 exports.MemoryRAM = MemoryRAM;
-//---------------
+//------UI---------
 var MenuConsole = /** @class */ (function () {
     function MenuConsole(studentMenu, bookMenu, loanMenu) {
         this.studentMenu = studentMenu;
@@ -84,7 +84,6 @@ var MenuConsole = /** @class */ (function () {
     return MenuConsole;
 }());
 exports.MenuConsole = MenuConsole;
-//-----------------------------
 //----------------------------
 var StudentConsole = /** @class */ (function () {
     function StudentConsole(studentrepository) {
@@ -190,7 +189,6 @@ var StudentConsole = /** @class */ (function () {
     return StudentConsole;
 }());
 exports.StudentConsole = StudentConsole;
-//-------------------------------
 //------------------------------------
 var BookConsole = /** @class */ (function () {
     function BookConsole(bookrepository) {
@@ -296,68 +294,6 @@ var BookConsole = /** @class */ (function () {
     return BookConsole;
 }());
 exports.BookConsole = BookConsole;
-//----------------------
-var LoanUseCase = /** @class */ (function () {
-    function LoanUseCase(loanrepository, bookrepository, studentrepository) {
-        this.loanrepository = loanrepository;
-        this.bookrepository = bookrepository;
-        this.studentrepository = studentrepository;
-    }
-    LoanUseCase.prototype.create = function (loan) {
-        var book = loan.book;
-        if (!book || !book.available) {
-            return false;
-        }
-        var findbook = this.bookrepository.findbyid(book.id)[0];
-        if (!findbook) {
-            return false;
-        }
-        var student = loan.student;
-        if (!student) {
-            return false;
-        }
-        var existingLoan = this.loanrepository.findbyid(loan.id);
-        if (existingLoan.length > 0) {
-            return false;
-        }
-        var status = this.loanrepository.create(loan);
-        if (!status) {
-            return false;
-        }
-        findbook.available = false;
-        this.bookrepository.update(findbook);
-        return true;
-    };
-    LoanUseCase.prototype.findbyid = function (idloan) {
-        return this.loanrepository.findbyid(idloan);
-    };
-    LoanUseCase.prototype.update = function (loan) {
-        var existingLoan = this.loanrepository.findbyid(loan.id);
-        if (existingLoan.length > 0) {
-            this.loanrepository.update(loan);
-            return true;
-        }
-        else {
-            return false;
-        }
-    };
-    LoanUseCase.prototype.read = function () {
-        return this.loanrepository.read();
-    };
-    LoanUseCase.prototype.delete = function (idbook) {
-        var loan = this.loanrepository.read().find(function (loan) { return loan.book.id === idbook; });
-        if (!loan) {
-            return false;
-        }
-        loan.returndate = new Date();
-        this.loanrepository.update(loan);
-        loan.book.available = true;
-        this.bookrepository.update(loan.book);
-        return true;
-    };
-    return LoanUseCase;
-}());
-exports.LoanUseCase = LoanUseCase;
 //-----------------------
 var LoanConsole = /** @class */ (function () {
     function LoanConsole(loanrepository, bookrepository, studentrepository) {
@@ -384,7 +320,7 @@ var LoanConsole = /** @class */ (function () {
                     this.updateloan();
                     break;
                 case 5:
-                    this.findbyid();
+                    this.findbyidloan();
                     break;
                 case 0:
                     run = false;
@@ -485,7 +421,7 @@ var LoanConsole = /** @class */ (function () {
         this.loanrepository.update(loan);
         console.log("Préstamo actualizado");
     };
-    LoanConsole.prototype.findbyid = function () {
+    LoanConsole.prototype.findbyidloan = function () {
         var idloan = prompt("ID préstamo: ");
         var loans = this.loanrepository.findbyid(idloan);
         if (loans.length === 0) {
@@ -505,7 +441,7 @@ var LoanConsole = /** @class */ (function () {
     return LoanConsole;
 }());
 exports.LoanConsole = LoanConsole;
-// //-------------------
+//-----CLASE-CONSUMIDORA-APP--------------
 var App = /** @class */ (function () {
     function App(menu) {
         this.menu = menu;
@@ -516,6 +452,7 @@ var App = /** @class */ (function () {
     return App;
 }());
 exports.App = App;
+//-----PUNTO-DE-ENTRADA--------------
 var MemoryBook = new MemoryRAM();
 var MemoryStudent = new MemoryRAM();
 var MemoryLoan = new MemoryRAM();
