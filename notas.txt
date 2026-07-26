@@ -19,3 +19,5 @@ Sus tres ideas principales son:
 1. Seprar la logia de negocio de los detalles tecnicos.
 2. Hacer que las dependencias apunten solo hacia el interior
 3. Facilitar pruebas unitarias sin depender de bases de datos o interfaces
+
+Tarea:  Refactorizar el codigo con el fin de tener los conceptos claros de la arquitectura limpia
