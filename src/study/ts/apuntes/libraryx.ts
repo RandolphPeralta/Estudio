@@ -2,6 +2,8 @@ import * as promptSync from "prompt-sync";
 const prompt = (promptSync as any)();
 
 //------DOMAIN-----------
+
+//interfaces
 export interface ISave<T> {
     create(some: T): any;
     delete(id: any): any;
@@ -20,7 +22,28 @@ export interface IView {
     execute(): any;
 }
 
-//------------------------------
+//---usecases-interfaces----
+
+export interface IStudentUseCases {
+    createStudent(student: Student): any;
+    readStudents(): Student[];
+    updateStudent(student: Student): { success: boolean; message: string };
+    deleteStudent(id: string): { success: boolean; message: string };
+}
+
+export interface IBookUseCases {
+    createBook(book: Book): { success: boolean; message: string };
+    readBooks(): Book[];
+    updateBook(book: Book): { success: boolean; message: string };
+    deleteBook(id: string): { success: boolean; message: string };
+}
+
+export interface ILoanUseCases {
+    lendBook(bookId: string, studentId: string): { success: boolean; message: string; loan?: Loan };
+    returnBook(bookId: string): { success: boolean; message: string };
+}
+
+//---------Entitys---------------------
 
 export type Student = {
     id: string;
@@ -84,7 +107,134 @@ export class MemoryRAM<T> implements IAdditionalAction<T> {
     }
 }
 
+//-------------Usescases-------
 
+export class StudentUseCases implements IStudentUseCases {
+    constructor(private studentRepository: IAdditionalAction<Student>) {}
+
+    createStudent(student: Student): { success: boolean; message: string } {
+        const existing = this.studentRepository.findbyid(student.id);
+        if (existing.length > 0) {
+            return { success: false, message: "El estudiante ya existe con este id" };
+        }
+        this.studentRepository.create(student);
+        return { success: true, message: "Estudiante registrado" };
+    }
+
+    deleteStudent(id: string): { success: boolean; message: string } {
+        const status = this.studentRepository.delete(id);
+        if (!status) {
+            return { success: false, message: "No existe un estudiante" };
+        }
+        return { success: true, message: "Estudiante eliminado" };
+    }
+
+    updateStudent(student: Student): { success: boolean; message: string } {
+        const existing = this.studentRepository.findbyid(student.id);
+        if (existing.length === 0) {
+            return { success: false, message: "Este estudiante no existe con este id" };
+        }
+        this.studentRepository.update(student);
+        return { success: true, message: "Estudiante actualizado" };
+    }
+
+    readStudents(): Student[] {
+        return this.studentRepository.read();
+    }
+}
+
+export class BookUseCases implements IBookUseCases {
+    constructor(private bookRepository: IAdditionalAction<Book>) {}
+    readBooks(): Book[] {
+        throw new Error("Method not implemented.");
+    }
+    updateBook(book: Book): { success: boolean; message: string; } {
+        throw new Error("Method not implemented.");
+    }
+    deleteBook(id: string): { success: boolean; message: string; } {
+        throw new Error("Method not implemented.");
+    }
+
+    createBook(book: Book): { success: boolean; message: string } {
+        const existing = this.bookRepository.findbyid(book.id);
+        if (existing.length > 0) {
+            return { success: false, message: "El libro ya existe con este id" };
+        }
+        this.bookRepository.create(book);
+        return { success: true, message: "Libro registrado" };
+    }
+
+    // ... métodos similares a StudentUseCases
+}
+
+export class LoanUseCases implements ILoanUseCases {
+    constructor(
+        private loanRepository: IAdditionalAction<Loan>,
+        private bookRepository: IAdditionalAction<Book>,
+        private studentRepository: IAdditionalAction<Student>
+    ) {}
+
+    lendBook(bookId: string, studentId: string): { success: boolean; message: string; loan?: Loan } {
+        const book = this.bookRepository.findbyid(bookId)[0];
+        if (!book) {
+            return { success: false, message: "El libro no existe" };
+        }
+        if (!book.available) {
+            return { success: false, message: "El libro no está disponible" };
+        }
+
+        const student = this.studentRepository.findbyid(studentId)[0];
+        if (!student) {
+            return { success: false, message: "El estudiante no existe" };
+        }
+
+        // Verificar si el estudiante tiene préstamos activos
+        const activeLoans = this.loanRepository.read().filter(
+            loan => loan.student.id === studentId && !loan.returndate
+        );
+        if (activeLoans.length >= 3) {
+            return { success: false, message: "El estudiante tiene demasiados préstamos activos" };
+        }
+
+        const loanDate = new Date();
+        const returndate = new Date(loanDate);
+        returndate.setDate(loanDate.getDate() + 3);
+
+        const loan: Loan = {
+            id: this.generateLoanId(),
+            book,
+            student,
+            loanDate,
+            returndate
+        };
+
+        this.loanRepository.create(loan);
+        book.available = false;
+        this.bookRepository.update(book);
+
+        return { success: true, message: "Libro prestado con devolución en 3 días", loan };
+    }
+
+    returnBook(bookId: string): { success: boolean; message: string } {
+        const loan = this.loanRepository.read().find(loan => loan.book.id === bookId && !loan.returndate);
+        if (!loan) {
+            return { success: false, message: "No existe préstamo activo para este libro" };
+        }
+
+        loan.returndate = new Date();
+        this.loanRepository.update(loan);
+        loan.book.available = true;
+        this.bookRepository.update(loan.book);
+
+        return { success: true, message: "Libro devuelto" };
+    }
+
+    private generateLoanId(): string {
+        return Math.random().toString(36).substring(2, 10);
+    }
+
+    // ... otros métodos
+}
 
 //------UI---------
 
