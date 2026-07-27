@@ -32,10 +32,10 @@ export interface IStudentUseCases {
 }
 
 export interface IBookUseCases {
-    createBook(book: Book): { success: boolean; message: string };
-    readBooks(): Book[];
-    updateBook(book: Book): { success: boolean; message: string };
-    deleteBook(id: string): { success: boolean; message: string };
+    createBook(book: Book): any;
+    readBooks(): any;
+    updateBook(book: Book): any;
+    deleteBook(id: string): any;
 }
 
 export interface ILoanUseCases {
@@ -113,16 +113,16 @@ export class StudentUseCases implements IStudentUseCases {
     constructor(private studentRepository: IAdditionalAction<Student>) {}
 
     createStudent(student: Student): { success: boolean; message: string } {
-        const existing = this.studentRepository.findbyid(student.id);
-        if (existing.length > 0) {
+        // let existing = this.studentRepository.findbyid(student.id);
+        if (this.studentRepository.findbyid(student.id).length > 0) {
             return { success: false, message: "El estudiante ya existe con este id" };
-        }
+        } 
         this.studentRepository.create(student);
         return { success: true, message: "Estudiante registrado" };
     }
 
     deleteStudent(id: string): { success: boolean; message: string } {
-        const status = this.studentRepository.delete(id);
+        let status = this.studentRepository.delete(id);
         if (!status) {
             return { success: false, message: "No existe un estudiante" };
         }
@@ -130,12 +130,12 @@ export class StudentUseCases implements IStudentUseCases {
     }
 
     updateStudent(student: Student): { success: boolean; message: string } {
-        const existing = this.studentRepository.findbyid(student.id);
+        let existing = this.studentRepository.findbyid(student.id);
         if (existing.length === 0) {
             return { success: false, message: "Este estudiante no existe con este id" };
         }
         this.studentRepository.update(student);
-        return { success: true, message: "Estudiante actualizado" };
+        return { success: true, message: "Estudiante actualizado"};
     }
 
     readStudents(): Student[] {
@@ -145,15 +145,6 @@ export class StudentUseCases implements IStudentUseCases {
 
 export class BookUseCases implements IBookUseCases {
     constructor(private bookRepository: IAdditionalAction<Book>) {}
-    readBooks(): Book[] {
-        throw new Error("Method not implemented.");
-    }
-    updateBook(book: Book): { success: boolean; message: string; } {
-        throw new Error("Method not implemented.");
-    }
-    deleteBook(id: string): { success: boolean; message: string; } {
-        throw new Error("Method not implemented.");
-    }
 
     createBook(book: Book): { success: boolean; message: string } {
         const existing = this.bookRepository.findbyid(book.id);
@@ -164,7 +155,21 @@ export class BookUseCases implements IBookUseCases {
         return { success: true, message: "Libro registrado" };
     }
 
-    // ... métodos similares a StudentUseCases
+    readBooks(): Book[] {
+        return this.bookRepository.read();
+    }
+
+    updateBook(book: Book): { success: boolean; message: string; } {
+        throw new Error("Method not implemented.");
+    }
+
+    deleteBook(id: string): { success: boolean; message: string; } {
+        let status = this.bookRepository.delete(id);
+        if (!status) {
+            return { success: false, message: "No existe un libro con este id" };
+        }
+        return { success: true, message: "Libro eliminado" };
+    }
 }
 
 export class LoanUseCases implements ILoanUseCases {
