@@ -26,9 +26,9 @@ export interface IView {
 
 export interface IStudentUseCases {
     createStudent(student: Student): any;
-    readStudents(): Student[];
-    updateStudent(student: Student): { success: boolean; message: string };
-    deleteStudent(id: string): { success: boolean; message: string };
+    readStudents(): any;
+    updateStudent(student: Student): any;
+    deleteStudent(id: string): any;
 }
 
 export interface IBookUseCases {
@@ -188,10 +188,7 @@ export class LoanUseCases implements ILoanUseCases {
             return { success: false, message: "El estudiante no existe" };
         }
 
-        // Verificar si el estudiante tiene préstamos activos
-        const activeLoans = this.loanRepository.read().filter(
-            loan => loan.student.id === studentId && !loan.returndate
-        );
+        const activeLoans = this.loanRepository.read().filter(loan => loan.student.id === studentId && !loan.returndate);
         if (activeLoans.length >= 3) {
             return { success: false, message: "El estudiante tiene demasiados préstamos activos" };
         }
