@@ -3,7 +3,7 @@ const prompt = (promptSync as any)();
 
 //------DOMAIN-----------
 
-//interfaces
+//---------interfaces--------
 export interface ISave<T> {
     create(some: T): any;
     delete(id: any): any;
@@ -22,34 +22,32 @@ export interface IView {
     execute(): any;
 }
 
-//---usecases-interfaces----
-
-export interface IRegister<T> {
-    register(item: T): any;
+export interface IRegister {
+    register(item: any): any;
 }
 
-export interface IEraser<T> {
+export interface IEraser {
     erase(id: string): any
 }
 
-export interface IActualize<T> {
-    actualize(item: T): any;
+export interface IActualize {
+    actualize(item: any): any;
 }
 
 export interface IShow {
     show(): any;
 }
 
-export interface IUseCases<T> extends IRegister<T>, IEraser<T>, IActualize<T>, IShow {
-
-}
-
-export interface IUseloan {
+export interface IUsecaseloan extends IShow {
     lendBook(bookId: string, studentId: string): any;
     returnBook(bookId: string): any;
 }
 
-export interface IUseloancase extends IShow, IUseloan {
+export interface IStudentUseCase extends IRegister, IEraser, IActualize, IShow {
+
+}
+
+export interface IBookUseCase extends IRegister, IEraser, IActualize, IShow {
 
 }
 
@@ -77,7 +75,9 @@ export type Loan = {
     returndate?: Date;
 }
 
-//----------INFRAESTRUCTURE/PERSISTENCIE--------------
+//--------INFRAESTRUCTURE---------
+
+//----------Persistence--------------
 
 export class MemoryRAM<T> implements IRepository<T> {
 
@@ -123,163 +123,92 @@ export class MemoryRAM<T> implements IRepository<T> {
     }
 }
 
+//--------APPLICATION-----
+
 //-------------Usescases-------
 
-export class LoanUseCases implements IUseloan {
+export class StudentUseCase implements IStudentUseCase {
     constructor(
-        private loanRepository: IRepository<Loan>,
-        private bookRepository: IRepository<Book>,
-        private studentRepository: IRepository<Student>
+        private studentRepository: IRepository<Student>,
+        private loanRepository: IRepository<Loan>
     ) { }
 
-    lendBook(bookId: string, studentId: string): { success: boolean; message: string; loan?: Loan } {
-        const book = this.bookRepository.findbyid(bookId)[0];
-        if (!book) {
-            return { success: false, message: "El libro no existe" };
+    register(student: Student): boolean {
+        if (!student.id || !student.identification || !student.name) {
+            return false;
         }
-        if (!book.available) {
-            return { success: false, message: "El libro no está disponible" };
-        }
-
-        const student = this.studentRepository.findbyid(studentId)[0];
-        if (!student) {
-            return { success: false, message: "El estudiante no existe" };
-        }
-
-        const activeLoans = this.loanRepository.read().filter(loan => loan.student.id === studentId && !loan.returndate);
-        if (activeLoans.length >= 3) {
-            return { success: false, message: "El estudiante tiene demasiados préstamos activos" };
-        }
-
-        const loanDate = new Date();
-        const returndate = new Date(loanDate);
-        returndate.setDate(loanDate.getDate() + 3);
-
-        const loan: Loan = {
-            id: this.generateLoanId(),
-            book,
-            student,
-            loanDate,
-            returndate
-        };
-
-        this.loanRepository.create(loan);
-        book.available = false;
-        this.bookRepository.update(book);
-
-        return { success: true, message: "Libro prestado con devolución en 3 días", loan };
-    }
-
-    returnBook(bookId: string): { success: boolean; message: string } {
-        const loan = this.loanRepository.read().find(loan => loan.book.id === bookId && !loan.returndate);
-        if (!loan) {
-            return { success: false, message: "No existe préstamo activo para este libro" };
-        }
-
-        loan.returndate = new Date();
-        this.loanRepository.update(loan);
-        loan.book.available = true;
-        this.bookRepository.update(loan.book);
-
-        return { success: true, message: "Libro devuelto" };
-    }
-
-    private generateLoanId(): string {
-        return Math.random().toString(36).substring(2, 10);
-    }
-
-    // ... otros métodos
-}
-
-//------UI---------
-
-export class MenuConsole implements IView {
-
-    constructor(
-        private studentMenu: IView,
-        private bookMenu: IView,
-        private loanMenu: IView
-    ) { }
-
-    execute() {
-
-        let run = true;
-
-        while (run) {
-
-            this.showMenu();
-
-            const option = Number(prompt("Seleccione: "));
-
-            switch (option) {
-
-                case 1:
-                    this.studentMenu.execute();
-                    break;
-
-                case 2:
-                    this.bookMenu.execute();
-                    break;
-
-                case 3:
-                    this.loanMenu.execute();
-                    break;
-
-                case 0:
-                    run = false;
-            }
-
-        }
-
-    }
-
-    private showMenu(): void {
-        console.log("\n=============================================");
-        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
-        console.log("=============================================");
-        const opciones: string[] = [
-            "1. Registrar, Eliminar, Ver, Actualizar,  Buscar estudiante",
-            "2. Registrar, Eliminar, Ver, Actualizar,  Buscar libro",
-            "3. Prestar libro, Devolver libro,  Mostrar prestamos, Buscar Prestamo, Actualizar Prestamo",
-            "0. Salir"
-        ];
-        for (const opcion of opciones) {
-            console.log(opcion);
-        }
-    }
-
-}
-
-//--------------------
-
-//prueba en console y usecase
-
-export class Usecasetest<T> implements IUseCases<T> {
-
-    constructor(private repository: IRepository<T>) { }
-
-    register(item: any) {
-        return this.repository.create(item);
+        return this.studentRepository.create(student);
     }
 
     erase(id: string) {
-        return this.repository.delete(id);
+        const activeLoans = this.loanRepository.read().filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
+
+        if (activeLoans.length > 0) {
+            return false;
+        }
+
+        return this.studentRepository.delete(id);
     }
 
-    actualize(item: any) {
-        return this.repository.update(item);
+    actualize(student: Student): boolean {
+        return this.studentRepository.update(student);
     }
 
-    show() {
-        return this.repository.read()
+    show(): Student[] {
+        return this.studentRepository.read();
+    }
+
+    getById(id: string): Student | null {
+        const result = this.studentRepository.findbyid(id);
+        return result.length > 0 ? result[0] : null;
     }
 }
 
-export class Loanusecase implements IUseloancase {
+export class BookUseCase implements IBookUseCase {
+    constructor(
+        private bookRepository: IRepository<Book>,
+    ) { }
+
+    register(book: Book): boolean {
+        if (!book.id || !book.title || !book.author) 
+            { return false; }
+        book.available = true;
+        return this.bookRepository.create(book);
+    }
+
+    erase(id: string) {
+        const book = this.getById(id);
+        if (!book) { return false; }
+
+        if (!book.available) {
+            return false;
+        }
+
+        return this.bookRepository.delete(id);
+    }
+
+    actualize(book: Book): boolean {
+        const newbook = this.getById(book.id);
+        if (!newbook.available) {
+            return false;
+        }
+        return this.bookRepository.update(book);
+    }
+
+    show(): Book[] {
+        return this.bookRepository.read();
+    }
+
+    getById(id: string) {
+        return this.bookRepository.findbyid(id)[0];
+    }
+}
+
+export class Loanusecase implements IUsecaseloan {
     constructor(
         private loanrepository: IRepository<Loan>,
         private bookrepository: IRepository<Book>,
-        private studentrepository: IRepository<Student>){}
+        private studentrepository: IRepository<Student>) { }
 
     lendBook(bookId: string, studentId: string) {
         const idbook = bookId
@@ -343,13 +272,69 @@ export class Loanusecase implements IUseloancase {
     show() {
         return this.loanrepository.read()
     }
-    
 }
 
-//----test-of-console------
+//------UI---------
 
-export class Studentconsolestest implements IView {
-    constructor(private studentusecase: IUseCases<Student>) { }
+export class MenuConsole implements IView {
+
+    constructor(
+        private studentMenu: IView,
+        private bookMenu: IView,
+        private loanMenu: IView
+    ) { }
+
+    execute() {
+
+        let run = true;
+
+        while (run) {
+
+            this.showMenu();
+
+            const option = Number(prompt("Seleccione: "));
+
+            switch (option) {
+
+                case 1:
+                    this.studentMenu.execute();
+                    break;
+
+                case 2:
+                    this.bookMenu.execute();
+                    break;
+
+                case 3:
+                    this.loanMenu.execute();
+                    break;
+
+                case 0:
+                    run = false;
+            }
+
+        }
+
+    }
+
+    private showMenu(): void {
+        console.log("\n=============================================");
+        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+        console.log("=============================================");
+        const opciones: string[] = [
+            "1. Registrar, Eliminar, Ver, Actualizar,  Buscar estudiante",
+            "2. Registrar, Eliminar, Ver, Actualizar,  Buscar libro",
+            "3. Prestar libro, Devolver libro,  Mostrar prestamos, Buscar Prestamo, Actualizar Prestamo",
+            "0. Salir"
+        ];
+        for (const opcion of opciones) {
+            console.log(opcion);
+        }
+    }
+
+}
+
+export class Studentconsole implements IView {
+    constructor(private studentusecase: IStudentUseCase) { }
 
     execute() {
         let run = true;
@@ -397,23 +382,33 @@ export class Studentconsolestest implements IView {
     private inputstudent(): Student {
 
         const id = prompt("ID: ");
-        const name = prompt("Nombre: ");
-        const identification = prompt("Identificación: ");
-        const schoolgrade = prompt("Grado Escolar: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
 
-        return {
-            id,
-            name,
-            identification,
-            schoolgrade
-        };
+        const name = prompt("Nombre: ");
+        if (!/^[a-zA-Z\s]+$/.test(name)) {
+            throw new Error("El nombre solo puede contener letras");
+        }
+
+        const identification = prompt("Identificación: ");
+        if (!/^\d+$/.test(identification)) {
+            throw new Error("La identificación debe ser numérica");
+        }
+
+        const schoolgrade = prompt("Grado Escolar: ");
+        if (!schoolgrade || schoolgrade.trim() === "") {
+            throw new Error("El grado escolar no puede estar vacío");
+        }
+
+        return { id, name, identification, schoolgrade };
     }
 
     private registerStudent() {
         const student = this.inputstudent();
         const result = this.studentusecase.register(student);
-        if (!result){
-            console.log("El estudiante ya existe con este id")
+        if (!result) {
+            console.log("El estudiante no se puede registrar")
         } else {
             console.log("Estudiante registrado")
         }
@@ -421,8 +416,11 @@ export class Studentconsolestest implements IView {
 
     private erasestudent() {
         const id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         const status = this.studentusecase.erase(id);
-        if(!status) {
+        if (!status) {
             console.log("El estudiante no se encuentra con este id")
         } else {
             console.log("Estudiante Eliminado")
@@ -432,17 +430,15 @@ export class Studentconsolestest implements IView {
     private actualizestudent() {
         const student = this.inputstudent();
         const existing = this.studentusecase.actualize(student);
-        if (!existing){
-            console.log("El estudiante no fue encontrado y no fue actualizado")
+        if (!existing) {
+            console.log("El estudiante no fue actualizado")
         } else {
             console.log("Estudiante actualizado")
         }
     }
 
     private showstudent() {
-        
         let students: Student[] = this.studentusecase.show()
-
         let studentsview = students.map(student => ({
             id: student.id,
             nombre: student.name,
@@ -450,11 +446,14 @@ export class Studentconsolestest implements IView {
             grado: student.schoolgrade
         }));
 
-        console.table(studentsview); 
+        console.table(studentsview);
     }
 
     private searchstudent() {
         const id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         let students = this.studentusecase.show();
         let student = students.filter((item: any) => item.id === id);
         if (student.length === 0) {
@@ -465,8 +464,8 @@ export class Studentconsolestest implements IView {
     }
 }
 
-export class Bookconsolestest implements IView {
-    constructor(private bookusecase: IUseCases<Book>) { }
+export class Bookconsole implements IView {
+    constructor(private bookusecase: IBookUseCase) { }
 
     execute() {
         let run = true;
@@ -529,7 +528,7 @@ export class Bookconsolestest implements IView {
     private registerbook() {
         const student = this.inputbook();
         const result = this.bookusecase.register(student);
-        if (!result){
+        if (!result) {
             console.log("El libro ya existe con este id")
         } else {
             console.log("Libro registrado")
@@ -539,7 +538,7 @@ export class Bookconsolestest implements IView {
     private erasebook() {
         const id = prompt("ID: ");
         const status = this.bookusecase.erase(id);
-        if(!status) {
+        if (!status) {
             console.log("El libro no se encuentra con este id")
         } else {
             console.log("Libro eliminado")
@@ -549,7 +548,7 @@ export class Bookconsolestest implements IView {
     private actualizebook() {
         const student = this.inputbook();
         const existing = this.bookusecase.actualize(student);
-        if (!existing){
+        if (!existing) {
             console.log("El Libro no fue encontrado y no fue actualizado")
         } else {
             console.log("Libro actualizado")
@@ -558,16 +557,16 @@ export class Bookconsolestest implements IView {
 
     private showbook() {
 
-        let books:Book[] = this.bookusecase.show()
+        let books: Book[] = this.bookusecase.show()
 
         let booksview = books.map(book => ({
             id: book.id,
             titulo: book.title,
             autor: book.author,
             disponible: book.available ? "Sí" : "No"
-            }));
+        }));
 
-        console.table(booksview); 
+        console.table(booksview);
     }
 
     private searchbook() {
@@ -582,9 +581,9 @@ export class Bookconsolestest implements IView {
     }
 }
 
-export class LoanConsoletest implements IView {
+export class LoanConsole implements IView {
 
-    constructor(private usecaseloan: IUseloancase){}
+    constructor(private usecaseloan: IUsecaseloan) { }
 
     execute() {
         let run = true;
@@ -635,10 +634,10 @@ export class LoanConsoletest implements IView {
         let idstudent = prompt("ID Estudiante: ");
         let status = this.usecaseloan.lendBook(idbook, idstudent);
         if (!status) {
-            console.log("No se puedo hacer el prestamo")
+            console.log("No se puede hacer el prestamo")
         } else {
             console.log("Prestamo exitoso")
-        }    
+        }
     }
 
     private returnbook() {
@@ -656,22 +655,22 @@ export class LoanConsoletest implements IView {
         console.log("\n===== PRÉSTAMOS =====")
 
         if (loans.length === 0) {
-        console.log("No hay préstamos")
-        return
+            console.log("No hay préstamos")
+            return
         }
 
         loans.forEach(loan => {
-        console.log({
-        id: loan.id,
-        Book: loan.book.title,
-        Student: loan.student.name,
-        fechaprestamo: loan.loanDate,
-        fechaDevolucion: loan.returndate || "Pendiente"
-      })
-    })
+            console.log({
+                id: loan.id,
+                Book: loan.book.title,
+                Student: loan.student.name,
+                fechaprestamo: loan.loanDate,
+                fechaDevolucion: loan.returndate || "Pendiente"
+            })
+        })
     }
 
-    
+
 }
 
 //-----CLASE-CONSUMIDORA-APP--------------
@@ -690,15 +689,15 @@ const repositorybook = new MemoryRAM<Book>();
 const repositorystudent = new MemoryRAM<Student>();
 const repositoryloan = new MemoryRAM<Loan>();
 
-const studentusecase = new Usecasetest<Student>(repositorystudent);
-const bookusecase = new Usecasetest<Book>(repositorybook);
 const loanusecase = new Loanusecase(repositoryloan, repositorybook, repositorystudent)
+const studentusecase = new StudentUseCase(repositorystudent, repositoryloan)
+const bookusecase = new BookUseCase(repositorybook)
 
-const studentconsoletest = new Studentconsolestest(studentusecase);
-const bookconsoletest = new Bookconsolestest(bookusecase);
-const loanconsoletest = new LoanConsoletest(loanusecase)
+const studentconsoletest = new Studentconsole(studentusecase);
+const bookconsoletest = new Bookconsole(bookusecase);
+const loanconsole = new LoanConsole(loanusecase)
 
-const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsoletest);
+const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
 
 const app = new App(menu);
 app.run();
