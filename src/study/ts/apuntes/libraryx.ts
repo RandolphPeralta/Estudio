@@ -157,11 +157,6 @@ export class StudentUseCase implements IStudentUseCase {
     show(): Student[] {
         return this.studentRepository.read();
     }
-
-    getById(id: string): Student | null {
-        const result = this.studentRepository.findbyid(id);
-        return result.length > 0 ? result[0] : null;
-    }
 }
 
 export class BookUseCase implements IBookUseCase {
@@ -177,7 +172,7 @@ export class BookUseCase implements IBookUseCase {
     }
 
     erase(id: string) {
-        const book = this.getById(id);
+        const book = this.bookRepository.findbyid(id)[0];
         if (!book) { return false; }
 
         if (!book.available) {
@@ -188,7 +183,7 @@ export class BookUseCase implements IBookUseCase {
     }
 
     actualize(book: Book): boolean {
-        const newbook = this.getById(book.id);
+        const newbook = this.bookRepository.findbyid(book.id)[0];
         if (!newbook.available) {
             return false;
         }
@@ -197,10 +192,6 @@ export class BookUseCase implements IBookUseCase {
 
     show(): Book[] {
         return this.bookRepository.read();
-    }
-
-    getById(id: string) {
-        return this.bookRepository.findbyid(id)[0];
     }
 }
 
@@ -230,15 +221,12 @@ export class Loanusecase implements IUsecaseloan {
         }
 
         const loanDate = new Date();
-        const returndate = new Date(loanDate);
-        returndate.setDate(loanDate.getDate() + 3);
 
         const loan: Loan = {
             id: Math.random().toString(),
             book,
             student,
-            loanDate,
-            returndate
+            loanDate
         };
 
         const existingLoan = this.loanrepository.findbyid(loan.id);
@@ -270,7 +258,7 @@ export class Loanusecase implements IUsecaseloan {
     }
 
     show() {
-        return this.loanrepository.read()
+        return this.loanrepository.read();
     }
 }
 
@@ -406,7 +394,7 @@ export class Studentconsole implements IView {
 
     private registerStudent() {
         const student = this.inputstudent();
-        const result = this.studentusecase.register(student);
+        const result: boolean = this.studentusecase.register(student);
         if (!result) {
             console.log("El estudiante no se puede registrar")
         } else {
@@ -419,7 +407,7 @@ export class Studentconsole implements IView {
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        const status = this.studentusecase.erase(id);
+        const status: boolean = this.studentusecase.erase(id);
         if (!status) {
             console.log("El estudiante no se encuentra con este id")
         } else {
@@ -429,7 +417,7 @@ export class Studentconsole implements IView {
 
     private actualizestudent() {
         const student = this.inputstudent();
-        const existing = this.studentusecase.actualize(student);
+        const existing: boolean = this.studentusecase.actualize(student);
         if (!existing) {
             console.log("El estudiante no fue actualizado")
         } else {
@@ -536,7 +524,7 @@ export class Bookconsole implements IView {
 
     private registerbook() {
         const student = this.inputbook();
-        const result = this.bookusecase.register(student);
+        const result: boolean = this.bookusecase.register(student);
         if (!result) {
             console.log("El libro ya existe con este id")
         } else {
@@ -549,7 +537,7 @@ export class Bookconsole implements IView {
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        const status = this.bookusecase.erase(id);
+        const status: boolean = this.bookusecase.erase(id);
         if (!status) {
             console.log("El libro no se encuentra con este id")
         } else {
@@ -559,7 +547,7 @@ export class Bookconsole implements IView {
 
     private actualizebook() {
         const student = this.inputbook();
-        const existing = this.bookusecase.actualize(student);
+        const existing: boolean = this.bookusecase.actualize(student);
         if (!existing) {
             console.log("El Libro no fue encontrado y no fue actualizado")
         } else {

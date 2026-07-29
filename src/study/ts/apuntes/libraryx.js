@@ -89,7 +89,7 @@ var BookUseCase = /** @class */ (function () {
         return this.bookRepository.create(book);
     };
     BookUseCase.prototype.erase = function (id) {
-        var book = this.getById(id);
+        var book = this.bookRepository.findbyid(id)[0];
         if (!book) {
             return false;
         }
@@ -99,7 +99,7 @@ var BookUseCase = /** @class */ (function () {
         return this.bookRepository.delete(id);
     };
     BookUseCase.prototype.actualize = function (book) {
-        var newbook = this.getById(book.id);
+        var newbook = this.bookRepository.findbyid(book.id)[0];
         if (!newbook.available) {
             return false;
         }
@@ -135,14 +135,11 @@ var Loanusecase = /** @class */ (function () {
             return false;
         }
         var loanDate = new Date();
-        var returndate = new Date(loanDate);
-        returndate.setDate(loanDate.getDate() + 3);
         var loan = {
             id: Math.random().toString(),
             book: book,
             student: student,
-            loanDate: loanDate,
-            returndate: returndate
+            loanDate: loanDate
         };
         var existingLoan = this.loanrepository.findbyid(loan.id);
         if (existingLoan.length > 0) {
