@@ -678,8 +678,6 @@ export class LoanConsole implements IView {
             })
         })
     }
-
-
 }
 
 //-----CLASE-CONSUMIDORA-APP--------------
