@@ -383,22 +383,22 @@ export class Studentconsole implements IView {
 
         const id = prompt("ID: ");
         if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
         }
 
         const name = prompt("Nombre: ");
         if (!/^[a-zA-Z\s]+$/.test(name)) {
-            throw new Error("El nombre solo puede contener letras");
+            console.log("El nombre solo puede contener letras");
         }
 
         const identification = prompt("Identificación: ");
         if (!/^\d+$/.test(identification)) {
-            throw new Error("La identificación debe ser numérica");
+            console.log("La identificación debe ser numérica");
         }
 
         const schoolgrade = prompt("Grado Escolar: ");
         if (!schoolgrade || schoolgrade.trim() === "") {
-            throw new Error("El grado escolar no puede estar vacío");
+            console.log("El grado escolar no puede estar vacío");
         }
 
         return { id, name, identification, schoolgrade };
@@ -513,8 +513,17 @@ export class Bookconsole implements IView {
     private inputbook(): Book {
 
         const id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         const title = prompt("Titulo: ");
+        if (!title || title.trim() === "") {
+            throw new Error("El titulo no puede estar vacío");
+        }
         const author = prompt("Autor: ");
+        if (!author || author.trim() === "") {
+            throw new Error("El autor no puede estar vacío");
+        }
         const available = true;
 
         return {
@@ -537,6 +546,9 @@ export class Bookconsole implements IView {
 
     private erasebook() {
         const id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         const status = this.bookusecase.erase(id);
         if (!status) {
             console.log("El libro no se encuentra con este id")
@@ -571,6 +583,9 @@ export class Bookconsole implements IView {
 
     private searchbook() {
         const id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         let students = this.bookusecase.show();
         let student = students.filter((item: any) => item.id === id);
         if (student.length === 0) {
@@ -631,7 +646,13 @@ export class LoanConsole implements IView {
 
     private lendbook() {
         let idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         let idstudent = prompt("ID Estudiante: ");
+        if (!idstudent || idstudent.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         let status = this.usecaseloan.lendBook(idbook, idstudent);
         if (!status) {
             console.log("No se puede hacer el prestamo")

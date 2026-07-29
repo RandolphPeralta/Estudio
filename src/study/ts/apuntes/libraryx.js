@@ -82,7 +82,7 @@ var BookUseCase = /** @class */ (function () {
         this.bookRepository = bookRepository;
     }
     BookUseCase.prototype.register = function (book) {
-        if (!book.id || !book.title) {
+        if (!book.id || !book.title || !book.author) {
             return false;
         }
         book.available = true;
@@ -99,14 +99,17 @@ var BookUseCase = /** @class */ (function () {
         return this.bookRepository.delete(id);
     };
     BookUseCase.prototype.actualize = function (book) {
+        var newbook = this.getById(book.id);
+        if (!newbook.available) {
+            return false;
+        }
         return this.bookRepository.update(book);
     };
     BookUseCase.prototype.show = function () {
         return this.bookRepository.read();
     };
     BookUseCase.prototype.getById = function (id) {
-        var result = this.bookRepository.findbyid(id);
-        return result.length > 0 ? result[0] : null;
+        return this.bookRepository.findbyid(id)[0];
     };
     return BookUseCase;
 }());
@@ -259,15 +262,22 @@ var Studentconsole = /** @class */ (function () {
     };
     Studentconsole.prototype.inputstudent = function () {
         var id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
         var name = prompt("Nombre: ");
+        if (!/^[a-zA-Z\s]+$/.test(name)) {
+            console.log("El nombre solo puede contener letras");
+        }
         var identification = prompt("Identificación: ");
+        if (!/^\d+$/.test(identification)) {
+            console.log("La identificación debe ser numérica");
+        }
         var schoolgrade = prompt("Grado Escolar: ");
-        return {
-            id: id,
-            name: name,
-            identification: identification,
-            schoolgrade: schoolgrade
-        };
+        if (!schoolgrade || schoolgrade.trim() === "") {
+            console.log("El grado escolar no puede estar vacío");
+        }
+        return { id: id, name: name, identification: identification, schoolgrade: schoolgrade };
     };
     Studentconsole.prototype.registerStudent = function () {
         var student = this.inputstudent();
@@ -281,6 +291,9 @@ var Studentconsole = /** @class */ (function () {
     };
     Studentconsole.prototype.erasestudent = function () {
         var id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         var status = this.studentusecase.erase(id);
         if (!status) {
             console.log("El estudiante no se encuentra con este id");
@@ -311,6 +324,9 @@ var Studentconsole = /** @class */ (function () {
     };
     Studentconsole.prototype.searchstudent = function () {
         var id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         var students = this.studentusecase.show();
         var student = students.filter(function (item) { return item.id === id; });
         if (student.length === 0) {
@@ -370,8 +386,17 @@ var Bookconsole = /** @class */ (function () {
     };
     Bookconsole.prototype.inputbook = function () {
         var id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         var title = prompt("Titulo: ");
+        if (!title || title.trim() === "") {
+            throw new Error("El titulo no puede estar vacío");
+        }
         var author = prompt("Autor: ");
+        if (!author || author.trim() === "") {
+            throw new Error("El autor no puede estar vacío");
+        }
         var available = true;
         return {
             id: id,
@@ -392,6 +417,9 @@ var Bookconsole = /** @class */ (function () {
     };
     Bookconsole.prototype.erasebook = function () {
         var id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         var status = this.bookusecase.erase(id);
         if (!status) {
             console.log("El libro no se encuentra con este id");
@@ -422,6 +450,9 @@ var Bookconsole = /** @class */ (function () {
     };
     Bookconsole.prototype.searchbook = function () {
         var id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         var students = this.bookusecase.show();
         var student = students.filter(function (item) { return item.id === id; });
         if (student.length === 0) {
@@ -473,7 +504,13 @@ var LoanConsole = /** @class */ (function () {
     };
     LoanConsole.prototype.lendbook = function () {
         var idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         var idstudent = prompt("ID Estudiante: ");
+        if (!idstudent || idstudent.trim() === "") {
+            throw new Error("El ID no puede estar vacío");
+        }
         var status = this.usecaseloan.lendBook(idbook, idstudent);
         if (!status) {
             console.log("No se puede hacer el prestamo");
