@@ -13,7 +13,7 @@ Leer libro clean arquitecture y comparar un poco la aquitectura limpia con la ar
 
 //------------
 La Arquitectura Limpia (clean arquitecture): es un enfoque de diseño de software 
-introducido por Robert C.Martin que organiza el codigo en capas concentricas.
+introducido por Robert C.Martin que organiza el codigo en capas concentricas. ---
 
 Sus tres ideas principales son:
 1. Seprar la logia de negocio de los detalles tecnicos.
