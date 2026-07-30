@@ -44,7 +44,6 @@ var MemoryRAM = /** @class */ (function () {
     return MemoryRAM;
 }());
 exports.MemoryRAM = MemoryRAM;
-//--------APPLICATION-----
 //-------------Usescases-------
 var StudentUseCase = /** @class */ (function () {
     function StudentUseCase(studentRepository, loanRepository) {
@@ -69,10 +68,6 @@ var StudentUseCase = /** @class */ (function () {
     };
     StudentUseCase.prototype.show = function () {
         return this.studentRepository.read();
-    };
-    StudentUseCase.prototype.getById = function (id) {
-        var result = this.studentRepository.findbyid(id);
-        return result.length > 0 ? result[0] : null;
     };
     return StudentUseCase;
 }());
@@ -107,9 +102,6 @@ var BookUseCase = /** @class */ (function () {
     };
     BookUseCase.prototype.show = function () {
         return this.bookRepository.read();
-    };
-    BookUseCase.prototype.getById = function (id) {
-        return this.bookRepository.findbyid(id)[0];
     };
     return BookUseCase;
 }());
