@@ -163,7 +163,7 @@ export class BookUseCase implements IBookUseCase {
     ) { }
 
     register(book: Book): boolean {
-        if (!book.id || !book.title || !book.author) 
+        if (!book.id || !book.title || !book.author)
             { return false; }
         book.available = true;
         return this.bookRepository.create(book);
