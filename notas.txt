@@ -22,4 +22,5 @@ Sus tres ideas principales son:
 
 Tarea:  Refactorizar el codigo con el fin de tener los conceptos claros de la arquitectura limpia
 
-Toca mirar las comprobaciones de entradas vacias o mal hechas con signos, y demas
+Toca mirar las comprobaciones de entradas vacias o mal hechas con signos, y demas 
+no aplicar componentes o mildhaware
