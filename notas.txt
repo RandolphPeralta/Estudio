@@ -24,3 +24,5 @@ Tarea:  Refactorizar el codigo con el fin de tener los conceptos claros de la ar
 
 Toca mirar las comprobaciones de entradas vacias o mal hechas con signos, y demas 
 no aplicar componentes o mildhaware
+
+Estudiar mas a fondo los servicios y casos de uso respecto a los detalles
