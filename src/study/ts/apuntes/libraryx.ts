@@ -193,18 +193,18 @@ export class Loanservice implements Iserviceloan {
     }
 
     returnBook(bookId: string) {
-        const loan = this.loanrepository.read().find(loan => loan.book.id === bookId);
+        // const loan = this.loanrepository.read().find(loan => loan.book.id === bookId);
 
-        if (!loan) {
-            return false;
-        }
+        // if (!loan) {
+        //     return false;
+        // }
 
-        loan.returndate = new Date();
-        this.loanrepository.update(loan);
-        loan.book.available = true;
-        this.bookrepository.update(loan.book);
+        // loan.returndate = new Date();
+        // this.loanrepository.update(loan);
+        // loan.book.available = true;
+        // this.bookrepository.update(loan.book);
 
-        return true
+        // return true
     }
 
     read() {
@@ -362,7 +362,7 @@ export class Studentconsole implements IView {
             return;
         }
 
-        let activeLoans: Loan[] = this.loanservice.read()
+        let activeLoans: Loan[] = this.loanservice.read();
         let studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
 
         if (studentactiveloan.length > 0) {
@@ -495,11 +495,13 @@ export class Bookconsole implements IView {
             console.log("El ID no puede estar vacío");
             return id;
         }
+
         let books: Book[] = this.bookservice.read();
         let book = books.filter(findbook => findbook.id = id)[0]
         if (!book.available) {
             return;
         }
+
         const status: boolean = this.bookservice.delete(id);
         console.log(status ? "Libro eliminado" : "No se pudo eliminar");
     }
@@ -512,7 +514,7 @@ export class Bookconsole implements IView {
 
     private readbook() {
 
-        let books: Book[] = this.bookservice.read()
+        let books: Book[] = this.bookservice.read();
 
         let booksview = books.map(book => ({
             id: book.id,
@@ -656,20 +658,15 @@ export class LoanConsole implements IView {
         let loans: Loan[] = this.loanservice.read()
         const loan = loans.find(loan => loan.book.id === idbook);
         if (!loan) {
+            console.log("El libro no existe con este id")
             return;
         }
 
         loan.returndate = new Date();
-        this.loanservice.update(loan);
+        const status = this.loanservice.update(loan);
         loan.book.available = true;
         this.bookservice.update(loan.book);
-
-        let status = this.loanservice.returnBook(idbook);
-        if (!status) {
-            console.log("No se pudo devoler")
-        } else {
-            console.log("Libro devuelto")
-        }
+        console.log(status? "Libro devuelto" : "No se pudo devolver")
     }
 
     private readloan() {

@@ -95,46 +95,19 @@ var Loanservice = /** @class */ (function () {
     Loanservice.prototype.delete = function (id) {
         return this.loanrepository.delete(id);
     };
-    Loanservice.prototype.lendBook = function (bookId, studentId) {
-        // const idbook = bookId
-        // const book = this.bookrepository.findbyid(idbook)[0];
-        // if (!book) {
-        //     return false;
-        // }
-        // if (!book.available) {
-        //     return false;
-        // }
-        // const idstudent = studentId
-        // const student = this.studentrepository.findbyid(idstudent)[0];
-        // if (!student) {
-        //     return false;
-        // }
-        // const loanDate = new Date();
-        // const loan: Loan = {
-        //     id: Math.random().toString(),
-        //     book,
-        //     student,
-        //     loanDate
-        // };
-        // const existingLoan = this.loanrepository.findbyid(loan.id);
-        // if (existingLoan.length > 0) {
-        //     return false;
-        // }
-        // this.loanrepository.create(loan);
-        // book.available = false;
-        // this.bookrepository.update(book);
-        // return true
+    Loanservice.prototype.update = function (loan) {
+        return this.loanrepository.update(loan);
     };
     Loanservice.prototype.returnBook = function (bookId) {
-        var loan = this.loanrepository.read().find(function (loan) { return loan.book.id === bookId; });
-        if (!loan) {
-            return false;
-        }
-        loan.returndate = new Date();
-        this.loanrepository.update(loan);
-        loan.book.available = true;
-        this.bookrepository.update(loan.book);
-        return true;
+        // const loan = this.loanrepository.read().find(loan => loan.book.id === bookId);
+        // if (!loan) {
+        //     return false;
+        // }
+        // loan.returndate = new Date();
+        // this.loanrepository.update(loan);
+        // loan.book.available = true;
+        // this.bookrepository.update(loan.book);
+        // return true
     };
     Loanservice.prototype.read = function () {
         return this.loanrepository.read();
@@ -519,14 +492,22 @@ var LoanConsole = /** @class */ (function () {
         // }
     };
     LoanConsole.prototype.returnbook = function () {
-        var idBook = prompt("ID Libro: ");
-        var status = this.loanservice.returnBook(idBook);
-        if (!status) {
-            console.log("No se pudo devoler");
+        var idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            console.log("El ID no puede estar vacío");
+            return idbook;
         }
-        else {
-            console.log("Libro devuelto");
+        var loans = this.loanservice.read();
+        var loan = loans.find(function (loan) { return loan.book.id === idbook; });
+        if (!loan) {
+            console.log("El libro no existe con este id");
+            return;
         }
+        loan.returndate = new Date();
+        var status = this.loanservice.update(loan);
+        loan.book.available = true;
+        this.bookservice.update(loan.book);
+        console.log(status ? "Libro devuelto" : "No se pudo devolver");
     };
     LoanConsole.prototype.readloan = function () {
         var loans = this.loanservice.read();
