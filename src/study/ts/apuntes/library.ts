@@ -246,6 +246,9 @@ export class MenuConsole implements IView {
     const id = String(prompt("ID: "));
     const Eliminatestudent = this.StudentPersistence.delete(id)
 
+    const activeLoans = this.LoanPersistence.read().filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
+    if (activeLoans.length > 0) {return;}
+
      if (Eliminatestudent) {
       console.log("Estudiante Estudiante Eliminado");
     } else {
@@ -265,6 +268,7 @@ export class MenuConsole implements IView {
       identification: identification,
       schoolgrade: schoolgrade
     };
+    
 
     const Updatedstudent = this.StudentPersistence.update(Existingstudent);
 
@@ -411,11 +415,9 @@ export class MenuConsole implements IView {
 
   private Returnbook() {
     const idBook = String(prompt("ID del libro: "));
-    const Loans = this.LoanPersistence.read()
+    const Loans = this.LoanPersistence.read();
 
-    const Loan = Loans.find(borrowed =>
-      borrowed.book.id === idBook && !borrowed.returndate
-    )
+    const Loan = Loans.find(borrowed => borrowed.book.id === idBook && !borrowed.returndate);
 
     if (!Loan) {
       console.log("No hay préstamo activo para este libro")

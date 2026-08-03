@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Loanusecase = exports.BookUseCase = exports.StudentUseCase = exports.MemoryRAM = void 0;
+exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Loanservice = exports.Bookservice = exports.Studentservice = exports.MemoryRAM = void 0;
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
 //--------INFRAESTRUCTURE---------
@@ -44,46 +44,43 @@ var MemoryRAM = /** @class */ (function () {
     return MemoryRAM;
 }());
 exports.MemoryRAM = MemoryRAM;
-//-------------Usescases-------
-var StudentUseCase = /** @class */ (function () {
-    function StudentUseCase(studentRepository, loanRepository) {
+//-------------Services---------
+var Studentservice = /** @class */ (function () {
+    function Studentservice(studentRepository, loanRepository) {
         this.studentRepository = studentRepository;
         this.loanRepository = loanRepository;
     }
-    StudentUseCase.prototype.register = function (student) {
-        if (!student.id || !student.identification || !student.name) {
-            return false;
-        }
+    Studentservice.prototype.create = function (student) {
         return this.studentRepository.create(student);
     };
-    StudentUseCase.prototype.erase = function (id) {
+    Studentservice.prototype.delete = function (id) {
         var activeLoans = this.loanRepository.read().filter(function (loanstudent) { return loanstudent.student.id === id && !loanstudent.returndate; });
         if (activeLoans.length > 0) {
             return false;
         }
         return this.studentRepository.delete(id);
     };
-    StudentUseCase.prototype.actualize = function (student) {
+    Studentservice.prototype.update = function (student) {
         return this.studentRepository.update(student);
     };
-    StudentUseCase.prototype.show = function () {
+    Studentservice.prototype.read = function () {
         return this.studentRepository.read();
     };
-    return StudentUseCase;
+    return Studentservice;
 }());
-exports.StudentUseCase = StudentUseCase;
-var BookUseCase = /** @class */ (function () {
-    function BookUseCase(bookRepository) {
+exports.Studentservice = Studentservice;
+var Bookservice = /** @class */ (function () {
+    function Bookservice(bookRepository) {
         this.bookRepository = bookRepository;
     }
-    BookUseCase.prototype.register = function (book) {
+    Bookservice.prototype.create = function (book) {
         if (!book.id || !book.title || !book.author) {
             return false;
         }
         book.available = true;
         return this.bookRepository.create(book);
     };
-    BookUseCase.prototype.erase = function (id) {
+    Bookservice.prototype.delete = function (id) {
         var book = this.bookRepository.findbyid(id)[0];
         if (!book) {
             return false;
@@ -93,26 +90,26 @@ var BookUseCase = /** @class */ (function () {
         }
         return this.bookRepository.delete(id);
     };
-    BookUseCase.prototype.actualize = function (book) {
+    Bookservice.prototype.update = function (book) {
         var newbook = this.bookRepository.findbyid(book.id)[0];
         if (!newbook.available) {
             return false;
         }
         return this.bookRepository.update(book);
     };
-    BookUseCase.prototype.show = function () {
+    Bookservice.prototype.read = function () {
         return this.bookRepository.read();
     };
-    return BookUseCase;
+    return Bookservice;
 }());
-exports.BookUseCase = BookUseCase;
-var Loanusecase = /** @class */ (function () {
-    function Loanusecase(loanrepository, bookrepository, studentrepository) {
+exports.Bookservice = Bookservice;
+var Loanservice = /** @class */ (function () {
+    function Loanservice(loanrepository, bookrepository, studentrepository) {
         this.loanrepository = loanrepository;
         this.bookrepository = bookrepository;
         this.studentrepository = studentrepository;
     }
-    Loanusecase.prototype.lendBook = function (bookId, studentId) {
+    Loanservice.prototype.lendBook = function (bookId, studentId) {
         var idbook = bookId;
         var book = this.bookrepository.findbyid(idbook)[0];
         if (!book) {
@@ -142,7 +139,7 @@ var Loanusecase = /** @class */ (function () {
         this.bookrepository.update(book);
         return true;
     };
-    Loanusecase.prototype.returnBook = function (bookId) {
+    Loanservice.prototype.returnBook = function (bookId) {
         var loan = this.loanrepository.read().find(function (loan) { return loan.book.id === bookId; });
         if (!loan) {
             return false;
@@ -153,12 +150,12 @@ var Loanusecase = /** @class */ (function () {
         this.bookrepository.update(loan.book);
         return true;
     };
-    Loanusecase.prototype.show = function () {
+    Loanservice.prototype.read = function () {
         return this.loanrepository.read();
     };
-    return Loanusecase;
+    return Loanservice;
 }());
-exports.Loanusecase = Loanusecase;
+exports.Loanservice = Loanservice;
 //------UI---------
 var MenuConsole = /** @class */ (function () {
     function MenuConsole(studentMenu, bookMenu, loanMenu) {
@@ -169,7 +166,7 @@ var MenuConsole = /** @class */ (function () {
     MenuConsole.prototype.execute = function () {
         var run = true;
         while (run) {
-            this.showMenu();
+            this.readMenu();
             var option = Number(prompt("Seleccione: "));
             switch (option) {
                 case 1:
@@ -186,7 +183,7 @@ var MenuConsole = /** @class */ (function () {
             }
         }
     };
-    MenuConsole.prototype.showMenu = function () {
+    MenuConsole.prototype.readMenu = function () {
         console.log("\n=============================================");
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
         console.log("=============================================");
@@ -205,26 +202,26 @@ var MenuConsole = /** @class */ (function () {
 }());
 exports.MenuConsole = MenuConsole;
 var Studentconsole = /** @class */ (function () {
-    function Studentconsole(studentusecase) {
-        this.studentusecase = studentusecase;
+    function Studentconsole(studentservice) {
+        this.studentservice = studentservice;
     }
     Studentconsole.prototype.execute = function () {
         var run = true;
         while (run) {
-            this.showMenu();
+            this.readMenu();
             var option = Number(prompt("Seleccione: "));
             switch (option) {
                 case 1:
-                    this.registerStudent();
+                    this.createStudent();
                     break;
                 case 2:
-                    this.erasestudent();
+                    this.deletestudent();
                     break;
                 case 3:
-                    this.actualizestudent();
+                    this.updatestudent();
                     break;
                 case 4:
-                    this.showstudent();
+                    this.readstudent();
                     break;
                 case 5:
                     this.searchstudent();
@@ -235,7 +232,7 @@ var Studentconsole = /** @class */ (function () {
             }
         }
     };
-    Studentconsole.prototype.showMenu = function () {
+    Studentconsole.prototype.readMenu = function () {
         var opciones = [
             "1. Registrar estudiante",
             "2. Borrar estudiante",
@@ -253,37 +250,39 @@ var Studentconsole = /** @class */ (function () {
         var id = prompt("ID: ");
         if (!id || id.trim() === "") {
             console.log("El ID no puede estar vacío");
+            return id;
         }
         var name = prompt("Nombre: ");
-        if (!/^[a-zA-Z\s]+$/.test(name)) {
+        if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
             console.log("El nombre solo puede contener letras");
+            return name;
         }
         var identification = prompt("Identificación: ");
-        if (!/^\d+$/.test(identification)) {
+        if (!identification || !/^\d+$/.test(identification)) {
             console.log("La identificación debe ser numérica");
+            return identification;
         }
         var schoolgrade = prompt("Grado Escolar: ");
         if (!schoolgrade || schoolgrade.trim() === "") {
             console.log("El grado escolar no puede estar vacío");
+            return schoolgrade;
         }
         return { id: id, name: name, identification: identification, schoolgrade: schoolgrade };
     };
-    Studentconsole.prototype.registerStudent = function () {
+    Studentconsole.prototype.createStudent = function () {
         var student = this.inputstudent();
-        var result = this.studentusecase.register(student);
-        if (!result) {
-            console.log("El estudiante no se puede registrar");
+        if (!student.id || !student.identification || !student.name || !student.schoolgrade) {
+            return;
         }
-        else {
-            console.log("Estudiante registrado");
-        }
+        var result = this.studentservice.create(student);
+        console.log(result ? "Libro registrado" : "No se pudo registrar");
     };
-    Studentconsole.prototype.erasestudent = function () {
+    Studentconsole.prototype.deletestudent = function () {
         var id = prompt("ID: ");
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        var status = this.studentusecase.erase(id);
+        var status = this.studentservice.delete(id);
         if (!status) {
             console.log("El estudiante no se encuentra con este id");
         }
@@ -291,9 +290,9 @@ var Studentconsole = /** @class */ (function () {
             console.log("Estudiante Eliminado");
         }
     };
-    Studentconsole.prototype.actualizestudent = function () {
+    Studentconsole.prototype.updatestudent = function () {
         var student = this.inputstudent();
-        var existing = this.studentusecase.actualize(student);
+        var existing = this.studentservice.update(student);
         if (!existing) {
             console.log("El estudiante no fue actualizado");
         }
@@ -301,8 +300,8 @@ var Studentconsole = /** @class */ (function () {
             console.log("Estudiante actualizado");
         }
     };
-    Studentconsole.prototype.showstudent = function () {
-        var students = this.studentusecase.show();
+    Studentconsole.prototype.readstudent = function () {
+        var students = this.studentservice.read();
         var studentsview = students.map(function (student) { return ({
             id: student.id,
             nombre: student.name,
@@ -316,7 +315,7 @@ var Studentconsole = /** @class */ (function () {
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        var students = this.studentusecase.show();
+        var students = this.studentservice.read();
         var student = students.filter(function (item) { return item.id === id; });
         if (student.length === 0) {
             console.log("No es posible encontrarlo");
@@ -329,26 +328,26 @@ var Studentconsole = /** @class */ (function () {
 }());
 exports.Studentconsole = Studentconsole;
 var Bookconsole = /** @class */ (function () {
-    function Bookconsole(bookusecase) {
-        this.bookusecase = bookusecase;
+    function Bookconsole(bookservice) {
+        this.bookservice = bookservice;
     }
     Bookconsole.prototype.execute = function () {
         var run = true;
         while (run) {
-            this.showMenu();
+            this.readMenu();
             var option = Number(prompt("Seleccione: "));
             switch (option) {
                 case 1:
-                    this.registerbook();
+                    this.createbook();
                     break;
                 case 2:
-                    this.erasebook();
+                    this.deletebook();
                     break;
                 case 3:
-                    this.actualizebook();
+                    this.updatebook();
                     break;
                 case 4:
-                    this.showbook();
+                    this.readbook();
                     break;
                 case 5:
                     this.searchbook();
@@ -359,7 +358,7 @@ var Bookconsole = /** @class */ (function () {
             }
         }
     };
-    Bookconsole.prototype.showMenu = function () {
+    Bookconsole.prototype.readMenu = function () {
         var opciones = [
             "1. Registrar libro",
             "2. Borrar libro",
@@ -394,9 +393,9 @@ var Bookconsole = /** @class */ (function () {
             available: available
         };
     };
-    Bookconsole.prototype.registerbook = function () {
+    Bookconsole.prototype.createbook = function () {
         var student = this.inputbook();
-        var result = this.bookusecase.register(student);
+        var result = this.bookservice.create(student);
         if (!result) {
             console.log("El libro ya existe con este id");
         }
@@ -404,12 +403,12 @@ var Bookconsole = /** @class */ (function () {
             console.log("Libro registrado");
         }
     };
-    Bookconsole.prototype.erasebook = function () {
+    Bookconsole.prototype.deletebook = function () {
         var id = prompt("ID: ");
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        var status = this.bookusecase.erase(id);
+        var status = this.bookservice.delete(id);
         if (!status) {
             console.log("El libro no se encuentra con este id");
         }
@@ -417,9 +416,9 @@ var Bookconsole = /** @class */ (function () {
             console.log("Libro eliminado");
         }
     };
-    Bookconsole.prototype.actualizebook = function () {
+    Bookconsole.prototype.updatebook = function () {
         var student = this.inputbook();
-        var existing = this.bookusecase.actualize(student);
+        var existing = this.bookservice.update(student);
         if (!existing) {
             console.log("El Libro no fue encontrado y no fue actualizado");
         }
@@ -427,8 +426,8 @@ var Bookconsole = /** @class */ (function () {
             console.log("Libro actualizado");
         }
     };
-    Bookconsole.prototype.showbook = function () {
-        var books = this.bookusecase.show();
+    Bookconsole.prototype.readbook = function () {
+        var books = this.bookservice.read();
         var booksview = books.map(function (book) { return ({
             id: book.id,
             titulo: book.title,
@@ -442,7 +441,7 @@ var Bookconsole = /** @class */ (function () {
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        var students = this.bookusecase.show();
+        var students = this.bookservice.read();
         var student = students.filter(function (item) { return item.id === id; });
         if (student.length === 0) {
             console.log("No es posible encontrarlo");
@@ -455,13 +454,13 @@ var Bookconsole = /** @class */ (function () {
 }());
 exports.Bookconsole = Bookconsole;
 var LoanConsole = /** @class */ (function () {
-    function LoanConsole(usecaseloan) {
-        this.usecaseloan = usecaseloan;
+    function LoanConsole(serviceloan) {
+        this.serviceloan = serviceloan;
     }
     LoanConsole.prototype.execute = function () {
         var run = true;
         while (run) {
-            this.showMenu();
+            this.readMenu();
             var option = Number(prompt("Seleccione: "));
             switch (option) {
                 case 1:
@@ -479,7 +478,7 @@ var LoanConsole = /** @class */ (function () {
             }
         }
     };
-    LoanConsole.prototype.showMenu = function () {
+    LoanConsole.prototype.readMenu = function () {
         var opciones = [
             "1. Prestar libro",
             "2. Devolver libro",
@@ -500,7 +499,7 @@ var LoanConsole = /** @class */ (function () {
         if (!idstudent || idstudent.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        var status = this.usecaseloan.lendBook(idbook, idstudent);
+        var status = this.serviceloan.lendBook(idbook, idstudent);
         if (!status) {
             console.log("No se puede hacer el prestamo");
         }
@@ -510,7 +509,7 @@ var LoanConsole = /** @class */ (function () {
     };
     LoanConsole.prototype.returnbook = function () {
         var idBook = prompt("ID Libro: ");
-        var status = this.usecaseloan.returnBook(idBook);
+        var status = this.serviceloan.returnBook(idBook);
         if (!status) {
             console.log("No se pudo devoler");
         }
@@ -519,7 +518,7 @@ var LoanConsole = /** @class */ (function () {
         }
     };
     LoanConsole.prototype.readloan = function () {
-        var loans = this.usecaseloan.show();
+        var loans = this.serviceloan.read();
         console.log("\n===== PRÉSTAMOS =====");
         if (loans.length === 0) {
             console.log("No hay préstamos");
@@ -553,12 +552,12 @@ exports.App = App;
 var repositorybook = new MemoryRAM();
 var repositorystudent = new MemoryRAM();
 var repositoryloan = new MemoryRAM();
-var loanusecase = new Loanusecase(repositoryloan, repositorybook, repositorystudent);
-var studentusecase = new StudentUseCase(repositorystudent, repositoryloan);
-var bookusecase = new BookUseCase(repositorybook);
-var studentconsoletest = new Studentconsole(studentusecase);
-var bookconsoletest = new Bookconsole(bookusecase);
-var loanconsole = new LoanConsole(loanusecase);
+var loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
+var studentservice = new Studentservice(repositorystudent, repositoryloan);
+var bookservice = new Bookservice(repositorybook);
+var studentconsoletest = new Studentconsole(studentservice);
+var bookconsoletest = new Bookconsole(bookservice);
+var loanconsole = new LoanConsole(loanservice);
 var menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
 var app = new App(menu);
 app.run();

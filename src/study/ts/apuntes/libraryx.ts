@@ -22,32 +22,40 @@ export interface IView {
     execute(): any;
 }
 
-export interface IRegister {
-    register(item: any): any;
+export interface Icreate {
+    create(item: any): any;
 }
 
-export interface IEraser {
-    erase(id: string): any
+export interface Idelete {
+    delete(id: string): any
 }
 
-export interface IActualize {
-    actualize(item: any): any;
+export interface Iupdate {
+    update(item: any): any;
 }
 
-export interface IShow {
-    show(): any;
+export interface Iread {
+    read(): any;
 }
 
-export interface IUsecaseloan extends IShow {
+export interface Iserviceloan extends Iread {
     lendBook(bookId: string, studentId: string): any;
     returnBook(bookId: string): any;
 }
 
-export interface IStudentUseCase extends IRegister, IEraser, IActualize, IShow {
+export interface Iservicestudent extends Icreate, Idelete, Iupdate, Iread {
 
 }
 
-export interface IBookUseCase extends IRegister, IEraser, IActualize, IShow {
+export interface Iservicebook extends Icreate, Idelete, Iupdate, Iread {
+
+}
+
+export interface IService<T> {
+    create(item: T): any;
+    read(): any;
+    update(item: T): any;
+    delete(id: any): any;
 
 }
 
@@ -123,53 +131,41 @@ export class MemoryRAM<T> implements IRepository<T> {
     }
 }
 
-//-------------Usescases-------
+//-------------Services---------
 
-export class StudentUseCase implements IStudentUseCase {
-    constructor(
-        private studentRepository: IRepository<Student>,
-        private loanRepository: IRepository<Loan>
-    ) { }
+export class Studentservice implements Iservicestudent {
+    constructor(private studentRepository: IRepository<Student>) { }
 
-    register(student: Student): boolean {
-        if (!student.id || !student.identification || !student.name) {
-            return false;
-        }
+    create(student: Student): boolean {
         return this.studentRepository.create(student);
     }
 
-    erase(id: string) {
-        const activeLoans = this.loanRepository.read().filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
-
-        if (activeLoans.length > 0) {
-            return false;
-        }
-
+    delete(id: string) {
         return this.studentRepository.delete(id);
     }
 
-    actualize(student: Student): boolean {
+    update(student: Student): boolean {
         return this.studentRepository.update(student);
     }
 
-    show(): Student[] {
+    read(): Student[] {
         return this.studentRepository.read();
     }
 }
 
-export class BookUseCase implements IBookUseCase {
+export class Bookservice implements Iservicebook {
     constructor(
         private bookRepository: IRepository<Book>,
     ) { }
 
-    register(book: Book): boolean {
+    create(book: Book): boolean {
         if (!book.id || !book.title || !book.author)
             { return false; }
         book.available = true;
         return this.bookRepository.create(book);
     }
 
-    erase(id: string) {
+    delete(id: string) {
         const book = this.bookRepository.findbyid(id)[0];
         if (!book) { return false; }
 
@@ -180,7 +176,7 @@ export class BookUseCase implements IBookUseCase {
         return this.bookRepository.delete(id);
     }
 
-    actualize(book: Book): boolean {
+    update(book: Book): boolean {
         const newbook = this.bookRepository.findbyid(book.id)[0];
         if (!newbook.available) {
             return false;
@@ -188,12 +184,12 @@ export class BookUseCase implements IBookUseCase {
         return this.bookRepository.update(book);
     }
 
-    show(): Book[] {
+    read(): Book[] {
         return this.bookRepository.read();
     }
 }
 
-export class Loanusecase implements IUsecaseloan {
+export class Loanservice implements Iserviceloan {
     constructor(
         private loanrepository: IRepository<Loan>,
         private bookrepository: IRepository<Book>,
@@ -255,7 +251,7 @@ export class Loanusecase implements IUsecaseloan {
         return true
     }
 
-    show() {
+    read() {
         return this.loanrepository.read();
     }
 }
@@ -276,7 +272,7 @@ export class MenuConsole implements IView {
 
         while (run) {
 
-            this.showMenu();
+            this.readMenu();
 
             const option = Number(prompt("Seleccione: "));
 
@@ -302,7 +298,7 @@ export class MenuConsole implements IView {
 
     }
 
-    private showMenu(): void {
+    private readMenu(): void {
         console.log("\n=============================================");
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
         console.log("=============================================");
@@ -320,26 +316,26 @@ export class MenuConsole implements IView {
 }
 
 export class Studentconsole implements IView {
-    constructor(private studentusecase: IStudentUseCase) { }
+    constructor(private studentservice: Iservicestudent, private loanservice: Iserviceloan) { }
 
     execute() {
         let run = true;
         while (run) {
-            this.showMenu();
+            this.readMenu();
             const option = Number(prompt("Seleccione: "));
 
             switch (option) {
                 case 1:
-                    this.registerStudent();
+                    this.createStudent();
                     break;
                 case 2:
-                    this.erasestudent();
+                    this.deletestudent();
                     break;
                 case 3:
-                    this.actualizestudent();
+                    this.updatestudent();
                     break;
                 case 4:
-                    this.showstudent();
+                    this.readstudent();
                     break
                 case 5:
                     this.searchstudent();
@@ -351,7 +347,7 @@ export class Studentconsole implements IView {
         }
     }
 
-    private showMenu(): void {
+    private readMenu(): void {
         const opciones: string[] = [
             "1. Registrar estudiante",
             "2. Borrar estudiante",
@@ -370,52 +366,60 @@ export class Studentconsole implements IView {
         const id = prompt("ID: ");
         if (!id || id.trim() === "") {
             console.log("El ID no puede estar vacío");
+            return id;
         }
 
         const name = prompt("Nombre: ");
-        if (!/^[a-zA-Z\s]+$/.test(name)) {
+        if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
             console.log("El nombre solo puede contener letras");
+            return name;
         }
 
         const identification = prompt("Identificación: ");
-        if (!/^\d+$/.test(identification)) {
+        if (!identification || !/^\d+$/.test(identification)) {
             console.log("La identificación debe ser numérica");
+            return identification;
         }
 
         const schoolgrade = prompt("Grado Escolar: ");
         if (!schoolgrade || schoolgrade.trim() === "") {
             console.log("El grado escolar no puede estar vacío");
+            return schoolgrade;
         }
 
         return { id, name, identification, schoolgrade };
     }
 
-    private registerStudent() {
+    private createStudent() {
         const student = this.inputstudent();
-        const result: boolean = this.studentusecase.register(student);
-        if (!result) {
-            console.log("El estudiante no se puede registrar")
-        } else {
-            console.log("Estudiante registrado")
+        if (!student.id || !student.identification || !student.name || !student.schoolgrade) {
+            return;
         }
+        const result: boolean = this.studentservice.create(student);
+        console.log(result ? "Estudiante registrado" : "No se pudo registrar");
     }
 
-    private erasestudent() {
+    private deletestudent() {
         const id = prompt("ID: ");
         if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
+            return;
         }
-        const status: boolean = this.studentusecase.erase(id);
-        if (!status) {
-            console.log("El estudiante no se encuentra con este id")
-        } else {
-            console.log("Estudiante Eliminado")
+
+        const activeLoans: Loan[] = this.loanservice.read()
+        const studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
+
+        if (studentactiveloan.length > 0) {
+            return;
         }
+
+        const status: boolean = this.studentservice.delete(id);
+        console.log(status ? "Estudiante eliminado" : "No se pudo registrar");
     }
 
-    private actualizestudent() {
+    private updatestudent() {
         const student = this.inputstudent();
-        const existing: boolean = this.studentusecase.actualize(student);
+        const existing: boolean = this.studentservice.update(student);
         if (!existing) {
             console.log("El estudiante no fue actualizado")
         } else {
@@ -423,8 +427,8 @@ export class Studentconsole implements IView {
         }
     }
 
-    private showstudent() {
-        let students: Student[] = this.studentusecase.show()
+    private readstudent() {
+        let students: Student[] = this.studentservice.read()
         let studentsview = students.map(student => ({
             id: student.id,
             nombre: student.name,
@@ -440,7 +444,7 @@ export class Studentconsole implements IView {
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        let students = this.studentusecase.show();
+        let students = this.studentservice.read();
         let student = students.filter((item: any) => item.id === id);
         if (student.length === 0) {
             console.log("No es posible encontrarlo")
@@ -451,26 +455,26 @@ export class Studentconsole implements IView {
 }
 
 export class Bookconsole implements IView {
-    constructor(private bookusecase: IBookUseCase) { }
+    constructor(private bookservice: Iservicebook) { }
 
     execute() {
         let run = true;
         while (run) {
-            this.showMenu();
+            this.readMenu();
             const option = Number(prompt("Seleccione: "));
 
             switch (option) {
                 case 1:
-                    this.registerbook();
+                    this.createbook();
                     break;
                 case 2:
-                    this.erasebook();
+                    this.deletebook();
                     break;
                 case 3:
-                    this.actualizebook();
+                    this.updatebook();
                     break;
                 case 4:
-                    this.showbook();
+                    this.readbook();
                     break
                 case 5:
                     this.searchbook();
@@ -482,7 +486,7 @@ export class Bookconsole implements IView {
         }
     }
 
-    private showMenu(): void {
+    private readMenu(): void {
         const opciones: string[] = [
             "1. Registrar libro",
             "2. Borrar libro",
@@ -500,15 +504,20 @@ export class Bookconsole implements IView {
 
         const id = prompt("ID: ");
         if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
+            return id;
         }
+
         const title = prompt("Titulo: ");
         if (!title || title.trim() === "") {
-            throw new Error("El titulo no puede estar vacío");
+            console.log("El titulo no puede estar vacío");
+            return title;
         }
+
         const author = prompt("Autor: ");
         if (!author || author.trim() === "") {
-            throw new Error("El autor no puede estar vacío");
+            console.log("El autor no puede estar vacío");
+            return author
         }
         const available = true;
 
@@ -520,9 +529,9 @@ export class Bookconsole implements IView {
         };
     }
 
-    private registerbook() {
+    private createbook() {
         const student = this.inputbook();
-        const result: boolean = this.bookusecase.register(student);
+        const result: boolean = this.bookservice.create(student);
         if (!result) {
             console.log("El libro ya existe con este id")
         } else {
@@ -530,12 +539,13 @@ export class Bookconsole implements IView {
         }
     }
 
-    private erasebook() {
+    private deletebook() {
         const id = prompt("ID: ");
         if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
+            return id;
         }
-        const status: boolean = this.bookusecase.erase(id);
+        const status: boolean = this.bookservice.delete(id);
         if (!status) {
             console.log("El libro no se encuentra con este id")
         } else {
@@ -543,9 +553,9 @@ export class Bookconsole implements IView {
         }
     }
 
-    private actualizebook() {
+    private updatebook() {
         const student = this.inputbook();
-        const existing: boolean = this.bookusecase.actualize(student);
+        const existing: boolean = this.bookservice.update(student);
         if (!existing) {
             console.log("El Libro no fue encontrado y no fue actualizado")
         } else {
@@ -553,9 +563,9 @@ export class Bookconsole implements IView {
         }
     }
 
-    private showbook() {
+    private readbook() {
 
-        let books: Book[] = this.bookusecase.show()
+        let books: Book[] = this.bookservice.read()
 
         let booksview = books.map(book => ({
             id: book.id,
@@ -572,7 +582,7 @@ export class Bookconsole implements IView {
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        let students = this.bookusecase.show();
+        let students = this.bookservice.read();
         let student = students.filter((item: any) => item.id === id);
         if (student.length === 0) {
             console.log("No es posible encontrarlo")
@@ -584,14 +594,14 @@ export class Bookconsole implements IView {
 
 export class LoanConsole implements IView {
 
-    constructor(private usecaseloan: IUsecaseloan) { }
+    constructor(private serviceloan: Iserviceloan) { }
 
     execute() {
         let run = true;
 
         while (run) {
 
-            this.showMenu();
+            this.readMenu();
 
             const option = Number(prompt("Seleccione: "));
 
@@ -618,7 +628,7 @@ export class LoanConsole implements IView {
 
     }
 
-    private showMenu(): void {
+    private readMenu(): void {
         const opciones: string[] = [
             "1. Prestar libro",
             "2. Devolver libro",
@@ -639,7 +649,7 @@ export class LoanConsole implements IView {
         if (!idstudent || idstudent.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
-        let status = this.usecaseloan.lendBook(idbook, idstudent);
+        let status = this.serviceloan.lendBook(idbook, idstudent);
         if (!status) {
             console.log("No se puede hacer el prestamo")
         } else {
@@ -649,7 +659,7 @@ export class LoanConsole implements IView {
 
     private returnbook() {
         const idBook = prompt("ID Libro: ");
-        let status = this.usecaseloan.returnBook(idBook);
+        let status = this.serviceloan.returnBook(idBook);
         if (!status) {
             console.log("No se pudo devoler")
         } else {
@@ -658,7 +668,7 @@ export class LoanConsole implements IView {
     }
 
     private readloan() {
-        let loans: Loan[] = this.usecaseloan.show()
+        let loans: Loan[] = this.serviceloan.read()
         console.log("\n===== PRÉSTAMOS =====")
 
         if (loans.length === 0) {
@@ -694,13 +704,13 @@ const repositorybook = new MemoryRAM<Book>();
 const repositorystudent = new MemoryRAM<Student>();
 const repositoryloan = new MemoryRAM<Loan>();
 
-const loanusecase = new Loanusecase(repositoryloan, repositorybook, repositorystudent)
-const studentusecase = new StudentUseCase(repositorystudent, repositoryloan)
-const bookusecase = new BookUseCase(repositorybook)
+const loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
+const studentservice = new Studentservice(repositorystudent);
+const bookservice = new Bookservice(repositorybook);
 
-const studentconsoletest = new Studentconsole(studentusecase);
-const bookconsoletest = new Bookconsole(bookusecase);
-const loanconsole = new LoanConsole(loanusecase)
+const studentconsoletest = new Studentconsole(studentservice, loanservice);
+const bookconsoletest = new Bookconsole(bookservice);
+const loanconsole = new LoanConsole(loanservice);
 
 const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
 
