@@ -154,33 +154,17 @@ export class Studentservice implements Iservicestudent {
 }
 
 export class Bookservice implements Iservicebook {
-    constructor(
-        private bookRepository: IRepository<Book>,
-    ) { }
+    constructor(private bookRepository: IRepository<Book>) { }
 
     create(book: Book): boolean {
-        if (!book.id || !book.title || !book.author)
-            { return false; }
-        book.available = true;
         return this.bookRepository.create(book);
     }
 
     delete(id: string) {
-        const book = this.bookRepository.findbyid(id)[0];
-        if (!book) { return false; }
-
-        if (!book.available) {
-            return false;
-        }
-
         return this.bookRepository.delete(id);
     }
 
     update(book: Book): boolean {
-        const newbook = this.bookRepository.findbyid(book.id)[0];
-        if (!newbook.available) {
-            return false;
-        }
         return this.bookRepository.update(book);
     }
 
@@ -194,6 +178,14 @@ export class Loanservice implements Iserviceloan {
         private loanrepository: IRepository<Loan>,
         private bookrepository: IRepository<Book>,
         private studentrepository: IRepository<Student>) { }
+
+    create(loan: Loan) {
+        return this.loanrepository.create(loan)
+    }
+
+    delete(id: string) {
+        return this.loanrepository.delete(id)
+    }
 
     lendBook(bookId: string, studentId: string) {
         const idbook = bookId
@@ -406,8 +398,8 @@ export class Studentconsole implements IView {
             return;
         }
 
-        const activeLoans: Loan[] = this.loanservice.read()
-        const studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
+        let activeLoans: Loan[] = this.loanservice.read()
+        let studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
 
         if (studentactiveloan.length > 0) {
             return;
@@ -419,12 +411,8 @@ export class Studentconsole implements IView {
 
     private updatestudent() {
         const student = this.inputstudent();
-        const existing: boolean = this.studentservice.update(student);
-        if (!existing) {
-            console.log("El estudiante no fue actualizado")
-        } else {
-            console.log("Estudiante actualizado")
-        }
+        const newstudent: boolean = this.studentservice.update(student);
+        console.log(newstudent ? "Estudiante actualizado" : "No se pudo actualizar");
     }
 
     private readstudent() {
@@ -530,13 +518,11 @@ export class Bookconsole implements IView {
     }
 
     private createbook() {
-        const student = this.inputbook();
-        const result: boolean = this.bookservice.create(student);
-        if (!result) {
-            console.log("El libro ya existe con este id")
-        } else {
-            console.log("Libro registrado")
-        }
+        const book = this.inputbook();
+        if (!book.id || !book.title || !book.author)
+            {return}
+        const result: boolean = this.bookservice.create(book);
+        console.log(result ? "Libro registrado" : "No se pudo registrar");
     }
 
     private deletebook() {
@@ -545,22 +531,19 @@ export class Bookconsole implements IView {
             console.log("El ID no puede estar vacío");
             return id;
         }
-        const status: boolean = this.bookservice.delete(id);
-        if (!status) {
-            console.log("El libro no se encuentra con este id")
-        } else {
-            console.log("Libro eliminado")
+        let books: Book[] = this.bookservice.read();
+        let book = books.filter(findbook => findbook.id = id)[0]
+        if (!book.available) {
+            return;
         }
+        const status: boolean = this.bookservice.delete(id);
+        console.log(status ? "Libro eliminado" : "No se pudo eliminar");
     }
 
     private updatebook() {
         const student = this.inputbook();
-        const existing: boolean = this.bookservice.update(student);
-        if (!existing) {
-            console.log("El Libro no fue encontrado y no fue actualizado")
-        } else {
-            console.log("Libro actualizado")
-        }
+        const newbook: boolean = this.bookservice.update(student);
+        console.log(newbook ? "Libro actualizado" : "No se pudo actualizar");
     }
 
     private readbook() {
@@ -594,7 +577,7 @@ export class Bookconsole implements IView {
 
 export class LoanConsole implements IView {
 
-    constructor(private serviceloan: Iserviceloan) { }
+    constructor(private studentservice: Iservicestudent, private bookservice: Iservicebook , private serviceloan: Iserviceloan) { }
 
     execute() {
         let run = true;
@@ -649,6 +632,48 @@ export class LoanConsole implements IView {
         if (!idstudent || idstudent.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
+
+        let bookId = idbook
+        let books: Book[] = this.bookservice.read();
+        let findbook = books.filter((book: any) => book.id === idbook)[0];
+
+        if (!findbook) {
+            return false;
+        }
+
+        if (!findbook.available) {
+            return false;
+        }
+
+    //     const idstudent = studentId
+    //     const student = this.studentrepository.findbyid(idstudent)[0];
+
+    //     if (!student) {
+    //         return false;
+    //     }
+
+    //     const loanDate = new Date();
+
+    //     const loan: Loan = {
+    //         id: Math.random().toString(),
+    //         book,
+    //         student,
+    //         loanDate
+    //     };
+
+    //     const existingLoan = this.loanrepository.findbyid(loan.id);
+
+    //     if (existingLoan.length > 0) {
+    //         return false;
+    //     }
+
+    //     this.loanrepository.create(loan);
+
+    //     book.available = false;
+    //     this.bookrepository.update(book);
+
+    //     return true
+    // }
         let status = this.serviceloan.lendBook(idbook, idstudent);
         if (!status) {
             console.log("No se puede hacer el prestamo")
@@ -700,19 +725,19 @@ export class App {
 
 //-----PUNTO-DE-ENTRADA--------------
 
-const repositorybook = new MemoryRAM<Book>();
-const repositorystudent = new MemoryRAM<Student>();
-const repositoryloan = new MemoryRAM<Loan>();
+// const repositorybook = new MemoryRAM<Book>();
+// const repositorystudent = new MemoryRAM<Student>();
+// const repositoryloan = new MemoryRAM<Loan>();
 
-const loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
-const studentservice = new Studentservice(repositorystudent);
-const bookservice = new Bookservice(repositorybook);
+// const loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
+// const studentservice = new Studentservice(repositorystudent);
+// const bookservice = new Bookservice(repositorybook);
 
-const studentconsoletest = new Studentconsole(studentservice, loanservice);
-const bookconsoletest = new Bookconsole(bookservice);
-const loanconsole = new LoanConsole(loanservice);
+// const studentconsoletest = new Studentconsole(studentservice, loanservice);
+// const bookconsoletest = new Bookconsole(bookservice);
+// const loanconsole = new LoanConsole(studentservice, bookservice,loanservice);
 
-const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
+// const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
 
-const app = new App(menu);
-app.run();
+// const app = new App(menu);
+// app.run();
