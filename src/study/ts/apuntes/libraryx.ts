@@ -39,8 +39,10 @@ export interface Iread {
 }
 
 export interface Iserviceloan extends Iread {
-    lendBook(bookId: string, studentId: string): any;
     returnBook(bookId: string): any;
+    create(item: any): any;
+    delete(id: string): any;
+    update(item:any): any;
 }
 
 export interface Iservicestudent extends Icreate, Idelete, Iupdate, Iread {
@@ -56,7 +58,6 @@ export interface IService<T> {
     read(): any;
     update(item: T): any;
     delete(id: any): any;
-
 }
 
 //---------Entitys---------------------
@@ -187,47 +188,10 @@ export class Loanservice implements Iserviceloan {
         return this.loanrepository.delete(id)
     }
 
-    lendBook(bookId: string, studentId: string) {
-        const idbook = bookId
-        const book = this.bookrepository.findbyid(idbook)[0];
-
-        if (!book) {
-            return false;
-        }
-
-        if (!book.available) {
-            return false;
-        }
-
-        const idstudent = studentId
-        const student = this.studentrepository.findbyid(idstudent)[0];
-
-        if (!student) {
-            return false;
-        }
-
-        const loanDate = new Date();
-
-        const loan: Loan = {
-            id: Math.random().toString(),
-            book,
-            student,
-            loanDate
-        };
-
-        const existingLoan = this.loanrepository.findbyid(loan.id);
-
-        if (existingLoan.length > 0) {
-            return false;
-        }
-
-        this.loanrepository.create(loan);
-
-        book.available = false;
-        this.bookrepository.update(book);
-
-        return true
+    update(loan: Loan) {
+        return this.loanrepository.update(loan)
     }
+
     returnBook(bookId: string) {
         const loan = this.loanrepository.read().find(loan => loan.book.id === bookId);
 
@@ -577,7 +541,7 @@ export class Bookconsole implements IView {
 
 export class LoanConsole implements IView {
 
-    constructor(private studentservice: Iservicestudent, private bookservice: Iservicebook , private serviceloan: Iserviceloan) { }
+    constructor(private studentservice: Iservicestudent, private bookservice: Iservicebook , private loanservice: Iserviceloan) { }
 
     execute() {
         let run = true;
@@ -624,67 +588,83 @@ export class LoanConsole implements IView {
     }
 
     private lendbook() {
+
         let idbook = prompt("ID Libro: ");
         if (!idbook || idbook.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
+            return idbook
         }
+
         let idstudent = prompt("ID Estudiante: ");
         if (!idstudent || idstudent.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
+            return idstudent
         }
 
-        let bookId = idbook
         let books: Book[] = this.bookservice.read();
-        let findbook = books.filter((book: any) => book.id === idbook)[0];
+        const book = books.filter((book: any) => book.id === idbook)[0];
 
-        if (!findbook) {
+        if (!book) {
             return false;
         }
 
-        if (!findbook.available) {
+        if (!book.available) {
             return false;
         }
 
-    //     const idstudent = studentId
-    //     const student = this.studentrepository.findbyid(idstudent)[0];
+        let students: Student[] = this.studentservice.read();
+        const student = students.filter((student: Student) => student.id === idstudent)[0];
 
-    //     if (!student) {
-    //         return false;
-    //     }
+        if (!student) {
+            return false;
+        }
 
-    //     const loanDate = new Date();
+        let loanDate = new Date();
 
-    //     const loan: Loan = {
-    //         id: Math.random().toString(),
-    //         book,
-    //         student,
-    //         loanDate
-    //     };
+        const loan: Loan = {
+            id: Math.random().toString(),
+            book,
+            student,
+            loanDate
+        };
 
-    //     const existingLoan = this.loanrepository.findbyid(loan.id);
+        let status = this.loanservice.create(loan);
+        book.available = false;
+        this.bookservice.update(book);
 
-    //     if (existingLoan.length > 0) {
-    //         return false;
-    //     }
-
-    //     this.loanrepository.create(loan);
+        console.log(status? "Prestamo existoso" : "No se pudo realizar el prestamo")
 
     //     book.available = false;
     //     this.bookrepository.update(book);
 
     //     return true
     // }
-        let status = this.serviceloan.lendBook(idbook, idstudent);
-        if (!status) {
-            console.log("No se puede hacer el prestamo")
-        } else {
-            console.log("Prestamo exitoso")
-        }
+        // let status = this.loanservice.lendBook(idbook, idstudent);
+        // if (!status) {
+        //     console.log("No se puede hacer el prestamo")
+        // } else {
+        //     console.log("Prestamo exitoso")
+        // }
     }
 
     private returnbook() {
-        const idBook = prompt("ID Libro: ");
-        let status = this.serviceloan.returnBook(idBook);
+        let idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            console.log("El ID no puede estar vacío");
+            return idbook
+        }
+        let loans: Loan[] = this.loanservice.read()
+        const loan = loans.find(loan => loan.book.id === idbook);
+        if (!loan) {
+            return;
+        }
+
+        loan.returndate = new Date();
+        this.loanservice.update(loan);
+        loan.book.available = true;
+        this.bookservice.update(loan.book);
+
+        let status = this.loanservice.returnBook(idbook);
         if (!status) {
             console.log("No se pudo devoler")
         } else {
@@ -693,7 +673,7 @@ export class LoanConsole implements IView {
     }
 
     private readloan() {
-        let loans: Loan[] = this.serviceloan.read()
+        let loans: Loan[] = this.loanservice.read()
         console.log("\n===== PRÉSTAMOS =====")
 
         if (loans.length === 0) {
@@ -725,19 +705,19 @@ export class App {
 
 //-----PUNTO-DE-ENTRADA--------------
 
-// const repositorybook = new MemoryRAM<Book>();
-// const repositorystudent = new MemoryRAM<Student>();
-// const repositoryloan = new MemoryRAM<Loan>();
+const repositorybook = new MemoryRAM<Book>();
+const repositorystudent = new MemoryRAM<Student>();
+const repositoryloan = new MemoryRAM<Loan>();
 
-// const loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
-// const studentservice = new Studentservice(repositorystudent);
-// const bookservice = new Bookservice(repositorybook);
+const loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
+const studentservice = new Studentservice(repositorystudent);
+const bookservice = new Bookservice(repositorybook);
 
-// const studentconsoletest = new Studentconsole(studentservice, loanservice);
-// const bookconsoletest = new Bookconsole(bookservice);
-// const loanconsole = new LoanConsole(studentservice, bookservice,loanservice);
+const studentconsoletest = new Studentconsole(studentservice, loanservice);
+const bookconsoletest = new Bookconsole(bookservice);
+const loanconsole = new LoanConsole(studentservice, bookservice,loanservice);
 
-// const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
+const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
 
-// const app = new App(menu);
-// app.run();
+const app = new App(menu);
+app.run();

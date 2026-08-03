@@ -96,34 +96,34 @@ var Loanservice = /** @class */ (function () {
         return this.loanrepository.delete(id);
     };
     Loanservice.prototype.lendBook = function (bookId, studentId) {
-        var idbook = bookId;
-        var book = this.bookrepository.findbyid(idbook)[0];
-        if (!book) {
-            return false;
-        }
-        if (!book.available) {
-            return false;
-        }
-        var idstudent = studentId;
-        var student = this.studentrepository.findbyid(idstudent)[0];
-        if (!student) {
-            return false;
-        }
-        var loanDate = new Date();
-        var loan = {
-            id: Math.random().toString(),
-            book: book,
-            student: student,
-            loanDate: loanDate
-        };
-        var existingLoan = this.loanrepository.findbyid(loan.id);
-        if (existingLoan.length > 0) {
-            return false;
-        }
-        this.loanrepository.create(loan);
-        book.available = false;
-        this.bookrepository.update(book);
-        return true;
+        // const idbook = bookId
+        // const book = this.bookrepository.findbyid(idbook)[0];
+        // if (!book) {
+        //     return false;
+        // }
+        // if (!book.available) {
+        //     return false;
+        // }
+        // const idstudent = studentId
+        // const student = this.studentrepository.findbyid(idstudent)[0];
+        // if (!student) {
+        //     return false;
+        // }
+        // const loanDate = new Date();
+        // const loan: Loan = {
+        //     id: Math.random().toString(),
+        //     book,
+        //     student,
+        //     loanDate
+        // };
+        // const existingLoan = this.loanrepository.findbyid(loan.id);
+        // if (existingLoan.length > 0) {
+        //     return false;
+        // }
+        // this.loanrepository.create(loan);
+        // book.available = false;
+        // this.bookrepository.update(book);
+        // return true
     };
     Loanservice.prototype.returnBook = function (bookId) {
         var loan = this.loanrepository.read().find(function (loan) { return loan.book.id === bookId; });
@@ -434,10 +434,10 @@ var Bookconsole = /** @class */ (function () {
 }());
 exports.Bookconsole = Bookconsole;
 var LoanConsole = /** @class */ (function () {
-    function LoanConsole(studentservice, bookservice, serviceloan) {
+    function LoanConsole(studentservice, bookservice, loanservice) {
         this.studentservice = studentservice;
         this.bookservice = bookservice;
-        this.serviceloan = serviceloan;
+        this.loanservice = loanservice;
     }
     LoanConsole.prototype.execute = function () {
         var run = true;
@@ -475,53 +475,52 @@ var LoanConsole = /** @class */ (function () {
     LoanConsole.prototype.lendbook = function () {
         var idbook = prompt("ID Libro: ");
         if (!idbook || idbook.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
+            return idbook;
         }
         var idstudent = prompt("ID Estudiante: ");
         if (!idstudent || idstudent.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
+            console.log("El ID no puede estar vacío");
+            return idstudent;
         }
-        var bookId = idbook;
         var books = this.bookservice.read();
-        var findbook = books.filter(function (book) { return book.id === idbook; })[0];
-        if (!findbook) {
+        var book = books.filter(function (book) { return book.id === idbook; })[0];
+        if (!book) {
             return false;
         }
-        if (!findbook.available) {
+        if (!book.available) {
             return false;
         }
-        //     const idstudent = studentId
-        //     const student = this.studentrepository.findbyid(idstudent)[0];
-        //     if (!student) {
-        //         return false;
-        //     }
-        //     const loanDate = new Date();
-        //     const loan: Loan = {
-        //         id: Math.random().toString(),
-        //         book,
-        //         student,
-        //         loanDate
-        //     };
-        //     const existingLoan = this.loanrepository.findbyid(loan.id);
-        //     if (existingLoan.length > 0) {
-        //         return false;
-        //     }
-        //     this.loanrepository.create(loan);
+        var students = this.studentservice.read();
+        var student = students.filter(function (student) { return student.id === idstudent; })[0];
+        if (!student) {
+            return false;
+        }
+        var loanDate = new Date();
+        var loan = {
+            id: Math.random().toString(),
+            book: book,
+            student: student,
+            loanDate: loanDate
+        };
+        var status = this.loanservice.create(loan);
+        book.available = false;
+        this.bookservice.update(book);
+        console.log(status ? "Prestamo existoso" : "No se pudo realizar el prestamo");
         //     book.available = false;
         //     this.bookrepository.update(book);
         //     return true
         // }
-        var status = this.serviceloan.lendBook(idbook, idstudent);
-        if (!status) {
-            console.log("No se puede hacer el prestamo");
-        }
-        else {
-            console.log("Prestamo exitoso");
-        }
+        // let status = this.loanservice.lendBook(idbook, idstudent);
+        // if (!status) {
+        //     console.log("No se puede hacer el prestamo")
+        // } else {
+        //     console.log("Prestamo exitoso")
+        // }
     };
     LoanConsole.prototype.returnbook = function () {
         var idBook = prompt("ID Libro: ");
-        var status = this.serviceloan.returnBook(idBook);
+        var status = this.loanservice.returnBook(idBook);
         if (!status) {
             console.log("No se pudo devoler");
         }
@@ -530,7 +529,7 @@ var LoanConsole = /** @class */ (function () {
         }
     };
     LoanConsole.prototype.readloan = function () {
-        var loans = this.serviceloan.read();
+        var loans = this.loanservice.read();
         console.log("\n===== PRÉSTAMOS =====");
         if (loans.length === 0) {
             console.log("No hay préstamos");
@@ -561,15 +560,15 @@ var App = /** @class */ (function () {
 }());
 exports.App = App;
 //-----PUNTO-DE-ENTRADA--------------
-// const repositorybook = new MemoryRAM<Book>();
-// const repositorystudent = new MemoryRAM<Student>();
-// const repositoryloan = new MemoryRAM<Loan>();
-// const loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
-// const studentservice = new Studentservice(repositorystudent);
-// const bookservice = new Bookservice(repositorybook);
-// const studentconsoletest = new Studentconsole(studentservice, loanservice);
-// const bookconsoletest = new Bookconsole(bookservice);
-// const loanconsole = new LoanConsole(studentservice, bookservice,loanservice);
-// const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
-// const app = new App(menu);
-// app.run();
+var repositorybook = new MemoryRAM();
+var repositorystudent = new MemoryRAM();
+var repositoryloan = new MemoryRAM();
+var loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
+var studentservice = new Studentservice(repositorystudent);
+var bookservice = new Bookservice(repositorybook);
+var studentconsoletest = new Studentconsole(studentservice, loanservice);
+var bookconsoletest = new Bookconsole(bookservice);
+var loanconsole = new LoanConsole(studentservice, bookservice, loanservice);
+var menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
+var app = new App(menu);
+app.run();
