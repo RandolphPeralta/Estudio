@@ -1,5 +1,4 @@
 import * as promptSync from "prompt-sync";
-import { IAdditionalAction } from "./library";
 const prompt = (promptSync as any)();
 
 //------DOMAIN-----------

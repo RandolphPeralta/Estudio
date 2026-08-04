@@ -159,7 +159,6 @@ var Studentconsole = /** @class */ (function () {
         var id = prompt("ID: ");
         if (!id || id.trim() === "") {
             console.log("El ID no puede estar vacío");
-            return id;
         }
         var name = prompt("Nombre: ");
         if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
