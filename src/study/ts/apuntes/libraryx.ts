@@ -1,4 +1,5 @@
 import * as promptSync from "prompt-sync";
+import { IAdditionalAction } from "./library";
 const prompt = (promptSync as any)();
 
 //------DOMAIN-----------
@@ -20,37 +21,6 @@ export interface IRepository<T> extends IUpdate<T> {
 
 export interface IView {
     execute(): any;
-}
-
-export interface Icreate {
-    create(item: any): any;
-}
-
-export interface Idelete {
-    delete(id: string): any
-}
-
-export interface Iupdate {
-    update(item: any): any;
-}
-
-export interface Iread {
-    read(): any;
-}
-
-export interface Iserviceloan extends Iread {
-    returnBook(bookId: string): any;
-    create(item: any): any;
-    delete(id: string): any;
-    update(item:any): any;
-}
-
-export interface Iservicestudent extends Icreate, Idelete, Iupdate, Iread {
-
-}
-
-export interface Iservicebook extends Icreate, Idelete, Iupdate, Iread {
-
 }
 
 export interface IService<T> {
@@ -134,83 +104,27 @@ export class MemoryRAM<T> implements IRepository<T> {
 
 //-------------Services---------
 
-export class Studentservice implements Iservicestudent {
-    constructor(private studentRepository: IRepository<Student>) { }
+export class Service<T> implements IService<T> {
+    constructor(private repository: IRepository<T>){}
 
-    create(student: Student): boolean {
-        return this.studentRepository.create(student);
-    }
-
-    delete(id: string) {
-        return this.studentRepository.delete(id);
-    }
-
-    update(student: Student): boolean {
-        return this.studentRepository.update(student);
-    }
-
-    read(): Student[] {
-        return this.studentRepository.read();
-    }
-}
-
-export class Bookservice implements Iservicebook {
-    constructor(private bookRepository: IRepository<Book>) { }
-
-    create(book: Book): boolean {
-        return this.bookRepository.create(book);
-    }
-
-    delete(id: string) {
-        return this.bookRepository.delete(id);
-    }
-
-    update(book: Book): boolean {
-        return this.bookRepository.update(book);
-    }
-
-    read(): Book[] {
-        return this.bookRepository.read();
-    }
-}
-
-export class Loanservice implements Iserviceloan {
-    constructor(
-        private loanrepository: IRepository<Loan>,
-        private bookrepository: IRepository<Book>,
-        private studentrepository: IRepository<Student>) { }
-
-    create(loan: Loan) {
-        return this.loanrepository.create(loan)
-    }
-
-    delete(id: string) {
-        return this.loanrepository.delete(id)
-    }
-
-    update(loan: Loan) {
-        return this.loanrepository.update(loan)
-    }
-
-    returnBook(bookId: string) {
-        // const loan = this.loanrepository.read().find(loan => loan.book.id === bookId);
-
-        // if (!loan) {
-        //     return false;
-        // }
-
-        // loan.returndate = new Date();
-        // this.loanrepository.update(loan);
-        // loan.book.available = true;
-        // this.bookrepository.update(loan.book);
-
-        // return true
+    create(item: T) {
+        return this.repository.create(item);
     }
 
     read() {
-        return this.loanrepository.read();
+        return this.repository.read();
     }
+
+    update(item: T) {
+        return this.repository.update(item);
+    }
+
+    delete(id: any) {
+        return this.repository.delete(id)
+    }
+
 }
+
 
 //------UI---------
 
@@ -272,7 +186,7 @@ export class MenuConsole implements IView {
 }
 
 export class Studentconsole implements IView {
-    constructor(private studentservice: Iservicestudent, private loanservice: Iserviceloan) { }
+    constructor(private studentservice: IService<Student>, private loanservice: IService<Loan>) { }
 
     execute() {
         let run = true;
@@ -380,7 +294,7 @@ export class Studentconsole implements IView {
     }
 
     private readstudent() {
-        let students: Student[] = this.studentservice.read()
+        let students: Student[] = this.studentservice.read();
         let studentsview = students.map(student => ({
             id: student.id,
             nombre: student.name,
@@ -407,7 +321,7 @@ export class Studentconsole implements IView {
 }
 
 export class Bookconsole implements IView {
-    constructor(private bookservice: Iservicebook) { }
+    constructor(private bookservice: IService<Book>) { }
 
     execute() {
         let run = true;
@@ -497,7 +411,7 @@ export class Bookconsole implements IView {
         }
 
         let books: Book[] = this.bookservice.read();
-        let book = books.filter(findbook => findbook.id = id)[0]
+        let book = books.filter(findbook => findbook.id = id)[0];
         if (!book.available) {
             return;
         }
@@ -515,7 +429,6 @@ export class Bookconsole implements IView {
     private readbook() {
 
         let books: Book[] = this.bookservice.read();
-
         let booksview = books.map(book => ({
             id: book.id,
             titulo: book.title,
@@ -531,6 +444,7 @@ export class Bookconsole implements IView {
         if (!id || id.trim() === "") {
             throw new Error("El ID no puede estar vacío");
         }
+        
         let students = this.bookservice.read();
         let student = students.filter((item: any) => item.id === id);
         if (student.length === 0) {
@@ -543,7 +457,7 @@ export class Bookconsole implements IView {
 
 export class LoanConsole implements IView {
 
-    constructor(private studentservice: Iservicestudent, private bookservice: Iservicebook , private loanservice: Iserviceloan) { }
+    constructor(private studentservice: IService<Student>, private bookservice: IService<Book> , private loanservice: IService<Loan>) { }
 
     execute() {
         let run = true;
@@ -634,19 +548,7 @@ export class LoanConsole implements IView {
         book.available = false;
         this.bookservice.update(book);
 
-        console.log(status? "Prestamo existoso" : "No se pudo realizar el prestamo")
-
-    //     book.available = false;
-    //     this.bookrepository.update(book);
-
-    //     return true
-    // }
-        // let status = this.loanservice.lendBook(idbook, idstudent);
-        // if (!status) {
-        //     console.log("No se puede hacer el prestamo")
-        // } else {
-        //     console.log("Prestamo exitoso")
-        // }
+        console.log(status? "Prestamo existoso" : "No se pudo realizar el prestamo");
     }
 
     private returnbook() {
@@ -706,9 +608,9 @@ const repositorybook = new MemoryRAM<Book>();
 const repositorystudent = new MemoryRAM<Student>();
 const repositoryloan = new MemoryRAM<Loan>();
 
-const loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
-const studentservice = new Studentservice(repositorystudent);
-const bookservice = new Bookservice(repositorybook);
+const loanservice = new Service<Loan>(repositoryloan);
+const studentservice = new Service<Student>(repositorystudent);
+const bookservice = new Service<Book>(repositorybook);
 
 const studentconsoletest = new Studentconsole(studentservice, loanservice);
 const bookconsoletest = new Bookconsole(bookservice);

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Loanservice = exports.Bookservice = exports.Studentservice = exports.MemoryRAM = void 0;
+exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Service = exports.MemoryRAM = void 0;
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
 //--------INFRAESTRUCTURE---------
@@ -45,76 +45,25 @@ var MemoryRAM = /** @class */ (function () {
 }());
 exports.MemoryRAM = MemoryRAM;
 //-------------Services---------
-var Studentservice = /** @class */ (function () {
-    function Studentservice(studentRepository) {
-        this.studentRepository = studentRepository;
+var Service = /** @class */ (function () {
+    function Service(repository) {
+        this.repository = repository;
     }
-    Studentservice.prototype.create = function (student) {
-        return this.studentRepository.create(student);
+    Service.prototype.create = function (item) {
+        return this.repository.create(item);
     };
-    Studentservice.prototype.delete = function (id) {
-        return this.studentRepository.delete(id);
+    Service.prototype.read = function () {
+        return this.repository.read();
     };
-    Studentservice.prototype.update = function (student) {
-        return this.studentRepository.update(student);
+    Service.prototype.update = function (item) {
+        return this.repository.update(item);
     };
-    Studentservice.prototype.read = function () {
-        return this.studentRepository.read();
+    Service.prototype.delete = function (id) {
+        return this.repository.delete(id);
     };
-    return Studentservice;
+    return Service;
 }());
-exports.Studentservice = Studentservice;
-var Bookservice = /** @class */ (function () {
-    function Bookservice(bookRepository) {
-        this.bookRepository = bookRepository;
-    }
-    Bookservice.prototype.create = function (book) {
-        return this.bookRepository.create(book);
-    };
-    Bookservice.prototype.delete = function (id) {
-        return this.bookRepository.delete(id);
-    };
-    Bookservice.prototype.update = function (book) {
-        return this.bookRepository.update(book);
-    };
-    Bookservice.prototype.read = function () {
-        return this.bookRepository.read();
-    };
-    return Bookservice;
-}());
-exports.Bookservice = Bookservice;
-var Loanservice = /** @class */ (function () {
-    function Loanservice(loanrepository, bookrepository, studentrepository) {
-        this.loanrepository = loanrepository;
-        this.bookrepository = bookrepository;
-        this.studentrepository = studentrepository;
-    }
-    Loanservice.prototype.create = function (loan) {
-        return this.loanrepository.create(loan);
-    };
-    Loanservice.prototype.delete = function (id) {
-        return this.loanrepository.delete(id);
-    };
-    Loanservice.prototype.update = function (loan) {
-        return this.loanrepository.update(loan);
-    };
-    Loanservice.prototype.returnBook = function (bookId) {
-        // const loan = this.loanrepository.read().find(loan => loan.book.id === bookId);
-        // if (!loan) {
-        //     return false;
-        // }
-        // loan.returndate = new Date();
-        // this.loanrepository.update(loan);
-        // loan.book.available = true;
-        // this.bookrepository.update(loan.book);
-        // return true
-    };
-    Loanservice.prototype.read = function () {
-        return this.loanrepository.read();
-    };
-    return Loanservice;
-}());
-exports.Loanservice = Loanservice;
+exports.Service = Service;
 //------UI---------
 var MenuConsole = /** @class */ (function () {
     function MenuConsole(studentMenu, bookMenu, loanMenu) {
@@ -480,16 +429,6 @@ var LoanConsole = /** @class */ (function () {
         book.available = false;
         this.bookservice.update(book);
         console.log(status ? "Prestamo existoso" : "No se pudo realizar el prestamo");
-        //     book.available = false;
-        //     this.bookrepository.update(book);
-        //     return true
-        // }
-        // let status = this.loanservice.lendBook(idbook, idstudent);
-        // if (!status) {
-        //     console.log("No se puede hacer el prestamo")
-        // } else {
-        //     console.log("Prestamo exitoso")
-        // }
     };
     LoanConsole.prototype.returnbook = function () {
         var idbook = prompt("ID Libro: ");
@@ -544,9 +483,9 @@ exports.App = App;
 var repositorybook = new MemoryRAM();
 var repositorystudent = new MemoryRAM();
 var repositoryloan = new MemoryRAM();
-var loanservice = new Loanservice(repositoryloan, repositorybook, repositorystudent);
-var studentservice = new Studentservice(repositorystudent);
-var bookservice = new Bookservice(repositorybook);
+var loanservice = new Service(repositoryloan);
+var studentservice = new Service(repositorystudent);
+var bookservice = new Service(repositorybook);
 var studentconsoletest = new Studentconsole(studentservice, loanservice);
 var bookconsoletest = new Bookconsole(bookservice);
 var loanconsole = new LoanConsole(studentservice, bookservice, loanservice);

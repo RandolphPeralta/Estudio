@@ -174,6 +174,10 @@ var MenuConsole = /** @class */ (function () {
     MenuConsole.prototype.deletestudent = function () {
         var id = String(prompt("ID: "));
         var Eliminatestudent = this.StudentPersistence.delete(id);
+        var activeLoans = this.LoanPersistence.read().filter(function (loanstudent) { return loanstudent.student.id === id && !loanstudent.returndate; });
+        if (activeLoans.length > 0) {
+            return;
+        }
         if (Eliminatestudent) {
             console.log("Estudiante Estudiante Eliminado");
         }
@@ -311,9 +315,7 @@ var MenuConsole = /** @class */ (function () {
     MenuConsole.prototype.Returnbook = function () {
         var idBook = String(prompt("ID del libro: "));
         var Loans = this.LoanPersistence.read();
-        var Loan = Loans.find(function (borrowed) {
-            return borrowed.book.id === idBook && !borrowed.returndate;
-        });
+        var Loan = Loans.find(function (borrowed) { return borrowed.book.id === idBook && !borrowed.returndate; });
         if (!Loan) {
             console.log("No hay préstamo activo para este libro");
             return;
