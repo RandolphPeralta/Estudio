@@ -124,7 +124,6 @@ export class Service<T> implements IService<T> {
 
 }
 
-
 //------UI---------
 
 export class MenuConsole implements IView {
