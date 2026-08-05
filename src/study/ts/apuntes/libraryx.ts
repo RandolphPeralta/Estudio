@@ -29,6 +29,10 @@ export interface IService<T> {
     delete(id: any): any;
 }
 
+export interface IApprobation<T> {
+    approve(item: T): any;
+}
+
 //---------Entitys---------------------
 
 export type Student = {
@@ -101,12 +105,19 @@ export class MemoryRAM<T> implements IRepository<T> {
     }
 }
 
+export class Approbation<T> implements IApprobation<T> {
+    approve(item: T) {
+        return item !== null && item !== undefined && Object.keys(item).length > 0;
+    }
+}
+
 //-------------Services---------
 
 export class Service<T> implements IService<T> {
-    constructor(private repository: IRepository<T>){}
+    constructor(private repository: IRepository<T>, private approbator: IApprobation<T>) { }
 
     create(item: T) {
+        if (!this.approbator.approve(item)) return false
         return this.repository.create(item);
     }
 
@@ -115,6 +126,7 @@ export class Service<T> implements IService<T> {
     }
 
     update(item: T) {
+        if (!this.approbator.approve(item)) return false
         return this.repository.update(item);
     }
 
@@ -229,51 +241,14 @@ export class Studentconsole implements IView {
         }
     }
 
-    private inputstudent(): Student {
-
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return id;
-        }
-
-        const name = prompt("Nombre: ");
-        if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
-            console.log("El nombre solo puede contener letras");
-            return name;
-        }
-
-        const identification = prompt("Identificación: ");
-        if (!identification || !/^\d+$/.test(identification)) {
-            console.log("La identificación debe ser numérica");
-            return identification;
-        }
-
-        const schoolgrade = prompt("Grado Escolar: ");
-        if (!schoolgrade || schoolgrade.trim() === "") {
-            console.log("El grado escolar no puede estar vacío");
-            return schoolgrade;
-        }
-
-        return { id, name, identification, schoolgrade };
-    }
-
     private createStudent() {
         const student = this.inputstudent();
-        if (!student.id || !student.identification || !student.name || !student.schoolgrade) {
-            return;
-        }
         const result: boolean = this.studentservice.create(student);
         console.log(result ? "Estudiante registrado" : "No se pudo registrar");
     }
 
     private deletestudent() {
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return;
-        }
-
+        const id = this.inputid();
         let activeLoans: Loan[] = this.loanservice.read();
         let studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
 
@@ -304,10 +279,7 @@ export class Studentconsole implements IView {
     }
 
     private searchstudent() {
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
-        }
+        const id = this.inputid();
         let students = this.studentservice.read();
         let student = students.filter((item: any) => item.id === id);
         if (student.length === 0) {
@@ -315,6 +287,43 @@ export class Studentconsole implements IView {
         } else {
             console.table(student)
         }
+    }
+
+    private inputstudent(): Student {
+
+        const id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+            return id;
+        }
+
+        const name = prompt("Nombre: ");
+        if (!/^[a-zA-Z\s]+$/.test(name)) {
+            console.log("El nombre no puede estar vacio y solo puede contener letras");
+            return name;
+        }
+
+        const identification = prompt("Identificación: ");
+        if (!/^\d+$/.test(identification)) {
+            console.log("La identificación no puede estar vacio y debe ser numérica");
+            return identification;
+        }
+
+        const schoolgrade = prompt("Grado Escolar: ");
+        if (schoolgrade.trim() === "") {
+            console.log("El grado escolar no puede estar vacío");
+            return schoolgrade;
+        }
+
+        return { id, name, identification, schoolgrade };
+    }
+
+    private inputid() {
+        const id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return id
     }
 }
 
@@ -364,50 +373,14 @@ export class Bookconsole implements IView {
         }
     }
 
-    private inputbook(): Book {
-
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return id;
-        }
-
-        const title = prompt("Titulo: ");
-        if (!title || title.trim() === "") {
-            console.log("El titulo no puede estar vacío");
-            return title;
-        }
-
-        const author = prompt("Autor: ");
-        if (!author || author.trim() === "") {
-            console.log("El autor no puede estar vacío");
-            return author
-        }
-        const available = true;
-
-        return {
-            id,
-            title,
-            author,
-            available
-        };
-    }
-
     private createbook() {
         const book = this.inputbook();
-        if (!book.id || !book.title || !book.author)
-            {return}
         const result: boolean = this.bookservice.create(book);
         console.log(result ? "Libro registrado" : "No se pudo registrar");
     }
 
     private deletebook() {
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return id;
-        }
-
+        const id = this.inputid()
         let books: Book[] = this.bookservice.read();
         let book = books.filter(findbook => findbook.id = id)[0];
         if (!book.available) {
@@ -438,11 +411,7 @@ export class Bookconsole implements IView {
     }
 
     private searchbook() {
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
-        }
-        
+        const id = this.inputid()
         let students = this.bookservice.read();
         let student = students.filter((item: any) => item.id === id);
         if (student.length === 0) {
@@ -451,11 +420,48 @@ export class Bookconsole implements IView {
             console.table(student)
         }
     }
+
+    private inputbook(): Book {
+
+        const id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+            return id;
+        }
+
+        const title = prompt("Titulo: ");
+        if (title.trim() === "") {
+            console.log("El titulo no puede estar vacio");
+            return title;
+        }
+
+        const author = prompt("Autor: ");
+        if (author.trim() === "") {
+            console.log("El autor no puede estar vacío");
+            return author
+        }
+        const available = true;
+
+        return {
+            id,
+            title,
+            author,
+            available
+        };
+    }
+
+    private inputid() {
+        const id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return id
+    }
 }
 
 export class LoanConsole implements IView {
 
-    constructor(private studentservice: IService<Student>, private bookservice: IService<Book> , private loanservice: IService<Loan>) { }
+    constructor(private studentservice: IService<Student>, private bookservice: IService<Book>, private loanservice: IService<Loan>) { }
 
     execute() {
         let run = true;
@@ -503,26 +509,12 @@ export class LoanConsole implements IView {
 
     private lendbook() {
 
-        let idbook = prompt("ID Libro: ");
-        if (!idbook || idbook.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return idbook
-        }
-
-        let idstudent = prompt("ID Estudiante: ");
-        if (!idstudent || idstudent.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return idstudent
-        }
+        let idbook = this.inputidbook();
+        let idstudent = this.inputidstudent();
 
         let books: Book[] = this.bookservice.read();
         const book = books.filter((book: any) => book.id === idbook)[0];
-
-        if (!book) {
-            return false;
-        }
-
-        if (!book.available) {
+        if (!book || !book.available) {
             return false;
         }
 
@@ -533,28 +525,22 @@ export class LoanConsole implements IView {
             return false;
         }
 
-        let loanDate = new Date();
-
         const loan: Loan = {
             id: Math.random().toString(),
             book,
             student,
-            loanDate
+            loanDate: new Date()
         };
 
         let status = this.loanservice.create(loan);
         book.available = false;
         this.bookservice.update(book);
 
-        console.log(status? "Prestamo existoso" : "No se pudo realizar el prestamo");
+        console.log(status ? "Prestamo existoso" : "No se pudo realizar el prestamo");
     }
 
     private returnbook() {
-        let idbook = prompt("ID Libro: ");
-        if (!idbook || idbook.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return idbook
-        }
+        let idbook = this.inputidbook();
         let loans: Loan[] = this.loanservice.read()
         const loan = loans.find(loan => loan.book.id === idbook);
         if (!loan) {
@@ -566,7 +552,7 @@ export class LoanConsole implements IView {
         const status = this.loanservice.update(loan);
         loan.book.available = true;
         this.bookservice.update(loan.book);
-        console.log(status? "Libro devuelto" : "No se pudo devolver")
+        console.log(status ? "Libro devuelto" : "No se pudo devolver")
     }
 
     private readloan() {
@@ -588,6 +574,24 @@ export class LoanConsole implements IView {
             })
         })
     }
+
+    private inputidbook(){
+        let idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+
+        return idbook
+    }
+
+    private inputidstudent(){
+        let idstudent = prompt("ID Estudiante: ");
+        if (!idstudent || idstudent.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+
+        return idstudent
+    }
 }
 
 //-----CLASE-CONSUMIDORA-APP--------------
@@ -606,13 +610,17 @@ const repositorybook = new MemoryRAM<Book>();
 const repositorystudent = new MemoryRAM<Student>();
 const repositoryloan = new MemoryRAM<Loan>();
 
-const loanservice = new Service<Loan>(repositoryloan);
-const studentservice = new Service<Student>(repositorystudent);
-const bookservice = new Service<Book>(repositorybook);
+const studentapprobator = new Approbation<Student>();
+const bookapprobator = new Approbation<Book>();
+const loanapprobator = new Approbation<Loan>();
+
+const loanservice = new Service<Loan>(repositoryloan, loanapprobator);
+const studentservice = new Service<Student>(repositorystudent, studentapprobator);
+const bookservice = new Service<Book>(repositorybook, bookapprobator);
 
 const studentconsoletest = new Studentconsole(studentservice, loanservice);
 const bookconsoletest = new Bookconsole(bookservice);
-const loanconsole = new LoanConsole(studentservice, bookservice,loanservice);
+const loanconsole = new LoanConsole(studentservice, bookservice, loanservice);
 
 const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
 

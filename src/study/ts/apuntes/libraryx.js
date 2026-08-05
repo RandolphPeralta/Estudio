@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Service = exports.MemoryRAM = void 0;
+exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Service = exports.Validation = exports.MemoryRAM = void 0;
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
 //--------INFRAESTRUCTURE---------
@@ -44,18 +44,32 @@ var MemoryRAM = /** @class */ (function () {
     return MemoryRAM;
 }());
 exports.MemoryRAM = MemoryRAM;
+var Validation = /** @class */ (function () {
+    function Validation() {
+    }
+    Validation.prototype.valide = function (item) {
+        return item !== null && item !== undefined && Object.keys(item).length > 0;
+    };
+    return Validation;
+}());
+exports.Validation = Validation;
 //-------------Services---------
 var Service = /** @class */ (function () {
-    function Service(repository) {
+    function Service(repository, validator) {
         this.repository = repository;
+        this.validator = validator;
     }
     Service.prototype.create = function (item) {
+        if (!this.validator.valide(item))
+            return false;
         return this.repository.create(item);
     };
     Service.prototype.read = function () {
         return this.repository.read();
     };
     Service.prototype.update = function (item) {
+        if (!this.validator.valide(item))
+            return false;
         return this.repository.update(item);
     };
     Service.prototype.delete = function (id) {
@@ -155,42 +169,13 @@ var Studentconsole = /** @class */ (function () {
             console.log(opcion);
         }
     };
-    Studentconsole.prototype.inputstudent = function () {
-        var id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-        }
-        var name = prompt("Nombre: ");
-        if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
-            console.log("El nombre solo puede contener letras");
-            return name;
-        }
-        var identification = prompt("Identificación: ");
-        if (!identification || !/^\d+$/.test(identification)) {
-            console.log("La identificación debe ser numérica");
-            return identification;
-        }
-        var schoolgrade = prompt("Grado Escolar: ");
-        if (!schoolgrade || schoolgrade.trim() === "") {
-            console.log("El grado escolar no puede estar vacío");
-            return schoolgrade;
-        }
-        return { id: id, name: name, identification: identification, schoolgrade: schoolgrade };
-    };
     Studentconsole.prototype.createStudent = function () {
         var student = this.inputstudent();
-        if (!student.id || !student.identification || !student.name || !student.schoolgrade) {
-            return;
-        }
         var result = this.studentservice.create(student);
         console.log(result ? "Estudiante registrado" : "No se pudo registrar");
     };
     Studentconsole.prototype.deletestudent = function () {
-        var id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return;
-        }
+        var id = this.inputid();
         var activeLoans = this.loanservice.read();
         var studentactiveloan = activeLoans.filter(function (loanstudent) { return loanstudent.student.id === id && !loanstudent.returndate; });
         if (studentactiveloan.length > 0) {
@@ -215,10 +200,7 @@ var Studentconsole = /** @class */ (function () {
         console.table(studentsview);
     };
     Studentconsole.prototype.searchstudent = function () {
-        var id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
-        }
+        var id = this.inputid();
         var students = this.studentservice.read();
         var student = students.filter(function (item) { return item.id === id; });
         if (student.length === 0) {
@@ -227,6 +209,36 @@ var Studentconsole = /** @class */ (function () {
         else {
             console.table(student);
         }
+    };
+    Studentconsole.prototype.inputstudent = function () {
+        var id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+            return id;
+        }
+        var name = prompt("Nombre: ");
+        if (!/^[a-zA-Z\s]+$/.test(name)) {
+            console.log("El nombre solo puede contener letras");
+            return name;
+        }
+        var identification = prompt("Identificación: ");
+        if (!/^\d+$/.test(identification)) {
+            console.log("La identificación debe ser numérica");
+            return identification;
+        }
+        var schoolgrade = prompt("Grado Escolar: ");
+        if (schoolgrade.trim() === "") {
+            console.log("El grado escolar no puede estar vacío");
+            return schoolgrade;
+        }
+        return { id: id, name: name, identification: identification, schoolgrade: schoolgrade };
+    };
+    Studentconsole.prototype.inputid = function () {
+        var id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return id;
     };
     return Studentconsole;
 }());
@@ -276,44 +288,13 @@ var Bookconsole = /** @class */ (function () {
             console.log(opcion);
         }
     };
-    Bookconsole.prototype.inputbook = function () {
-        var id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return id;
-        }
-        var title = prompt("Titulo: ");
-        if (!title || title.trim() === "") {
-            console.log("El titulo no puede estar vacío");
-            return title;
-        }
-        var author = prompt("Autor: ");
-        if (!author || author.trim() === "") {
-            console.log("El autor no puede estar vacío");
-            return author;
-        }
-        var available = true;
-        return {
-            id: id,
-            title: title,
-            author: author,
-            available: available
-        };
-    };
     Bookconsole.prototype.createbook = function () {
         var book = this.inputbook();
-        if (!book.id || !book.title || !book.author) {
-            return;
-        }
         var result = this.bookservice.create(book);
         console.log(result ? "Libro registrado" : "No se pudo registrar");
     };
     Bookconsole.prototype.deletebook = function () {
-        var id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return id;
-        }
+        var id = this.inputid();
         var books = this.bookservice.read();
         var book = books.filter(function (findbook) { return findbook.id = id; })[0];
         if (!book.available) {
@@ -338,10 +319,7 @@ var Bookconsole = /** @class */ (function () {
         console.table(booksview);
     };
     Bookconsole.prototype.searchbook = function () {
-        var id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            throw new Error("El ID no puede estar vacío");
-        }
+        var id = this.inputid();
         var students = this.bookservice.read();
         var student = students.filter(function (item) { return item.id === id; });
         if (student.length === 0) {
@@ -350,6 +328,37 @@ var Bookconsole = /** @class */ (function () {
         else {
             console.table(student);
         }
+    };
+    Bookconsole.prototype.inputbook = function () {
+        var id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+            return id;
+        }
+        var title = prompt("Titulo: ");
+        if (title.trim() === "") {
+            console.log("El titulo no puede estar vacío");
+            return title;
+        }
+        var author = prompt("Autor: ");
+        if (author.trim() === "") {
+            console.log("El autor no puede estar vacío");
+            return author;
+        }
+        var available = true;
+        return {
+            id: id,
+            title: title,
+            author: author,
+            available: available
+        };
+    };
+    Bookconsole.prototype.inputid = function () {
+        var id = prompt("ID: ");
+        if (id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return id;
     };
     return Bookconsole;
 }());
@@ -417,12 +426,11 @@ var LoanConsole = /** @class */ (function () {
         if (!student) {
             return false;
         }
-        var loanDate = new Date();
         var loan = {
             id: Math.random().toString(),
             book: book,
             student: student,
-            loanDate: loanDate
+            loanDate: new Date()
         };
         var status = this.loanservice.create(loan);
         book.available = false;
@@ -482,9 +490,12 @@ exports.App = App;
 var repositorybook = new MemoryRAM();
 var repositorystudent = new MemoryRAM();
 var repositoryloan = new MemoryRAM();
-var loanservice = new Service(repositoryloan);
-var studentservice = new Service(repositorystudent);
-var bookservice = new Service(repositorybook);
+var studentvalidator = new Validation();
+var bookvalidator = new Validation();
+var loanvalidator = new Validation();
+var loanservice = new Service(repositoryloan, loanvalidator);
+var studentservice = new Service(repositorystudent, studentvalidator);
+var bookservice = new Service(repositorybook, bookvalidator);
 var studentconsoletest = new Studentconsole(studentservice, loanservice);
 var bookconsoletest = new Bookconsole(bookservice);
 var loanconsole = new LoanConsole(studentservice, bookservice, loanservice);
