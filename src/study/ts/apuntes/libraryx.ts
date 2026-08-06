@@ -14,7 +14,7 @@ export interface IUpdate<T> extends ISave<T> {
     read(): T[];
 }
 
-export interface IRepository<T> extends IUpdate<T> {
+export interface IAddidionalaction<T> extends IUpdate<T> {
     findbyid(id: string): Array<T>
 }
 
@@ -61,7 +61,7 @@ export type Loan = {
 
 //----------Persistence--------------
 
-export class MemoryRAM<T> implements IRepository<T> {
+export class MemoryRAM<T> implements IAddidionalaction<T> {
 
     private memory: T[] = [];
 
@@ -114,7 +114,7 @@ export class Approbation<T> implements IApprobation<T> {
 //-------------Services---------
 
 export class Service<T> implements IService<T> {
-    constructor(private repository: IRepository<T>, private approbator: IApprobation<T>) { }
+    constructor(private repository: IAddidionalaction<T>, private approbator: IApprobation<T>) { }
 
     create(item: T) {
         if (!this.approbator.approve(item)) return false
