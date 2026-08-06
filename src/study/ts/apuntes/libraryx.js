@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Service = exports.Validation = exports.MemoryRAM = void 0;
+exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.Service = exports.Approbation = exports.MemoryRAM = void 0;
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
 //--------INFRAESTRUCTURE---------
@@ -44,23 +44,29 @@ var MemoryRAM = /** @class */ (function () {
     return MemoryRAM;
 }());
 exports.MemoryRAM = MemoryRAM;
-var Validation = /** @class */ (function () {
-    function Validation() {
+var Approbation = /** @class */ (function () {
+    function Approbation() {
     }
-    Validation.prototype.valide = function (item) {
-        return item !== null && item !== undefined && Object.keys(item).length > 0;
+    Approbation.prototype.approve = function (item) {
+        for (var _i = 0, _a = Object.values(item); _i < _a.length; _i++) {
+            var value = _a[_i];
+            if (value === "" || value === null || value === undefined) {
+                return false;
+            }
+        }
+        return true;
     };
-    return Validation;
+    return Approbation;
 }());
-exports.Validation = Validation;
+exports.Approbation = Approbation;
 //-------------Services---------
 var Service = /** @class */ (function () {
-    function Service(repository, validator) {
+    function Service(repository, approbator) {
         this.repository = repository;
-        this.validator = validator;
+        this.approbator = approbator;
     }
     Service.prototype.create = function (item) {
-        if (!this.validator.valide(item))
+        if (!this.approbator.approve(item))
             return false;
         return this.repository.create(item);
     };
@@ -68,7 +74,7 @@ var Service = /** @class */ (function () {
         return this.repository.read();
     };
     Service.prototype.update = function (item) {
-        if (!this.validator.valide(item))
+        if (!this.approbator.approve(item))
             return false;
         return this.repository.update(item);
     };
@@ -218,12 +224,12 @@ var Studentconsole = /** @class */ (function () {
         }
         var name = prompt("Nombre: ");
         if (!/^[a-zA-Z\s]+$/.test(name)) {
-            console.log("El nombre solo puede contener letras");
+            console.log("El nombre no puede estar vacio y solo puede contener letras");
             return name;
         }
         var identification = prompt("Identificación: ");
         if (!/^\d+$/.test(identification)) {
-            console.log("La identificación debe ser numérica");
+            console.log("La identificación no puede estar vacio y debe ser numérica");
             return identification;
         }
         var schoolgrade = prompt("Grado Escolar: ");
@@ -337,7 +343,7 @@ var Bookconsole = /** @class */ (function () {
         }
         var title = prompt("Titulo: ");
         if (title.trim() === "") {
-            console.log("El titulo no puede estar vacío");
+            console.log("El titulo no puede estar vacio");
             return title;
         }
         var author = prompt("Autor: ");
@@ -403,22 +409,11 @@ var LoanConsole = /** @class */ (function () {
         }
     };
     LoanConsole.prototype.lendbook = function () {
-        var idbook = prompt("ID Libro: ");
-        if (!idbook || idbook.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return idbook;
-        }
-        var idstudent = prompt("ID Estudiante: ");
-        if (!idstudent || idstudent.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return idstudent;
-        }
+        var idbook = this.inputidbook();
+        var idstudent = this.inputidstudent();
         var books = this.bookservice.read();
         var book = books.filter(function (book) { return book.id === idbook; })[0];
-        if (!book) {
-            return false;
-        }
-        if (!book.available) {
+        if (!book || !book.available) {
             return false;
         }
         var students = this.studentservice.read();
@@ -438,11 +433,7 @@ var LoanConsole = /** @class */ (function () {
         console.log(status ? "Prestamo existoso" : "No se pudo realizar el prestamo");
     };
     LoanConsole.prototype.returnbook = function () {
-        var idbook = prompt("ID Libro: ");
-        if (!idbook || idbook.trim() === "") {
-            console.log("El ID no puede estar vacío");
-            return idbook;
-        }
+        var idbook = this.inputidbook();
         var loans = this.loanservice.read();
         var loan = loans.find(function (loan) { return loan.book.id === idbook; });
         if (!loan) {
@@ -472,6 +463,20 @@ var LoanConsole = /** @class */ (function () {
             });
         });
     };
+    LoanConsole.prototype.inputidbook = function () {
+        var idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return idbook;
+    };
+    LoanConsole.prototype.inputidstudent = function () {
+        var idstudent = prompt("ID Estudiante: ");
+        if (!idstudent || idstudent.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return idstudent;
+    };
     return LoanConsole;
 }());
 exports.LoanConsole = LoanConsole;
@@ -490,12 +495,12 @@ exports.App = App;
 var repositorybook = new MemoryRAM();
 var repositorystudent = new MemoryRAM();
 var repositoryloan = new MemoryRAM();
-var studentvalidator = new Validation();
-var bookvalidator = new Validation();
-var loanvalidator = new Validation();
-var loanservice = new Service(repositoryloan, loanvalidator);
-var studentservice = new Service(repositorystudent, studentvalidator);
-var bookservice = new Service(repositorybook, bookvalidator);
+var studentapprobator = new Approbation();
+var bookapprobator = new Approbation();
+var loanapprobator = new Approbation();
+var loanservice = new Service(repositoryloan, loanapprobator);
+var studentservice = new Service(repositorystudent, studentapprobator);
+var bookservice = new Service(repositorybook, bookapprobator);
 var studentconsoletest = new Studentconsole(studentservice, loanservice);
 var bookconsoletest = new Bookconsole(bookservice);
 var loanconsole = new LoanConsole(studentservice, bookservice, loanservice);

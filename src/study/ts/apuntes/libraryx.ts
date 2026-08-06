@@ -106,9 +106,15 @@ export class MemoryRAM<T> implements IAddidionalaction<T> {
 }
 
 export class Approbation<T> implements IApprobation<T> {
-    approve(item: T) {
-        return item !== null && item !== undefined && Object.keys(item).length > 0;
+    approve(item: any) {
+
+    for(const value of Object.values(item)){
+        if(value === "" || value === null || value === undefined){
+            return false;
+        }
     }
+    return true;
+}
 }
 
 //-------------Services---------
@@ -257,7 +263,7 @@ export class Studentconsole implements IView {
         }
 
         const status: boolean = this.studentservice.delete(id);
-        console.log(status ? "Estudiante eliminado" : "No se pudo registrar");
+        console.log(status ? "Estudiante eliminado" : "No se pudo eliminar");
     }
 
     private updatestudent() {
