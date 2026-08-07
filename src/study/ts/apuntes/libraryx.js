@@ -116,8 +116,8 @@ var MenuConsole = /** @class */ (function () {
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
         console.log("=============================================");
         var opciones = [
-            "1. Registrar, Eliminar, Ver, Actualizar,  Buscar estudiante",
-            "2. Registrar, Eliminar, Ver, Actualizar,  Buscar libro",
+            "1. Registrar, Eliminar, Ver, Actualizar estudiante",
+            "2. Registrar, Eliminar, Ver, Actualizar libro",
             "3. Prestar libro, Devolver libro,  Mostrar prestamos",
             "0. Salir"
         ];
@@ -152,9 +152,6 @@ var Studentconsole = /** @class */ (function () {
                 case 4:
                     this.readstudent();
                     break;
-                case 5:
-                    this.searchstudent();
-                    break;
                 case 0:
                     run = false;
                     break;
@@ -167,7 +164,6 @@ var Studentconsole = /** @class */ (function () {
             "2. Borrar estudiante",
             "3. Actualizar estudiante",
             "4. Mostrar estudiantes",
-            "5. Buscar estudiate",
             "0. Salir"
         ];
         for (var _i = 0, opciones_2 = opciones; _i < opciones_2.length; _i++) {
@@ -188,7 +184,7 @@ var Studentconsole = /** @class */ (function () {
             return;
         }
         var status = this.studentservice.delete(id);
-        console.log(status ? "Estudiante eliminado" : "No se pudo registrar");
+        console.log(status ? "Estudiante eliminado" : "No se pudo eliminar");
     };
     Studentconsole.prototype.updatestudent = function () {
         var student = this.inputstudent();
@@ -204,17 +200,6 @@ var Studentconsole = /** @class */ (function () {
             grado: student.schoolgrade
         }); });
         console.table(studentsview);
-    };
-    Studentconsole.prototype.searchstudent = function () {
-        var id = this.inputid();
-        var students = this.studentservice.read();
-        var student = students.filter(function (item) { return item.id === id; });
-        if (student.length === 0) {
-            console.log("No es posible encontrarlo");
-        }
-        else {
-            console.table(student);
-        }
     };
     Studentconsole.prototype.inputstudent = function () {
         var id = prompt("ID: ");
@@ -271,9 +256,6 @@ var Bookconsole = /** @class */ (function () {
                 case 4:
                     this.readbook();
                     break;
-                case 5:
-                    this.searchbook();
-                    break;
                 case 0:
                     run = false;
                     break;
@@ -286,7 +268,6 @@ var Bookconsole = /** @class */ (function () {
             "2. Borrar libro",
             "3. Actualizar libro",
             "4. Mostrar libros",
-            "5. Buscar libro",
             "0. Salir"
         ];
         for (var _i = 0, opciones_3 = opciones; _i < opciones_3.length; _i++) {
@@ -323,17 +304,6 @@ var Bookconsole = /** @class */ (function () {
             disponible: book.available ? "Sí" : "No"
         }); });
         console.table(booksview);
-    };
-    Bookconsole.prototype.searchbook = function () {
-        var id = this.inputid();
-        var students = this.bookservice.read();
-        var student = students.filter(function (item) { return item.id === id; });
-        if (student.length === 0) {
-            console.log("No es posible encontrarlo");
-        }
-        else {
-            console.table(student);
-        }
     };
     Bookconsole.prototype.inputbook = function () {
         var id = prompt("ID: ");
@@ -414,12 +384,12 @@ var LoanConsole = /** @class */ (function () {
         var books = this.bookservice.read();
         var book = books.filter(function (book) { return book.id === idbook; })[0];
         if (!book || !book.available) {
-            return false;
+            return;
         }
         var students = this.studentservice.read();
         var student = students.filter(function (student) { return student.id === idstudent; })[0];
         if (!student) {
-            return false;
+            return;
         }
         var loan = {
             id: Math.random().toString(),

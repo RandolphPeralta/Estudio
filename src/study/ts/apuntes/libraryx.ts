@@ -189,8 +189,8 @@ export class MenuConsole implements IView {
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
         console.log("=============================================");
         const opciones: string[] = [
-            "1. Registrar, Eliminar, Ver, Actualizar,  Buscar estudiante",
-            "2. Registrar, Eliminar, Ver, Actualizar,  Buscar libro",
+            "1. Registrar, Eliminar, Ver, Actualizar estudiante",
+            "2. Registrar, Eliminar, Ver, Actualizar libro",
             "3. Prestar libro, Devolver libro,  Mostrar prestamos",
             "0. Salir"
         ];
@@ -223,9 +223,6 @@ export class Studentconsole implements IView {
                 case 4:
                     this.readstudent();
                     break
-                case 5:
-                    this.searchstudent();
-                    break
                 case 0:
                     run = false;
                     break;
@@ -239,7 +236,6 @@ export class Studentconsole implements IView {
             "2. Borrar estudiante",
             "3. Actualizar estudiante",
             "4. Mostrar estudiantes",
-            "5. Buscar estudiate",
             "0. Salir"
         ];
         for (const opcion of opciones) {
@@ -282,17 +278,6 @@ export class Studentconsole implements IView {
         }));
 
         console.table(studentsview);
-    }
-
-    private searchstudent() {
-        const id = this.inputid();
-        let students = this.studentservice.read();
-        let student = students.filter((item: any) => item.id === id);
-        if (student.length === 0) {
-            console.log("No es posible encontrarlo")
-        } else {
-            console.table(student)
-        }
     }
 
     private inputstudent(): Student {
@@ -355,9 +340,6 @@ export class Bookconsole implements IView {
                 case 4:
                     this.readbook();
                     break
-                case 5:
-                    this.searchbook();
-                    break
                 case 0:
                     run = false;
                     break;
@@ -371,7 +353,6 @@ export class Bookconsole implements IView {
             "2. Borrar libro",
             "3. Actualizar libro",
             "4. Mostrar libros",
-            "5. Buscar libro",
             "0. Salir"
         ];
         for (const opcion of opciones) {
@@ -414,17 +395,6 @@ export class Bookconsole implements IView {
         }));
 
         console.table(booksview);
-    }
-
-    private searchbook() {
-        const id = this.inputid()
-        let students = this.bookservice.read();
-        let student = students.filter((item: any) => item.id === id);
-        if (student.length === 0) {
-            console.log("No es posible encontrarlo")
-        } else {
-            console.table(student)
-        }
     }
 
     private inputbook(): Book {
@@ -521,14 +491,14 @@ export class LoanConsole implements IView {
         let books: Book[] = this.bookservice.read();
         const book = books.filter((book: any) => book.id === idbook)[0];
         if (!book || !book.available) {
-            return false;
+            return;
         }
 
         let students: Student[] = this.studentservice.read();
         const student = students.filter((student: Student) => student.id === idstudent)[0];
 
         if (!student) {
-            return false;
+            return;
         }
 
         const loan: Loan = {
@@ -547,7 +517,7 @@ export class LoanConsole implements IView {
 
     private returnbook() {
         let idbook = this.inputidbook();
-        let loans: Loan[] = this.loanservice.read()
+        let loans: Loan[] = this.loanservice.read();
         const loan = loans.find(loan => loan.book.id === idbook);
         if (!loan) {
             console.log("El libro no existe con este id")
@@ -558,11 +528,11 @@ export class LoanConsole implements IView {
         const status = this.loanservice.update(loan);
         loan.book.available = true;
         this.bookservice.update(loan.book);
-        console.log(status ? "Libro devuelto" : "No se pudo devolver")
+        console.log(status ? "Libro devuelto" : "No se pudo devolver");
     }
 
     private readloan() {
-        let loans: Loan[] = this.loanservice.read()
+        let loans: Loan[] = this.loanservice.read();
         console.log("\n===== PRÉSTAMOS =====")
 
         if (loans.length === 0) {
