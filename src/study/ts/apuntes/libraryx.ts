@@ -255,6 +255,7 @@ export class Studentconsole implements IView {
         let studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
 
         if (studentactiveloan.length > 0) {
+            console.log("El estudiante esta realizando prestamo, no puede ser eliminado");
             return;
         }
 
@@ -283,30 +284,26 @@ export class Studentconsole implements IView {
     private inputstudent(): Student {
 
         const id = prompt("ID: ");
-        if (id.trim() === "") {
+        if (!id || id.trim() === "") {
             console.log("El ID no puede estar vacío");
-            return id;
         }
 
         const name = prompt("Nombre: ");
-        if (!/^[a-zA-Z\s]+$/.test(name)) {
+        if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
             console.log("El nombre no puede estar vacio y solo puede contener letras");
-            return name;
         }
 
         const identification = prompt("Identificación: ");
-        if (!/^\d+$/.test(identification)) {
+        if (!identification || !/^\d+$/.test(identification)) {
             console.log("La identificación no puede estar vacio y debe ser numérica");
-            return identification;
         }
 
         const schoolgrade = prompt("Grado Escolar: ");
-        if (schoolgrade.trim() === "") {
+        if (!schoolgrade ||schoolgrade.trim() === "") {
             console.log("El grado escolar no puede estar vacío");
-            return schoolgrade;
         }
 
-        return { id, name, identification, schoolgrade };
+        return {id, name, identification, schoolgrade};
     }
 
     private inputid() {
@@ -367,10 +364,11 @@ export class Bookconsole implements IView {
     }
 
     private deletebook() {
-        const id = this.inputid()
+        const id = this.inputid();
         let books: Book[] = this.bookservice.read();
         let book = books.filter(findbook => findbook.id = id)[0];
         if (!book.available) {
+            console.log("El libro esta prestado no es posible eliminarlo")
             return;
         }
 
@@ -400,22 +398,20 @@ export class Bookconsole implements IView {
     private inputbook(): Book {
 
         const id = prompt("ID: ");
-        if (id.trim() === "") {
+        if (!id || id.trim() === "") {
             console.log("El ID no puede estar vacío");
-            return id;
         }
 
         const title = prompt("Titulo: ");
-        if (title.trim() === "") {
+        if (!title || title.trim() === "") {
             console.log("El titulo no puede estar vacio");
-            return title;
         }
 
         const author = prompt("Autor: ");
-        if (author.trim() === "") {
+        if (!author || author.trim() === "") {
             console.log("El autor no puede estar vacío");
-            return author
         }
+
         const available = true;
 
         return {
@@ -428,7 +424,7 @@ export class Bookconsole implements IView {
 
     private inputid() {
         const id = prompt("ID: ");
-        if (id.trim() === "") {
+        if (!id || id.trim() === "") {
             console.log("El ID no puede estar vacío");
         }
         return id
@@ -489,8 +485,9 @@ export class LoanConsole implements IView {
         let idstudent = this.inputidstudent();
 
         let books: Book[] = this.bookservice.read();
-        const book = books.filter((book: any) => book.id === idbook)[0];
+        const book = books.filter((book: Book) => book.id === idbook)[0];
         if (!book || !book.available) {
+            console.log("El libro no existe o no esta disponible")
             return;
         }
 
@@ -498,6 +495,7 @@ export class LoanConsole implements IView {
         const student = students.filter((student: Student) => student.id === idstudent)[0];
 
         if (!student) {
+            console.log("El estudiante no existe")
             return;
         }
 
@@ -516,6 +514,7 @@ export class LoanConsole implements IView {
     }
 
     private returnbook() {
+        
         let idbook = this.inputidbook();
         let loans: Loan[] = this.loanservice.read();
         const loan = loans.find(loan => loan.book.id === idbook);
