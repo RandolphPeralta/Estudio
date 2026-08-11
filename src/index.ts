@@ -612,7 +612,7 @@ export class LoginWeb implements IView {
 
         document.getElementById("loginForm")!.addEventListener("submit", (e) => {
             e.preventDefault();
-            
+
             const user = (document.getElementById("username") as HTMLInputElement).value;
             const pass = (document.getElementById("password") as HTMLInputElement).value;
 
@@ -659,12 +659,6 @@ const bookservice = new Service<Book>(repositorybook, bookValidator);
 
 // const app = new App(menu);
 // app.run();
-
-// const menuWeb = new Menuweb(studentconsole, bookconsole, loanconsole);
-
-// const loginView = new LoginView(() => {
-//     menuWeb.execute(); // cuando el login es correcto, carga el menú principal
-// });
 
 const loginweb = new LoginWeb()
 
