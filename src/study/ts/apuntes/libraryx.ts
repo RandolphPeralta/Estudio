@@ -5,12 +5,12 @@ const prompt = (promptSync as any)();
 
 //---------interfaces--------
 export interface ISave<T> {
-    create(some: T): any;
-    delete(id: any): any;
+    create(some: T): boolean;
+    delete(id: any): boolean;
 }
 
 export interface IUpdate<T> extends ISave<T> {
-    update(some: any): any;
+    update(some: any): boolean;
     read(): T[];
 }
 
@@ -23,14 +23,14 @@ export interface IView {
 }
 
 export interface IService<T> {
-    create(item: T): any;
-    read(): any;
-    update(item: T): any;
-    delete(id: any): any;
+    create(item: T): boolean;
+    read(): Array<T>;
+    update(item: T): boolean;
+    delete(id: any): boolean;
 }
 
-export interface IApprobation<T> {
-    approve(item: T): any;
+export interface IValidation<T> {
+    validate(item: T): any;
 }
 
 //---------Entitys---------------------
@@ -63,51 +63,44 @@ export type Loan = {
 
 export class MemoryRAM<T> implements IAddidionalaction<T> {
 
-    private memory: T[] = [];
+  private memory: T[] = [];
 
-    create(some: any): boolean {
-        let index = this.memory.findIndex((item: any) => item.id === some.id);
+  create(some: any): boolean {
+    return this.memory.push(some) > 0;
+  }
 
-        if (index !== -1) {
-            return false;
-        }
+  delete(id: any) {
+    let index = this.memory.findIndex((item: any) => item.id === id);
+    if (index !== -1) {
+      this.memory.splice(index, 1);
+      return true
+    } else {
+      return false
+    }
+  }
 
-        this.memory.push(some)
-        return true;
+  update(some: any): boolean {
+    let index = this.memory.findIndex((item: any) => item.id === some.id);
+
+    if (index === -1) {
+      return false;
     }
 
-    delete(id: any): boolean {
-        let index = this.memory.findIndex((item: any) => item.id === id);
-        if (index !== -1) {
-            this.memory.splice(index, 1);
-            return true
-        } else {
-            return false
-        }
-    }
+    this.memory[index] = some;
+    return true;
+  }
 
-    update(some: any): boolean {
-        let index = this.memory.findIndex((item: any) => item.id === some.id);
-        if (index === -1) {
-            return false;
-        }
+  read(): T[] {
+    return this.memory;
+  }
 
-        this.memory[index] = some;
-        return true;
-    }
-
-    read(): T[] {
-        return this.memory;
-    }
-
-    findbyid(id: string) {
-        return this.memory.filter((item: any) => item.id === id)
-    }
+  findbyid(id: string) {
+    return this.memory.filter((item: any) => item.id === id)
+  }
 }
 
-export class Approbation<T> implements IApprobation<T> {
-    approve(item: any) {
-
+export class Validation<T extends object> implements IValidation<T> {
+    validate(item: T): boolean {
     for(const value of Object.values(item)){
         if(value === "" || value === null || value === undefined){
             return false;
@@ -120,10 +113,10 @@ export class Approbation<T> implements IApprobation<T> {
 //-------------Services---------
 
 export class Service<T> implements IService<T> {
-    constructor(private repository: IAddidionalaction<T>, private approbator: IApprobation<T>) { }
+    constructor(private repository: IAddidionalaction<T>, private Validator: IValidation<T>) { }
 
     create(item: T) {
-        if (!this.approbator.approve(item)) return false
+        if (!this.Validator.validate(item)) return false
         return this.repository.create(item);
     }
 
@@ -132,7 +125,7 @@ export class Service<T> implements IService<T> {
     }
 
     update(item: T) {
-        if (!this.approbator.approve(item)) return false
+        if (!this.Validator.validate(item)) return false
         return this.repository.update(item);
     }
 
@@ -245,17 +238,26 @@ export class Studentconsole implements IView {
 
     private createStudent() {
         const student = this.inputstudent();
+        let students = this.studentservice.read();
+        let indexstudent = students.findIndex((item: Student) => item.id === student.id);
+
+        if (indexstudent !== -1) {
+            console.log("Este estudiante ya fue registrado con este id");
+            return;
+        }
+
         const result: boolean = this.studentservice.create(student);
         console.log(result ? "Estudiante registrado" : "No se pudo registrar");
     }
 
     private deletestudent() {
+        this.readstudent();
         const id = this.inputid();
         let activeLoans: Loan[] = this.loanservice.read();
         let studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
 
         if (studentactiveloan.length > 0) {
-            console.log("El estudiante esta realizando prestamo, no puede ser eliminado");
+            console.log("El estudiante no puede ser eliminado, ya que tiene prestamos")
             return;
         }
 
@@ -264,7 +266,17 @@ export class Studentconsole implements IView {
     }
 
     private updatestudent() {
+        this.readstudent();
+        const id = this.inputid();
+        let students = this.studentservice.read();
+        let findstudent = students.filter((item: Student) => item.id === id)[0];
+        if (!findstudent) {
+            console.log("Estudiante no encontrado");
+            return;
+        }
+
         const student = this.inputstudent();
+        student.id = findstudent.id
         const newstudent: boolean = this.studentservice.update(student);
         console.log(newstudent ? "Estudiante actualizado" : "No se pudo actualizar");
     }
@@ -283,11 +295,6 @@ export class Studentconsole implements IView {
 
     private inputstudent(): Student {
 
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-        }
-
         const name = prompt("Nombre: ");
         if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
             console.log("El nombre no puede estar vacio y solo puede contener letras");
@@ -299,16 +306,18 @@ export class Studentconsole implements IView {
         }
 
         const schoolgrade = prompt("Grado Escolar: ");
-        if (!schoolgrade ||schoolgrade.trim() === "") {
+        if (!schoolgrade) {
             console.log("El grado escolar no puede estar vacío");
         }
 
-        return {id, name, identification, schoolgrade};
+        const id = Math.random().toString();
+
+        return { id, name, identification, schoolgrade };
     }
 
     private inputid() {
         const id = prompt("ID: ");
-        if (id.trim() === "") {
+        if (!id) {
             console.log("El ID no puede estar vacío");
         }
         return id
@@ -359,16 +368,25 @@ export class Bookconsole implements IView {
 
     private createbook() {
         const book = this.inputbook();
+        let books = this.bookservice.read();
+        let indexbook = books.findIndex((item: Book) => item.id === book.id);
+
+        if (indexbook !== -1) {
+            console.log("Este libro ya fue registrado con este id")
+            return;
+        }
+
         const result: boolean = this.bookservice.create(book);
         console.log(result ? "Libro registrado" : "No se pudo registrar");
     }
 
     private deletebook() {
+        this.readbook();
         const id = this.inputid();
         let books: Book[] = this.bookservice.read();
         let book = books.filter(findbook => findbook.id = id)[0];
         if (!book.available) {
-            console.log("El libro esta prestado no es posible eliminarlo")
+            console.log("El libro esta prestado y no posible eliminar");
             return;
         }
 
@@ -377,8 +395,17 @@ export class Bookconsole implements IView {
     }
 
     private updatebook() {
-        const student = this.inputbook();
-        const newbook: boolean = this.bookservice.update(student);
+        this.readbook();
+        const id = this.inputid();
+        let books = this.bookservice.read();
+        let findbook = books.filter((item: Book) => item.id === id)[0];
+        if (!findbook) {
+            console.log("El libro no fue encontrado");
+            return
+        }
+        const book = this.inputbook();
+        book.id = findbook.id
+        const newbook: boolean = this.bookservice.update(book);
         console.log(newbook ? "Libro actualizado" : "No se pudo actualizar");
     }
 
@@ -397,22 +424,18 @@ export class Bookconsole implements IView {
 
     private inputbook(): Book {
 
-        const id = prompt("ID: ");
-        if (!id || id.trim() === "") {
-            console.log("El ID no puede estar vacío");
-        }
-
-        const title = prompt("Titulo: ");
+        let title = prompt("Titulo: ");
         if (!title || title.trim() === "") {
             console.log("El titulo no puede estar vacio");
         }
 
-        const author = prompt("Autor: ");
+        let author = prompt("Autor: ");
         if (!author || author.trim() === "") {
             console.log("El autor no puede estar vacío");
         }
 
         const available = true;
+        const id = Math.random().toString();
 
         return {
             id,
@@ -423,7 +446,7 @@ export class Bookconsole implements IView {
     }
 
     private inputid() {
-        const id = prompt("ID: ");
+        let id = prompt("ID: ");
         if (!id || id.trim() === "") {
             console.log("El ID no puede estar vacío");
         }
@@ -480,7 +503,8 @@ export class LoanConsole implements IView {
     }
 
     private lendbook() {
-
+        console.table(this.studentservice.read())
+        console.table(this.bookservice.read())
         let idbook = this.inputidbook();
         let idstudent = this.inputidstudent();
 
@@ -514,9 +538,8 @@ export class LoanConsole implements IView {
     }
 
     private returnbook() {
-        
         let idbook = this.inputidbook();
-        let loans: Loan[] = this.loanservice.read();
+        let loans: Loan[] = this.loanservice.read()
         const loan = loans.find(loan => loan.book.id === idbook);
         if (!loan) {
             console.log("El libro no existe con este id")
@@ -527,11 +550,11 @@ export class LoanConsole implements IView {
         const status = this.loanservice.update(loan);
         loan.book.available = true;
         this.bookservice.update(loan.book);
-        console.log(status ? "Libro devuelto" : "No se pudo devolver");
+        console.log(status ? "Libro devuelto" : "No se pudo devolver")
     }
 
     private readloan() {
-        let loans: Loan[] = this.loanservice.read();
+        let loans: Loan[] = this.loanservice.read()
         console.log("\n===== PRÉSTAMOS =====")
 
         if (loans.length === 0) {
@@ -585,19 +608,19 @@ const repositorybook = new MemoryRAM<Book>();
 const repositorystudent = new MemoryRAM<Student>();
 const repositoryloan = new MemoryRAM<Loan>();
 
-const studentapprobator = new Approbation<Student>();
-const bookapprobator = new Approbation<Book>();
-const loanapprobator = new Approbation<Loan>();
+const studentValidator = new Validation<Student>();
+const bookValidator = new Validation<Book>();
+const loanValidator = new Validation<Loan>();
 
-const loanservice = new Service<Loan>(repositoryloan, loanapprobator);
-const studentservice = new Service<Student>(repositorystudent, studentapprobator);
-const bookservice = new Service<Book>(repositorybook, bookapprobator);
+const loanservice = new Service<Loan>(repositoryloan, loanValidator);
+const studentservice = new Service<Student>(repositorystudent, studentValidator);
+const bookservice = new Service<Book>(repositorybook, bookValidator);
 
-const studentconsoletest = new Studentconsole(studentservice, loanservice);
-const bookconsoletest = new Bookconsole(bookservice);
+const studentconsole = new Studentconsole(studentservice, loanservice);
+const bookconsole = new Bookconsole(bookservice);
 const loanconsole = new LoanConsole(studentservice, bookservice, loanservice);
 
-const menu = new MenuConsole(studentconsoletest, bookconsoletest, loanconsole);
+const menu = new MenuConsole(studentconsole, bookconsole, loanconsole);
 
 const app = new App(menu);
 app.run();

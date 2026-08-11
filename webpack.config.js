@@ -1,37 +1,41 @@
-const path = require("path");
-const webpack = require("webpack");
-const dotenv = require("dotenv");
-
-const env = dotenv.config({
-    path: "./.env.local"
-}).parsed;
+const path = require('path');
 
 module.exports = {
-    entry: "./src/index.ts",
+  entry: "./src/index.ts",
 
-    output: {
-        filename: "bundle.js",
-        path: path.resolve(__dirname, "dist"),
-        clean: true
-    },
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist")
+  },
 
-    resolve: {
-        extensions: [".ts", ".js"]
-    },
-
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: "ts-loader",
-                exclude: /node_modules/
-            }
-        ]
-    },
-
-    plugins: [
-        new webpack.DefinePlugin({
-            "process.env.PLATFORM": JSON.stringify(env.PLATFORM)
-        })
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: "ts-loader",
+        exclude: /node_modules/
+      }
     ]
+  },
+
+  resolve: {
+    extensions: [".ts", ".js"],
+    fallback: {
+      fs: false,
+      path: false,
+    }
+  },
+
+  externals: {
+        "prompt-sync": "commonjs prompt-sync"
+    },
+
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "src/study/html")
+    },
+    open: true,
+    port: 8080
+  }
+  
 };
