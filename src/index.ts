@@ -592,20 +592,6 @@ export class Service<T> implements IService<T> {
 //     }
 // }
 
-class Menuweb implements IView {
-
-    constructor(
-        private studentMenu: IView,
-        private bookMenu: IView,
-        private loanMenu: IView
-    ) { }
-
-    execute() {
-        document.body
-    }
-
-}
-
 export class LoginWeb implements IView {
 
     execute(): void {
@@ -625,6 +611,41 @@ export class LoginWeb implements IView {
         });
 
     }
+}
+
+class Studentweb implements IView {
+
+    constructor(
+        private studentMenu: IView,
+    ) { }
+
+    execute() {
+        document.body
+    }
+
+}
+
+class Bookweb implements IView {
+
+    constructor(
+        private bookMenu: IView,
+    ) { }
+
+    execute() {
+        document.body
+    }
+
+}
+class Loanweb implements IView {
+
+    constructor(
+        private bookMenu: IView,
+    ) { }
+
+    execute() {
+        document.body
+    }
+
 }
 
 //-----CLASE-CONSUMIDORA-APP--------------
