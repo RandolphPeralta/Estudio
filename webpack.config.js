@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: "./src/main.ts",
 
   output: {
     filename: "bundle.js",
@@ -32,7 +32,7 @@ module.exports = {
 
   devServer: {
     static: {
-      directory: path.join(__dirname, "src/study/html")
+      directory: path.join(__dirname, "src/study/html/prueba")
     },
     open: true,
     port: 8080
