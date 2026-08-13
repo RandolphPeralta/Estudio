@@ -156,8 +156,8 @@ export class StudentWeb implements IView {
             document.getElementById("stBtnCancel") as HTMLButtonElement;
 
 
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
             this.saveStudent();
         });
 
@@ -238,36 +238,36 @@ export class StudentWeb implements IView {
 
         tbody.innerHTML = students.length === 0
             ? `<tr><td colspan="5" class="text-center text-muted">No hay estudiantes registrados.</td></tr>`
-            : students.map(s => `
+            : students.map(student => `
                 <tr>
-                    <td><small class="text-muted">${s.id}</small></td>
-                    <td>${s.name}</td>
-                    <td>${s.identification}</td>
-                    <td>${s.schoolgrade}</td>
+                    <td><small class="text-muted">${student.id}</small></td>
+                    <td>${student.name}</td>
+                    <td>${student.identification}</td>
+                    <td>${student.schoolgrade}</td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" data-id="${s.id}">Editar</button>
-                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${s.id}">Eliminar</button>
+                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" data-id="${student.id}">Editar</button>
+                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${student.id}">Eliminar</button>
                     </td>
                 </tr>
             `).join("");
 
         tbody.querySelectorAll(".btn-edit").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+            btn.addEventListener("click", (event) => {
+                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                 this.editStudent(id);
             });
         });
 
         tbody.querySelectorAll(".btn-delete").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+            btn.addEventListener("click", (event) => {
+                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                 this.deleteStudent(id);
             });
         });
     }
 
     private editStudent(id: string): void {
-        const student = this.studentservice.read().find(s => s.id === id);
+        const student = this.studentservice.read().find(student => student.id === id);
         if (!student) return;
 
         (document.getElementById("stEditingId") as HTMLInputElement).value = student.id;
@@ -290,7 +290,7 @@ export class StudentWeb implements IView {
     }
 
     private deleteStudent(id: string): void {
-        const activeLoans = this.loanservice.read().filter(l => l.student.id === id && !l.returndate);
+        const activeLoans = this.loanservice.read().filter(loan => loan.student.id === id && !loan.returndate);
         if (activeLoans.length > 0) {
             this.showAlert("No se puede eliminar: El estudiante tiene préstamos activos.", "warning");
             return;
@@ -336,8 +336,8 @@ export class BookWeb implements IView {
             document.getElementById("bkBtnCancel") as HTMLButtonElement;
 
 
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
             this.saveBook();
         });
 
@@ -353,40 +353,40 @@ export class BookWeb implements IView {
 
         tbody.innerHTML = books.length === 0
             ? `<tr><td colspan="5" class="text-center text-muted">No hay libros registrados.</td></tr>`
-            : books.map(b => `
+            : books.map(book => `
                 <tr>
-                    <td><small class="text-muted">${b.id}</small></td>
-                    <td>${b.title}</td>
-                    <td>${b.author}</td>
+                    <td><small class="text-muted">${book.id}</small></td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
                     <td>
-                        <span class="badge ${b.available ? 'bg-success' : 'bg-warning text-dark'}">
-                            ${b.available ? 'Disponible' : 'Prestado'}
+                        <span class="badge ${book.available ? 'bg-success' : 'bg-warning text-dark'}">
+                            ${book.available ? 'Disponible' : 'Prestado'}
                         </span>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" data-id="${b.id}">Editar</button>
-                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${b.id}">Eliminar</button>
+                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" data-id="${book.id}">Editar</button>
+                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${book.id}">Eliminar</button>
                     </td>
                 </tr>
             `).join("");
 
         tbody.querySelectorAll(".btn-edit").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+            btn.addEventListener("click", (event) => {
+                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                 this.editBook(id);
             });
         });
 
         tbody.querySelectorAll(".btn-delete").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+            btn.addEventListener("click", (event) => {
+                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                 this.deleteBook(id);
             });
         });
     }
 
     private editBook(id: string): void {
-        const book = this.bookservice.read().find(b => b.id === id);
+        const book = this.bookservice.read().find(book => book.id === id);
         if (!book) return;
 
         (document.getElementById("bkEditingId") as HTMLInputElement).value = book.id;
@@ -404,7 +404,7 @@ export class BookWeb implements IView {
         const author = (document.getElementById("bkAuthor") as HTMLInputElement).value;
 
         if (editingId) {
-            const existingBook = this.bookservice.read().find(b => b.id === editingId);
+            const existingBook = this.bookservice.read().find(book => book.id === editingId);
             const book: Book = {
                 id: editingId,
                 title,
@@ -446,7 +446,7 @@ export class BookWeb implements IView {
     }
 
     private deleteBook(id: string): void {
-        const book = this.bookservice.read().find(b => b.id === id);
+        const book = this.bookservice.read().find(book => book.id === id);
         if (book && !book.available) {
             this.showAlert("No se puede eliminar: El libro está prestado actualmente.", "warning");
             return;
@@ -500,21 +500,21 @@ export class LoanWeb implements IView {
         const selectBook = document.getElementById("lnBook") as HTMLSelectElement;
 
         const students = this.studentservice.read();
-        const availableBooks = this.bookservice.read().filter(b => b.available);
+        const availableBooks = this.bookservice.read().filter(book => book.available);
 
         selectStudent.innerHTML = `<option value="">Seleccione estudiante...</option>` +
-            students.map(s => `<option value="${s.id}">${s.name} (${s.identification})</option>`).join("");
+            students.map(student => `<option value="${student.id}">${student.name} (${student.identification})</option>`).join("");
 
         selectBook.innerHTML = `<option value="">Seleccione libro...</option>` +
-            availableBooks.map(b => `<option value="${b.id}">${b.title} - ${b.author}</option>`).join("");
+            availableBooks.map(book => `<option value="${book.id}">${book.title} - ${book.author}</option>`).join("");
     }
 
     private createLoan(): void {
         const studentId = (document.getElementById("lnStudent") as HTMLSelectElement).value;
         const bookId = (document.getElementById("lnBook") as HTMLSelectElement).value;
 
-        const student = this.studentservice.read().find(s => s.id === studentId);
-        const book = this.bookservice.read().find(b => b.id === bookId);
+        const student = this.studentservice.read().find(findstudent => findstudent.id === studentId);
+        const book = this.bookservice.read().find(findbook => findbook.id === bookId);
 
         if (!student || !book || !book.available) {
             this.showAlert("Error: Seleccione un libro disponible y un estudiante válido.", "danger");
@@ -541,7 +541,7 @@ export class LoanWeb implements IView {
 
     private returnBook(loanId: string): void {
         const loans = this.loanservice.read();
-        const loan = loans.find(l => l.id === loanId);
+        const loan = loans.find(loan => loan.id === loanId);
 
         if (!loan || loan.returndate) {
             this.showAlert("El préstamo no existe o ya fue devuelto.", "warning");
@@ -564,28 +564,28 @@ export class LoanWeb implements IView {
 
         tbody.innerHTML = loans.length === 0
             ? `<tr><td colspan="6" class="text-center text-muted">No hay historial de préstamos.</td></tr>`
-            : loans.map(l => `
+            : loans.map(loan => `
                 <tr>
-                    <td><small class="text-muted">${l.id}</small></td>
-                    <td>${l.book.title}</td>
-                    <td>${l.student.name}</td>
-                    <td>${new Date(l.loanDate).toLocaleDateString()}</td>
+                    <td><small class="text-muted">${loan.id}</small></td>
+                    <td>${loan.book.title}</td>
+                    <td>${loan.student.name}</td>
+                    <td>${new Date(loan.loanDate).toLocaleDateString()}</td>
                     <td>
-                        ${l.returndate
-                    ? `<span class="text-success">${new Date(l.returndate).toLocaleDateString()}</span>`
+                        ${loan.returndate
+                    ? `<span class="text-success">${new Date(loan.returndate).toLocaleDateString()}</span>`
                     : `<span class="badge bg-danger">Pendiente</span>`}
                     </td>
                     <td class="text-center">
-                        ${!l.returndate
-                    ? `<button class="btn btn-sm btn-outline-success btn-return" data-id="${l.id}">Devolver</button>`
+                        ${!loan.returndate
+                    ? `<button class="btn btn-sm btn-outline-success btn-return" data-id="${loan.id}">Devolver</button>`
                     : `<span class="text-muted"><small>Completado</small></span>`}
                     </td>
                 </tr>
             `).join("");
 
         tbody.querySelectorAll(".btn-return").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+            btn.addEventListener("click", (event) => {
+                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                 this.returnBook(id);
             });
         });
@@ -644,9 +644,9 @@ export class Menuweb implements IView {
         });
 
 
-        btnLoans.addEventListener("click", (e) => {
+        btnLoans.addEventListener("click", (event) => {
 
-            e.preventDefault();
+            event.preventDefault();
 
             this.showView("loanView");
 
