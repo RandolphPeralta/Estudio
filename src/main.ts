@@ -15,10 +15,6 @@ export interface IAddidionalaction<T> extends IUpdate<T> {
     findbyid(id: string): Array<T>
 }
 
-export interface IView {
-    execute(): any;
-}
-
 export interface IService<T> {
     create(item: T): boolean;
     read(): Array<T>;
@@ -28,6 +24,26 @@ export interface IService<T> {
 
 export interface IValidation<T> {
     validate(item: T): any;
+}
+
+export interface IView {
+    execute(): void;
+}
+
+export interface IStudentview extends IView {
+
+}
+
+export interface IBookview extends IView {
+    
+}
+
+export interface ILoanview extends IView {
+    
+}
+
+export interface IMenuview extends IView {
+
 }
 
 //---------Entitys---------------------
@@ -135,7 +151,7 @@ export class Service<T> implements IService<T> {
 //------------------ UI-WEB REFACTORIZADO ------------------
 
 //-----------Studentweb--------------
-export class StudentWeb implements IView {
+export class StudentWeb implements IStudentview {
 
     constructor(
         private studentservice: IService<Student>,
@@ -316,7 +332,7 @@ export class StudentWeb implements IView {
 }
 
 //------------Bookweb------
-export class BookWeb implements IView {
+export class BookWeb implements IBookview {
 
     constructor(
         private bookservice: IService<Book>
@@ -473,7 +489,7 @@ export class BookWeb implements IView {
 
 //--------------Loanweb-----------
 
-export class LoanWeb implements IView {
+export class LoanWeb implements ILoanview {
 
     constructor(
         private studentservice: IService<Student>,
@@ -604,12 +620,12 @@ export class LoanWeb implements IView {
 
 //---------------Menuweb-----------
 
-export class Menuweb implements IView {
+export class Menuweb implements IMenuview {
 
     constructor(
-        private studentMenu: IView,
-        private bookMenu: IView,
-        private loanMenu: IView
+        private studentMenu: IStudentview,
+        private bookMenu: IBookview,
+        private loanMenu: ILoanview
     ) {}
 
     execute(): void {
@@ -687,7 +703,7 @@ export class Menuweb implements IView {
 export class LoginWeb implements IView {
 
     constructor(
-        private menuWeb: IView
+        private menuWeb: IMenuview
     ) { }
 
     execute(): void {
