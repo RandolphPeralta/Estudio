@@ -46,6 +46,10 @@ export interface IMenuview extends IView {
 
 }
 
+export interface IViews<T> extends IView {
+
+}
+
 //---------Entitys---------------------
 
 export type Student = {
@@ -171,12 +175,10 @@ export class StudentWeb implements IStudentview {
         const btnCancel =
             document.getElementById("stBtnCancel") as HTMLButtonElement;
 
-
         form.addEventListener("submit", (event) => {
             event.preventDefault();
             this.saveStudent();
         });
-
 
         btnCancel.addEventListener("click", () => {
             this.resetForm();
@@ -197,7 +199,6 @@ export class StudentWeb implements IStudentview {
 
         const schoolgrade =
             (document.getElementById("stGrade") as HTMLInputElement).value;
-
 
         if (editingId) {
 
@@ -231,15 +232,15 @@ export class StudentWeb implements IStudentview {
                 schoolgrade
             };
 
-            if (!this.studentservice.create(student)) {
-                this.showAlert(
-                    "Error al registrar estudiante.",
-                    "danger"
-                );
-            } else {
+            if (this.studentservice.create(student)) {
                 this.showAlert(
                     "Estudiante registrado con éxito.",
                     "success"
+                );
+            } else {
+                this.showAlert(
+                    "Error al registrar estudiante.",
+                    "danger"
                 );
             }
         }
@@ -441,10 +442,10 @@ export class BookWeb implements IBookview {
                 available: true
             };
 
-            if (!this.bookservice.create(book)) {
-                this.showAlert("Error al registrar libro.", "danger");
-            } else {
+            if (this.bookservice.create(book)) {
                 this.showAlert("Libro registrado.", "success");
+            } else {
+                this.showAlert("Error al registrar libro.", "danger");
             }
         }
 
@@ -640,9 +641,9 @@ export class Menuweb implements IMenuview {
             document.getElementById("menuLoans")!;
 
 
-        btnStudents.addEventListener("click", (e) => {
+        btnStudents.addEventListener("click", (event) => {
 
-            e.preventDefault();
+            event.preventDefault();
 
             this.showView("studentView");
 
@@ -650,9 +651,9 @@ export class Menuweb implements IMenuview {
         });
 
 
-        btnBooks.addEventListener("click", (e) => {
+        btnBooks.addEventListener("click", (event) => {
 
-            e.preventDefault();
+            event.preventDefault();
 
             this.showView("bookView");
 
@@ -708,8 +709,8 @@ export class LoginWeb implements IView {
 
     execute(): void {
 
-        document.getElementById("loginForm")!.addEventListener("submit", (e) => {
-            e.preventDefault();
+        document.getElementById("loginForm")!.addEventListener("submit", (event) => {
+            event.preventDefault();
 
             const user = (document.getElementById("username") as HTMLInputElement).value;
             const pass = (document.getElementById("password") as HTMLInputElement).value;
@@ -723,6 +724,20 @@ export class LoginWeb implements IView {
             }
         });
 
+        document.getElementById("logoutBtn")!.addEventListener("click", () => {
+            this.logout();
+        });
+    }
+
+    private logout(): void {
+        document.getElementById("dashboard")!.classList.add("d-none");
+        document.getElementById("login")!.classList.remove("d-none");
+        (document.getElementById("loginForm") as HTMLFormElement).reset();
+
+        const views = ["studentView", "bookView", "loanView"];
+        views.forEach(id => {
+            document.getElementById(id)!.classList.add("d-none");
+        });
     }
 }
 
