@@ -724,21 +724,16 @@ export class LoginWeb implements IView {
             }
         });
 
-        document.getElementById("logoutBtn")!.addEventListener("click", () => {
-            this.logout();
+         document.getElementById("btnLogout")!.addEventListener("click", () => {
+
+            document.getElementById("dashboard")!.classList.add("d-none");
+            document.getElementById("login")!.classList.remove("d-none");
+
+            (document.getElementById("loginForm") as HTMLFormElement).reset();
+
         });
     }
 
-    private logout(): void {
-        document.getElementById("dashboard")!.classList.add("d-none");
-        document.getElementById("login")!.classList.remove("d-none");
-        (document.getElementById("loginForm") as HTMLFormElement).reset();
-
-        const views = ["studentView", "bookView", "loanView"];
-        views.forEach(id => {
-            document.getElementById(id)!.classList.add("d-none");
-        });
-    }
 }
 
 //-----CLASE-CONSUMIDORA-APP--------------
