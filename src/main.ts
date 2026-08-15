@@ -173,7 +173,7 @@ export class StudentWeb implements IStudentview {
             document.getElementById("studentForm") as HTMLFormElement;
 
         const btnCancel =
-            document.getElementById("stBtnCancel") as HTMLButtonElement;
+            document.getElementById("studentBtnCancel") as HTMLButtonElement;
 
         form.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -189,16 +189,16 @@ export class StudentWeb implements IStudentview {
     private saveStudent(): void {
 
         const editingId =
-            (document.getElementById("stEditingId") as HTMLInputElement).value;
+            (document.getElementById("studentEditingId") as HTMLInputElement).value;
 
         const name =
-            (document.getElementById("stName") as HTMLInputElement).value;
+            (document.getElementById("studentName") as HTMLInputElement).value;
 
         const identification =
-            (document.getElementById("stIdent") as HTMLInputElement).value;
+            (document.getElementById("studentIdent") as HTMLInputElement).value;
 
         const schoolgrade =
-            (document.getElementById("stGrade") as HTMLInputElement).value;
+            (document.getElementById("studentGrade") as HTMLInputElement).value;
 
         if (editingId) {
 
@@ -287,23 +287,23 @@ export class StudentWeb implements IStudentview {
         const student = this.studentservice.read().find(student => student.id === id);
         if (!student) return;
 
-        (document.getElementById("stEditingId") as HTMLInputElement).value = student.id;
-        (document.getElementById("stName") as HTMLInputElement).value = student.name;
-        (document.getElementById("stIdent") as HTMLInputElement).value = student.identification;
-        (document.getElementById("stGrade") as HTMLInputElement).value = student.schoolgrade;
+        (document.getElementById("studentEditingId") as HTMLInputElement).value = student.id;
+        (document.getElementById("studentName") as HTMLInputElement).value = student.name;
+        (document.getElementById("studentIdent") as HTMLInputElement).value = student.identification;
+        (document.getElementById("studentGrade") as HTMLInputElement).value = student.schoolgrade;
 
-        document.getElementById("stFormTitle")!.textContent = "Actualizar Estudiante";
-        document.getElementById("stBtnSubmit")!.textContent = "Actualizar";
-        document.getElementById("stBtnCancel")!.classList.remove("d-none");
+        document.getElementById("studentFormTitle")!.textContent = "Actualizar Estudiante";
+        document.getElementById("studentBtnSubmit")!.textContent = "Actualizar";
+        document.getElementById("studentBtnCancel")!.classList.remove("d-none");
     }
 
     private resetForm(): void {
         const form = document.getElementById("studentForm") as HTMLFormElement;
         form.reset();
-        (document.getElementById("stEditingId") as HTMLInputElement).value = "";
-        document.getElementById("stFormTitle")!.textContent = "Registrar Estudiante";
-        document.getElementById("stBtnSubmit")!.textContent = "Guardar";
-        document.getElementById("stBtnCancel")!.classList.add("d-none");
+        (document.getElementById("studentEditingId") as HTMLInputElement).value = "";
+        document.getElementById("studentFormTitle")!.textContent = "Registrar Estudiante";
+        document.getElementById("studentBtnSubmit")!.textContent = "Guardar";
+        document.getElementById("studentBtnCancel")!.classList.add("d-none");
     }
 
     private deleteStudent(id: string): void {
@@ -346,18 +346,14 @@ export class BookWeb implements IBookview {
 
     private attachEvents(): void {
 
-        const form =
-            document.getElementById("bookForm") as HTMLFormElement;
+        const form = document.getElementById("bookForm") as HTMLFormElement;
 
-        const btnCancel =
-            document.getElementById("bkBtnCancel") as HTMLButtonElement;
-
+        const btnCancel = document.getElementById("bookBtnCancel") as HTMLButtonElement;
 
         form.addEventListener("submit", (event) => {
             event.preventDefault();
             this.saveBook();
         });
-
 
         btnCancel.addEventListener("click", () => {
             this.resetForm();
@@ -406,19 +402,19 @@ export class BookWeb implements IBookview {
         const book = this.bookservice.read().find(book => book.id === id);
         if (!book) return;
 
-        (document.getElementById("bkEditingId") as HTMLInputElement).value = book.id;
-        (document.getElementById("bkTitle") as HTMLInputElement).value = book.title;
-        (document.getElementById("bkAuthor") as HTMLInputElement).value = book.author;
+        (document.getElementById("bookEditingId") as HTMLInputElement).value = book.id;
+        (document.getElementById("bookTitle") as HTMLInputElement).value = book.title;
+        (document.getElementById("bookAuthor") as HTMLInputElement).value = book.author;
 
-        document.getElementById("bkFormTitle")!.textContent = "Actualizar Libro";
-        document.getElementById("bkBtnSubmit")!.textContent = "Actualizar";
-        document.getElementById("bkBtnCancel")!.classList.remove("d-none");
+        document.getElementById("bookFormTitle")!.textContent = "Actualizar Libro";
+        document.getElementById("bookBtnSubmit")!.textContent = "Actualizar";
+        document.getElementById("bookBtnCancel")!.classList.remove("d-none");
     }
 
     private saveBook(): void {
-        const editingId = (document.getElementById("bkEditingId") as HTMLInputElement).value;
-        const title = (document.getElementById("bkTitle") as HTMLInputElement).value;
-        const author = (document.getElementById("bkAuthor") as HTMLInputElement).value;
+        const editingId = (document.getElementById("bookEditingId") as HTMLInputElement).value;
+        const title = (document.getElementById("bookTitle") as HTMLInputElement).value;
+        const author = (document.getElementById("bookAuthor") as HTMLInputElement).value;
 
         if (editingId) {
             const existingBook = this.bookservice.read().find(book => book.id === editingId);
@@ -456,10 +452,10 @@ export class BookWeb implements IBookview {
     private resetForm(): void {
         const form = document.getElementById("bookForm") as HTMLFormElement;
         form.reset();
-        (document.getElementById("bkEditingId") as HTMLInputElement).value = "";
-        document.getElementById("bkFormTitle")!.textContent = "Registrar Libro";
-        document.getElementById("bkBtnSubmit")!.textContent = "Guardar";
-        document.getElementById("bkBtnCancel")!.classList.add("d-none");
+        (document.getElementById("bookEditingId") as HTMLInputElement).value = "";
+        document.getElementById("bookFormTitle")!.textContent = "Registrar Libro";
+        document.getElementById("bookBtnSubmit")!.textContent = "Guardar";
+        document.getElementById("bookBtnCancel")!.classList.add("d-none");
     }
 
     private deleteBook(id: string): void {
@@ -514,8 +510,8 @@ export class LoanWeb implements ILoanview {
 
     private attachSearchEvents(): void {
 
-        const studentSearch = document.getElementById("lnStudentSearch") as HTMLInputElement;
-        const bookSearch = document.getElementById("lnBookSearch") as HTMLInputElement;
+        const studentSearch = document.getElementById("loanStudentSearch") as HTMLInputElement;
+        const bookSearch = document.getElementById("loanBookSearch") as HTMLInputElement;
 
         studentSearch.addEventListener("input", () => {
             this.searchStudent(studentSearch.value);
@@ -528,7 +524,7 @@ export class LoanWeb implements ILoanview {
 
     private searchStudent(search: string): void {
 
-    const results = document.getElementById("lnStudentResults")!;
+    const results = document.getElementById("loanStudentResults")!;
     const value = search.trim().toLowerCase();
 
     if (!value) {
@@ -571,7 +567,7 @@ export class LoanWeb implements ILoanview {
             if (!student) return;
 
             (document.getElementById("lnStudent") as HTMLInputElement).value = student.id;
-            (document.getElementById("lnStudentSearch") as HTMLInputElement).value = `${student.name} - ${student.identification}`;
+            (document.getElementById("loanStudentSearch") as HTMLInputElement).value = `${student.name} - ${student.identification}`;
 
             results.innerHTML = "";
         });
@@ -581,7 +577,7 @@ export class LoanWeb implements ILoanview {
 private searchBook(search: string): void {
 
     const results =
-        document.getElementById("lnBookResults")!;
+        document.getElementById("loanBookResults")!;
 
     const value = search.trim().toLowerCase();
 
@@ -628,7 +624,7 @@ private searchBook(search: string): void {
             if (!book) return;
 
             (document.getElementById("lnBook") as HTMLInputElement).value = book.id;
-            (document.getElementById("lnBookSearch") as HTMLInputElement).value = `${book.title} - ${book.author}`;
+            (document.getElementById("loanBookSearch") as HTMLInputElement).value = `${book.title} - ${book.author}`;
 
             results.innerHTML = "";
         });
