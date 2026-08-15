@@ -500,7 +500,7 @@ export class LoanWeb implements ILoanview {
 
     execute(): void {
         this.attachEvents();
-        this.renderDropdowns();
+        this.attachSearchEvents();
         this.renderTable();
     }
 
@@ -512,23 +512,132 @@ export class LoanWeb implements ILoanview {
         });
     }
 
-    private renderDropdowns(): void {
-        const selectStudent = document.getElementById("lnStudent") as HTMLSelectElement;
-        const selectBook = document.getElementById("lnBook") as HTMLSelectElement;
+    private attachSearchEvents(): void {
 
-        const students = this.studentservice.read();
-        const availableBooks = this.bookservice.read().filter(book => book.available);
+        const studentSearch = document.getElementById("lnStudentSearch") as HTMLInputElement;
+        const bookSearch = document.getElementById("lnBookSearch") as HTMLInputElement;
 
-        selectStudent.innerHTML = `<option value="">Seleccione estudiante...</option>` +
-            students.map(student => `<option value="${student.id}">${student.name} (${student.identification})</option>`).join("");
+        studentSearch.addEventListener("input", () => {
+            this.searchStudent(studentSearch.value);
+        });
 
-        selectBook.innerHTML = `<option value="">Seleccione libro...</option>` +
-            availableBooks.map(book => `<option value="${book.id}">${book.title} - ${book.author}</option>`).join("");
+        bookSearch.addEventListener("input", () => {
+            this.searchBook(bookSearch.value);
+        });
     }
 
+    private searchStudent(search: string): void {
+
+    const results = document.getElementById("lnStudentResults")!;
+    const value = search.trim().toLowerCase();
+
+    if (!value) {
+        results.innerHTML = "";
+        return;
+    }
+
+    const students = this.studentservice
+        .read()
+        .filter(student =>
+            student.name.toLowerCase().includes(value) ||
+            student.identification.includes(value)
+        );
+
+    results.innerHTML = students.map(student => `
+        <button
+            type="button"
+            class="list-group-item list-group-item-action"
+            data-id="${student.id}">
+
+            ${student.name}
+            - ${student.identification}
+
+        </button>
+    `).join("");
+
+
+    results.querySelectorAll("button").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const id =
+                button.getAttribute("data-id")!;
+
+            const student =
+                this.studentservice
+                    .read()
+                    .find(student => student.id === id);
+
+            if (!student) return;
+
+            (document.getElementById("lnStudent") as HTMLInputElement).value = student.id;
+            (document.getElementById("lnStudentSearch") as HTMLInputElement).value = `${student.name} - ${student.identification}`;
+
+            results.innerHTML = "";
+        });
+    });
+}
+
+private searchBook(search: string): void {
+
+    const results =
+        document.getElementById("lnBookResults")!;
+
+    const value = search.trim().toLowerCase();
+
+    if (!value) {
+        results.innerHTML = "";
+        return;
+    }
+
+    const books = this.bookservice
+        .read()
+        .filter(book =>
+            book.available &&
+            (
+                book.title.toLowerCase().includes(value) ||
+                book.author.toLowerCase().includes(value)
+            )
+        );
+
+    results.innerHTML = books.map(book => `
+        <button
+            type="button"
+            class="list-group-item list-group-item-action"
+            data-id="${book.id}">
+
+            ${book.title}
+            - ${book.author}
+
+        </button>
+    `).join("");
+
+
+    results.querySelectorAll("button").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const id =
+                button.getAttribute("data-id")!;
+
+            const book =
+                this.bookservice
+                    .read()
+                    .find(book => book.id === id);
+
+            if (!book) return;
+
+            (document.getElementById("lnBook") as HTMLInputElement).value = book.id;
+            (document.getElementById("lnBookSearch") as HTMLInputElement).value = `${book.title} - ${book.author}`;
+
+            results.innerHTML = "";
+        });
+    });
+}
+
     private createLoan(): void {
-        const studentId = (document.getElementById("lnStudent") as HTMLSelectElement).value;
-        const bookId = (document.getElementById("lnBook") as HTMLSelectElement).value;
+        const studentId = (document.getElementById("lnStudent") as HTMLInputElement).value;
+        const bookId = (document.getElementById("lnBook") as HTMLInputElement).value;
 
         const student = this.studentservice.read().find(findstudent => findstudent.id === studentId);
         const book = this.bookservice.read().find(findbook => findbook.id === bookId);
