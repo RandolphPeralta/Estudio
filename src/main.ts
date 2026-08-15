@@ -566,7 +566,7 @@ export class LoanWeb implements ILoanview {
 
             if (!student) return;
 
-            (document.getElementById("lnStudent") as HTMLInputElement).value = student.id;
+            (document.getElementById("loanStudent") as HTMLInputElement).value = student.id;
             (document.getElementById("loanStudentSearch") as HTMLInputElement).value = `${student.name} - ${student.identification}`;
 
             results.innerHTML = "";
@@ -623,7 +623,7 @@ private searchBook(search: string): void {
 
             if (!book) return;
 
-            (document.getElementById("lnBook") as HTMLInputElement).value = book.id;
+            (document.getElementById("loanBook") as HTMLInputElement).value = book.id;
             (document.getElementById("loanBookSearch") as HTMLInputElement).value = `${book.title} - ${book.author}`;
 
             results.innerHTML = "";
@@ -632,8 +632,8 @@ private searchBook(search: string): void {
 }
 
     private createLoan(): void {
-        const studentId = (document.getElementById("lnStudent") as HTMLInputElement).value;
-        const bookId = (document.getElementById("lnBook") as HTMLInputElement).value;
+        const studentId = (document.getElementById("loanStudent") as HTMLInputElement).value;
+        const bookId = (document.getElementById("loanBook") as HTMLInputElement).value;
 
         const student = this.studentservice.read().find(findstudent => findstudent.id === studentId);
         const book = this.bookservice.read().find(findbook => findbook.id === bookId);
