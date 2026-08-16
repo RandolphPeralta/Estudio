@@ -169,14 +169,10 @@ export class StudentWeb implements IStudentview {
 
     private attachEvents(): void {
 
-        const form =
-            document.getElementById("studentForm") as HTMLFormElement;
+        const form = document.getElementById("studentForm") as HTMLFormElement;
+        const btnCancel = document.getElementById("studentBtnCancel") as HTMLButtonElement;
 
-        const btnCancel =
-            document.getElementById("studentBtnCancel") as HTMLButtonElement;
-
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
+        form.addEventListener("submit", (event) => {event.preventDefault();
             this.saveStudent();
         });
 
@@ -185,20 +181,12 @@ export class StudentWeb implements IStudentview {
         });
     }
 
-
     private saveStudent(): void {
 
-        const editingId =
-            (document.getElementById("studentEditingId") as HTMLInputElement).value;
-
-        const name =
-            (document.getElementById("studentName") as HTMLInputElement).value;
-
-        const identification =
-            (document.getElementById("studentIdent") as HTMLInputElement).value;
-
-        const schoolgrade =
-            (document.getElementById("studentGrade") as HTMLInputElement).value;
+        const editingId = (document.getElementById("studentEditingId") as HTMLInputElement).value;
+        const name = (document.getElementById("studentName") as HTMLInputElement).value;
+        const identification = (document.getElementById("studentIdent") as HTMLInputElement).value;
+        const schoolgrade = (document.getElementById("studentGrade") as HTMLInputElement).value;
 
         if (editingId) {
 
@@ -223,10 +211,7 @@ export class StudentWeb implements IStudentview {
 
         } else {
             const student: Student = {
-                id: Math.random()
-                    .toString(36)
-                    .substring(2, 9),
-
+                id: Math.random().toString(36).substring(2, 9),
                 name,
                 identification,
                 schoolgrade
@@ -502,8 +487,8 @@ export class LoanWeb implements ILoanview {
 
     private attachEvents(): void {
         const form = document.getElementById("loanForm") as HTMLFormElement;
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
             this.createLoan();
         });
     }
