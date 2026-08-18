@@ -28,3 +28,4 @@ no aplicar componentes o mildhaware
 Estudiar mas a fondo los servicios y casos de uso respecto a los detalles
 
 Realizar cambios en la vista y leer las 12 leyes de hook
+Ley de payger
