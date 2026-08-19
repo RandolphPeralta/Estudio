@@ -23,7 +23,7 @@ export interface IService<T> {
 }
 
 export interface IValidation<T> {
-    validate(item: T): any;
+    validate(item: T): boolean;
 }
 
 export interface IView {
@@ -35,11 +35,11 @@ export interface IStudentview extends IView {
 }
 
 export interface IBookview extends IView {
-    
+
 }
 
 export interface ILoanview extends IView {
-    
+
 }
 
 export interface IMenuview extends IView {
@@ -116,6 +116,8 @@ export class MemoryRAM<T> implements IAddidionalaction<T> {
     }
 }
 
+//--------Validation------
+
 export class Validation<T extends object> implements IValidation<T> {
     validate(item: T): boolean {
         for (const value of Object.values(item)) {
@@ -149,12 +151,16 @@ export class Service<T> implements IService<T> {
     delete(id: any) {
         return this.repository.delete(id)
     }
-
 }
 
 //------------------ UI-WEB REFACTORIZADO ------------------
 
 //-----------Studentweb--------------
+
+// Declaración al inicio del archivo para que TypeScript reconozca el objeto bootstrap global
+
+
+// ----------- StudentWeb -----------
 export class StudentWeb implements IStudentview {
 
     constructor(
@@ -168,15 +174,20 @@ export class StudentWeb implements IStudentview {
     }
 
     private attachEvents(): void {
-
         const form = document.getElementById("studentForm") as HTMLFormElement;
         const btnCancel = document.getElementById("studentBtnCancel") as HTMLButtonElement;
+        const btnOpenModal = document.getElementById("btnOpenStudentModal") as HTMLButtonElement;
 
-        form.addEventListener("submit", (event) => {event.preventDefault();
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
             this.saveStudent();
         });
 
         btnCancel.addEventListener("click", () => {
+            this.resetForm();
+        });
+
+        btnOpenModal.addEventListener("click", () => {
             this.resetForm();
         });
     }
@@ -189,26 +200,12 @@ export class StudentWeb implements IStudentview {
         const schoolgrade = (document.getElementById("studentGrade") as HTMLInputElement).value;
 
         if (editingId) {
-
-            const student: Student = {
-                id: editingId,
-                name,
-                identification,
-                schoolgrade
-            };
-
+            const student: Student = { id: editingId, name, identification, schoolgrade };
             if (this.studentservice.update(student)) {
-                this.showAlert(
-                    "Estudiante actualizado con éxito.",
-                    "success"
-                );
+                this.showAlert("Estudiante actualizado con éxito.", "success");
             } else {
-                this.showAlert(
-                    "Error al actualizar estudiante.",
-                    "danger"
-                );
+                this.showAlert("Error al actualizar estudiante.", "danger");
             }
-
         } else {
             const student: Student = {
                 id: Math.random().toString(36).substring(2, 9),
@@ -216,23 +213,51 @@ export class StudentWeb implements IStudentview {
                 identification,
                 schoolgrade
             };
-
             if (this.studentservice.create(student)) {
-                this.showAlert(
-                    "Estudiante registrado con éxito.",
-                    "success"
-                );
+                this.showAlert("Estudiante registrado con éxito.", "success");
             } else {
-                this.showAlert(
-                    "Error al registrar estudiante.",
-                    "danger"
-                );
+                this.showAlert("Error al registrar estudiante.", "danger");
             }
         }
+        const bs = (window as any).bootstrap;
+
+        // Cerrar Modal usando la constante local
+        const modalElement = document.getElementById("studentModal")!;
+        const modalInstance = bs.Modal.getInstance(modalElement) || new bs.Modal(modalElement);
+        modalInstance.hide();
 
         this.resetForm();
         this.renderTable();
     }
+
+    private editStudent(id: string): void {
+        const student = this.studentservice.read().find(student => student.id === id);
+        if (!student) return;
+
+        (document.getElementById("studentEditingId") as HTMLInputElement).value = student.id;
+        (document.getElementById("studentName") as HTMLInputElement).value = student.name;
+        (document.getElementById("studentIdent") as HTMLInputElement).value = student.identification;
+        (document.getElementById("studentGrade") as HTMLInputElement).value = student.schoolgrade;
+
+        document.getElementById("studentFormTitle")!.textContent = "Actualizar Estudiante";
+        document.getElementById("studentBtnSubmit")!.textContent = "Actualizar";
+
+        // Abrir la modal programáticamente
+        const boostrap = (window as any).bootstrap;
+        const modalElement = document.getElementById("studentModal")!;
+        const modalInstance = boostrap.Modal.getOrCreateInstance(modalElement);
+        modalInstance.show();
+    }
+
+    private resetForm(): void {
+        const form = document.getElementById("studentForm") as HTMLFormElement;
+        form.reset();
+        (document.getElementById("studentEditingId") as HTMLInputElement).value = "";
+        document.getElementById("studentFormTitle")!.textContent = "Registrar Estudiante";
+        document.getElementById("studentBtnSubmit")!.textContent = "Guardar";
+    }
+
+    // ... (renderTable, deleteStudent y showAlert se mantienen igual)
 
     private renderTable(): void {
         const tbody = document.getElementById("studentTableBody")!;
@@ -268,29 +293,6 @@ export class StudentWeb implements IStudentview {
         });
     }
 
-    private editStudent(id: string): void {
-        const student = this.studentservice.read().find(student => student.id === id);
-        if (!student) return;
-
-        (document.getElementById("studentEditingId") as HTMLInputElement).value = student.id;
-        (document.getElementById("studentName") as HTMLInputElement).value = student.name;
-        (document.getElementById("studentIdent") as HTMLInputElement).value = student.identification;
-        (document.getElementById("studentGrade") as HTMLInputElement).value = student.schoolgrade;
-
-        document.getElementById("studentFormTitle")!.textContent = "Actualizar Estudiante";
-        document.getElementById("studentBtnSubmit")!.textContent = "Actualizar";
-        document.getElementById("studentBtnCancel")!.classList.remove("d-none");
-    }
-
-    private resetForm(): void {
-        const form = document.getElementById("studentForm") as HTMLFormElement;
-        form.reset();
-        (document.getElementById("studentEditingId") as HTMLInputElement).value = "";
-        document.getElementById("studentFormTitle")!.textContent = "Registrar Estudiante";
-        document.getElementById("studentBtnSubmit")!.textContent = "Guardar";
-        document.getElementById("studentBtnCancel")!.classList.add("d-none");
-    }
-
     private deleteStudent(id: string): void {
         const activeLoans = this.loanservice.read().filter(loan => loan.student.id === id && !loan.returndate);
         if (activeLoans.length > 0) {
@@ -318,11 +320,10 @@ export class StudentWeb implements IStudentview {
 }
 
 //------------Bookweb------
+
 export class BookWeb implements IBookview {
 
-    constructor(
-        private bookservice: IService<Book>
-    ) { }
+    constructor(private bookservice: IService<Book>) { }
 
     execute(): void {
         this.attachEvents();
@@ -330,10 +331,9 @@ export class BookWeb implements IBookview {
     }
 
     private attachEvents(): void {
-
         const form = document.getElementById("bookForm") as HTMLFormElement;
-
         const btnCancel = document.getElementById("bookBtnCancel") as HTMLButtonElement;
+        const btnOpenModal = document.getElementById("btnOpenBookModal") as HTMLButtonElement;
 
         form.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -343,6 +343,81 @@ export class BookWeb implements IBookview {
         btnCancel.addEventListener("click", () => {
             this.resetForm();
         });
+
+        btnOpenModal.addEventListener("click", () => {
+            this.resetForm();
+        });
+    }
+
+    private editBook(id: string): void {
+        const book = this.bookservice.read().find(book => book.id === id);
+        if (!book) return;
+
+        (document.getElementById("bookEditingId") as HTMLInputElement).value = book.id;
+        (document.getElementById("bookTitle") as HTMLInputElement).value = book.title;
+        (document.getElementById("bookAuthor") as HTMLInputElement).value = book.author;
+
+        document.getElementById("bookFormTitle")!.textContent = "Actualizar Libro";
+        document.getElementById("bookBtnSubmit")!.textContent = "Actualizar";
+
+        // Abrir modal programáticamente al editar
+        const bs = (window as any).bootstrap;
+        const modalElement = document.getElementById("bookModal")!;
+        const modalInstance = bs.Modal.getOrCreateInstance(modalElement);
+        modalInstance.show();
+    }
+
+    private saveBook(): void {
+        const editingId = (document.getElementById("bookEditingId") as HTMLInputElement).value;
+        const title = (document.getElementById("bookTitle") as HTMLInputElement).value;
+        const author = (document.getElementById("bookAuthor") as HTMLInputElement).value;
+
+        if (editingId) {
+            const existingBook = this.bookservice.read().find(book => book.id === editingId);
+            const book: Book = {
+                id: editingId,
+                title,
+                author,
+                available: existingBook ? existingBook.available : true
+            };
+
+            if (this.bookservice.update(book)) {
+                this.showAlert("Libro actualizado.", "success");
+            } else {
+                this.showAlert("Error al actualizar libro.", "danger");
+            }
+        } else {
+            const book: Book = {
+                id: Math.random().toString(36).substring(2, 9),
+                title,
+                author,
+                available: true
+            };
+
+            if (this.bookservice.create(book)) {
+                this.showAlert("Libro registrado.", "success");
+            } else {
+                this.showAlert("Error al registrar libro.", "danger");
+            }
+        }
+
+        const bs = (window as any).bootstrap;
+
+        // Cerrar modal
+        const modalElement = document.getElementById("bookModal")!;
+        const modalInstance = bs.Modal.getInstance(modalElement) || new bs.Modal(modalElement);
+        modalInstance.hide();
+
+        this.resetForm();
+        this.renderTable();
+    }
+
+    private resetForm(): void {
+        const form = document.getElementById("bookForm") as HTMLFormElement;
+        form.reset();
+        (document.getElementById("bookEditingId") as HTMLInputElement).value = "";
+        document.getElementById("bookFormTitle")!.textContent = "Registrar Libro";
+        document.getElementById("bookBtnSubmit")!.textContent = "Guardar";
     }
 
     private renderTable(): void {
@@ -383,66 +458,6 @@ export class BookWeb implements IBookview {
         });
     }
 
-    private editBook(id: string): void {
-        const book = this.bookservice.read().find(book => book.id === id);
-        if (!book) return;
-
-        (document.getElementById("bookEditingId") as HTMLInputElement).value = book.id;
-        (document.getElementById("bookTitle") as HTMLInputElement).value = book.title;
-        (document.getElementById("bookAuthor") as HTMLInputElement).value = book.author;
-
-        document.getElementById("bookFormTitle")!.textContent = "Actualizar Libro";
-        document.getElementById("bookBtnSubmit")!.textContent = "Actualizar";
-        document.getElementById("bookBtnCancel")!.classList.remove("d-none");
-    }
-
-    private saveBook(): void {
-        const editingId = (document.getElementById("bookEditingId") as HTMLInputElement).value;
-        const title = (document.getElementById("bookTitle") as HTMLInputElement).value;
-        const author = (document.getElementById("bookAuthor") as HTMLInputElement).value;
-
-        if (editingId) {
-            const existingBook = this.bookservice.read().find(book => book.id === editingId);
-            const book: Book = {
-                id: editingId,
-                title,
-                author,
-                available: existingBook ? existingBook.available : true
-            };
-
-            if (this.bookservice.update(book)) {
-                this.showAlert("Libro actualizado.", "success");
-            } else {
-                this.showAlert("Error al actualizar libro.", "danger");
-            }
-        } else {
-            const book: Book = {
-                id: Math.random().toString(36).substring(2, 9),
-                title,
-                author,
-                available: true
-            };
-
-            if (this.bookservice.create(book)) {
-                this.showAlert("Libro registrado.", "success");
-            } else {
-                this.showAlert("Error al registrar libro.", "danger");
-            }
-        }
-
-        this.resetForm();
-        this.renderTable();
-    }
-
-    private resetForm(): void {
-        const form = document.getElementById("bookForm") as HTMLFormElement;
-        form.reset();
-        (document.getElementById("bookEditingId") as HTMLInputElement).value = "";
-        document.getElementById("bookFormTitle")!.textContent = "Registrar Libro";
-        document.getElementById("bookBtnSubmit")!.textContent = "Guardar";
-        document.getElementById("bookBtnCancel")!.classList.add("d-none");
-    }
-
     private deleteBook(id: string): void {
         const book = this.bookservice.read().find(book => book.id === id);
         if (book && !book.available) {
@@ -473,11 +488,13 @@ export class BookWeb implements IBookview {
 
 export class LoanWeb implements ILoanview {
 
+    // ... (constructor y execute sin cambios)
+
     constructor(
         private studentservice: IService<Student>,
         private bookservice: IService<Book>,
         private loanservice: IService<Loan>
-    ) {}
+    ) { }
 
     execute(): void {
         this.attachEvents();
@@ -509,22 +526,22 @@ export class LoanWeb implements ILoanview {
 
     private searchStudent(search: string): void {
 
-    const results = document.getElementById("loanStudentResults")!;
-    const value = search.trim().toLowerCase();
+        const results = document.getElementById("loanStudentResults")!;
+        const value = search.trim().toLowerCase();
 
-    if (!value) {
-        results.innerHTML = "";
-        return;
-    }
+        if (!value) {
+            results.innerHTML = "";
+            return;
+        }
 
-    const students = this.studentservice
-        .read()
-        .filter(student =>
-            student.name.toLowerCase().includes(value) ||
-            student.identification.includes(value)
-        );
+        const students = this.studentservice
+            .read()
+            .filter(student =>
+                student.name.toLowerCase().includes(value) ||
+                student.identification.includes(value)
+            );
 
-    results.innerHTML = students.map(student => `
+        results.innerHTML = students.map(student => `
         <button
             type="button"
             class="list-group-item list-group-item-action"
@@ -537,51 +554,51 @@ export class LoanWeb implements ILoanview {
     `).join("");
 
 
-    results.querySelectorAll("button").forEach(button => {
+        results.querySelectorAll("button").forEach(button => {
 
-        button.addEventListener("click", () => {
+            button.addEventListener("click", () => {
 
-            const id =
-                button.getAttribute("data-id")!;
+                const id =
+                    button.getAttribute("data-id")!;
 
-            const student =
-                this.studentservice
-                    .read()
-                    .find(student => student.id === id);
+                const student =
+                    this.studentservice
+                        .read()
+                        .find(student => student.id === id);
 
-            if (!student) return;
+                if (!student) return;
 
-            (document.getElementById("loanStudent") as HTMLInputElement).value = student.id;
-            (document.getElementById("loanStudentSearch") as HTMLInputElement).value = `${student.name} - ${student.identification}`;
+                (document.getElementById("loanStudent") as HTMLInputElement).value = student.id;
+                (document.getElementById("loanStudentSearch") as HTMLInputElement).value = `${student.name} - ${student.identification}`;
 
-            results.innerHTML = "";
+                results.innerHTML = "";
+            });
         });
-    });
-}
-
-private searchBook(search: string): void {
-
-    const results =
-        document.getElementById("loanBookResults")!;
-
-    const value = search.trim().toLowerCase();
-
-    if (!value) {
-        results.innerHTML = "";
-        return;
     }
 
-    const books = this.bookservice
-        .read()
-        .filter(book =>
-            book.available &&
-            (
-                book.title.toLowerCase().includes(value) ||
-                book.author.toLowerCase().includes(value)
-            )
-        );
+    private searchBook(search: string): void {
 
-    results.innerHTML = books.map(book => `
+        const results =
+            document.getElementById("loanBookResults")!;
+
+        const value = search.trim().toLowerCase();
+
+        if (!value) {
+            results.innerHTML = "";
+            return;
+        }
+
+        const books = this.bookservice
+            .read()
+            .filter(book =>
+                book.available &&
+                (
+                    book.title.toLowerCase().includes(value) ||
+                    book.author.toLowerCase().includes(value)
+                )
+            );
+
+        results.innerHTML = books.map(book => `
         <button
             type="button"
             class="list-group-item list-group-item-action"
@@ -594,29 +611,31 @@ private searchBook(search: string): void {
     `).join("");
 
 
-    results.querySelectorAll("button").forEach(button => {
+        results.querySelectorAll("button").forEach(button => {
 
-        button.addEventListener("click", () => {
+            button.addEventListener("click", () => {
 
-            const id =
-                button.getAttribute("data-id")!;
+                const id =
+                    button.getAttribute("data-id")!;
 
-            const book =
-                this.bookservice
-                    .read()
-                    .find(book => book.id === id);
+                const book =
+                    this.bookservice
+                        .read()
+                        .find(book => book.id === id);
 
-            if (!book) return;
+                if (!book) return;
 
-            (document.getElementById("loanBook") as HTMLInputElement).value = book.id;
-            (document.getElementById("loanBookSearch") as HTMLInputElement).value = `${book.title} - ${book.author}`;
+                (document.getElementById("loanBook") as HTMLInputElement).value = book.id;
+                (document.getElementById("loanBookSearch") as HTMLInputElement).value = `${book.title} - ${book.author}`;
 
-            results.innerHTML = "";
+                results.innerHTML = "";
+            });
         });
-    });
-}
+    }
 
     private createLoan(): void {
+        // ... (Tu lógica de validación y creación de préstamos existente) ...
+
         const studentId = (document.getElementById("loanStudent") as HTMLInputElement).value;
         const bookId = (document.getElementById("loanBook") as HTMLInputElement).value;
 
@@ -644,6 +663,13 @@ private searchBook(search: string): void {
             this.showAlert("Préstamo registrado con éxito.", "success");
             this.execute();
         }
+
+        const bs = (window as any).bootstrap;
+
+        // Al finalizar con éxito la creación del préstamo, ocultas la modal:
+        const modalElement = document.getElementById("loanModal")!;
+        const modalInstance = bs.Modal.getInstance(modalElement) || new bs.Modal(modalElement);
+        modalInstance.hide();
     }
 
     private returnBook(loanId: string): void {
@@ -717,7 +743,7 @@ export class Menuweb implements IMenuview {
         private studentMenu: IStudentview,
         private bookMenu: IBookview,
         private loanMenu: ILoanview
-    ) {}
+    ) { }
 
     execute(): void {
 
@@ -814,7 +840,7 @@ export class LoginWeb implements IView {
             }
         });
 
-         document.getElementById("btnLogout")!.addEventListener("click", () => {
+        document.getElementById("btnLogout")!.addEventListener("click", () => {
 
             document.getElementById("dashboard")!.classList.add("d-none");
             document.getElementById("login")!.classList.remove("d-none");
