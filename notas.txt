@@ -30,5 +30,12 @@ Estudiar mas a fondo los servicios y casos de uso respecto a los detalles
 Realizar cambios en la vista y leer las 12 leyes de hook
 
 Ley de Prägnanz
+Ley de Hick
+Ley de Tesler
+Ley de la proximidad
+Efecto de la posicion serial
+Ley de Fitt
+Ley de Parkinson
+Efecto Von Restorff - Ley de aislamiento
 
 Consultar si las modales se pueden hacer sin el javascript de bootstrap
