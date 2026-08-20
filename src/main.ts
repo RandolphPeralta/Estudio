@@ -155,11 +155,6 @@ export class Service<T> implements IService<T> {
 
 //------------------ UI-WEB REFACTORIZADO ------------------
 
-//-----------Studentweb--------------
-
-// Declaración al inicio del archivo para que TypeScript reconozca el objeto bootstrap global
-
-
 // ----------- StudentWeb -----------
 export class StudentWeb implements IStudentview {
 
@@ -219,11 +214,9 @@ export class StudentWeb implements IStudentview {
                 this.showAlert("Error al registrar estudiante.", "danger");
             }
         }
-        const bs = (window as any).bootstrap;
-
-        // Cerrar Modal usando la constante local
+        const boostrap = (window as any).bootstrap;
         const modalElement = document.getElementById("studentModal")!;
-        const modalInstance = bs.Modal.getInstance(modalElement) || new bs.Modal(modalElement);
+        const modalInstance = boostrap.Modal.getInstance(modalElement) || new boostrap.Modal(modalElement);
         modalInstance.hide();
 
         this.resetForm();
@@ -242,7 +235,6 @@ export class StudentWeb implements IStudentview {
         document.getElementById("studentFormTitle")!.textContent = "Actualizar Estudiante";
         document.getElementById("studentBtnSubmit")!.textContent = "Actualizar";
 
-        // Abrir la modal programáticamente
         const boostrap = (window as any).bootstrap;
         const modalElement = document.getElementById("studentModal")!;
         const modalInstance = boostrap.Modal.getOrCreateInstance(modalElement);
@@ -256,8 +248,6 @@ export class StudentWeb implements IStudentview {
         document.getElementById("studentFormTitle")!.textContent = "Registrar Estudiante";
         document.getElementById("studentBtnSubmit")!.textContent = "Guardar";
     }
-
-    // ... (renderTable, deleteStudent y showAlert se mantienen igual)
 
     private renderTable(): void {
         const tbody = document.getElementById("studentTableBody")!;
@@ -361,9 +351,9 @@ export class BookWeb implements IBookview {
         document.getElementById("bookBtnSubmit")!.textContent = "Actualizar";
 
         // Abrir modal programáticamente al editar
-        const bs = (window as any).bootstrap;
+        const boostrap = (window as any).bootstrap;
         const modalElement = document.getElementById("bookModal")!;
-        const modalInstance = bs.Modal.getOrCreateInstance(modalElement);
+        const modalInstance = boostrap.Modal.getOrCreateInstance(modalElement);
         modalInstance.show();
     }
 
@@ -401,11 +391,11 @@ export class BookWeb implements IBookview {
             }
         }
 
-        const bs = (window as any).bootstrap;
+        const boostrap = (window as any).bootstrap;
 
         // Cerrar modal
         const modalElement = document.getElementById("bookModal")!;
-        const modalInstance = bs.Modal.getInstance(modalElement) || new bs.Modal(modalElement);
+        const modalInstance = boostrap.Modal.getInstance(modalElement) || new boostrap.Modal(modalElement);
         modalInstance.hide();
 
         this.resetForm();
@@ -664,11 +654,11 @@ export class LoanWeb implements ILoanview {
             this.execute();
         }
 
-        const bs = (window as any).bootstrap;
+        const boostrap = (window as any).bootstrap;
 
         // Al finalizar con éxito la creación del préstamo, ocultas la modal:
         const modalElement = document.getElementById("loanModal")!;
-        const modalInstance = bs.Modal.getInstance(modalElement) || new bs.Modal(modalElement);
+        const modalInstance = boostrap.Modal.getInstance(modalElement) || new boostrap.Modal(modalElement);
         modalInstance.hide();
     }
 
