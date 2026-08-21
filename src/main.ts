@@ -46,10 +46,6 @@ export interface IMenuview extends IView {
 
 }
 
-export interface IViews<T> extends IView {
-
-}
-
 //---------Entitys---------------------
 
 export type Student = {
@@ -350,7 +346,6 @@ export class BookWeb implements IBookview {
         document.getElementById("bookFormTitle")!.textContent = "Actualizar Libro";
         document.getElementById("bookBtnSubmit")!.textContent = "Actualizar";
 
-        // Abrir modal programáticamente al editar
         const boostrap = (window as any).bootstrap;
         const modalElement = document.getElementById("bookModal")!;
         const modalInstance = boostrap.Modal.getOrCreateInstance(modalElement);
@@ -392,8 +387,6 @@ export class BookWeb implements IBookview {
         }
 
         const boostrap = (window as any).bootstrap;
-
-        // Cerrar modal
         const modalElement = document.getElementById("bookModal")!;
         const modalInstance = boostrap.Modal.getInstance(modalElement) || new boostrap.Modal(modalElement);
         modalInstance.hide();
@@ -624,7 +617,6 @@ export class LoanWeb implements ILoanview {
     }
 
     private createLoan(): void {
-        // ... (Tu lógica de validación y creación de préstamos existente) ...
 
         const studentId = (document.getElementById("loanStudent") as HTMLInputElement).value;
         const bookId = (document.getElementById("loanBook") as HTMLInputElement).value;
@@ -655,8 +647,6 @@ export class LoanWeb implements ILoanview {
         }
 
         const boostrap = (window as any).bootstrap;
-
-        // Al finalizar con éxito la creación del préstamo, ocultas la modal:
         const modalElement = document.getElementById("loanModal")!;
         const modalInstance = boostrap.Modal.getInstance(modalElement) || new boostrap.Modal(modalElement);
         modalInstance.hide();
