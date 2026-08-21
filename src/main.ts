@@ -161,6 +161,7 @@ export class StudentWeb implements IStudentview {
 
     execute(): void {
         this.attachEvents();
+        this.attachQuickSearchEvents();
         this.renderTable();
     }
 
@@ -257,10 +258,6 @@ export class StudentWeb implements IStudentview {
                     <td>${student.name}</td>
                     <td>${student.identification}</td>
                     <td>${student.schoolgrade}</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" data-id="${student.id}">Editar</button>
-                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${student.id}">Eliminar</button>
-                    </td>
                 </tr>
             `).join("");
 
@@ -294,6 +291,56 @@ export class StudentWeb implements IStudentview {
         }
     }
 
+    private attachQuickSearchEvents(): void {
+        const searchInput = document.getElementById("quickSearchStudentInput") as HTMLInputElement;
+        if (!searchInput) return;
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLowerCase();
+            const resultsContainer = document.getElementById("quickSearchStudentResults")!;
+
+            if (query.length < 2) {
+                resultsContainer.innerHTML = "";
+                return;
+            }
+
+            const students = this.studentservice.read();
+            const matches = students.filter(s =>
+                s.name.toLowerCase().includes(query) ||
+                s.identification.includes(query)
+            ).slice(0, 5);
+
+            resultsContainer.innerHTML = matches.length === 0
+                ? `<div class="list-group-item text-muted">No se encontraron estudiantes</div>`
+                : matches.map(s => `
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${s.name}</strong><br>
+                            <small class="text-muted">ID: ${s.identification} | Grado: ${s.schoolgrade}</small>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline-warning me-1 btn-quick-edit" data-id="${s.id}" data-bs-dismiss="modal">Editar</button>
+                            <button class="btn btn-sm btn-outline-danger btn-quick-delete" data-id="${s.id}" data-bs-dismiss="modal">Eliminar</button>
+                        </div>
+                    </div>
+                  `).join("");
+
+            resultsContainer.querySelectorAll(".btn-quick-edit").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+                    this.editStudent(id);
+                });
+            });
+
+            resultsContainer.querySelectorAll(".btn-quick-delete").forEach(e => {
+                e.addEventListener("click", (evt) => {
+                    const id = (evt.currentTarget as HTMLElement).getAttribute("data-id")!;
+                    this.deleteStudent(id);
+                });
+            });
+        });
+    }
+
     private showAlert(msg: string, type: string): void {
         const alertBox = document.getElementById("studentAlert")!;
         alertBox.innerHTML = `
@@ -303,6 +350,8 @@ export class StudentWeb implements IStudentview {
             </div>
         `;
     }
+
+
 }
 
 //------------Bookweb------
@@ -313,6 +362,7 @@ export class BookWeb implements IBookview {
 
     execute(): void {
         this.attachEvents();
+        this.attachQuickSearchEvents();
         this.renderTable();
     }
 
@@ -419,10 +469,6 @@ export class BookWeb implements IBookview {
                             ${book.available ? 'Disponible' : 'Prestado'}
                         </span>
                     </td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" data-id="${book.id}">Editar</button>
-                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${book.id}">Eliminar</button>
-                    </td>
                 </tr>
             `).join("");
 
@@ -456,6 +502,56 @@ export class BookWeb implements IBookview {
         }
     }
 
+    private attachQuickSearchEvents(): void {
+        const searchInput = document.getElementById("quickSearchBookInput") as HTMLInputElement;
+        if (!searchInput) return;
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLowerCase();
+            const resultsContainer = document.getElementById("quickSearchBookResults")!;
+
+            if (query.length < 2) {
+                resultsContainer.innerHTML = "";
+                return;
+            }
+
+            const books = this.bookservice.read();
+            const matches = books.filter(b =>
+                b.title.toLowerCase().includes(query) ||
+                b.author.includes(query)
+            ).slice(0, 5);
+
+            resultsContainer.innerHTML = matches.length === 0
+                ? `<div class="list-group-item text-muted">No se encontraron libros</div>`
+                : matches.map(b => `
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${b.title}</strong><br>
+                            <small class="text-muted">Autor: ${b.author}</small>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline-warning me-1 btn-quick-edit" data-id="${b.id}" data-bs-dismiss="modal">Editar</button>
+                            <button class="btn btn-sm btn-outline-danger btn-quick-delete" data-id="${b.id}" data-bs-dismiss="modal">Eliminar</button>
+                        </div>
+                    </div>
+                  `).join("");
+
+            resultsContainer.querySelectorAll(".btn-quick-edit").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+                    this.editBook(id);
+                });
+            });
+
+            resultsContainer.querySelectorAll(".btn-quick-delete").forEach(e => {
+                e.addEventListener("click", (evt) => {
+                    const id = (evt.currentTarget as HTMLElement).getAttribute("data-id")!;
+                    this.deleteBook(id);
+                });
+            });
+        });
+    }
+
     private showAlert(msg: string, type: string): void {
         const alertBox = document.getElementById("bookAlert")!;
         alertBox.innerHTML = `
@@ -470,8 +566,6 @@ export class BookWeb implements IBookview {
 //--------------Loanweb-----------
 
 export class LoanWeb implements ILoanview {
-
-    // ... (constructor y execute sin cambios)
 
     constructor(
         private studentservice: IService<Student>,
