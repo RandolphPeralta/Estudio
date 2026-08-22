@@ -627,7 +627,7 @@ export class LoanWeb implements ILoanview {
                 : matches.map(loan => `
                     <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            <strong>📖 ${loan.book.title}</strong><br>
+                            <strong>${loan.book.title}</strong><br>
                             <small class="text-muted">
                                 Estudiante: ${loan.student.name} (${loan.student.identification})<br>
                                 Préstamo: ${new Date(loan.loanDate).toLocaleDateString()}
@@ -637,7 +637,7 @@ export class LoanWeb implements ILoanview {
                             <button class="btn btn-sm btn-success btn-quick-return" 
                                     data-id="${loan.id}" 
                                     data-bs-dismiss="modal">
-                                🔄 Devolver
+                                Devolver
                             </button>
                         </div>
                     </div>
@@ -828,7 +828,7 @@ export class LoanWeb implements ILoanview {
                     <td>
                         ${loan.returndate
                             ? `<span class="text-success"> ${new Date(loan.returndate).toLocaleDateString()}</span>`
-                            : `<span class="badge bg-warning text-dark">⏳ Pendiente</span>`
+                            : `<span class="badge bg-warning text-dark">Pendiente</span>`
                         }
                     </td>
                 </tr>
@@ -875,75 +875,47 @@ export class Menuweb implements IMenuview {
 
     execute(): void {
 
-        const btnStudents =
-            document.getElementById("menuStudents")!;
-
-        const btnBooks =
-            document.getElementById("menuBooks")!;
-
-        const btnLoans =
-            document.getElementById("menuLoans")!;
-
+        const btnStudents = document.getElementById("menuStudents")!;
+        const btnBooks = document.getElementById("menuBooks")!;
+        const btnLoans = document.getElementById("menuLoans")!;
 
         btnStudents.addEventListener("click", (event) => {
-
             event.preventDefault();
-
             this.showView("studentView");
-
             this.studentMenu.execute();
         });
 
-
         btnBooks.addEventListener("click", (event) => {
-
             event.preventDefault();
-
             this.showView("bookView");
-
             this.bookMenu.execute();
         });
 
-
         btnLoans.addEventListener("click", (event) => {
-
             event.preventDefault();
-
             this.showView("loanView");
-
             this.loanMenu.execute();
         });
 
-
-        this.showView("studentView");
-
-        this.studentMenu.execute();
+        this.showView("blankView");
     }
 
-
     private showView(viewId: string): void {
-
         const views = [
+            "blankView",
             "studentView",
             "bookView",
             "loanView"
         ];
 
-
         views.forEach(id => {
-
-            document
-                .getElementById(id)!
-                .classList.add("d-none");
-
+            document.getElementById(id)!.classList.add("d-none");
         });
 
-
-        document
-            .getElementById(viewId)!
-            .classList.remove("d-none");
+        document.getElementById(viewId)!.classList.remove("d-none");
     }
 }
+
 
 export class LoginWeb implements IView {
 
