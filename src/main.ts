@@ -646,7 +646,7 @@ export class LoanWeb implements ILoanview {
             resultsContainer.querySelectorAll(".btn-quick-return").forEach(btn => {
                 btn.addEventListener("click", (e) => {
                     const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
-                    
+
                     if (confirm("¿Estás seguro de devolver este libro?")) {
                         this.returnBook(id);
                         searchInput.value = "";
@@ -694,7 +694,7 @@ export class LoanWeb implements ILoanview {
                 if (!student) return;
 
                 (document.getElementById("loanStudent") as HTMLInputElement).value = student.id;
-                (document.getElementById("loanStudentSearch") as HTMLInputElement).value = 
+                (document.getElementById("loanStudentSearch") as HTMLInputElement).value =
                     `${student.name} - ${student.identification}`;
                 results.innerHTML = "";
             });
@@ -715,7 +715,7 @@ export class LoanWeb implements ILoanview {
             .filter(book =>
                 book.available &&
                 (book.title.toLowerCase().includes(value) ||
-                book.author.toLowerCase().includes(value))
+                    book.author.toLowerCase().includes(value))
             )
             .slice(0, 8);
 
@@ -735,7 +735,7 @@ export class LoanWeb implements ILoanview {
                 if (!book) return;
 
                 (document.getElementById("loanBook") as HTMLInputElement).value = book.id;
-                (document.getElementById("loanBookSearch") as HTMLInputElement).value = 
+                (document.getElementById("loanBookSearch") as HTMLInputElement).value =
                     `${book.title} - ${book.author}`;
                 results.innerHTML = "";
             });
@@ -767,12 +767,12 @@ export class LoanWeb implements ILoanview {
             book.available = false;
             this.bookservice.update(book);
             this.showAlert("Préstamo registrado con éxito.", "success");
-            
+
             (document.getElementById("loanStudent") as HTMLInputElement).value = "";
             (document.getElementById("loanStudentSearch") as HTMLInputElement).value = "";
             (document.getElementById("loanBook") as HTMLInputElement).value = "";
             (document.getElementById("loanBookSearch") as HTMLInputElement).value = "";
-            
+
             this.renderTable();
         }
 
@@ -827,9 +827,9 @@ export class LoanWeb implements ILoanview {
                     <td>${new Date(loan.loanDate).toLocaleDateString()}</td>
                     <td>
                         ${loan.returndate
-                            ? `<span class="text-success"> ${new Date(loan.returndate).toLocaleDateString()}</span>`
-                            : `<span class="badge bg-warning text-dark">Pendiente</span>`
-                        }
+                    ? `<span class="text-success"> ${new Date(loan.returndate).toLocaleDateString()}</span>`
+                    : `<span class="badge bg-warning text-dark">Pendiente</span>`
+                }
                     </td>
                 </tr>
             `).join("");
@@ -852,7 +852,7 @@ export class LoanWeb implements ILoanview {
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         `;
-        
+
         setTimeout(() => {
             const alert = alertBox.querySelector('.alert');
             if (alert) {
@@ -940,7 +940,7 @@ export class LoginWeb implements IView {
             }
         });
 
-        document.getElementById("btnLogout")!.addEventListener("click", () => {
+         document.getElementById("btnLogout")!.addEventListener("click", () => {
 
             document.getElementById("dashboard")!.classList.add("d-none");
             document.getElementById("login")!.classList.remove("d-none");
