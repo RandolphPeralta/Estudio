@@ -213,7 +213,7 @@ export class StudentWeb implements IStudentview {
         }
         const boostrap = (window as any).bootstrap;
         const modalElement = document.getElementById("studentModal")!;
-        const modalInstance = boostrap.Modal.getInstance(modalElement) || new boostrap.Modal(modalElement);
+        const modalInstance = boostrap.Modal.getInstance(modalElement) || boostrap.Modal(modalElement);
         modalInstance.hide();
 
         this.resetForm();
@@ -305,22 +305,22 @@ export class StudentWeb implements IStudentview {
             }
 
             const students = this.studentservice.read();
-            const matches = students.filter(s =>
-                s.name.toLowerCase().includes(query) ||
-                s.identification.includes(query)
+            const matches = students.filter(student =>
+                student.name.toLowerCase().includes(query) ||
+                student.identification.includes(query)
             ).slice(0, 5);
 
             resultsContainer.innerHTML = matches.length === 0
                 ? `<div class="list-group-item text-muted">No se encontraron estudiantes</div>`
-                : matches.map(s => `
+                : matches.map(student => `
                     <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            <strong>${s.name}</strong><br>
-                            <small class="text-muted">ID: ${s.identification} | Grado: ${s.schoolgrade}</small>
+                            <strong>${student.name}</strong><br>
+                            <small class="text-muted">ID: ${student.identification} | Grado: ${student.schoolgrade}</small>
                         </div>
                         <div>
-                            <button class="btn btn-sm btn-outline-warning me-1 btn-quick-edit" data-id="${s.id}" data-bs-dismiss="modal">Editar</button>
-                            <button class="btn btn-sm btn-outline-danger btn-quick-delete" data-id="${s.id}" data-bs-dismiss="modal">Eliminar</button>
+                            <button class="btn btn-sm btn-outline-warning me-1 btn-quick-edit" data-id="${student.id}" data-bs-dismiss="modal">Editar</button>
+                            <button class="btn btn-sm btn-outline-danger btn-quick-delete" data-id="${student.id}" data-bs-dismiss="modal">Eliminar</button>
                         </div>
                     </div>
                   `).join("");
@@ -516,29 +516,29 @@ export class BookWeb implements IBookview {
             }
 
             const books = this.bookservice.read();
-            const matches = books.filter(b =>
-                b.title.toLowerCase().includes(query) ||
-                b.author.includes(query)
+            const matches = books.filter(book =>
+                book.title.toLowerCase().includes(query) ||
+                book.author.includes(query)
             ).slice(0, 5);
 
             resultsContainer.innerHTML = matches.length === 0
                 ? `<div class="list-group-item text-muted">No se encontraron libros</div>`
-                : matches.map(b => `
+                : matches.map(book => `
                     <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            <strong>${b.title}</strong><br>
-                            <small class="text-muted">Autor: ${b.author}</small>
+                            <strong>${book.title}</strong><br>
+                            <small class="text-muted">Autor: ${book.author}</small>
                         </div>
                         <div>
-                            <button class="btn btn-sm btn-outline-warning me-1 btn-quick-edit" data-id="${b.id}" data-bs-dismiss="modal">Editar</button>
-                            <button class="btn btn-sm btn-outline-danger btn-quick-delete" data-id="${b.id}" data-bs-dismiss="modal">Eliminar</button>
+                            <button class="btn btn-sm btn-outline-warning me-1 btn-quick-edit" data-id="${book.id}" data-bs-dismiss="modal">Editar</button>
+                            <button class="btn btn-sm btn-outline-danger btn-quick-delete" data-id="${book.id}" data-bs-dismiss="modal">Eliminar</button>
                         </div>
                     </div>
                   `).join("");
 
             resultsContainer.querySelectorAll(".btn-quick-edit").forEach(btn => {
-                btn.addEventListener("click", (e) => {
-                    const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+                btn.addEventListener("click", (event) => {
+                    const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                     this.editBook(id);
                 });
             });
@@ -644,8 +644,8 @@ export class LoanWeb implements ILoanview {
                 `).join("");
 
             resultsContainer.querySelectorAll(".btn-quick-return").forEach(btn => {
-                btn.addEventListener("click", (e) => {
-                    const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+                btn.addEventListener("click", (event) => {
+                    const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
 
                     if (confirm("¿Estás seguro de devolver este libro?")) {
                         this.returnBook(id);
@@ -690,7 +690,7 @@ export class LoanWeb implements ILoanview {
         results.querySelectorAll("button").forEach(button => {
             button.addEventListener("click", () => {
                 const id = button.getAttribute("data-id")!;
-                const student = this.studentservice.read().find(s => s.id === id);
+                const student = this.studentservice.read().find(student => student.id === id);
                 if (!student) return;
 
                 (document.getElementById("loanStudent") as HTMLInputElement).value = student.id;
@@ -746,8 +746,8 @@ export class LoanWeb implements ILoanview {
         const studentId = (document.getElementById("loanStudent") as HTMLInputElement).value;
         const bookId = (document.getElementById("loanBook") as HTMLInputElement).value;
 
-        const student = this.studentservice.read().find(s => s.id === studentId);
-        const book = this.bookservice.read().find(b => b.id === bookId);
+        const student = this.studentservice.read().find(student => student.id === studentId);
+        const book = this.bookservice.read().find(book => book.id === bookId);
 
         if (!student || !book || !book.available) {
             this.showAlert("Error: Seleccione un libro disponible y un estudiante válido.", "danger");
@@ -784,7 +784,7 @@ export class LoanWeb implements ILoanview {
 
     private returnBook(loanId: string): void {
         const loans = this.loanservice.read();
-        const loan = loans.find(l => l.id === loanId);
+        const loan = loans.find(loan => loan.id === loanId);
 
         if (!loan || loan.returndate) {
             this.showAlert("El préstamo no existe o ya fue devuelto.", "warning");
