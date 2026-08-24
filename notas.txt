@@ -37,5 +37,9 @@ Efecto de la posicion serial
 Ley de Fitt
 Ley de Parkinson
 Efecto Von Restorff - Ley de aislamiento
+Ley de Pareto
+Ley Zeirgnark
+Ley de Miller
+Ley de jakob
 
 Consultar si las modales se pueden hacer sin el javascript de bootstrap
