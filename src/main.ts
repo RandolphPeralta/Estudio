@@ -211,6 +211,7 @@ export class StudentWeb implements IStudentview {
                 this.showAlert("Error al registrar estudiante.", "danger");
             }
         }
+        
         const boostrap = (window as any).bootstrap;
         const modalElement = document.getElementById("studentModal")!;
         const modalInstance = boostrap.Modal.getInstance(modalElement) || boostrap.Modal(modalElement);
