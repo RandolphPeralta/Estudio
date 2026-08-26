@@ -211,7 +211,7 @@ export class StudentWeb implements IStudentview {
                 this.showAlert("Error al registrar estudiante.", "danger");
             }
         }
-        
+
         const boostrap = (window as any).bootstrap;
         const modalElement = document.getElementById("studentModal")!;
         const modalInstance = boostrap.Modal.getInstance(modalElement) || boostrap.Modal(modalElement);
@@ -327,14 +327,14 @@ export class StudentWeb implements IStudentview {
                   `).join("");
 
             resultsContainer.querySelectorAll(".btn-quick-edit").forEach(btn => {
-                btn.addEventListener("click", (e) => {
-                    const id = (e.currentTarget as HTMLElement).getAttribute("data-id")!;
+                btn.addEventListener("click", (event) => {
+                    const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                     this.editStudent(id);
                 });
             });
 
-            resultsContainer.querySelectorAll(".btn-quick-delete").forEach(e => {
-                e.addEventListener("click", (evt) => {
+            resultsContainer.querySelectorAll(".btn-quick-delete").forEach(event => {
+                event.addEventListener("click", (evt) => {
                     const id = (evt.currentTarget as HTMLElement).getAttribute("data-id")!;
                     this.deleteStudent(id);
                 });
