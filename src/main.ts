@@ -212,9 +212,9 @@ export class StudentWeb implements IStudentview {
             }
         }
 
-        const boostrap = (window as any).bootstrap;
+        const bootstrap = (window as any).bootstrap;
         const modalElement = document.getElementById("studentModal")!;
-        const modalInstance = boostrap.Modal.getInstance(modalElement) || boostrap.Modal(modalElement);
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || bootstrap.Modal(modalElement);
         modalInstance.hide();
 
         this.resetForm();
@@ -233,9 +233,9 @@ export class StudentWeb implements IStudentview {
         document.getElementById("studentFormTitle")!.textContent = "Actualizar Estudiante";
         document.getElementById("studentBtnSubmit")!.textContent = "Actualizar";
 
-        const boostrap = (window as any).bootstrap;
+        const bootstrap = (window as any).bootstrap;
         const modalElement = document.getElementById("studentModal")!;
-        const modalInstance = boostrap.Modal.getOrCreateInstance(modalElement);
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
         modalInstance.show();
     }
 
@@ -397,9 +397,9 @@ export class BookWeb implements IBookview {
         document.getElementById("bookFormTitle")!.textContent = "Actualizar Libro";
         document.getElementById("bookBtnSubmit")!.textContent = "Actualizar";
 
-        const boostrap = (window as any).bootstrap;
+        const bootstrap = (window as any).bootstrap;
         const modalElement = document.getElementById("bookModal")!;
-        const modalInstance = boostrap.Modal.getOrCreateInstance(modalElement);
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
         modalInstance.show();
     }
 
@@ -437,9 +437,9 @@ export class BookWeb implements IBookview {
             }
         }
 
-        const boostrap = (window as any).bootstrap;
+        const bootstrap = (window as any).bootstrap;
         const modalElement = document.getElementById("bookModal")!;
-        const modalInstance = boostrap.Modal.getInstance(modalElement) || new boostrap.Modal(modalElement);
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
         modalInstance.hide();
 
         this.resetForm();
