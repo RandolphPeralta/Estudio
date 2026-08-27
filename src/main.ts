@@ -704,7 +704,7 @@ export class LoanWeb implements ILoanview {
         results.querySelectorAll("button").forEach(button => {
             button.addEventListener("click", () => {
                 const id = button.getAttribute("data-id")!;
-                const book = this.bookservice.read().find(b => b.id === id);
+                const book = this.bookservice.read().find(book => book.id === id);
                 if (!book) return;
 
                 (document.getElementById("loanBook") as HTMLInputElement).value = book.id;
