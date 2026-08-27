@@ -261,20 +261,6 @@ export class StudentWeb implements IStudentview {
                     <td>${student.schoolgrade}</td>
                 </tr>
             `).join("");
-
-        tbody.querySelectorAll(".btn-edit").forEach(btn => {
-            btn.addEventListener("click", (event) => {
-                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
-                this.editStudent(id);
-            });
-        });
-
-        tbody.querySelectorAll(".btn-delete").forEach(btn => {
-            btn.addEventListener("click", (event) => {
-                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
-                this.deleteStudent(id);
-            });
-        });
     }
 
     private deleteStudent(id: string): void {
@@ -472,20 +458,6 @@ export class BookWeb implements IBookview {
                     </td>
                 </tr>
             `).join("");
-
-        tbody.querySelectorAll(".btn-edit").forEach(btn => {
-            btn.addEventListener("click", (event) => {
-                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
-                this.editBook(id);
-            });
-        });
-
-        tbody.querySelectorAll(".btn-delete").forEach(btn => {
-            btn.addEventListener("click", (event) => {
-                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
-                this.deleteBook(id);
-            });
-        });
     }
 
     private deleteBook(id: string): void {
@@ -834,15 +806,6 @@ export class LoanWeb implements ILoanview {
                     </td>
                 </tr>
             `).join("");
-
-        tbody.querySelectorAll(".btn-return").forEach(btn => {
-            btn.addEventListener("click", (event) => {
-                const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
-                if (confirm("¿Estás seguro de devolver este libro?")) {
-                    this.returnBook(id);
-                }
-            });
-        });
     }
 
     private showAlert(msg: string, type: string): void {
