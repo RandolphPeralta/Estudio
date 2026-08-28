@@ -425,7 +425,7 @@ export class BookWeb implements IBookview {
 
         const bootstrap = (window as any).bootstrap;
         const modalElement = document.getElementById("bookModal")!;
-        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || bootstrap.Modal(modalElement);
         modalInstance.hide();
 
         this.resetForm();
@@ -751,7 +751,7 @@ export class LoanWeb implements ILoanview {
 
         const bootstrap = (window as any).bootstrap;
         const modalElement = document.getElementById("loanModal")!;
-        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || bootstrap.Modal(modalElement);
         modalInstance.hide();
     }
 
