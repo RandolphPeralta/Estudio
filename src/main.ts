@@ -114,7 +114,7 @@ export class MemoryRAM<T> implements IAddidionalaction<T> {
 
 //--------Validation------
 
-export class Validation<T extends object> implements IValidation<T> {
+export class Validation<T extends Object> implements IValidation<T> {
     validate(item: T): boolean {
         for (const value of Object.values(item)) {
             if (value === "" || value === null || value === undefined) {
@@ -328,11 +328,11 @@ export class StudentWeb implements IStudentview {
         });
     }
 
-    private showAlert(msg: string, type: string): void {
+    private showAlert(message: string, type: string): void {
         const alertBox = document.getElementById("studentAlert")!;
         alertBox.innerHTML = `
             <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                ${msg}
+                ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         `;
@@ -524,11 +524,11 @@ export class BookWeb implements IBookview {
         });
     }
 
-    private showAlert(msg: string, type: string): void {
+    private showAlert(message: string, type: string): void {
         const alertBox = document.getElementById("bookAlert")!;
         alertBox.innerHTML = `
             <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                ${msg}
+                ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         `;
@@ -807,11 +807,11 @@ export class LoanWeb implements ILoanview {
             `).join("");
     }
 
-    private showAlert(msg: string, type: string): void {
+    private showAlert(message: string, type: string): void {
         const alertBox = document.getElementById("loanAlert")!;
         alertBox.innerHTML = `
             <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                ${msg}
+                ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         `;
