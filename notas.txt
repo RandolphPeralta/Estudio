@@ -42,5 +42,4 @@ Ley Zeirgnark
 Ley de Miller
 Ley de jakob
 
-
 Consultar si las modales se pueden hacer sin el javascript de bootstrap
