@@ -338,7 +338,6 @@ export class StudentWeb implements IStudentview {
         `;
     }
 
-
 }
 
 //------------Bookweb------
@@ -778,9 +777,9 @@ export class LoanWeb implements ILoanview {
         const tbody = document.getElementById("loanTableBody")!;
         let loans = this.loanservice.read();
 
-        loans = loans.sort((a, b) => {
-            if (a.returndate && !b.returndate) return 1;
-            if (!a.returndate && b.returndate) return -1;
+        loans = loans.sort((loanA, loanB) => {
+            if (loanA.returndate && !loanB.returndate) return 1;
+            if (!loanA.returndate && loanB.returndate) return -1;
             return 0;
         });
 
