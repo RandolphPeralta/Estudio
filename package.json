@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Este repositorio sirve para estudiar respecto a la programacion",
   "main": "src/index.ts",
+  
   "scripts": {
     "start:terminal": "tsx src/index.ts",
     "start:web": "webpack serve --mode development",
