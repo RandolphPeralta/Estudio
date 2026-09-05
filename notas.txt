@@ -44,4 +44,4 @@ Ley de jakob
 
 Consultar si las modales se pueden hacer sin el javascript de bootstrap
 
-Estudiar lo que se pueda
+Estudiar limites parciales y cohesion de componentes antes de llegar a arquitectura
