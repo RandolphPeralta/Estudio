@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Este repositorio sirve para estudiar respecto a la programacion",
   "main": "src/index.ts",
-  
   "scripts": {
     "start:terminal": "tsx src/index.ts",
     "start:web": "webpack serve --mode development",
-    "build:web": "webpack --mode production"
+    "build:web": "webpack --mode production",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "Randolph",
@@ -26,6 +26,7 @@
     "sass": "^1.99.0",
     "ts-loader": "^9.6.2",
     "typescript": "^5.9.2",
+    "vitest": "^4.1.11",
     "webpack": "^5.108.4",
     "webpack-cli": "^7.2.1",
     "webpack-dev-server": "^6.0.0"
