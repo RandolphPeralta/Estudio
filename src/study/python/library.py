@@ -289,12 +289,12 @@ class StudentConsole(IView):
 
     def delete_student(self):
             
-                student_id = self.input_id()
-                result = self.studentservice.delete(student_id)
+                book_id = self.input_id()
+                result = self.studentservice.delete(book_id)
 
                 active_loans = self.loanservice.read()
                 student_active_loan = [loan for loan in active_loans 
-                               if loan.student.id == student_id and not loan.returndate]
+                               if loan.student.id == book_id and not loan.returndate]
         
                 if student_active_loan:
                     print("El estudiante está realizando préstamo, no puede ser eliminado")
@@ -333,3 +333,80 @@ class StudentConsole(IView):
             id = input("ID: ")
             return id
 
+class BookConsole(IView):
+
+    def __init__(self, bookservice: IService[Book]):
+        self.bookservice = bookservice
+
+    def execute(self):
+
+        run = True
+
+        while run:
+
+            self.read_menu()
+
+            option = int(input("Seleccione: "))
+
+            match option:
+
+                case 1:
+                    self.create_book()
+
+                case 2:
+                    self.delete_book()
+
+                case 3:
+                    self.update_book()
+
+                case 4:
+                    self.read_book()
+
+                case 0:
+                    run = False
+
+    def read_menu(self):
+        options = [
+            "1. Registrar libro",
+            "2. Borrar libro",
+            "3. Actualizar libro",
+            "4. Mostrar libros",
+            "0. Salir"
+        ]
+        for option in options:
+            print(option)
+
+    def input_book(self) -> Book:
+        
+                id = input("ID: ")
+                title = input("Titulo: ")
+                author = input("Identificación: ")
+        
+                return Book(
+                    id=id,
+                    title=title,
+                    author=author,
+                    available=True
+                )
+        
+    def input_id(self) -> id:
+                    id = input("ID: ")
+                    return id
+
+
+    def create_book(self):
+        book = self.input_book()
+        result = self.bookservice.create(book)
+        print("Libro registrado"
+            if result
+                else "No se pudo registrar"
+    )
+
+    def delete_book(self):
+                
+            book_id = self.input_id()
+            result = self.bookservice.delete(book_id)
+
+#TOCA MIRAR LA ELIMINACION EN LA CLASE BOOKCONSOLE Y MIRAR LO QUE RESTA!....
+
+    
