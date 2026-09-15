@@ -131,14 +131,8 @@ class MemoryRAM(IAdditionalAction[T], Generic[T]):
         self.memory: list[T] = []
 
     def create(self, some: T) -> bool:
-
-        for item in self.memory:
-            if item.id == some.id:
-                return False
-
         self.memory.append(some)
-
-        return True
+        return len(self.memory) > 0
 
     def delete(self, id: str) -> bool:
 
