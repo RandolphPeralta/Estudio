@@ -467,16 +467,30 @@ class LoanConsole(IView):
         print("Préstamo exitoso" if status
               else "No se pudo realizar el préstamo")
 
-        # books = self.bookservice.read()
-        # book = next((book for book in books if book.id == idbook),
-        #             None)
 
     def return_book(self)->None:
         idbook = self.input_idbook()
         loans = self.loanservice.read()
         loan = next((loan for loan in loans if loan.book.id == idbook), None)
         if loan is None:
-            print("El prestamo no existe")
+            print("El libro no existe con este ID")
             return
 
-        return        
+        loan.returndate = datetime.now()
+        status = self.loanservice.update(loan)
+        loan.book.available = True
+        self.bookservice.update(loan.book)
+        print("Libro devuelto" if status
+              else "No se pudo devolver")
+
+class MenuConsole(IView):
+
+    def __init__(
+        self,
+        studentMenu: IView,
+        bookMenu: IView,
+        loanMenu: IView
+    ):
+        self.studentMenu = studentMenu
+        self.bookMenu = bookMenu
+        self.loanMenu = loanMenu       
