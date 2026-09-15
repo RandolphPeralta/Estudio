@@ -470,4 +470,14 @@ class LoanConsole(IView):
         # books = self.bookservice.read()
         # book = next((book for book in books if book.id == idbook),
         #             None)
+
+    def return_book(self)->None:
+        idbook = self.input_idbook()
+        loans = self.loanservice.read()
+        loan = next((loan for loan in loans if loan.book.id == idbook), None)
+        if loan is None:
+            print("El prestamo no existe")
+            return
          
+
+        return        
