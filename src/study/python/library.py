@@ -478,6 +478,5 @@ class LoanConsole(IView):
         if loan is None:
             print("El prestamo no existe")
             return
-         
 
         return        
