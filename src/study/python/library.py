@@ -56,7 +56,6 @@ class ISave(ABC, Generic[T]):
         pass
 
 # from abc import abstractmethod
-
 # from domain.interfaces.save import ISave
 
 class IUpdate(ISave[T]):
@@ -70,7 +69,6 @@ class IUpdate(ISave[T]):
         pass
 
 # from abc import abstractmethod
-
 # from domain.interfaces.update import IUpdate
 
 class IAdditionalAction(IUpdate[T]):
@@ -172,8 +170,8 @@ class MemoryRAM(IAdditionalAction[T], Generic[T]):
             for item in self.memory
             if item.id == id
         ]
+    
 # from dataclasses import fields
-
 # from domain.interfaces.approbation import IApprobation
 
 class Approbation(IApprobation):
@@ -193,11 +191,9 @@ class Approbation(IApprobation):
         return True
 
 # from typing import Generic, TypeVar
-
 # from domain.interfaces.additional_action import IAdditionalAction
 # from domain.interfaces.approbation import IApprobation
 # from domain.interfaces.service import IService
-
 
 # T = TypeVar("T")
 
@@ -429,6 +425,36 @@ class LoanConsole(IView):
             self.studentservice = studentservice
             self.loanservice = loanservice
 
+    def execute(self):
+    
+            run = True
+    
+            while run:
+    
+                self.read_menu()
+    
+                option = int(input("Seleccione: "))
+    
+                match option:
+    
+                    case 1:
+                        self.lend_book()
+    
+                    case 2:
+                        self.return_book
+    
+                    case 0:
+                        run = False
+
+    def read_menu(self):
+            options = [
+                "1. Prestar libro",
+                "2. Devolver libro",
+                "0. Salir"
+            ]
+            for option in options:
+                print(option)
+
     def input_idbook(self) -> str:
         idbook: str = input("ID del libro: ")
         return idbook
@@ -437,7 +463,7 @@ class LoanConsole(IView):
         idstudent: str = input("ID del estudiante: ")
         return idstudent
 
-    def lendBook(self) -> None:
+    def lend_book(self) -> None:
         print(self.studentservice.read())
         print(self.bookservice.read())
         idbook = self.input_idbook()
@@ -493,4 +519,94 @@ class MenuConsole(IView):
     ):
         self.studentMenu = studentMenu
         self.bookMenu = bookMenu
-        self.loanMenu = loanMenu       
+        self.loanMenu = loanMenu
+
+    def execute(self):
+        run = True
+
+        while run:
+
+            self.read_menu()
+
+            option = int(input("Seleccione: "))
+
+            match option:
+
+                case 1:
+                    self.studentMenu.execute()
+
+                case 2:
+                    self.bookMenu.execute()
+
+                case 3:
+                    self.loanMenu.execute()
+
+                case 0:
+                    run = False
+
+    def read_menu(self):
+                options = [
+                    "1. Registrar, Eliminar, Ver, Actualizar estudiante",
+                    "2. Registrar, Eliminar, Ver, Actualizar libro",
+                    "3. Prestar libro, Devolver libro,  Mostrar prestamos",
+                    "0. Salir"
+                ]
+                for option in options:
+                    print(option)
+
+class App:
+
+    def __init__(self, menu: IView):
+        self.menu = menu
+
+    def run(self):
+        self.menu.execute()
+
+
+repository_book = MemoryRAM[Book]()
+repository_student = MemoryRAM[Student]()
+repository_loan = MemoryRAM[Loan]()
+
+student_approbator = Approbation()
+book_approbator = Approbation()
+loan_approbator = Approbation()
+
+loan_service = Service(
+    repository_loan,
+    loan_approbator
+)
+
+student_service = Service(
+    repository_student,
+    student_approbator
+)
+
+book_service = Service(
+    repository_book,
+    book_approbator
+)
+
+student_console = StudentConsole(
+    student_service,
+    loan_service
+)
+
+book_console = BookConsole(
+    book_service
+)
+
+loan_console = LoanConsole(
+    student_service,
+    book_service,
+    loan_service
+)
+
+menu = MenuConsole(
+    student_console,
+    book_console,
+    loan_console
+)
+
+app = App(menu)
+
+app.run()
