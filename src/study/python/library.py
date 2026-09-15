@@ -4,6 +4,8 @@ from typing import Optional
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 from dataclasses import fields
+from datetime import datetime
+import uuid
 
 # from dataclasses import dataclass
 
@@ -360,7 +362,7 @@ class BookConsole(IView):
                     self.update_book()
 
                 case 4:
-                    self.read_book()
+                    self.read_books()
 
                 case 0:
                     run = False
@@ -409,4 +411,63 @@ class BookConsole(IView):
 
 #TOCA MIRAR LA ELIMINACION EN LA CLASE BOOKCONSOLE Y MIRAR LO QUE RESTA!....
 
-    
+    def update_book(self):
+        book = self.input_book()
+        result = self.bookservice.update(book)
+        if result:
+            print("Libro actualizado")
+        else:
+            print("No se pudo actualizar")
+
+    def read_books(self) -> None:
+            print(self.bookservice.read())
+
+
+class LoanConsole(IView):
+    def __init__(self, bookservice: IService[Book], studentservice: IService[Student], loanservice: IService[Loan]):
+            self.bookservice = bookservice
+            self.studentservice = studentservice
+            self.loanservice = loanservice
+
+    def input_idbook(self) -> str:
+        idbook: str = input("ID del libro: ")
+        return idbook
+
+    def input_idstudent(self) -> str:
+        idstudent: str = input("ID del estudiante: ")
+        return idstudent
+
+    def lendBook(self) -> None:
+        print(self.studentservice.read())
+        print(self.bookservice.read())
+        idbook = self.input_idbook()
+        idstudent = self.input_idstudent()
+
+        books = self.bookservice.read()
+        book = next((book for book in books if book.id == idbook), None)
+        if book is None or not book.available:
+            print("El libro no existe o no está disponible")
+            return
+
+        students = self.studentservice.read()
+        student = next((student for student in students if student.id == idstudent), None)
+        if student is None:
+            print("El estudiante no existe")
+            return
+
+        loan = Loan(
+            id=str(uuid.uuid4()),
+            book=book,
+            student=student,
+            loanDate=datetime.now())
+
+        status = self.loanservice.create(loan)
+        book.available = False
+        self.bookservice.update(book)
+        print("Préstamo exitoso" if status
+              else "No se pudo realizar el préstamo")
+
+        # books = self.bookservice.read()
+        # book = next((book for book in books if book.id == idbook),
+        #             None)
+         

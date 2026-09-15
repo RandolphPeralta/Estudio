@@ -36,6 +36,8 @@ export class MemoryRAM<T> implements IAdditionalAction<T> {
     return true;
   }
 
+  // este metodo esta malo, ya que toca poner solo que guarde
+
   delete(id: any) {
     let index = this.memory.findIndex((item: any) => item.id === id);
     if (index !== -1) {
