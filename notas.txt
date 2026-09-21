@@ -3,23 +3,23 @@ Toca estudiar full la raiz y saber organizar todo
 2. Que pueda funcionar tanto en la consola como en la web
 3. Que pueda cambiar la persistencia, de memoria RAM, a localstorage y luego base de datos
 
-Toca mirar como puedo cambiar de consola a web sin alterar mi negocio y ordenar mi app
-
-Tarea: Aplicar los conceptos en clean arquitecture: regla de la dependencia y limite dentro de mi proyecto  y mas ...
-
-TAREA : YA SE ORGANIZO LAS CARPETAS PERO TOCA VERIFICAR Y CONSULTAR LA ARQUITECTURA Y LA HEXAGONAL
-
-Leer libro clean arquitecture y comparar un poco la aquitectura limpia con la arquitectura hexagonal
-
 La Arquitectura Limpia (clean arquitecture): es un enfoque de diseño de software 
 introducido por Robert C.Martin que organiza el codigo en capas concentricas. ---
 
 Sus tres ideas principales son:
-1. Seprar la logica de negocio de los detalles tecnicos.
+1. Separar la logica de negocio de los detalles tecnicos.
 2. Hacer que las dependencias apunten solo hacia el interior
 3. Facilitar pruebas unitarias sin depender de bases de datos o interfaces
 
-Tarea:  Refactorizar el codigo con el fin de tener los conceptos claros de la arquitectura limpia
+Arquitectura:
+
+- regla de la dependencia y limite
+
+//--------
+
+Leer libro clean arquitecture y comparar un poco la aquitectura limpia con la arquitectura hexagonal
+
+Tarea: Refactorizar el codigo con el fin de tener los conceptos claros de la arquitectura limpia
 
 Toca mirar las comprobaciones de entradas vacias o mal hechas con signos, y demas 
 no aplicar componentes o mildhaware
