@@ -319,9 +319,9 @@ export class StudentWeb implements IStudentview {
                 });
             });
 
-            resultsContainer.querySelectorAll(".btn-quick-delete").forEach(event => {
-                event.addEventListener("click", (evt) => {
-                    const id = (evt.currentTarget as HTMLElement).getAttribute("data-id")!;
+            resultsContainer.querySelectorAll(".btn-quick-delete").forEach(btn => {
+                btn.addEventListener("click", (event) => {
+                    const id = (event.currentTarget as HTMLElement).getAttribute("data-id")!;
                     this.deleteStudent(id);
                 });
             });
