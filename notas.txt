@@ -21,9 +21,6 @@ Leer libro clean arquitecture y comparar un poco la aquitectura limpia con la ar
 
 Tarea: Refactorizar el codigo con el fin de tener los conceptos claros de la arquitectura limpia
 
-Toca mirar las comprobaciones de entradas vacias o mal hechas con signos, y demas 
-no aplicar componentes o mildhaware
-
 Realizar cambios en la vista y leer las 12 leyes de hook
 
 Ley de Prägnanz
