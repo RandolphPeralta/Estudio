@@ -16,5 +16,9 @@ function* createFibonacciGenerator() {
 
 let fibonacciGenerator = createFibonacciGenerator() // IterableIterator<number> 
  
-console.log(fibonacciGenerator.next())    // evaluates to {value: 0, done: false} 
-console.log(fibonacciGenerator.next())    // evaluates to {value: 1, done: false}
+// console.log(fibonacciGenerator.next())    // evaluates to {value: 0, done: false} 
+// console.log(fibonacciGenerator.next())    // evaluates to {value: 1, done: false}
+
+type Reservation = {}
+
+type Reserve = { (from: Date, to: Date, destination: string): Reservation }
