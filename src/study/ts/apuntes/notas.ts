@@ -36,3 +36,30 @@ function filter(array: any, f: any) {
 } 
 
 type Filter = { <T>(array: T[], f: (item: T) => boolean): T[] }
+
+function oldmap(array: unknown[], f:(item: unknown)=> unknown): unknown[] {
+    let result = []
+    for (let i =0; i< array.length; i++){
+        result[i] = f(array[i])
+    }
+
+    return result
+}
+
+function map<T, U>(array: T[], f: (item: T) => U): U[] {
+  let result: U[] = []
+  for (let i = 0; i < array.length; i++) {
+    result[i] = f(array[i])
+  }
+  return result
+}
+
+//------
+
+// interface Array<T> {
+//     filter(
+//         callbackfn: (value: T, index: number, array: T[]) => any, 
+//         thisArg?: any): T[] {
+//         map<U>(callbackfn: (value: T, index: number, array: T[]) => U, thisArg?: any): U[]
+//     }
+// }
