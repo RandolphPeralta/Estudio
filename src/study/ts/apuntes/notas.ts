@@ -22,3 +22,17 @@ let fibonacciGenerator = createFibonacciGenerator() // IterableIterator<number>
 type Reservation = {}
 
 type Reserve = { (from: Date, to: Date, destination: string): Reservation }
+
+//-------------------------
+
+function filter(array: any, f: any) {  
+    let result = [] 
+    for (let i = 0; i < array.length; i++) { 
+        let item = array[i] 
+        if (f(item)) { 
+            result.push(item) 
+        } } 
+        return result 
+} 
+
+type Filter = { <T>(array: T[], f: (item: T) => boolean): T[] }
