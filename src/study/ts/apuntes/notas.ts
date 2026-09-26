@@ -56,10 +56,19 @@ function map<T, U>(array: T[], f: (item: T) => U): U[] {
 
 //------
 
-// interface Array<T> {
-//     filter(
-//         callbackfn: (value: T, index: number, array: T[]) => any, 
-//         thisArg?: any): T[] {
-//         map<U>(callbackfn: (value: T, index: number, array: T[]) => U, thisArg?: any): U[]
-//     }
-// }
+let promise = new Promise(resolve => resolve(45))
+
+//-------
+
+type MyEvent<T> = { 
+    target: T 
+    type: string 
+}
+
+type ButtonEvent = MyEvent<HTMLButtonElement>
+
+type TimedEvent<T> = { 
+    event: MyEvent<T> 
+    from: Date 
+    to: Date 
+}
