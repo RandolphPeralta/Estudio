@@ -72,3 +72,17 @@ type TimedEvent<T> = {
     from: Date 
     to: Date 
 }
+
+function triggerEvent<T>(event: MyEvent<T>): void {
+// ... 
+} 
+
+triggerEvent({ target: document.querySelector('#myButton'), type: 'mouseover'})
+
+//-----------------
+
+type TreeNode = {value: string}
+
+type LeafNode = TreeNode & { isLeaf: true} 
+
+type InnerNode = TreeNode & {children: [TreeNode] | [TreeNode, TreeNode] }
