@@ -90,5 +90,14 @@ type InnerNode = TreeNode & {children: [TreeNode] | [TreeNode, TreeNode] }
 //----------------
 
 type HasSides = {numberOfSides: number}
- 
+
 type SidesHaveLength = {sideLength: number}
+
+function logPerimeter<Shape extends HasSides & SidesHaveLength>(s: Shape): Shape {
+    console.log(s.numberOfSides * s.sideLength) 
+    return s 
+} 
+
+function call<T extends unknown[], R>(  f: (...args: T) => R,  ...args: T ): R {  
+    return f(...args) 
+} 
