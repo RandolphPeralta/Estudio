@@ -101,3 +101,10 @@ function logPerimeter<Shape extends HasSides & SidesHaveLength>(s: Shape): Shape
 function call<T extends unknown[], R>(  f: (...args: T) => R,  ...args: T ): R {  
     return f(...args) 
 } 
+
+//--------------------------
+
+type MyEvent2<Type extends string, Target extends HTMLElement = HTMLElement,> = { 
+    target: Target 
+    type: Type 
+}
