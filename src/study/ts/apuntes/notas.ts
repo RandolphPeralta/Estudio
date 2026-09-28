@@ -109,5 +109,34 @@ type MyEvent2<Type extends string, Target extends HTMLElement = HTMLElement,> = 
     type: Type 
 }
 
+//--------------------
+
+type Color = 'Black' | 'White' 
+type File = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' 
+type Rank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+
 // Represents a chess game 
-class Game {} 
+class Game {
+
+} 
+
+// A chess piece 
+class Piece { 
+    protected position: Position  
+    constructor(private readonly color: Color,  file: File, rank: Rank ) { 
+        this.position = new Position(file, rank)    
+    } 
+}
+
+// A set of coordinates for a piece 
+class Position { 
+    constructor( private file: File,  private rank: Rank ) {} 
+} 
+
+class King extends Piece {} 
+class Queen extends Piece {}
+class Bishop extends Piece {} 
+class Knight extends Piece {} 
+class Rook extends Piece {} 
+class Pawn extends Piece {}
+
