@@ -189,3 +189,18 @@ interface Food {
 
 interface Sushi extends Food { salty: boolean } 
 interface Cake extends Food { sweet: boolean } 
+
+//-----
+
+interface MyMap<K, V> { 
+  get(key: K): V 
+  set(key: K, value: V): void 
+}
+
+type ClassConstructor = new(...args: any[]) => {}  
+
+function withEZDebug<C extends ClassConstructor>(Class: C) {  
+    return class extends Class {  
+        constructor(...args: any[]) {
+            super(...args)  } } 
+}
