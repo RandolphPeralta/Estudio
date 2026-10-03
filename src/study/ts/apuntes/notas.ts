@@ -204,3 +204,23 @@ function withEZDebug<C extends ClassConstructor>(Class: C) {
         constructor(...args: any[]) {
             super(...args)  } } 
 }
+
+//---------------------
+
+// @serializable 
+// class APIPayload { 
+//     getValue(): Payload { 
+//         // ... } 
+// }
+
+type Shoe = { 
+  purpose: string 
+  walk(): void
+} 
+ 
+class BalletFlat implements Shoe {
+  walk(): void {
+      throw new Error("Method not implemented.")
+  } 
+  purpose = 'dancing' 
+} 
