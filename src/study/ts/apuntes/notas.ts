@@ -224,3 +224,20 @@ class BalletFlat implements Shoe {
   } 
   purpose = 'dancing' 
 } 
+
+//----
+
+// An existing user that we got from the server 
+type ExistingUser = { 
+    id: number 
+    name: string 
+} 
+// A new user that hasn't been saved to the server yet 
+type NewUser = { 
+    name: string 
+}
+
+let existingUser: ExistingUser = { 
+    id: 123456,
+    name: 'Ima User' 
+}
