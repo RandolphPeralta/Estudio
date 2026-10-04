@@ -241,3 +241,31 @@ let existingUser: ExistingUser = {
     id: 123456,
     name: 'Ima User' 
 }
+
+//----------------
+
+const x: string = 'x'               
+let y = 3                 
+var z = true              
+// string 
+// number 
+// boolean 
+const d = {x: 3}          // {x: number} 
+enum E {x, y, z} 
+let e = E.x    
+
+type UserTextEvent = {type: 'TextEvent', value: string, target: HTMLInputElement} 
+type UserMouseEvent = {type: 'MouseEvent', value: [number, number], target: HTMLElement} 
+ 
+type UserEvent = UserTextEvent | UserMouseEvent 
+ 
+function handle(event: UserEvent) { 
+  if (event.type === 'TextEvent') { 
+    event.value  // string 
+    event.target // HTMLInputElement 
+    // ... 
+    return 
+  } 
+  event.value    // [number, number] 
+  event.target   // HTMLElement 
+} 
