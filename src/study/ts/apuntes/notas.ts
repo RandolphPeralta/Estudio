@@ -269,3 +269,35 @@ function handle(event: UserEvent) {
   event.value    // [number, number] 
   event.target   // HTMLElement 
 } 
+
+//--------------
+
+type APIResponse = { 
+  user: { 
+    userId: string 
+    friendList: { 
+      count: number 
+      friends: { 
+        firstName: string 
+        lastName: string 
+      }[] 
+    } 
+  } 
+}
+
+function getAPIResponse(): Promise<APIResponse> { 
+  return Promise.resolve({
+    user: {
+      userId: "12345",
+      friendList: {
+        count: 2,
+        friends: [
+          { firstName: "Ana", lastName: "Pérez" },
+          { firstName: "Carlos", lastName: "Gómez" }
+        ]
+      }
+    }
+  });
+}
+
+let response = getAPIResponse() 
