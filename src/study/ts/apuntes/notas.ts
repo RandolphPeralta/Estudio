@@ -270,7 +270,7 @@ function handle(event: UserEvent) {
   event.target   // HTMLElement 
 } 
 
-//--------------
+//-------------
 
 type APIResponse = { 
   user: { 
