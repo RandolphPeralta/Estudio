@@ -332,3 +332,15 @@ type Account = {
   isEmployee: boolean 
   notes: string[] 
 }
+
+// Make all fields optional 
+type OptionalAccount = {[K in keyof Account]?: Account[K]} 
+
+// Make all fields nullable 
+type NullableAccount = {[K in keyof Account]: Account[K] | null} 
+
+type ReadonlyAccount = {readonly [K in keyof Account]: Account[K]}
+
+type Account2 = { -readonly [K in keyof ReadonlyAccount]: Account[K]}
+
+type Account3 = {[K in keyof OptionalAccount]-?: Account[K]}
