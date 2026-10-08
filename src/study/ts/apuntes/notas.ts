@@ -344,3 +344,5 @@ type ReadonlyAccount = {readonly [K in keyof Account]: Account[K]}
 type Account2 = { -readonly [K in keyof ReadonlyAccount]: Account[K]}
 
 type Account3 = {[K in keyof OptionalAccount]-?: Account[K]}
+
+const randolph: Readonly<Object> = ""
