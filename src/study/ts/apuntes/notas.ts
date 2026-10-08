@@ -346,3 +346,16 @@ type Account2 = { -readonly [K in keyof ReadonlyAccount]: Account[K]}
 type Account3 = {[K in keyof OptionalAccount]-?: Account[K]}
 
 const randolph: Readonly<Object> = ""
+
+//-------Companion Object Pattern----
+
+type Currency = { 
+  unit: 'EUR' | 'GBP' | 'JPY' | 'USD' 
+  value: number 
+} 
+// let Currency = { 
+//   DEFAULT: 'USD', 
+//   from(value: number, unit = Currency.DEFAULT): Currency { 
+//     return {unit, value} 
+// } 
+// }
