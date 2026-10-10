@@ -363,4 +363,19 @@ type ElementType2<T> = T extends (infer U)[] ? U : T
 
 type AB = number | string
 type BC =  string 
+
 type CD = Exclude<AB, BC>  // number
+
+type DE = Extract<A, B>  // string
+
+type A1 = {a?: number | null} 
+
+type B1 = NonNullable<A1['a']>  // number
+
+type F = (a: number) => string 
+type R = ReturnType<F>  // string
+
+type X1 = {new(): Y1} 
+type Y1 = {b: number} 
+
+type I = InstanceType<X1>  // {b: number}
