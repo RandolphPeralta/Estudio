@@ -353,3 +353,14 @@ type C = ToArray2<number> // number[]
 type D = ToArray2<number | string> // number[] | string[] 
 
 type Without<T, U> = T extends U ? never : T
+
+type ElementType<T> = T extends unknown[] ? T[number] : T 
+type FA = ElementType<number[]> // number
+
+type ElementType2<T> = T extends (infer U)[] ? U : T 
+
+//-----------------------
+
+type AB = number | string
+type BC =  string 
+type CD = Exclude<AB, BC>  // number
