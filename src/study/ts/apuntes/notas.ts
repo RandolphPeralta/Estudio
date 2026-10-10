@@ -379,3 +379,20 @@ type X1 = {new(): Y1}
 type Y1 = {b: number} 
 
 type I = InstanceType<X1>  // {b: number}
+
+//----------------------
+
+type Dialog = {id?: string} 
+
+function removeFromDOM(dialog: Dialog, element: Element) { 
+  element.parentNode!.removeChild(element) 
+  delete dialog.id 
+}
+
+function closeDialog(dialog: Dialog){
+  if (!dialog.id) { 
+    return 
+} 
+setTimeout(() => removeFromDOM(dialog, document.getElementById(dialog.id!)!))
+
+}
