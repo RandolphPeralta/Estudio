@@ -363,13 +363,3 @@ function parse(birthday: string): Date {
   } 
   return date 
 } 
-
-// function parse(birthday: string): Date | null { 
-//   let date = new Date(birthday) 
-//   if (!isValid(date)) {
-//     return null } 
-//       return date 
-// }
-
-// let date = parse(ask()) 
-// console.info('Date is', date.toISOString())
