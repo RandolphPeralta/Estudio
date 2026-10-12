@@ -376,3 +376,16 @@ function flatten<T>(array: T[][]): T[] {
   return Array.prototype.concat.apply([], array) 
 }
 
+//_-------------
+
+interface Option<T> {}  
+
+class Some<T> implements Option<T> {
+  constructor(private value: T) {} 
+} 
+
+class None implements Option<never> {} 
+
+interface crud<T> {
+  create(item: T): Promise<boolean>
+}
