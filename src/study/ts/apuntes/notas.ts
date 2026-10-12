@@ -344,9 +344,9 @@ function fUserID(id: string) {
 
 //-------------
 
-function ask() { 
-  return prompt('When is your birthday?') 
-} 
+// function ask() { 
+//   return prompt('When is your birthday?') 
+// } 
 
 // function parse(birthday: string): Date { 
 //   return new Date(birthday) 
@@ -363,3 +363,16 @@ function parse(birthday: string): Date {
   } 
   return date 
 } 
+
+function ask() { 
+  let result = prompt('When is your birthday?') 
+  if (result === null) { 
+    return [] } 
+    return [result] } 
+// ... 
+ask().map(parse).map(date => date.toISOString()).forEach(date => console.info('Date is', date)) 
+
+function flatten<T>(array: T[][]): T[] { 
+  return Array.prototype.concat.apply([], array) 
+}
+
