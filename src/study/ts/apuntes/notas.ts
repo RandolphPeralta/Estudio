@@ -385,39 +385,3 @@ class Some<T> implements Option<T> {
 } 
 
 class None implements Option<never> {} 
-
-interface ICRUD<T> {
-  create(item: T): Promise<boolean>;
-  delete(id: string): Promise<boolean>;
-  update(item: T): Promise<boolean>;
-  read(): Promise<T[]>;
-}
-
-class PostgreSQL<T> implements ICRUD<T> {
-
-  async create(item: T): Promise<boolean> {
-        try {
-            return true;
-        } catch (error) {
-                return false;
-        }
-      }
-
-  async update(item: T): Promise<boolean> {
-     try {
-          return true;
-        } 
-      catch (error) {
-          return false;
-        }
-   }
-
-   async read(): Promise<T[]> {
-     throw new Error("Method not implemented.")
-   }
-
-   async delete(id: string): Promise<boolean> {
-     throw new Error("Method not implemented.")
-   }
-
-}
