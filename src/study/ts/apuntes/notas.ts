@@ -378,10 +378,24 @@ function flatten<T>(array: T[][]): T[] {
 
 //_-------------
 
-interface Option<T> {}  
-
-class Some<T> implements Option<T> {
-  constructor(private value: T) {} 
+interface Option<T> { 
+  flatMap<U>(f: (value: T) => Option<U>): Option<U> 
+  getOrElse(value: T): T 
 } 
-
-class None implements Option<never> {} 
+class Some<T> implements Option<T> { 
+  constructor(private value: T) {} 
+  flatMap<U>(f: (value: T) => Option<U>): Option<U> {  
+    return f(this.value) 
+  } 
+  getOrElse(): T {  
+    return this.value 
+  } 
+} 
+class None implements Option<never> { 
+  flatMap<U>(): Option<U> {  
+    return this 
+  } 
+  getOrElse<U>(value: U): U {  
+    return value 
+  } 
+} 
