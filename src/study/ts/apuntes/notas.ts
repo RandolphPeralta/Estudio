@@ -441,3 +441,12 @@ fs.appendFile(
   })
 
   //-----------------
+
+type Executor = ( 
+  resolve: Function, 
+  reject: Function 
+) => void 
+ 
+class Promises { 
+  constructor(f: Executor) {} 
+}
