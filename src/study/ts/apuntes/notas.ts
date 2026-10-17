@@ -442,11 +442,8 @@ fs.appendFile(
 
   //-----------------
 
-type Executor = ( 
-  resolve: Function, 
-  reject: Function 
-) => void 
- 
-class Promises { 
-  constructor(f: Executor) {} 
-}
+type Executor<T, E extends Error> = ( 
+resolve: (result: T) => void, 
+reject: (error: E) => void 
+) => 
+void 
