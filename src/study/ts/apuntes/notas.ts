@@ -447,3 +447,21 @@ resolve: (result: T) => void,
 reject: (error: E) => void 
 ) => 
 void 
+
+//-------------
+
+//---------------
+
+type Executore<T> = ( 
+  resolve: (result: T) => void,
+  reject: (error: unknown) => void) => void 
+
+// class Promise<T> { 
+//   constructor(f: Executore<T>) {}   
+//   async then<U>(g: (result: T) => Promise<U>): Promise<U> { 
+//       return 
+// } 
+// async catch<U>(g: (error: unknown) => Promise<U>): Promise<U> { 
+// // ... 
+//   } 
+// }
