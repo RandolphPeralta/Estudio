@@ -327,20 +327,20 @@ setTimeout(() => removeFromDOM(dialog, document.getElementById(dialog.id!)!))
 
 //------
 
-type CompanyID = string 
-type OrderID = string 
-type UserID = string 
-type ID = CompanyID | OrderID | UserID
+// type CompanyID = string 
+// type OrderID = string 
+// type UserID = string 
+// type ID = CompanyID | OrderID | UserID
 
-function fCompanyID(id: string) { 
-  return id as CompanyID 
-} 
-function fOrderID(id: string) { 
-  return id as OrderID 
-} 
-function fUserID(id: string) { 
-  return id as UserID 
-}
+// function fCompanyID(id: string) { 
+//   return id as CompanyID 
+// } 
+// function fOrderID(id: string) { 
+//   return id as OrderID 
+// } 
+// function fUserID(id: string) { 
+//   return id as UserID 
+// }
 
 //-------------
 
@@ -471,3 +471,60 @@ type Executore<T> = (
 interface Emitter {  
   emit(channel: string, value: unknown): void 
   on(channel: string, f: (value: unknown) => void) :void }
+
+//----------------
+
+// type Events = {  
+//   ready: void 
+//   error: Error 
+//   reconnecting: {attempt: number, delay: number} 
+// } 
+
+// type RedisClient = { 
+//   on<E extends keyof Events>( event: E, f: (arg: Events[E]) => void ): void 
+//   emit<E extends keyof Events>( event: E, arg: Events[E]): void 
+// }
+
+//---------------
+
+type Message = string 
+type ThreadID = number 
+type UserID = number 
+type Participants = UserID[] 
+ 
+type Commands = { 
+  sendMessageToThread: [ThreadID, Message] 
+  createThread: [Participants] 
+  addUserToThread: [ThreadID, UserID] 
+  removeUserFromThread: [ThreadID, UserID] 
+} 
+ 
+type Events = { 
+  receivedMessage: [ThreadID, UserID, Message] 
+  createdThread: [ThreadID, Participants] 
+  addedUserToThread: [ThreadID, UserID] 
+  removedUserFromThread: [ThreadID, UserID] 
+}
+
+type Command =  
+  | {type: 'sendMessageToThread', data: [ThreadID, Message]}  
+  | {type: 'createThread', data: [Participants]} 
+  | {type: 'addUserToThread', data: [ThreadID, UserID]} 
+  | {type: 'removeUserFromThread', data: [ThreadID, UserID]} 
+
+  //------------------
+
+// Read properties from the global window object 
+let model = { url: window.location.href }
+
+// Create an <input /> element 
+let input = document.createElement('input') 
+
+// Give it some CSS classes 
+input.classList.add('Input', 'URLInput')
+
+// When the user types, update the model 
+input.addEventListener('change', () => model.url = input.value.toUpperCase() )
+ 
+// Inject the <input /> into the DOM 
+document.body.appendChild(input)
