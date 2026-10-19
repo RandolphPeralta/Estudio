@@ -528,3 +528,15 @@ input.addEventListener('change', () => model.url = input.value.toUpperCase() )
  
 // Inject the <input /> into the DOM 
 document.body.appendChild(input)
+
+//-----------------
+
+import React from 'react'  
+
+type Props = {  
+  isDisabled?: boolean 
+  size: 'Big' | 'Small' 
+  text: string 
+  onClick(event: React.MouseEvent<HTMLButtonElement>): void  
+} 
+
