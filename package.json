@@ -21,8 +21,10 @@
   "devDependencies": {
     "@types/node": "^24.13.3",
     "@types/prompt-sync": "^4.2.3",
+    "@types/react": "^19.3.0",
     "dotenv-webpack": "^9.0.0",
     "html-webpack-plugin": "^5.6.7",
+    "react": "^19.3.1",
     "sass": "^1.99.0",
     "ts-loader": "^9.6.2",
     "typescript": "^5.9.2",
