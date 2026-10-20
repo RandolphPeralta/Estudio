@@ -26,3 +26,19 @@ type Props = {
   text: string 
   onClick(event: React.MouseEvent<HTMLButtonElement>): void  
 } 
+
+type button = {
+
+}
+
+export function FancyButton(props: Props) {  
+  const [toggled, setToggled] = React.useState(false)  
+  return <button 
+          className={'Size-' + props.size} 
+          disabled={props.isDisabled || false}
+          onClick={event => { 
+              setToggled(!toggled) 
+              props.onClick(event) 
+              }}  
+           >{props.text}</button>
+}
