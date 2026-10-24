@@ -546,4 +546,6 @@ var emailList = require('emailListModule')
 var emailComposer = require('emailComposerModule')
 
 //--------------
-namespace Network { }
+namespace Network { 
+  export function get<T>(url: string): void {}
+}
