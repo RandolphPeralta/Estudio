@@ -544,3 +544,6 @@ type Props = {
 
 var emailList = require('emailListModule') 
 var emailComposer = require('emailComposerModule')
+
+//--------------
+namespace Network { }
