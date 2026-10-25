@@ -546,6 +546,29 @@ var emailList = require('emailListModule')
 var emailComposer = require('emailComposerModule')
 
 //--------------
-namespace Network { 
-  export function get<T>(url: string): void {}
+namespace Networks { 
+  export namespace HTTP { 
+    export function get <T>(url: string): void { 
+      // ... 
+    } 
+  } 
 }
+
+namespace A { 
+  export namespace B { 
+    export namespace C { 
+      export let d = 3 
+    } 
+  } 
+} 
+
+// import d = A.B.C.d 
+ 
+// let e = d * 3
+
+//--------------
+
+namespace Network { 
+export function request<T>(url: string, priority: number): void {}
+} 
+ 
