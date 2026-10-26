@@ -573,3 +573,15 @@ export function request<T>(url: string, priority: number): void {
   //...
 }
 } 
+
+//-------------
+
+declare let process: { 
+  env: { NODE_ENV: 'development' | 'production'} 
+} 
+
+process = { env: {NODE_ENV: 'production'} }
+
+//---------------
+
+type UsersID = string & {readonly brand: unique symbol}
