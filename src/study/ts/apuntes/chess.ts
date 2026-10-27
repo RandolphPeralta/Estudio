@@ -1,4 +1,0 @@
-// Tablero 
-// piezas
-// movimientos
-// reglas

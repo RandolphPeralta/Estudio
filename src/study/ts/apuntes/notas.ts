@@ -585,3 +585,13 @@ process = { env: {NODE_ENV: 'production'} }
 //---------------
 
 type UsersID = string & {readonly brand: unique symbol}
+
+//--------------------
+
+// declare module 'name'{ 
+//   export type MyType = number 
+//   export type MyDefaultType = {a: string} 
+//   export let myExport: MyType 
+//   let myDefaultExport: MyDefaultType 
+//   export default myDefaultExport 
+// }
