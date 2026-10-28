@@ -121,7 +121,13 @@ export type Loan = {
     returndate?: Date;
 }
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({
+    host: "localhost",
+    port: 5433,
+    user: "postgres",
+    password: "1234",
+    database: "library"
+});
 
 const repositorybook    = new PostgreSQLPersistence<Book>(pool, "books");
 const repositorystudent = new PostgreSQLPersistence<Student>(pool, "students");
