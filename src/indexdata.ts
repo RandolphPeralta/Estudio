@@ -1,4 +1,3 @@
-
 export interface IRepository<T> {
     create(item: T): Promise<boolean>;
     delete(id: string): Promise<boolean>;
@@ -9,12 +8,11 @@ export interface IRepository<T> {
 import { Pool } from "pg";
 import { readFile } from "node:fs/promises";
 
-export class PostgreSQLPersistence<T extends { id: string }>
-    implements IRepository<T> {
+export class PostgreSQLPersistence<T extends { id: string }> implements IRepository<T> {
 
     constructor(
         private pool: Pool,
-        private tableName: "students" | "books" | "loans"
+        private tableName: string
     ) {}
 
     async create(item: T): Promise<boolean> {
@@ -98,22 +96,19 @@ const config = {
     password: "1234"
 };
 
-// Inicializa la base de datos y devuelve el pool de la aplicación.
 async function initializeDatabase(): Promise<Pool> {
-    // PASO 1: conectarse a una base que ya existe.
+
     const adminPool = new Pool({
         ...config,
         database: "postgres"
     });
 
     try {
-        // PASO 2: comprobar si library existe.
         const result = await adminPool.query(
             `SELECT 1 FROM pg_database WHERE datname = $1`,
             ["library"]
         );
 
-        // PASO 3: crear library solo si no existe.
         if (result.rowCount === 0) {
             await adminPool.query("CREATE DATABASE library");
             console.log("Base de datos library creada.");
@@ -124,14 +119,12 @@ async function initializeDatabase(): Promise<Pool> {
         await adminPool.end();
     }
 
-    // PASO 4: conectarse a library, que ya existe.
     const pool = new Pool({
         ...config,
         database: "library"
     });
 
     try {
-        // PASO 5: ejecutar el archivo SQL.
         const sql = await readFile("./data.sql", "utf8");
         await pool.query(sql);
 
@@ -155,8 +148,7 @@ async function main(): Promise<void> {
     const pool = await initializeDatabase();
 
     try {
-        const repositoryStudent =
-            new PostgreSQLPersistence<Student>(pool, "students");
+        const repositoryStudent = new PostgreSQLPersistence<Student>(pool, "students");
 
         const created = await repositoryStudent.create(student1);
         console.log("Estudiante creado:", created);
@@ -171,7 +163,6 @@ async function main(): Promise<void> {
 main().catch(error => {
     console.error("Error:", error);
 });
-
 
 // const repositoryloan    = new PostgreSQLPersistence<Loan>(pool, "loans");
 // const repositorybook    = new PostgreSQLPersistence<Book>(pool, "books");
