@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,56 +48,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostgreSQLPersistence = void 0;
-var MemoryRAM = /** @class */ (function () {
-    function MemoryRAM() {
-        this.memory = [];
-    }
-    MemoryRAM.prototype.create = function (item) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.memory.push(item) > 0];
-            });
-        });
-    };
-    MemoryRAM.prototype.delete = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                index = this.memory.findIndex(function (item) { return item.id === id; });
-                if (index !== -1) {
-                    this.memory.splice(index, 1);
-                    return [2 /*return*/, true];
-                }
-                else {
-                    return [2 /*return*/, false];
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    MemoryRAM.prototype.update = function (some) {
-        return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                index = this.memory.findIndex(function (item) { return item.id === some.id; });
-                if (index === -1) {
-                    return [2 /*return*/, false];
-                }
-                this.memory[index] = some;
-                return [2 /*return*/, true];
-            });
-        });
-    };
-    MemoryRAM.prototype.read = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.memory];
-            });
-        });
-    };
-    return MemoryRAM;
-}());
 var pg_1 = require("pg");
+var promises_1 = require("node:fs/promises");
 var PostgreSQLPersistence = /** @class */ (function () {
     function PostgreSQLPersistence(pool, tableName) {
         this.pool = pool;
@@ -161,21 +124,125 @@ var PostgreSQLPersistence = /** @class */ (function () {
     return PostgreSQLPersistence;
 }());
 exports.PostgreSQLPersistence = PostgreSQLPersistence;
-var pool = new pg_1.Pool({
+var config = {
     host: "localhost",
     port: 5433,
     user: "postgres",
-    password: "1234",
-    database: "library"
-});
-var repositorybook = new PostgreSQLPersistence(pool, "books");
-var repositorystudent = new PostgreSQLPersistence(pool, "students");
-var repositoryloan = new PostgreSQLPersistence(pool, "loans");
+    password: "1234"
+};
+// Inicializa la base de datos y devuelve el pool de la aplicación.
+function initializeDatabase() {
+    return __awaiter(this, void 0, void 0, function () {
+        var adminPool, result, pool, sql, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    adminPool = new pg_1.Pool(__assign(__assign({}, config), { database: "postgres" }));
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 6, 8]);
+                    return [4 /*yield*/, adminPool.query("SELECT 1 FROM pg_database WHERE datname = $1", ["library"])];
+                case 2:
+                    result = _a.sent();
+                    if (!(result.rowCount === 0)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, adminPool.query("CREATE DATABASE library")];
+                case 3:
+                    _a.sent();
+                    console.log("Base de datos library creada.");
+                    return [3 /*break*/, 5];
+                case 4:
+                    console.log("La base de datos library ya existe.");
+                    _a.label = 5;
+                case 5: return [3 /*break*/, 8];
+                case 6: return [4 /*yield*/, adminPool.end()];
+                case 7:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 8:
+                    pool = new pg_1.Pool(__assign(__assign({}, config), { database: "library" }));
+                    _a.label = 9;
+                case 9:
+                    _a.trys.push([9, 12, , 14]);
+                    return [4 /*yield*/, (0, promises_1.readFile)("./data.sql", "utf8")];
+                case 10:
+                    sql = _a.sent();
+                    return [4 /*yield*/, pool.query(sql)];
+                case 11:
+                    _a.sent();
+                    console.log("Tablas creadas o verificadas correctamente.");
+                    return [2 /*return*/, pool];
+                case 12:
+                    error_2 = _a.sent();
+                    return [4 /*yield*/, pool.end()];
+                case 13:
+                    _a.sent();
+                    throw error_2;
+                case 14: return [2 /*return*/];
+            }
+        });
+    });
+}
 var student1 = {
-    id: "01",
-    name: "Venus",
-    identification: "765432",
+    id: "012",
+    name: "Alan",
+    identification: "23765432",
     schoolgrade: "11"
 };
-repositorystudent.create(student1);
-console.log(repositorystudent.read());
+function main() {
+    return __awaiter(this, void 0, void 0, function () {
+        var pool, repositoryStudent, created, students;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, initializeDatabase()];
+                case 1:
+                    pool = _a.sent();
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, , 5, 7]);
+                    repositoryStudent = new PostgreSQLPersistence(pool, "students");
+                    return [4 /*yield*/, repositoryStudent.create(student1)];
+                case 3:
+                    created = _a.sent();
+                    console.log("Estudiante creado:", created);
+                    return [4 /*yield*/, repositoryStudent.read()];
+                case 4:
+                    students = _a.sent();
+                    console.log("Estudiantes:", students);
+                    return [3 /*break*/, 7];
+                case 5: return [4 /*yield*/, pool.end()];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
+            }
+        });
+    });
+}
+main().catch(function (error) {
+    console.error("Error:", error);
+});
+// const repositoryloan    = new PostgreSQLPersistence<Loan>(pool, "loans");
+// const repositorybook    = new PostgreSQLPersistence<Book>(pool, "books");
+// repositorystudent.create(student1)
+// console.log(repositorystudent.read())
+// const student1: Book = {
+//     id: "01",
+//     title: "",
+//     author: "",
+//     available: false
+// } 
+// repositorystudent.create(student1)
+// console.log(repositorystudent.read())
+// async function main(): Promise<void> {
+//     try {
+//         const created = await repositorystudent.create(student1);
+//         console.log("¿Estudiante creado?", created);
+//         const students = await repositorystudent.read();
+//         console.log("Estudiantes registrados:", students);
+//     } catch (error) {
+//         console.error("Error al trabajar con PostgreSQL:", error);
+//     } finally {
+//         await pool.end();
+//     }
+// }
+// main();
