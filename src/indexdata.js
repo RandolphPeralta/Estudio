@@ -130,7 +130,6 @@ var config = {
     user: "postgres",
     password: "1234"
 };
-// Inicializa la base de datos y devuelve el pool de la aplicación.
 function initializeDatabase() {
     return __awaiter(this, void 0, void 0, function () {
         var adminPool, result, pool, sql, error_2;
@@ -183,44 +182,32 @@ function initializeDatabase() {
     });
 }
 var student1 = {
-    id: "012",
-    name: "Alan",
+    id: "0112",
+    name: "Alis",
     identification: "23765432",
     schoolgrade: "11"
 };
-function main() {
-    return __awaiter(this, void 0, void 0, function () {
-        var pool, repositoryStudent, created, students;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, initializeDatabase()];
-                case 1:
-                    pool = _a.sent();
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, , 5, 7]);
-                    repositoryStudent = new PostgreSQLPersistence(pool, "students");
-                    return [4 /*yield*/, repositoryStudent.create(student1)];
-                case 3:
-                    created = _a.sent();
-                    console.log("Estudiante creado:", created);
-                    return [4 /*yield*/, repositoryStudent.read()];
-                case 4:
-                    students = _a.sent();
-                    console.log("Estudiantes:", students);
-                    return [3 /*break*/, 7];
-                case 5: return [4 /*yield*/, pool.end()];
-                case 6:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 7: return [2 /*return*/];
-            }
-        });
-    });
-}
-main().catch(function (error) {
-    console.error("Error:", error);
-});
+// async function main(): Promise<void> {
+//     const pool = await initializeDatabase();
+//     try {
+//         const repositoryStudent = new PostgreSQLPersistence<Student>(pool, "students");
+//         const created = await repositoryStudent.create(student1);
+//         console.log("Estudiante creado:", created);
+//         const students = await repositoryStudent.read();
+//         console.log("Estudiantes:", students);
+//     } finally {
+//         await pool.end();
+//     }
+// }
+// main().catch(error => {
+//     console.error("Error:", error);
+// });
+var pool = initializeDatabase();
+var repositoryStudent = new PostgreSQLPersistence(pool, "students");
+var created = repositoryStudent.create(student1);
+console.log("Estudiante creado:", created);
+var students = repositoryStudent.read();
+console.log("Estudiantes:", students);
 // const repositoryloan    = new PostgreSQLPersistence<Loan>(pool, "loans");
 // const repositorybook    = new PostgreSQLPersistence<Book>(pool, "books");
 // repositorystudent.create(student1)
