@@ -1,14 +1,14 @@
-CREATE TABLE students (
+CREATE TABLE IF NOT EXISTS students (
     id TEXT PRIMARY KEY,
     data JSONB NOT NULL
 );
 
-CREATE TABLE books (
+CREATE TABLE IF NOT EXISTS books (
     id TEXT PRIMARY KEY,
     data JSONB NOT NULL
 );
 
-CREATE TABLE loans (
+CREATE TABLE IF NOT EXISTS loans (
     id TEXT PRIMARY KEY,
     data JSONB NOT NULL
 );
