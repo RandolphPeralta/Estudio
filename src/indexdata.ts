@@ -5,6 +5,28 @@ export interface IRepository<T> {
     read(): Promise<T[]>;
 }
 
+export type Student = {
+    id: string;
+    name: string;
+    identification: string;
+    schoolgrade: string;
+};
+
+export type Book = {
+    id: string;
+    title: string;
+    author: string;
+    available: boolean;
+};
+
+export type Loan = {
+    id: string;
+    book: Book;
+    student: Student;
+    loanDate: Date;
+    returndate?: Date;
+};
+
 import { Pool } from "pg";
 import { readFile } from "node:fs/promises";
 
@@ -67,28 +89,6 @@ export class PostgreSQLPersistence<T extends { id: string }> implements IReposit
     }
 }
 
-export type Student = {
-    id: string;
-    name: string;
-    identification: string;
-    schoolgrade: string;
-};
-
-export type Book = {
-    id: string;
-    title: string;
-    author: string;
-    available: boolean;
-};
-
-export type Loan = {
-    id: string;
-    book: Book;
-    student: Student;
-    loanDate: Date;
-    returndate?: Date;
-};
-
 const config = {
     host: "localhost",
     port: 5433,
@@ -138,9 +138,9 @@ async function initializeDatabase(): Promise<Pool> {
 }
 
 const student1: Student = {
-    id: "0112",
-    name: "Alis",
-    identification: "23765432",
+    id: "12",
+    name: "Randolph",
+    identification: "523765432",
     schoolgrade: "11"
 };
 
@@ -163,40 +163,3 @@ async function main(): Promise<void> {
 main().catch(error => {
     console.error("Error:", error);
 });
-
-// const repositoryloan    = new PostgreSQLPersistence<Loan>(pool, "loans");
-// const repositorybook    = new PostgreSQLPersistence<Book>(pool, "books");
-
-// repositorystudent.create(student1)
-// console.log(repositorystudent.read())
-
-// const student1: Book = {
-//     id: "01",
-//     title: "",
-//     author: "",
-//     available: false
-// } 
-
-// repositorystudent.create(student1)
-// console.log(repositorystudent.read())
-
-
-// async function main(): Promise<void> {
-//     try {
-//         const created = await repositorystudent.create(student1);
-
-//         console.log("¿Estudiante creado?", created);
-
-//         const students = await repositorystudent.read();
-
-//         console.log("Estudiantes registrados:", students);
-//     } catch (error) {
-//         console.error("Error al trabajar con PostgreSQL:", error);
-//     } finally {
-//         await pool.end();
-//     }
-// }
-
-// main();
-
-
