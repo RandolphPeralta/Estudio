@@ -1,4 +1,13 @@
+import { Pool } from "pg";
+
 export interface IRepository<T> {
+    create(item: T): Promise<boolean>;
+    delete(id: string): Promise<boolean>;
+    update(item: T): Promise<boolean>;
+    read(): Promise<T[]>;
+}
+
+export interface IService<T> {
     create(item: T): Promise<boolean>;
     delete(id: string): Promise<boolean>;
     update(item: T): Promise<boolean>;
@@ -19,19 +28,7 @@ export type Book = {
     available: boolean;
 };
 
-export type Loan = {
-    id: string;
-    book: Book;
-    student: Student;
-    loanDate: Date;
-    returndate?: Date;
-};
-
-import { Pool } from "pg";
-import { readFile } from "node:fs/promises";
-
 export class PostgreSQLPersistence<T extends { id: string }> implements IRepository<T> {
-
     constructor(
         private pool: Pool,
         private tableName: string
@@ -40,22 +37,12 @@ export class PostgreSQLPersistence<T extends { id: string }> implements IReposit
     async create(item: T): Promise<boolean> {
         try {
             await this.pool.query(
-                `INSERT INTO ${this.tableName} (id, data)
-                 VALUES ($1, $2)`,
+                `INSERT INTO ${this.tableName} (id, data) VALUES ($1, $2)`,
                 [item.id, JSON.stringify(item)]
             );
-
             return true;
-        } catch (error) {
-            if (
-                typeof error === "object" &&
-                error !== null &&
-                "code" in error &&
-                error.code === "23505"
-            ) {
-                return false;
-            }
-
+        } catch (error: any) {
+            if (error?.code === "23505") return false;
             throw error;
         }
     }
@@ -65,27 +52,53 @@ export class PostgreSQLPersistence<T extends { id: string }> implements IReposit
             `DELETE FROM ${this.tableName} WHERE id = $1`,
             [id]
         );
-
         return (result.rowCount ?? 0) > 0;
     }
 
     async update(item: T): Promise<boolean> {
         const result = await this.pool.query(
-            `UPDATE ${this.tableName}
-             SET data = $2
-             WHERE id = $1`,
+            `UPDATE ${this.tableName} SET data = $2 WHERE id = $1`,
             [item.id, JSON.stringify(item)]
         );
-
         return (result.rowCount ?? 0) > 0;
     }
 
-    async read(): Promise<T[]> {
-        const result = await this.pool.query(
-            `SELECT data FROM ${this.tableName}`
-        );
-
+    async read(): Promise<T[]>{
+        const result = await this.pool.query(`SELECT data FROM ${this.tableName}`);
         return result.rows.map(row => row.data as T);
+    }
+}
+
+export class Service<T> implements IService<T> {
+    constructor(private repository: IRepository<T>){}
+
+    async create(item: T): Promise<boolean> {
+        return await this.repository.create(item);
+    }
+    async delete(id: string): Promise<boolean> {
+        return await this.repository.delete(id);
+    }
+    async update(item: T): Promise<boolean> {
+        return await this.repository.update(item);
+    }
+    async read(): Promise<T[]> {
+        return await this.repository.read()
+    }
+
+}
+
+export class LibraryService {
+    constructor(
+        private studentRepo: IRepository<Student>,
+        private bookRepo: IRepository<Book>
+    ) {}
+
+    async registerNewStudent(student: Student): Promise<boolean> {
+        return await this.studentRepo.create(student);
+    }
+
+    async getAllStudents(): Promise<Student[]> {
+        return await this.studentRepo.read();
     }
 }
 
@@ -93,73 +106,53 @@ const config = {
     host: "localhost",
     port: 5433,
     user: "postgres",
-    password: "1234"
+    password: "1234",
+    database: "library" 
 };
 
-async function initializeDatabase(): Promise<Pool> {
+// async function main() {
+   
+//     const pool = new Pool(config);
 
-    const adminPool = new Pool({
-        ...config,
-        database: "postgres"
-    });
+//     try {
+//         const studentRepository: IRepository<Student> = new PostgreSQLPersistence<Student>(pool, "students");
+//         const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
 
-    try {
-        const result = await adminPool.query(
-            `SELECT 1 FROM pg_database WHERE datname = $1`,
-            ["library"]
-        );
+//         const libraryService = new Service(studentRepository);
 
-        if (result.rowCount === 0) {
-            await adminPool.query("CREATE DATABASE library");
-            console.log("Base de datos library creada.");
-        } else {
-            console.log("La base de datos library ya existe.");
-        }
-    } finally {
-        await adminPool.end();
-    }
+//         const student1: Student = {
+//             id: "15432",
+//             name: "Sara",
+//             identification: "123765432",
+//             schoolgrade: "11"
+//         };
 
-    const pool = new Pool({
-        ...config,
-        database: "library"
-    });
+//         const created = await libraryService.create(student1);
+//         console.log("¿Estudiante creado con éxito?:", created);
 
-    try {
-        const sql = await readFile("./data.sql", "utf8");
-        await pool.query(sql);
+//         const students = await libraryService.read();
+//         console.log("Lista de estudiantes:", students);
 
-        console.log("Tablas creadas o verificadas correctamente.");
+//     } finally {
+//         await pool.end();
+//     }
+// }
 
-        return pool;
-    } catch (error) {
-        await pool.end();
-        throw error;
-    }
-}
+// main().catch(error => {
+//     console.error("Error en la aplicación:", error);
+// });
 
-const student1: Student = {
-    id: "12",
-    name: "Randolph",
-    identification: "523765432",
-    schoolgrade: "11"
+
+
+const pool = new Pool(config);
+const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
+
+const book1: Book = {
+    id: "1",
+    title: "Clean Code",
+    author: "Robert C. Martin",
+    available: true
 };
 
-async function main(): Promise<void> {
-    const pool = await initializeDatabase();
-
-    try {
-        const repositoryStudent = new PostgreSQLPersistence<Student>(pool, "students");
-
-        const created = await repositoryStudent.create(student1);
-        console.log("Estudiante creado:", created);
-
-        const students = await repositoryStudent.read();
-        console.log("Estudiantes:", students);
-    } finally {
-        await pool.end();
-    }
-}
-
-main().catch(error => {
-    console.error("Error:", error);
-});
+bookRepository.create(book1)
+console.log(bookRepository.read())
