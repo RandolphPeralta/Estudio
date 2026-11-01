@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -47,9 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostgreSQLPersistence = void 0;
+exports.LibraryService = exports.Service = exports.PostgreSQLPersistence = void 0;
 var pg_1 = require("pg");
-var promises_1 = require("node:fs/promises");
 var PostgreSQLPersistence = /** @class */ (function () {
     function PostgreSQLPersistence(pool, tableName) {
         this.pool = pool;
@@ -62,18 +50,14 @@ var PostgreSQLPersistence = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.pool.query("INSERT INTO ".concat(this.tableName, " (id, data)\n                 VALUES ($1, $2)"), [item.id, JSON.stringify(item)])];
+                        return [4 /*yield*/, this.pool.query("INSERT INTO ".concat(this.tableName, " (id, data) VALUES ($1, $2)"), [item.id, JSON.stringify(item)])];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, true];
                     case 2:
                         error_1 = _a.sent();
-                        if (typeof error_1 === "object" &&
-                            error_1 !== null &&
-                            "code" in error_1 &&
-                            error_1.code === "23505") {
+                        if ((error_1 === null || error_1 === void 0 ? void 0 : error_1.code) === "23505")
                             return [2 /*return*/, false];
-                        }
                         throw error_1;
                     case 3: return [2 /*return*/];
                 }
@@ -100,7 +84,7 @@ var PostgreSQLPersistence = /** @class */ (function () {
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.pool.query("UPDATE ".concat(this.tableName, "\n             SET data = $2\n             WHERE id = $1"), [item.id, JSON.stringify(item)])];
+                    case 0: return [4 /*yield*/, this.pool.query("UPDATE ".concat(this.tableName, " SET data = $2 WHERE id = $1"), [item.id, JSON.stringify(item)])];
                     case 1:
                         result = _b.sent();
                         return [2 /*return*/, ((_a = result.rowCount) !== null && _a !== void 0 ? _a : 0) > 0];
@@ -124,99 +108,118 @@ var PostgreSQLPersistence = /** @class */ (function () {
     return PostgreSQLPersistence;
 }());
 exports.PostgreSQLPersistence = PostgreSQLPersistence;
+var Service = /** @class */ (function () {
+    function Service(repository) {
+        this.repository = repository;
+    }
+    Service.prototype.create = function (item) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repository.create(item)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Service.prototype.delete = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repository.delete(id)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Service.prototype.update = function (item) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repository.update(item)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Service.prototype.read = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repository.read()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return Service;
+}());
+exports.Service = Service;
+var LibraryService = /** @class */ (function () {
+    function LibraryService(studentRepo, bookRepo) {
+        this.studentRepo = studentRepo;
+        this.bookRepo = bookRepo;
+    }
+    LibraryService.prototype.registerNewStudent = function (student) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.studentRepo.create(student)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    LibraryService.prototype.getAllStudents = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.studentRepo.read()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return LibraryService;
+}());
+exports.LibraryService = LibraryService;
 var config = {
     host: "localhost",
     port: 5433,
     user: "postgres",
-    password: "1234"
+    password: "1234",
+    database: "library"
 };
-function initializeDatabase() {
-    return __awaiter(this, void 0, void 0, function () {
-        var adminPool, result, pool, sql, error_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    adminPool = new pg_1.Pool(__assign(__assign({}, config), { database: "postgres" }));
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 6, 8]);
-                    return [4 /*yield*/, adminPool.query("SELECT 1 FROM pg_database WHERE datname = $1", ["library"])];
-                case 2:
-                    result = _a.sent();
-                    if (!(result.rowCount === 0)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, adminPool.query("CREATE DATABASE library")];
-                case 3:
-                    _a.sent();
-                    console.log("Base de datos library creada.");
-                    return [3 /*break*/, 5];
-                case 4:
-                    console.log("La base de datos library ya existe.");
-                    _a.label = 5;
-                case 5: return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, adminPool.end()];
-                case 7:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 8:
-                    pool = new pg_1.Pool(__assign(__assign({}, config), { database: "library" }));
-                    _a.label = 9;
-                case 9:
-                    _a.trys.push([9, 12, , 14]);
-                    return [4 /*yield*/, (0, promises_1.readFile)("./data.sql", "utf8")];
-                case 10:
-                    sql = _a.sent();
-                    return [4 /*yield*/, pool.query(sql)];
-                case 11:
-                    _a.sent();
-                    console.log("Tablas creadas o verificadas correctamente.");
-                    return [2 /*return*/, pool];
-                case 12:
-                    error_2 = _a.sent();
-                    return [4 /*yield*/, pool.end()];
-                case 13:
-                    _a.sent();
-                    throw error_2;
-                case 14: return [2 /*return*/];
-            }
-        });
-    });
-}
-var student1 = {
-    id: "0112",
-    name: "Alis",
-    identification: "23765432",
-    schoolgrade: "11"
+// async function main() {
+//     const pool = new Pool(config);
+//     try {
+//         const studentRepository: IRepository<Student> = new PostgreSQLPersistence<Student>(pool, "students");
+//         const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
+//         const libraryService = new Service(studentRepository);
+//         const student1: Student = {
+//             id: "15432",
+//             name: "Sara",
+//             identification: "123765432",
+//             schoolgrade: "11"
+//         };
+//         const created = await libraryService.create(student1);
+//         console.log("¿Estudiante creado con éxito?:", created);
+//         const students = await libraryService.read();
+//         console.log("Lista de estudiantes:", students);
+//     } finally {
+//         await pool.end();
+//     }
+// }
+// main().catch(error => {
+//     console.error("Error en la aplicación:", error);
+// });
+var pool = new pg_1.Pool(config);
+var bookRepository = new PostgreSQLPersistence(pool, "books");
+var book1 = {
+    id: "1",
+    title: "Clean Code",
+    author: "Robert C. Martin",
+    available: true
 };
-function main() {
-    return __awaiter(this, void 0, void 0, function () {
-        var pool, repositoryStudent, created, students;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, initializeDatabase()];
-                case 1:
-                    pool = _a.sent();
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, , 5, 7]);
-                    repositoryStudent = new PostgreSQLPersistence(pool, "students");
-                    return [4 /*yield*/, repositoryStudent.create(student1)];
-                case 3:
-                    created = _a.sent();
-                    console.log("Estudiante creado:", created);
-                    return [4 /*yield*/, repositoryStudent.read()];
-                case 4:
-                    students = _a.sent();
-                    console.log("Estudiantes:", students);
-                    return [3 /*break*/, 7];
-                case 5: return [4 /*yield*/, pool.end()];
-                case 6:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 7: return [2 /*return*/];
-            }
-        });
-    });
-}
-main().catch(function (error) {
-    console.error("Error:", error);
-});
+bookRepository.create(book1);
+console.log(bookRepository.read());
