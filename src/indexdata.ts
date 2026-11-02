@@ -154,5 +154,9 @@ const book1: Book = {
     available: true
 };
 
-bookRepository.create(book1)
-console.log(bookRepository.read())
+async function main() {
+    await bookRepository.create(book1);
+    console.log(await bookRepository.read());
+}
+
+main();
