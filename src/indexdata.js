@@ -221,5 +221,21 @@ var book1 = {
     author: "Robert C. Martin",
     available: true
 };
-bookRepository.create(book1);
-console.log(bookRepository.read());
+function main() {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, _b;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0: return [4 /*yield*/, bookRepository.create(book1)];
+                case 1:
+                    _c.sent();
+                    _b = (_a = console).log;
+                    return [4 /*yield*/, bookRepository.read()];
+                case 2:
+                    _b.apply(_a, [_c.sent()]);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+main();
