@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LibraryService = exports.Service = exports.PostgreSQLPersistence = void 0;
+exports.Validation = exports.Service = exports.PostgreSQLPersistence = void 0;
 var pg_1 = require("pg");
 var PostgreSQLPersistence = /** @class */ (function () {
     function PostgreSQLPersistence(pool, tableName) {
@@ -155,34 +155,21 @@ var Service = /** @class */ (function () {
     return Service;
 }());
 exports.Service = Service;
-var LibraryService = /** @class */ (function () {
-    function LibraryService(studentRepo, bookRepo) {
-        this.studentRepo = studentRepo;
-        this.bookRepo = bookRepo;
+var Validation = /** @class */ (function () {
+    function Validation() {
     }
-    LibraryService.prototype.registerNewStudent = function (student) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.studentRepo.create(student)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
+    Validation.prototype.validate = function (item) {
+        for (var _i = 0, _a = Object.values(item); _i < _a.length; _i++) {
+            var value = _a[_i];
+            if (value === "" || value === null || value === undefined) {
+                return false;
+            }
+        }
+        return true;
     };
-    LibraryService.prototype.getAllStudents = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.studentRepo.read()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    return LibraryService;
+    return Validation;
 }());
-exports.LibraryService = LibraryService;
+exports.Validation = Validation;
 var config = {
     host: "localhost",
     port: 5433,
@@ -190,47 +177,25 @@ var config = {
     password: "1234",
     database: "library"
 };
-// async function main() {
-//     const pool = new Pool(config);
-//     try {
-//         const studentRepository: IRepository<Student> = new PostgreSQLPersistence<Student>(pool, "students");
-//         const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
-//         const libraryService = new Service(studentRepository);
-//         const student1: Student = {
-//             id: "15432",
-//             name: "Sara",
-//             identification: "123765432",
-//             schoolgrade: "11"
-//         };
-//         const created = await libraryService.create(student1);
-//         console.log("¿Estudiante creado con éxito?:", created);
-//         const students = await libraryService.read();
-//         console.log("Lista de estudiantes:", students);
-//     } finally {
-//         await pool.end();
-//     }
-// }
-// main().catch(error => {
-//     console.error("Error en la aplicación:", error);
-// });
 var pool = new pg_1.Pool(config);
 var bookRepository = new PostgreSQLPersistence(pool, "books");
+var bookservice = new Service(bookRepository);
 var book1 = {
-    id: "1",
-    title: "Clean Code",
-    author: "Robert C. Martin",
+    id: "2",
+    title: "Cien años de soledad",
+    author: "Gabriel Garcia Marquez",
     available: true
 };
-function main() {
+function createbook() {
     return __awaiter(this, void 0, void 0, function () {
         var _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
-                case 0: return [4 /*yield*/, bookRepository.create(book1)];
+                case 0: return [4 /*yield*/, bookservice.create(book1)];
                 case 1:
                     _c.sent();
                     _b = (_a = console).log;
-                    return [4 /*yield*/, bookRepository.read()];
+                    return [4 /*yield*/, bookservice.read()];
                 case 2:
                     _b.apply(_a, [_c.sent()]);
                     return [2 /*return*/];
@@ -238,4 +203,4 @@ function main() {
         });
     });
 }
-main();
+createbook();
