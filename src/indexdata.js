@@ -180,10 +180,11 @@ var config = {
 var pool = new pg_1.Pool(config);
 var bookRepository = new PostgreSQLPersistence(pool, "books");
 var bookservice = new Service(bookRepository);
+var bookvalidator = new Validation();
 var book1 = {
-    id: "2",
-    title: "Cien años de soledad",
-    author: "Gabriel Garcia Marquez",
+    id: "5",
+    title: "",
+    author: "",
     available: true
 };
 function createbook() {
@@ -191,7 +192,11 @@ function createbook() {
         var _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
-                case 0: return [4 /*yield*/, bookservice.create(book1)];
+                case 0:
+                    if (!bookvalidator.validate(book1)) {
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, bookservice.create(book1)];
                 case 1:
                     _c.sent();
                     _b = (_a = console).log;
@@ -203,4 +208,20 @@ function createbook() {
         });
     });
 }
+function readbooks() {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, _b;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _b = (_a = console).log;
+                    return [4 /*yield*/, bookservice.read()];
+                case 1:
+                    _b.apply(_a, [_c.sent()]);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 createbook();
+readbooks();
