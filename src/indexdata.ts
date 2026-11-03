@@ -14,6 +14,10 @@ export interface IService<T> {
     read(): Promise<T[]>;
 }
 
+export interface IValidation<T> {
+    validate(item: T): boolean;
+}
+
 export type Student = {
     id: string;
     name: string;
@@ -28,11 +32,16 @@ export type Book = {
     available: boolean;
 };
 
+export type Loan = {
+    id: string,
+    book: Book,
+    student: Student,
+    loanDate: Date;
+    returndate?: Date;
+}
+
 export class PostgreSQLPersistence<T extends { id: string }> implements IRepository<T> {
-    constructor(
-        private pool: Pool,
-        private tableName: string
-    ) {}
+    constructor(private pool: Pool, private tableName: string) {}
 
     async create(item: T): Promise<boolean> {
         try {
@@ -84,21 +93,16 @@ export class Service<T> implements IService<T> {
     async read(): Promise<T[]> {
         return await this.repository.read()
     }
-
 }
 
-export class LibraryService {
-    constructor(
-        private studentRepo: IRepository<Student>,
-        private bookRepo: IRepository<Book>
-    ) {}
-
-    async registerNewStudent(student: Student): Promise<boolean> {
-        return await this.studentRepo.create(student);
-    }
-
-    async getAllStudents(): Promise<Student[]> {
-        return await this.studentRepo.read();
+export class Validation<T extends Object> implements IValidation<T> {
+    validate(item: T): boolean {
+        for (const value of Object.values(item)) {
+            if (value === "" || value === null || value === undefined) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
@@ -110,53 +114,20 @@ const config = {
     database: "library" 
 };
 
-// async function main() {
-   
-//     const pool = new Pool(config);
-
-//     try {
-//         const studentRepository: IRepository<Student> = new PostgreSQLPersistence<Student>(pool, "students");
-//         const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
-
-//         const libraryService = new Service(studentRepository);
-
-//         const student1: Student = {
-//             id: "15432",
-//             name: "Sara",
-//             identification: "123765432",
-//             schoolgrade: "11"
-//         };
-
-//         const created = await libraryService.create(student1);
-//         console.log("¿Estudiante creado con éxito?:", created);
-
-//         const students = await libraryService.read();
-//         console.log("Lista de estudiantes:", students);
-
-//     } finally {
-//         await pool.end();
-//     }
-// }
-
-// main().catch(error => {
-//     console.error("Error en la aplicación:", error);
-// });
-
-
-
 const pool = new Pool(config);
 const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
+const bookservice = new Service<Book>(bookRepository);
 
 const book1: Book = {
-    id: "1",
-    title: "Clean Code",
-    author: "Robert C. Martin",
+    id: "3",
+    title: "La odisea",
+    author: "Homero",
     available: true
 };
 
-async function main() {
-    await bookRepository.create(book1);
-    console.log(await bookRepository.read());
+async function createbook() {
+    await bookservice.create(book1);
+    console.log(await bookservice.read());
 }
 
-main();
+createbook();
