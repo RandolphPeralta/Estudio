@@ -36,8 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Validation = exports.Service = exports.PostgreSQLPersistence = void 0;
+exports.Studentconsole = exports.MenuConsole = exports.config = exports.Validation = exports.Service = exports.PostgreSQLPersistence = void 0;
 var pg_1 = require("pg");
+var promptSync = require("prompt-sync");
+var prompt = promptSync();
 var PostgreSQLPersistence = /** @class */ (function () {
     function PostgreSQLPersistence(pool, tableName) {
         this.pool = pool;
@@ -170,58 +172,273 @@ var Validation = /** @class */ (function () {
     return Validation;
 }());
 exports.Validation = Validation;
-var config = {
+exports.config = {
     host: "localhost",
     port: 5433,
     user: "postgres",
     password: "1234",
     database: "library"
 };
-var pool = new pg_1.Pool(config);
-var bookRepository = new PostgreSQLPersistence(pool, "books");
-var bookservice = new Service(bookRepository);
-var bookvalidator = new Validation();
-var book1 = {
-    id: "5",
-    title: "",
-    author: "",
-    available: true
-};
-function createbook() {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    if (!bookvalidator.validate(book1)) {
-                        return [2 /*return*/];
-                    }
-                    return [4 /*yield*/, bookservice.create(book1)];
+var MenuConsole = /** @class */ (function () {
+    function MenuConsole(studentMenu, bookMenu, loanMenu) {
+        this.studentMenu = studentMenu;
+        this.bookMenu = bookMenu;
+        this.loanMenu = loanMenu;
+    }
+    MenuConsole.prototype.execute = function () {
+        var run = true;
+        while (run) {
+            this.readMenu();
+            var option = Number(prompt("Seleccione: "));
+            switch (option) {
                 case 1:
-                    _c.sent();
-                    _b = (_a = console).log;
-                    return [4 /*yield*/, bookservice.read()];
+                    this.studentMenu.execute();
+                    break;
                 case 2:
-                    _b.apply(_a, [_c.sent()]);
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function readbooks() {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+                    this.bookMenu.execute();
+                    break;
+                case 3:
+                    this.loanMenu.execute();
+                    break;
                 case 0:
-                    _b = (_a = console).log;
-                    return [4 /*yield*/, bookservice.read()];
-                case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    return [2 /*return*/];
+                    run = false;
             }
+        }
+    };
+    MenuConsole.prototype.readMenu = function () {
+        console.log("\n=============================================");
+        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+        console.log("=============================================");
+        var opciones = [
+            "1. Registrar, Eliminar, Ver, Actualizar estudiante",
+            "2. Registrar, Eliminar, Ver, Actualizar libro",
+            "3. Prestar libro, Devolver libro,  Mostrar prestamos",
+            "0. Salir"
+        ];
+        for (var _i = 0, opciones_1 = opciones; _i < opciones_1.length; _i++) {
+            var opcion = opciones_1[_i];
+            console.log(opcion);
+        }
+    };
+    return MenuConsole;
+}());
+exports.MenuConsole = MenuConsole;
+var Studentconsole = /** @class */ (function () {
+    function Studentconsole(studentservice, loanservice, studentvalidation) {
+        this.studentservice = studentservice;
+        this.loanservice = loanservice;
+        this.studentvalidation = studentvalidation;
+    }
+    Studentconsole.prototype.execute = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var run, option, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        run = true;
+                        _b.label = 1;
+                    case 1:
+                        if (!run) return [3 /*break*/, 12];
+                        this.readMenu();
+                        option = Number(prompt("Seleccione: "));
+                        _a = option;
+                        switch (_a) {
+                            case 1: return [3 /*break*/, 2];
+                            case 2: return [3 /*break*/, 4];
+                            case 3: return [3 /*break*/, 6];
+                            case 4: return [3 /*break*/, 8];
+                            case 0: return [3 /*break*/, 10];
+                        }
+                        return [3 /*break*/, 11];
+                    case 2: return [4 /*yield*/, this.createStudent()];
+                    case 3:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 4: return [4 /*yield*/, this.deletestudent()];
+                    case 5:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 6: return [4 /*yield*/, this.updatestudent()];
+                    case 7:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 8: return [4 /*yield*/, this.readstudent()];
+                    case 9:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 10:
+                        run = false;
+                        return [3 /*break*/, 11];
+                    case 11: return [3 /*break*/, 1];
+                    case 12: return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-createbook();
-readbooks();
+    };
+    Studentconsole.prototype.readMenu = function () {
+        var opciones = [
+            "1. Registrar estudiante",
+            "2. Borrar estudiante",
+            "3. Actualizar estudiante",
+            "4. Mostrar estudiantes",
+            "0. Salir"
+        ];
+        for (var _i = 0, opciones_2 = opciones; _i < opciones_2.length; _i++) {
+            var opcion = opciones_2[_i];
+            console.log(opcion);
+        }
+    };
+    Studentconsole.prototype.createStudent = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var student, students, indexstudent, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        student = this.inputstudent();
+                        if (!this.studentvalidation.validate(student)) {
+                            console.log("El estudiante tiene algun campo vacio");
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, this.studentservice.read()];
+                    case 1:
+                        students = _a.sent();
+                        indexstudent = students.findIndex(function (item) { return item.id === student.id; });
+                        if (indexstudent !== -1) {
+                            console.log("Este estudiante ya fue registrado con este id");
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, this.studentservice.create(student)];
+                    case 2:
+                        result = _a.sent();
+                        console.log(result ? "Estudiante registrado" : "No se pudo registrar");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Studentconsole.prototype.deletestudent = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, activeLoans, studentactiveloan, status;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.readstudent();
+                        id = this.inputid();
+                        return [4 /*yield*/, this.loanservice.read()];
+                    case 1:
+                        activeLoans = _a.sent();
+                        studentactiveloan = activeLoans.filter(function (loanstudent) { return loanstudent.student.id === id && !loanstudent.returndate; });
+                        if (studentactiveloan.length > 0) {
+                            console.log("El estudiante no puede ser eliminado, ya que tiene prestamos");
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, this.studentservice.delete(id)];
+                    case 2:
+                        status = _a.sent();
+                        console.log(status ? "Estudiante eliminado" : "No se pudo eliminar");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Studentconsole.prototype.updatestudent = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, students, findstudent, student, newstudent;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.readstudent();
+                        id = this.inputid();
+                        return [4 /*yield*/, this.studentservice.read()];
+                    case 1:
+                        students = _a.sent();
+                        findstudent = students.filter(function (item) { return item.id === id; })[0];
+                        if (!findstudent) {
+                            console.log("Estudiante no encontrado");
+                            return [2 /*return*/];
+                        }
+                        student = this.inputstudent();
+                        student.id = findstudent.id;
+                        return [4 /*yield*/, this.studentservice.update(student)];
+                    case 2:
+                        newstudent = _a.sent();
+                        console.log(newstudent ? "Estudiante actualizado" : "No se pudo actualizar");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Studentconsole.prototype.readstudent = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var students, studentsview;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.studentservice.read()];
+                    case 1:
+                        students = _a.sent();
+                        studentsview = students.map(function (student) { return ({
+                            id: student.id,
+                            nombre: student.name,
+                            identificacion: student.identification,
+                            grado: student.schoolgrade
+                        }); });
+                        console.table(studentsview);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Studentconsole.prototype.inputid = function () {
+        var id = String(prompt("ID: "));
+        if (!id) {
+            console.log("El ID no puede estar vacío");
+        }
+        return id;
+    };
+    Studentconsole.prototype.inputstudent = function () {
+        var name = String(prompt("Nombre: "));
+        if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
+            console.log("El nombre no puede estar vacio y solo puede contener letras");
+        }
+        var identification = String(prompt("Identificación: "));
+        if (!identification || !/^\d+$/.test(identification)) {
+            console.log("La identificación no puede estar vacio y debe ser numérica");
+        }
+        var schoolgrade = String(prompt("Grado Escolar: "));
+        if (!schoolgrade) {
+            console.log("El grado escolar no puede estar vacío");
+        }
+        var id = Math.random().toString();
+        var student = { id: id, name: name, identification: identification, schoolgrade: schoolgrade };
+        return student;
+    };
+    return Studentconsole;
+}());
+exports.Studentconsole = Studentconsole;
+var pool = new pg_1.Pool(exports.config);
+// const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
+// const bookservice = new Service<Book>(bookRepository);
+// const bookvalidator = new Validation<Book>()
+// const book1: Book = {
+//     id: "3",
+//     title: "El Señor de los Anillos",
+//     author: "J.R.R. Tolkien",
+//     available: true
+// };
+// async function createbook() {
+//     if (!bookvalidator.validate(book1)){
+//         return
+//     }
+//     await bookservice.create(book1);
+// }
+// async function readbooks() {
+//     console.log(await bookservice.read())
+// }
+// createbook();
+// readbooks();
+var loanRepository = new PostgreSQLPersistence(pool, "loans");
+var studentRepository = new PostgreSQLPersistence(pool, "students");
+var studentservice = new Service(studentRepository);
+var studentValidator = new Validation();
+var studentconsole = new Studentconsole(studentservice, loanRepository, studentValidator);
+studentconsole.execute();
