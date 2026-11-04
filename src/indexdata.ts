@@ -160,7 +160,7 @@ export class MenuConsole implements IView {
 
     }
 
-    private readMenu(): void {
+    private async readMenu(): Promise<void> {
         console.log("\n=============================================");
         console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
         console.log("=============================================");
@@ -184,7 +184,7 @@ export class Studentconsole implements IView {
     async execute() {
     let run = true;
         while (run) {
-            this.readMenu();
+            await this.readMenu();
             const option = Number(prompt("Seleccione: "));
 
             switch (option) {
@@ -209,7 +209,7 @@ export class Studentconsole implements IView {
         }
     }
         
-    private readMenu(): void {
+    private async readMenu(): Promise<void> {
         const opciones: string[] = [
             "1. Registrar estudiante",
             "2. Borrar estudiante",
@@ -323,6 +323,281 @@ export class Studentconsole implements IView {
 
 }
 
+export class Bookconsole implements IView {
+    constructor(private bookservice: IService<Book>, private bookvalidation: IValidation<Book>) { }
+
+    async execute() {
+        let run = true;
+        while (run) {
+            await this.readMenu();
+            const option = Number(prompt("Seleccione: "));
+
+            switch (option) {
+                case 1:
+                    await this.createbook();
+                    break;
+                case 2:
+                    await this.deletebook();
+                    break;
+                case 3:
+                    await this.updatebook();
+                    break;
+                case 4:
+                    await this.readbook();
+                    break
+                case 0:
+                    run = false;
+                    break;
+            }
+        }
+    }
+
+    private readMenu(): void {
+        const opciones: string[] = [
+            "1. Registrar libro",
+            "2. Borrar libro",
+            "3. Actualizar libro",
+            "4. Mostrar libros",
+            "0. Salir"
+        ];
+        for (const opcion of opciones) {
+            console.log(opcion);
+        }
+    }
+
+    private async createbook() {
+        const book = this.inputbook();
+        let books = await this.bookservice.read();
+        let indexbook = books.findIndex((item: Book) => item.id === book.id);
+
+        if (!this.bookvalidation.validate(book)){
+            console.log("El estudiante tiene algun campo vacio")
+            return
+        }
+
+        if (indexbook !== -1) {
+            console.log("Este libro ya fue registrado con este id")
+            return;
+        }
+
+        const result: boolean = await this.bookservice.create(book);
+        console.log(result ? "Libro registrado" : "No se pudo registrar");
+    }
+
+    private async deletebook() {
+        this.readbook();
+        const id = this.inputid();
+        let books: Book[] = await this.bookservice.read();
+        let book = books.filter(findbook => findbook.id = id)[0];
+        if (!book.available) {
+            console.log("El libro esta prestado y no posible eliminar");
+            return;
+        }
+
+        const status: boolean = await this.bookservice.delete(id);
+        console.log(status ? "Libro eliminado" : "No se pudo eliminar");
+    }
+
+    private async updatebook() {
+        this.readbook();
+        const id = this.inputid();
+        let books = await this.bookservice.read();
+        let findbook = books.filter((item: Book) => item.id === id)[0];
+        if (!findbook) {
+            console.log("El libro no fue encontrado");
+            return
+        }
+        const book = this.inputbook();
+        book.id = findbook.id
+        const newbook: boolean = await this.bookservice.update(book);
+        console.log(newbook ? "Libro actualizado" : "No se pudo actualizar");
+    }
+
+    private async readbook() {
+
+        let books: Book[] = await this.bookservice.read();
+        let booksview = books.map(book => ({
+            id: book.id,
+            titulo: book.title,
+            autor: book.author,
+            disponible: book.available ? "Sí" : "No"
+        }));
+
+        console.table(booksview);
+    }
+
+    private inputbook(): Book {
+
+        let title = prompt("Titulo: ");
+        if (!title || title.trim() === "") {
+            console.log("El titulo no puede estar vacio");
+        }
+
+        let author = prompt("Autor: ");
+        if (!author || author.trim() === "") {
+            console.log("El autor no puede estar vacío");
+        }
+
+        const available = true;
+        const id = Math.random().toString();
+
+        const book: Book = {
+            id,
+            title,
+            author,
+            available
+        };
+
+        return book
+    }
+
+    private inputid() {
+        let id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return id
+    }
+}
+
+export class LoanConsole implements IView {
+
+    constructor(private studentservice: IService<Student>, private bookservice: IService<Book>, private loanservice: IService<Loan>) { }
+
+    async execute() {
+        let run = true;
+
+        while (run) {
+
+            await this.readMenu();
+
+            const option = Number(prompt("Seleccione: "));
+
+            switch (option) {
+
+                case 1:
+                    await this.lendbook();
+                    break;
+
+                case 2:
+                    await this.returnbook();
+                    break;
+
+                case 3:
+                    await this.readloan();
+                    break;
+
+                case 0:
+                    run = false;
+                    break;
+            }
+
+        }
+
+    }
+
+    private readMenu(): void {
+        const opciones: string[] = [
+            "1. Prestar libro",
+            "2. Devolver libro",
+            "3. Ver prestamos",
+            "0. Salir"
+        ];
+        for (const opcion of opciones) {
+            console.log(opcion);
+        }
+    }
+
+    private async lendbook() {
+        console.table(this.studentservice.read())
+        console.table(this.bookservice.read())
+        let idbook = this.inputidbook();
+        let idstudent = this.inputidstudent();
+
+        let books: Book[] = await this.bookservice.read();
+        const book = books.filter((book: Book) => book.id === idbook)[0];
+        if (!book || !book.available) {
+            console.log("El libro no existe o no esta disponible")
+            return;
+        }
+
+        let students: Student[] = await this.studentservice.read();
+        const student = students.filter((student: Student) => student.id === idstudent)[0];
+
+        if (!student) {
+            console.log("El estudiante no existe")
+            return;
+        }
+
+        const loan: Loan = {
+            id: Math.random().toString(),
+            book,
+            student,
+            loanDate: new Date()
+        };
+
+        let status = await this.loanservice.create(loan);
+        book.available = false;
+        this.bookservice.update(book);
+
+        console.log(status ? "Prestamo existoso" : "No se pudo realizar el prestamo");
+    }
+
+    private async returnbook() {
+        let idbook = this.inputidbook();
+        let loans: Loan[] = await this.loanservice.read()
+        const loan = loans.find(loan => loan.book.id === idbook);
+        if (!loan) {
+            console.log("El libro no existe con este id")
+            return;
+        }
+
+        loan.returndate = new Date();
+        const status = await this.loanservice.update(loan);
+        loan.book.available = true;
+        this.bookservice.update(loan.book);
+        console.log(status ? "Libro devuelto" : "No se pudo devolver")
+    }
+
+    private async readloan() {
+        let loans: Loan[] = await this.loanservice.read()
+        console.log("\n===== PRÉSTAMOS =====")
+
+        if (loans.length === 0) {
+            console.log("No hay préstamos")
+            return
+        }
+
+        loans.forEach(loan => {
+            console.log({
+                id: loan.id,
+                Book: loan.book.title,
+                Student: loan.student.name,
+                fechaprestamo: loan.loanDate,
+                fechaDevolucion: loan.returndate || "Pendiente"
+            })
+        })
+    }
+
+    private inputidbook(){
+        let idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+
+        return idbook
+    }
+
+    private inputidstudent(){
+        let idstudent = prompt("ID Estudiante: ");
+        if (!idstudent || idstudent.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+
+        return idstudent
+    }
+}
+
 const pool = new Pool(config);
 // const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
 // const bookservice = new Service<Book>(bookRepository);
@@ -350,8 +625,19 @@ const pool = new Pool(config);
 // readbooks();
 
 const loanRepository: IRepository<Loan> = new PostgreSQLPersistence<Loan>(pool, "loans");
+const loanservice: IService<Loan> = new Service<Loan>(loanRepository);
+
 const studentRepository: IRepository<Student> = new PostgreSQLPersistence<Student>(pool, "students");
 const studentservice: IService<Student> = new Service<Student>(studentRepository);
 const studentValidator: IValidation<Student> = new Validation<Student>()
 const studentconsole = new Studentconsole(studentservice, loanRepository,studentValidator)
-studentconsole.execute();
+
+const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
+const bookservice: IService<Book> = new Service<Book>(bookRepository);
+const bookvalidator: IValidation<Book> = new Validation<Book>()
+const bookconsole = new Bookconsole(bookservice, bookvalidator)
+
+const loanconsole = new LoanConsole(studentservice, bookservice, loanservice)
+const menuconsole = new MenuConsole(studentconsole, bookconsole, loanconsole);
+menuconsole.execute()
+
