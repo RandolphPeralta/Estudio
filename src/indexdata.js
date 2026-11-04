@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Studentconsole = exports.MenuConsole = exports.config = exports.Validation = exports.Service = exports.PostgreSQLPersistence = void 0;
+exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.config = exports.Validation = exports.Service = exports.PostgreSQLPersistence = void 0;
 var pg_1 = require("pg");
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
@@ -415,6 +415,372 @@ var Studentconsole = /** @class */ (function () {
     return Studentconsole;
 }());
 exports.Studentconsole = Studentconsole;
+var Bookconsole = /** @class */ (function () {
+    function Bookconsole(bookservice, bookvalidation) {
+        this.bookservice = bookservice;
+        this.bookvalidation = bookvalidation;
+    }
+    Bookconsole.prototype.execute = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var run, option, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        run = true;
+                        _b.label = 1;
+                    case 1:
+                        if (!run) return [3 /*break*/, 12];
+                        this.readMenu();
+                        option = Number(prompt("Seleccione: "));
+                        _a = option;
+                        switch (_a) {
+                            case 1: return [3 /*break*/, 2];
+                            case 2: return [3 /*break*/, 4];
+                            case 3: return [3 /*break*/, 6];
+                            case 4: return [3 /*break*/, 8];
+                            case 0: return [3 /*break*/, 10];
+                        }
+                        return [3 /*break*/, 11];
+                    case 2: return [4 /*yield*/, this.createbook()];
+                    case 3:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 4: return [4 /*yield*/, this.deletebook()];
+                    case 5:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 6: return [4 /*yield*/, this.updatebook()];
+                    case 7:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 8: return [4 /*yield*/, this.readbook()];
+                    case 9:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 10:
+                        run = false;
+                        return [3 /*break*/, 11];
+                    case 11: return [3 /*break*/, 1];
+                    case 12: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Bookconsole.prototype.readMenu = function () {
+        var opciones = [
+            "1. Registrar libro",
+            "2. Borrar libro",
+            "3. Actualizar libro",
+            "4. Mostrar libros",
+            "0. Salir"
+        ];
+        for (var _i = 0, opciones_3 = opciones; _i < opciones_3.length; _i++) {
+            var opcion = opciones_3[_i];
+            console.log(opcion);
+        }
+    };
+    Bookconsole.prototype.createbook = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var book, books, indexbook, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        book = this.inputbook();
+                        return [4 /*yield*/, this.bookservice.read()];
+                    case 1:
+                        books = _a.sent();
+                        indexbook = books.findIndex(function (item) { return item.id === book.id; });
+                        if (!this.bookvalidation.validate(book)) {
+                            console.log("El estudiante tiene algun campo vacio");
+                            return [2 /*return*/];
+                        }
+                        if (indexbook !== -1) {
+                            console.log("Este libro ya fue registrado con este id");
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, this.bookservice.create(book)];
+                    case 2:
+                        result = _a.sent();
+                        console.log(result ? "Libro registrado" : "No se pudo registrar");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Bookconsole.prototype.deletebook = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, books, book, status;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.readbook();
+                        id = this.inputid();
+                        return [4 /*yield*/, this.bookservice.read()];
+                    case 1:
+                        books = _a.sent();
+                        book = books.filter(function (findbook) { return findbook.id = id; })[0];
+                        if (!book.available) {
+                            console.log("El libro esta prestado y no posible eliminar");
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, this.bookservice.delete(id)];
+                    case 2:
+                        status = _a.sent();
+                        console.log(status ? "Libro eliminado" : "No se pudo eliminar");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Bookconsole.prototype.updatebook = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, books, findbook, book, newbook;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.readbook();
+                        id = this.inputid();
+                        return [4 /*yield*/, this.bookservice.read()];
+                    case 1:
+                        books = _a.sent();
+                        findbook = books.filter(function (item) { return item.id === id; })[0];
+                        if (!findbook) {
+                            console.log("El libro no fue encontrado");
+                            return [2 /*return*/];
+                        }
+                        book = this.inputbook();
+                        book.id = findbook.id;
+                        return [4 /*yield*/, this.bookservice.update(book)];
+                    case 2:
+                        newbook = _a.sent();
+                        console.log(newbook ? "Libro actualizado" : "No se pudo actualizar");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Bookconsole.prototype.readbook = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var books, booksview;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bookservice.read()];
+                    case 1:
+                        books = _a.sent();
+                        booksview = books.map(function (book) { return ({
+                            id: book.id,
+                            titulo: book.title,
+                            autor: book.author,
+                            disponible: book.available ? "Sí" : "No"
+                        }); });
+                        console.table(booksview);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Bookconsole.prototype.inputbook = function () {
+        var title = prompt("Titulo: ");
+        if (!title || title.trim() === "") {
+            console.log("El titulo no puede estar vacio");
+        }
+        var author = prompt("Autor: ");
+        if (!author || author.trim() === "") {
+            console.log("El autor no puede estar vacío");
+        }
+        var available = true;
+        var id = Math.random().toString();
+        var book = {
+            id: id,
+            title: title,
+            author: author,
+            available: available
+        };
+        return book;
+    };
+    Bookconsole.prototype.inputid = function () {
+        var id = prompt("ID: ");
+        if (!id || id.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return id;
+    };
+    return Bookconsole;
+}());
+exports.Bookconsole = Bookconsole;
+var LoanConsole = /** @class */ (function () {
+    function LoanConsole(studentservice, bookservice, loanservice) {
+        this.studentservice = studentservice;
+        this.bookservice = bookservice;
+        this.loanservice = loanservice;
+    }
+    LoanConsole.prototype.execute = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var run, option, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        run = true;
+                        _b.label = 1;
+                    case 1:
+                        if (!run) return [3 /*break*/, 10];
+                        this.readMenu();
+                        option = Number(prompt("Seleccione: "));
+                        _a = option;
+                        switch (_a) {
+                            case 1: return [3 /*break*/, 2];
+                            case 2: return [3 /*break*/, 4];
+                            case 3: return [3 /*break*/, 6];
+                            case 0: return [3 /*break*/, 8];
+                        }
+                        return [3 /*break*/, 9];
+                    case 2: return [4 /*yield*/, this.lendbook()];
+                    case 3:
+                        _b.sent();
+                        return [3 /*break*/, 9];
+                    case 4: return [4 /*yield*/, this.returnbook()];
+                    case 5:
+                        _b.sent();
+                        return [3 /*break*/, 9];
+                    case 6: return [4 /*yield*/, this.readloan()];
+                    case 7:
+                        _b.sent();
+                        return [3 /*break*/, 9];
+                    case 8:
+                        run = false;
+                        return [3 /*break*/, 9];
+                    case 9: return [3 /*break*/, 1];
+                    case 10: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    LoanConsole.prototype.readMenu = function () {
+        var opciones = [
+            "1. Prestar libro",
+            "2. Devolver libro",
+            "3. Ver prestamos",
+            "0. Salir"
+        ];
+        for (var _i = 0, opciones_4 = opciones; _i < opciones_4.length; _i++) {
+            var opcion = opciones_4[_i];
+            console.log(opcion);
+        }
+    };
+    LoanConsole.prototype.lendbook = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var idbook, idstudent, books, book, students, student, loan, status;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.table(this.studentservice.read());
+                        console.table(this.bookservice.read());
+                        idbook = this.inputidbook();
+                        idstudent = this.inputidstudent();
+                        return [4 /*yield*/, this.bookservice.read()];
+                    case 1:
+                        books = _a.sent();
+                        book = books.filter(function (book) { return book.id === idbook; })[0];
+                        if (!book || !book.available) {
+                            console.log("El libro no existe o no esta disponible");
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, this.studentservice.read()];
+                    case 2:
+                        students = _a.sent();
+                        student = students.filter(function (student) { return student.id === idstudent; })[0];
+                        if (!student) {
+                            console.log("El estudiante no existe");
+                            return [2 /*return*/];
+                        }
+                        loan = {
+                            id: Math.random().toString(),
+                            book: book,
+                            student: student,
+                            loanDate: new Date()
+                        };
+                        return [4 /*yield*/, this.loanservice.create(loan)];
+                    case 3:
+                        status = _a.sent();
+                        book.available = false;
+                        this.bookservice.update(book);
+                        console.log(status ? "Prestamo existoso" : "No se pudo realizar el prestamo");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    LoanConsole.prototype.returnbook = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var idbook, loans, loan, status;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        idbook = this.inputidbook();
+                        return [4 /*yield*/, this.loanservice.read()];
+                    case 1:
+                        loans = _a.sent();
+                        loan = loans.find(function (loan) { return loan.book.id === idbook; });
+                        if (!loan) {
+                            console.log("El libro no existe con este id");
+                            return [2 /*return*/];
+                        }
+                        loan.returndate = new Date();
+                        return [4 /*yield*/, this.loanservice.update(loan)];
+                    case 2:
+                        status = _a.sent();
+                        loan.book.available = true;
+                        this.bookservice.update(loan.book);
+                        console.log(status ? "Libro devuelto" : "No se pudo devolver");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    LoanConsole.prototype.readloan = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var loans;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.loanservice.read()];
+                    case 1:
+                        loans = _a.sent();
+                        console.log("\n===== PRÉSTAMOS =====");
+                        if (loans.length === 0) {
+                            console.log("No hay préstamos");
+                            return [2 /*return*/];
+                        }
+                        loans.forEach(function (loan) {
+                            console.log({
+                                id: loan.id,
+                                Book: loan.book.title,
+                                Student: loan.student.name,
+                                fechaprestamo: loan.loanDate,
+                                fechaDevolucion: loan.returndate || "Pendiente"
+                            });
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    LoanConsole.prototype.inputidbook = function () {
+        var idbook = prompt("ID Libro: ");
+        if (!idbook || idbook.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return idbook;
+    };
+    LoanConsole.prototype.inputidstudent = function () {
+        var idstudent = prompt("ID Estudiante: ");
+        if (!idstudent || idstudent.trim() === "") {
+            console.log("El ID no puede estar vacío");
+        }
+        return idstudent;
+    };
+    return LoanConsole;
+}());
+exports.LoanConsole = LoanConsole;
 var pool = new pg_1.Pool(exports.config);
 // const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
 // const bookservice = new Service<Book>(bookRepository);
@@ -437,8 +803,15 @@ var pool = new pg_1.Pool(exports.config);
 // createbook();
 // readbooks();
 var loanRepository = new PostgreSQLPersistence(pool, "loans");
+var loanservice = new Service(loanRepository);
 var studentRepository = new PostgreSQLPersistence(pool, "students");
 var studentservice = new Service(studentRepository);
 var studentValidator = new Validation();
 var studentconsole = new Studentconsole(studentservice, loanRepository, studentValidator);
-studentconsole.execute();
+var bookRepository = new PostgreSQLPersistence(pool, "books");
+var bookservice = new Service(bookRepository);
+var bookvalidator = new Validation();
+var bookconsole = new Bookconsole(bookservice, bookvalidator);
+var loanconsole = new LoanConsole(studentservice, bookservice, loanservice);
+var menuconsole = new MenuConsole(studentconsole, bookconsole, loanconsole);
+menuconsole.execute();
