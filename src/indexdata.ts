@@ -1,4 +1,6 @@
 import { Pool } from "pg";
+import * as promptSync from "prompt-sync";
+const prompt = (promptSync as any)();
 
 export interface IRepository<T> {
     create(item: T): Promise<boolean>;
@@ -187,8 +189,21 @@ export class Studentconsole implements IView {
 
             switch (option) {
                 case 1:
-                    this.createStudent();
+                    await this.createStudent();
                     break;
+                case 2:
+                    await this.deletestudent();
+                    break
+                case 3:
+                    await this.updatestudent();
+                    break;
+                case 4:
+                    await this.readstudent();
+                    break
+                case 0:
+                    run = false;
+                    break;
+
             }
         
         }
@@ -209,22 +224,73 @@ export class Studentconsole implements IView {
         }
 
 
-    private createStudent() {
+    private async createStudent() {
+
         const student = this.inputstudent();
-        let students = this.studentservice.read();
-        // let indexstudent = students.findIndex((item: Student) => item.id === student.id);
+
+        if (!this.studentvalidation.validate(student)){
+            console.log("El estudiante tiene algun campo vacio")
+            return
+        }
+
+        let students = await this.studentservice.read();
         
-        // if (indexstudent !== -1) {
-        //     console.log("Este estudiante ya fue registrado con este id");
-        //         return;
-        //     }
+        let indexstudent = students.findIndex((item: Student) => item.id === student.id);
         
-        const result = this.studentservice.create(student);
-        // console.log(result ? "Estudiante registrado" : "No se pudo registrar");
+        if (indexstudent !== -1) {
+            console.log("Este estudiante ya fue registrado con este id");
+                return;
+            }
+        
+        const result = await this.studentservice.create(student);
+        console.log(result ? "Estudiante registrado" : "No se pudo registrar");
     }
 
+    private async deletestudent() {
+        this.readstudent();
+        const id = this.inputid();
+        let activeLoans: Loan[] = await this.loanservice.read();
+        let studentactiveloan = activeLoans.filter(loanstudent => loanstudent.student.id === id && !loanstudent.returndate);
+    
+        if (studentactiveloan.length > 0) {
+            console.log("El estudiante no puede ser eliminado, ya que tiene prestamos")
+            return;
+        }
+    
+        const status: boolean = await this.studentservice.delete(id);
+        console.log(status ? "Estudiante eliminado" : "No se pudo eliminar");
+        }
+    
+    private async updatestudent() {
+        this.readstudent();
+        const id = this.inputid();
+        let students = await this.studentservice.read();
+        let findstudent = students.filter((item: Student) => item.id === id)[0];
+        if (!findstudent) {
+            console.log("Estudiante no encontrado");
+            return;
+        }
+    
+        const student = this.inputstudent();
+        student.id = findstudent.id
+        const newstudent: boolean = await this.studentservice.update(student);
+        console.log(newstudent ? "Estudiante actualizado" : "No se pudo actualizar");
+        }
+    
+    private async readstudent() {
+                let students: Student[] = await this.studentservice.read();
+                let studentsview = students.map(student => ({
+                    id: student.id,
+                    nombre: student.name,
+                    identificacion: student.identification,
+                    grado: student.schoolgrade
+                }));
+        
+                console.table(studentsview);
+            }
+
     private inputid() {
-        const id = prompt("ID: ");
+        const id= String(prompt("ID: "));
         if (!id) {
             console.log("El ID no puede estar vacío");
         }
@@ -257,7 +323,7 @@ export class Studentconsole implements IView {
 
 }
 
-// const pool = new Pool(config);
+const pool = new Pool(config);
 // const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
 // const bookservice = new Service<Book>(bookRepository);
 // const bookvalidator = new Validation<Book>()
@@ -282,3 +348,10 @@ export class Studentconsole implements IView {
 
 // createbook();
 // readbooks();
+
+const loanRepository: IRepository<Loan> = new PostgreSQLPersistence<Loan>(pool, "loans");
+const studentRepository: IRepository<Student> = new PostgreSQLPersistence<Student>(pool, "students");
+const studentservice: IService<Student> = new Service<Student>(studentRepository);
+const studentValidator: IValidation<Student> = new Validation<Student>()
+const studentconsole = new Studentconsole(studentservice, loanRepository,studentValidator)
+studentconsole.execute();
