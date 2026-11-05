@@ -128,28 +128,28 @@ export class MenuConsole implements IView {
         private loanMenu: IView
     ) { }
 
-    execute() {
+    async execute() {
 
         let run = true;
 
         while (run) {
 
-            this.readMenu();
+            await this.readMenu();
 
             const option = Number(prompt("Seleccione: "));
 
             switch (option) {
 
                 case 1:
-                    this.studentMenu.execute();
+                    await this.studentMenu.execute();
                     break;
 
                 case 2:
-                    this.bookMenu.execute();
+                    await this.bookMenu.execute();
                     break;
 
                 case 3:
-                    this.loanMenu.execute();
+                    await this.loanMenu.execute();
                     break;
 
                 case 0:
@@ -509,8 +509,8 @@ export class LoanConsole implements IView {
     }
 
     private async lendbook() {
-        console.table(this.studentservice.read())
-        console.table(this.bookservice.read())
+        console.table(await this.studentservice.read())
+        console.table(await this.bookservice.read())
         let idbook = this.inputidbook();
         let idstudent = this.inputidstudent();
 
@@ -598,31 +598,15 @@ export class LoanConsole implements IView {
     }
 }
 
+export class App {
+    constructor(private menu: IView) { }
+
+    run(): void {
+        this.menu.execute();
+    }
+}
+
 const pool = new Pool(config);
-// const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
-// const bookservice = new Service<Book>(bookRepository);
-// const bookvalidator = new Validation<Book>()
-
-// const book1: Book = {
-//     id: "3",
-//     title: "El Señor de los Anillos",
-//     author: "J.R.R. Tolkien",
-//     available: true
-// };
-
-// async function createbook() {
-//     if (!bookvalidator.validate(book1)){
-//         return
-//     }
-//     await bookservice.create(book1);
-// }
-
-// async function readbooks() {
-//     console.log(await bookservice.read())
-// }
-
-// createbook();
-// readbooks();
 
 const loanRepository: IRepository<Loan> = new PostgreSQLPersistence<Loan>(pool, "loans");
 const loanservice: IService<Loan> = new Service<Loan>(loanRepository);
@@ -634,10 +618,11 @@ const studentconsole = new Studentconsole(studentservice, loanRepository,student
 
 const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
 const bookservice: IService<Book> = new Service<Book>(bookRepository);
-const bookvalidator: IValidation<Book> = new Validation<Book>()
-const bookconsole = new Bookconsole(bookservice, bookvalidator)
+const bookvalidator: IValidation<Book> = new Validation<Book>();
+const bookconsole = new Bookconsole(bookservice, bookvalidator);
 
-const loanconsole = new LoanConsole(studentservice, bookservice, loanservice)
+const loanconsole = new LoanConsole(studentservice, bookservice, loanservice);
 const menuconsole = new MenuConsole(studentconsole, bookconsole, loanconsole);
-menuconsole.execute()
+const app = new App(menuconsole);
+app.run();
 
