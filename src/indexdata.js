@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.config = exports.Validation = exports.Service = exports.PostgreSQLPersistence = void 0;
+exports.App = exports.LoanConsole = exports.Bookconsole = exports.Studentconsole = exports.MenuConsole = exports.config = exports.Validation = exports.Service = exports.PostgreSQLPersistence = void 0;
 var pg_1 = require("pg");
 var promptSync = require("prompt-sync");
 var prompt = promptSync();
@@ -186,39 +186,68 @@ var MenuConsole = /** @class */ (function () {
         this.loanMenu = loanMenu;
     }
     MenuConsole.prototype.execute = function () {
-        var run = true;
-        while (run) {
-            this.readMenu();
-            var option = Number(prompt("Seleccione: "));
-            switch (option) {
-                case 1:
-                    this.studentMenu.execute();
-                    break;
-                case 2:
-                    this.bookMenu.execute();
-                    break;
-                case 3:
-                    this.loanMenu.execute();
-                    break;
-                case 0:
-                    run = false;
-            }
-        }
+        return __awaiter(this, void 0, void 0, function () {
+            var run, option, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        run = true;
+                        _b.label = 1;
+                    case 1:
+                        if (!run) return [3 /*break*/, 11];
+                        return [4 /*yield*/, this.readMenu()];
+                    case 2:
+                        _b.sent();
+                        option = Number(prompt("Seleccione: "));
+                        _a = option;
+                        switch (_a) {
+                            case 1: return [3 /*break*/, 3];
+                            case 2: return [3 /*break*/, 5];
+                            case 3: return [3 /*break*/, 7];
+                            case 0: return [3 /*break*/, 9];
+                        }
+                        return [3 /*break*/, 10];
+                    case 3: return [4 /*yield*/, this.studentMenu.execute()];
+                    case 4:
+                        _b.sent();
+                        return [3 /*break*/, 10];
+                    case 5: return [4 /*yield*/, this.bookMenu.execute()];
+                    case 6:
+                        _b.sent();
+                        return [3 /*break*/, 10];
+                    case 7: return [4 /*yield*/, this.loanMenu.execute()];
+                    case 8:
+                        _b.sent();
+                        return [3 /*break*/, 10];
+                    case 9:
+                        run = false;
+                        _b.label = 10;
+                    case 10: return [3 /*break*/, 1];
+                    case 11: return [2 /*return*/];
+                }
+            });
+        });
     };
     MenuConsole.prototype.readMenu = function () {
-        console.log("\n=============================================");
-        console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
-        console.log("=============================================");
-        var opciones = [
-            "1. Registrar, Eliminar, Ver, Actualizar estudiante",
-            "2. Registrar, Eliminar, Ver, Actualizar libro",
-            "3. Prestar libro, Devolver libro,  Mostrar prestamos",
-            "0. Salir"
-        ];
-        for (var _i = 0, opciones_1 = opciones; _i < opciones_1.length; _i++) {
-            var opcion = opciones_1[_i];
-            console.log(opcion);
-        }
+        return __awaiter(this, void 0, void 0, function () {
+            var opciones, _i, opciones_1, opcion;
+            return __generator(this, function (_a) {
+                console.log("\n=============================================");
+                console.log("Bienvenido al Sistema de Biblioteca ¿qué desea?");
+                console.log("=============================================");
+                opciones = [
+                    "1. Registrar, Eliminar, Ver, Actualizar estudiante",
+                    "2. Registrar, Eliminar, Ver, Actualizar libro",
+                    "3. Prestar libro, Devolver libro,  Mostrar prestamos",
+                    "0. Salir"
+                ];
+                for (_i = 0, opciones_1 = opciones; _i < opciones_1.length; _i++) {
+                    opcion = opciones_1[_i];
+                    console.log(opcion);
+                }
+                return [2 /*return*/];
+            });
+        });
     };
     return MenuConsole;
 }());
@@ -238,55 +267,63 @@ var Studentconsole = /** @class */ (function () {
                         run = true;
                         _b.label = 1;
                     case 1:
-                        if (!run) return [3 /*break*/, 12];
-                        this.readMenu();
+                        if (!run) return [3 /*break*/, 13];
+                        return [4 /*yield*/, this.readMenu()];
+                    case 2:
+                        _b.sent();
                         option = Number(prompt("Seleccione: "));
                         _a = option;
                         switch (_a) {
-                            case 1: return [3 /*break*/, 2];
-                            case 2: return [3 /*break*/, 4];
-                            case 3: return [3 /*break*/, 6];
-                            case 4: return [3 /*break*/, 8];
-                            case 0: return [3 /*break*/, 10];
+                            case 1: return [3 /*break*/, 3];
+                            case 2: return [3 /*break*/, 5];
+                            case 3: return [3 /*break*/, 7];
+                            case 4: return [3 /*break*/, 9];
+                            case 0: return [3 /*break*/, 11];
                         }
-                        return [3 /*break*/, 11];
-                    case 2: return [4 /*yield*/, this.createStudent()];
-                    case 3:
+                        return [3 /*break*/, 12];
+                    case 3: return [4 /*yield*/, this.createStudent()];
+                    case 4:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 4: return [4 /*yield*/, this.deletestudent()];
-                    case 5:
+                        return [3 /*break*/, 12];
+                    case 5: return [4 /*yield*/, this.deletestudent()];
+                    case 6:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 6: return [4 /*yield*/, this.updatestudent()];
-                    case 7:
+                        return [3 /*break*/, 12];
+                    case 7: return [4 /*yield*/, this.updatestudent()];
+                    case 8:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 8: return [4 /*yield*/, this.readstudent()];
-                    case 9:
-                        _b.sent();
-                        return [3 /*break*/, 11];
+                        return [3 /*break*/, 12];
+                    case 9: return [4 /*yield*/, this.readstudent()];
                     case 10:
+                        _b.sent();
+                        return [3 /*break*/, 12];
+                    case 11:
                         run = false;
-                        return [3 /*break*/, 11];
-                    case 11: return [3 /*break*/, 1];
-                    case 12: return [2 /*return*/];
+                        return [3 /*break*/, 12];
+                    case 12: return [3 /*break*/, 1];
+                    case 13: return [2 /*return*/];
                 }
             });
         });
     };
     Studentconsole.prototype.readMenu = function () {
-        var opciones = [
-            "1. Registrar estudiante",
-            "2. Borrar estudiante",
-            "3. Actualizar estudiante",
-            "4. Mostrar estudiantes",
-            "0. Salir"
-        ];
-        for (var _i = 0, opciones_2 = opciones; _i < opciones_2.length; _i++) {
-            var opcion = opciones_2[_i];
-            console.log(opcion);
-        }
+        return __awaiter(this, void 0, void 0, function () {
+            var opciones, _i, opciones_2, opcion;
+            return __generator(this, function (_a) {
+                opciones = [
+                    "1. Registrar estudiante",
+                    "2. Borrar estudiante",
+                    "3. Actualizar estudiante",
+                    "4. Mostrar estudiantes",
+                    "0. Salir"
+                ];
+                for (_i = 0, opciones_2 = opciones; _i < opciones_2.length; _i++) {
+                    opcion = opciones_2[_i];
+                    console.log(opcion);
+                }
+                return [2 /*return*/];
+            });
+        });
     };
     Studentconsole.prototype.createStudent = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -429,39 +466,41 @@ var Bookconsole = /** @class */ (function () {
                         run = true;
                         _b.label = 1;
                     case 1:
-                        if (!run) return [3 /*break*/, 12];
-                        this.readMenu();
+                        if (!run) return [3 /*break*/, 13];
+                        return [4 /*yield*/, this.readMenu()];
+                    case 2:
+                        _b.sent();
                         option = Number(prompt("Seleccione: "));
                         _a = option;
                         switch (_a) {
-                            case 1: return [3 /*break*/, 2];
-                            case 2: return [3 /*break*/, 4];
-                            case 3: return [3 /*break*/, 6];
-                            case 4: return [3 /*break*/, 8];
-                            case 0: return [3 /*break*/, 10];
+                            case 1: return [3 /*break*/, 3];
+                            case 2: return [3 /*break*/, 5];
+                            case 3: return [3 /*break*/, 7];
+                            case 4: return [3 /*break*/, 9];
+                            case 0: return [3 /*break*/, 11];
                         }
-                        return [3 /*break*/, 11];
-                    case 2: return [4 /*yield*/, this.createbook()];
-                    case 3:
+                        return [3 /*break*/, 12];
+                    case 3: return [4 /*yield*/, this.createbook()];
+                    case 4:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 4: return [4 /*yield*/, this.deletebook()];
-                    case 5:
+                        return [3 /*break*/, 12];
+                    case 5: return [4 /*yield*/, this.deletebook()];
+                    case 6:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 6: return [4 /*yield*/, this.updatebook()];
-                    case 7:
+                        return [3 /*break*/, 12];
+                    case 7: return [4 /*yield*/, this.updatebook()];
+                    case 8:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 8: return [4 /*yield*/, this.readbook()];
-                    case 9:
-                        _b.sent();
-                        return [3 /*break*/, 11];
+                        return [3 /*break*/, 12];
+                    case 9: return [4 /*yield*/, this.readbook()];
                     case 10:
+                        _b.sent();
+                        return [3 /*break*/, 12];
+                    case 11:
                         run = false;
-                        return [3 /*break*/, 11];
-                    case 11: return [3 /*break*/, 1];
-                    case 12: return [2 /*return*/];
+                        return [3 /*break*/, 12];
+                    case 12: return [3 /*break*/, 1];
+                    case 13: return [2 /*return*/];
                 }
             });
         });
@@ -623,34 +662,36 @@ var LoanConsole = /** @class */ (function () {
                         run = true;
                         _b.label = 1;
                     case 1:
-                        if (!run) return [3 /*break*/, 10];
-                        this.readMenu();
+                        if (!run) return [3 /*break*/, 11];
+                        return [4 /*yield*/, this.readMenu()];
+                    case 2:
+                        _b.sent();
                         option = Number(prompt("Seleccione: "));
                         _a = option;
                         switch (_a) {
-                            case 1: return [3 /*break*/, 2];
-                            case 2: return [3 /*break*/, 4];
-                            case 3: return [3 /*break*/, 6];
-                            case 0: return [3 /*break*/, 8];
+                            case 1: return [3 /*break*/, 3];
+                            case 2: return [3 /*break*/, 5];
+                            case 3: return [3 /*break*/, 7];
+                            case 0: return [3 /*break*/, 9];
                         }
-                        return [3 /*break*/, 9];
-                    case 2: return [4 /*yield*/, this.lendbook()];
-                    case 3:
+                        return [3 /*break*/, 10];
+                    case 3: return [4 /*yield*/, this.lendbook()];
+                    case 4:
                         _b.sent();
-                        return [3 /*break*/, 9];
-                    case 4: return [4 /*yield*/, this.returnbook()];
-                    case 5:
+                        return [3 /*break*/, 10];
+                    case 5: return [4 /*yield*/, this.returnbook()];
+                    case 6:
                         _b.sent();
-                        return [3 /*break*/, 9];
-                    case 6: return [4 /*yield*/, this.readloan()];
-                    case 7:
-                        _b.sent();
-                        return [3 /*break*/, 9];
+                        return [3 /*break*/, 10];
+                    case 7: return [4 /*yield*/, this.readloan()];
                     case 8:
+                        _b.sent();
+                        return [3 /*break*/, 10];
+                    case 9:
                         run = false;
-                        return [3 /*break*/, 9];
-                    case 9: return [3 /*break*/, 1];
-                    case 10: return [2 /*return*/];
+                        return [3 /*break*/, 10];
+                    case 10: return [3 /*break*/, 1];
+                    case 11: return [2 /*return*/];
                 }
             });
         });
@@ -669,25 +710,31 @@ var LoanConsole = /** @class */ (function () {
     };
     LoanConsole.prototype.lendbook = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var idbook, idstudent, books, book, students, student, loan, status;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, _b, _c, _d, idbook, idstudent, books, book, students, student, loan, status;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
                     case 0:
-                        console.table(this.studentservice.read());
-                        console.table(this.bookservice.read());
+                        _b = (_a = console).table;
+                        return [4 /*yield*/, this.studentservice.read()];
+                    case 1:
+                        _b.apply(_a, [_e.sent()]);
+                        _d = (_c = console).table;
+                        return [4 /*yield*/, this.bookservice.read()];
+                    case 2:
+                        _d.apply(_c, [_e.sent()]);
                         idbook = this.inputidbook();
                         idstudent = this.inputidstudent();
                         return [4 /*yield*/, this.bookservice.read()];
-                    case 1:
-                        books = _a.sent();
+                    case 3:
+                        books = _e.sent();
                         book = books.filter(function (book) { return book.id === idbook; })[0];
                         if (!book || !book.available) {
                             console.log("El libro no existe o no esta disponible");
                             return [2 /*return*/];
                         }
                         return [4 /*yield*/, this.studentservice.read()];
-                    case 2:
-                        students = _a.sent();
+                    case 4:
+                        students = _e.sent();
                         student = students.filter(function (student) { return student.id === idstudent; })[0];
                         if (!student) {
                             console.log("El estudiante no existe");
@@ -700,8 +747,8 @@ var LoanConsole = /** @class */ (function () {
                             loanDate: new Date()
                         };
                         return [4 /*yield*/, this.loanservice.create(loan)];
-                    case 3:
-                        status = _a.sent();
+                    case 5:
+                        status = _e.sent();
                         book.available = false;
                         this.bookservice.update(book);
                         console.log(status ? "Prestamo existoso" : "No se pudo realizar el prestamo");
@@ -781,6 +828,16 @@ var LoanConsole = /** @class */ (function () {
     return LoanConsole;
 }());
 exports.LoanConsole = LoanConsole;
+var App = /** @class */ (function () {
+    function App(menu) {
+        this.menu = menu;
+    }
+    App.prototype.run = function () {
+        this.menu.execute();
+    };
+    return App;
+}());
+exports.App = App;
 var pool = new pg_1.Pool(exports.config);
 // const bookRepository: IRepository<Book> = new PostgreSQLPersistence<Book>(pool, "books");
 // const bookservice = new Service<Book>(bookRepository);
@@ -814,4 +871,5 @@ var bookvalidator = new Validation();
 var bookconsole = new Bookconsole(bookservice, bookvalidator);
 var loanconsole = new LoanConsole(studentservice, bookservice, loanservice);
 var menuconsole = new MenuConsole(studentconsole, bookconsole, loanconsole);
-menuconsole.execute();
+var app = new App(menuconsole);
+app.run();
