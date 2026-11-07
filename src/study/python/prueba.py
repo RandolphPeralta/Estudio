@@ -1,14 +1,30 @@
+print("Welcome to FizzBuzz!")
 n = int(input())
 
-def sigma(n: int) -> int:
-    total = 0
+def fizzbuzz(num: int):
+    for i in range(1, num + 1):
+        if i % 3 == 0 and i % 7 == 0:
+            print("FizzBuzz")
+        elif i % 3 == 0:
+            print("Fizz")
+        elif i % 7 == 0:
+            print("Buzz")
+        else:
+            print(i)
 
-    for i in range(1, n + 1):
-        total += i
+fizzbuzz(n)
 
-    return total
+# n = int(input())
 
-print(sigma(n))
+# def sigma(n: int) -> int:
+#     total = 0
+
+#     for i in range(1, n + 1):
+#         total += i
+
+#     return total
+
+# print(sigma(n))
 
 # result = 0
 # for i in range(1,n+1):
