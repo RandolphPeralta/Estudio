@@ -1,10 +1,20 @@
 n = int(input())
 
-result = 0
-for i in range(1,n+1):
-    a = int(input())
-    result += a
-print(result)
+def sigma(n: int) -> int:
+    total = 0
+
+    for i in range(1, n + 1):
+        total += i
+
+    return total
+
+print(sigma(n))
+
+# result = 0
+# for i in range(1,n+1):
+#     a = int(input())
+#     result += a
+# print(result)
 
 # numb = int(input())
 # result = 1
