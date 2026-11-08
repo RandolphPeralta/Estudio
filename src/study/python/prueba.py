@@ -1,18 +1,36 @@
-print("Welcome to FizzBuzz!")
-n = int(input())
+lst = [1,2,3,4]
 
-def fizzbuzz(num: int):
-    for i in range(1, num + 1):
-        if i % 3 == 0 and i % 7 == 0:
-            print("FizzBuzz")
-        elif i % 3 == 0:
-            print("Fizz")
-        elif i % 7 == 0:
-            print("Buzz")
-        else:
-            print(i)
+def sum_elements(lst):
+    # Escribe el código aquí
+    sum = 0
+    for i in range(len(lst)):
+        sum += lst[i]
+    print(sum)
 
-fizzbuzz(n)
+sum_elements(lst)
+
+# def values(lst):
+#     # Escribe el código aquí
+#     for i in range(len(lst)):
+#         print(lst[i])
+
+# values(lst)
+
+# print("Welcome to FizzBuzz!")
+# n = int(input())
+
+# def fizzbuzz(num: int):
+#     for i in range(1, num + 1):
+#         if i % 3 == 0 and i % 7 == 0:
+#             print("FizzBuzz")
+#         elif i % 3 == 0:
+#             print("Fizz")
+#         elif i % 7 == 0:
+#             print("Buzz")
+#         else:
+#             print(i)
+
+# fizzbuzz(n)
 
 
 # n = int(input())
