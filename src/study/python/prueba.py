@@ -14,6 +14,7 @@ def fizzbuzz(num: int):
 
 fizzbuzz(n)
 
+
 # n = int(input())
 
 # def sigma(n: int) -> int:
