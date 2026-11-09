@@ -1,13 +1,36 @@
-lst = [1,2,3,4]
-
-def sum_elements(lst):
+def combine_and_filter(lst, threshold):
     # Escribe el código aquí
-    sum = 0
-    for i in range(len(lst)):
-        sum += lst[i]
-    print(sum)
+    lst_correct = []
+    for element in lst:
+        if element > threshold:
+            lst_correct.append(element)
+    lst_correct.sort()
+    return lst_correct
 
-sum_elements(lst)
+print(combine_and_filter([1, 5, 3, 2, 7, 4], 3))
+
+# def merge(lst1, lst2):
+#     # Escribe el código aquí
+#     lstmerge = []
+#     for element1 in lst1:
+#         lstmerge.append(element1)
+#     for element2 in lst2:
+#         lstmerge.append(element2)
+#     lstmerge.sort()
+#     return lstmerge
+
+# print(merge([1], [2]))
+
+# lst = [1,2,3,4]
+
+# def sum_elements(lst):
+#     # Escribe el código aquí
+#     sum = 0
+#     for i in range(len(lst)):
+#         sum += lst[i]
+#     print(sum)
+
+# sum_elements(lst)
 
 # def values(lst):
 #     # Escribe el código aquí
