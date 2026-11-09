@@ -1,5 +1,4 @@
 //------DOMAIN-----------
-
 //---------interfaces--------
 export interface ISave<T> {
     create(some: T): boolean;
