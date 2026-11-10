@@ -1,13 +1,22 @@
-def combine_and_filter(lst, threshold):
+def reverse(lst):
     # Escribe el código aquí
-    lst_correct = []
-    for element in lst:
-        if element > threshold:
-            lst_correct.append(element)
-    lst_correct.sort()
-    return lst_correct
+    # lst_reverse = []
+    for i in range(len(lst)):
+        lst[len(lst)-i-1] = i
+    return lst
 
-print(combine_and_filter([1, 5, 3, 2, 7, 4], 3))
+print(reverse([1,2,3]))
+
+# def combine_and_filter(lst, threshold):
+#     # Escribe el código aquí
+#     lst_correct = []
+#     for element in lst:
+#         if element > threshold:
+#             lst_correct.append(element)
+#     lst_correct.sort()
+#     return lst_correct
+
+# print(combine_and_filter([1, 5, 3, 2, 7, 4], 3))
 
 # def merge(lst1, lst2):
 #     # Escribe el código aquí
