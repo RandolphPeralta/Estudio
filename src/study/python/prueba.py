@@ -1,9 +1,9 @@
 def reverse(lst):
     # Escribe el código aquí
-    # lst_reverse = []
+    lst_reverse = []
     for i in range(len(lst)):
-        lst[len(lst)-i-1] = i
-    return lst
+        lst_reverse.append(lst[len(lst)-i-1])
+    return lst_reverse
 
 print(reverse([1,2,3]))
 
