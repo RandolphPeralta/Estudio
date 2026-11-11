@@ -1,11 +1,21 @@
-def reverse(lst):
-    # Escribe el código aquí
-    lst_reverse = []
-    for i in range(len(lst)):
-        lst_reverse.append(lst[len(lst)-i-1])
-    return lst_reverse
+numbers = input().split(',')
+# Escribe tu código debajo
+# Note: input().split(',') devuelve una lista de cadenas. Puede que necesites convertirlas a enteros para realizar cálculos.
+sum = 0
+for number in numbers:
+    if int(number) % 2 == 0:
+        sum += int(number)
 
-print(reverse([1,2,3]))
+print(sum)
+
+# def reverse(lst):
+#     # Escribe el código aquí
+#     lst_reverse = []
+#     for i in range(len(lst)):
+#         lst_reverse.append(lst[len(lst)-i-1])
+#     return lst_reverse
+
+# print(reverse([1,2,3]))
 
 # def combine_and_filter(lst, threshold):
 #     # Escribe el código aquí
