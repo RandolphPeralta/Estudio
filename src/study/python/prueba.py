@@ -1,12 +1,28 @@
-numbers = input().split(',')
+lst = input().split()
 # Escribe tu código debajo
-# Note: input().split(',') devuelve una lista de cadenas. Puede que necesites convertirlas a enteros para realizar cálculos.
-sum = 0
-for number in numbers:
-    if int(number) % 2 == 0:
-        sum += int(number)
+new_lst = []
+for index, word in enumerate(lst):
+    numword = len(word)
+    if numword>3 or word.startswith("a"):
+        new_lst.append(index)
+print(new_lst)
 
-print(sum)
+# lst = list(map(int, input().split(",")))
+# # Escribe tu código debajo
+# new_lst = []
+# for index, num in enumerate(lst):
+#     if num % 5 == 0 or num < 50:
+#         new_lst.append(index)
+    
+# print(new_lst)
+
+# numbers = input().split(',')
+# sum = 0
+# for number in numbers:
+#     if int(number) % 2 == 0:
+#         sum += int(number)
+
+# print(sum)
 
 # def reverse(lst):
 #     # Escribe el código aquí
