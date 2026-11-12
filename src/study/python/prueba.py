@@ -7,6 +7,7 @@ for index, word in enumerate(lst):
         new_lst.append(index)
 print(new_lst)
 
+
 # lst = list(map(int, input().split(",")))
 # # Escribe tu código debajo
 # new_lst = []
