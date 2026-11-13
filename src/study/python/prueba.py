@@ -1,12 +1,46 @@
-lst = input().split()
-# Escribe tu código debajo
-new_lst = []
-for index, word in enumerate(lst):
-    numword = len(word)
-    if numword>3 or word.startswith("a"):
-        new_lst.append(index)
-print(new_lst)
+numbers = input()
+prefix = input()
 
+list_numbers = numbers.split()
+new_numbers = " ".join([prefix + num for num in list_numbers])
+print(new_numbers)
+
+# text = input()
+# delimiter = input()
+# # Escribe tu código debajo
+# list_text = text.split()
+# new_text = delimiter.join(list_text)
+# print(new_text)
+
+# text = input()
+# # Escribe tu código debajo
+# count = 0
+# for char in text:
+#     char_lower = char.lower()
+#     if char_lower == "s":
+#         count += 1
+
+# print(count)
+
+# text = input()
+# # Escribe tu código a continuación
+# # Pista: Para ignorar las diferencias entre mayúsculas y minúsculas, puedes convertir los caracteres a minúsculas con el método .lower().
+# # Ejemplo: char.lower()
+# count = 0
+# for char in text:
+#     char_lower = char.lower()
+#     if char_lower == "p":
+#         count += 1
+# print(count)
+
+# lst = input().split()
+# # Escribe tu código debajo
+# new_lst = []
+# for index, word in enumerate(lst):
+#     numword = len(word)
+#     if numword>3 or word.startswith("a"):
+#         new_lst.append(index)
+# print(new_lst)
 
 # lst = list(map(int, input().split(",")))
 # # Escribe tu código debajo
