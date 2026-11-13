@@ -1,9 +1,38 @@
-numbers = input()
-prefix = input()
+input_list = input().split(', ')
+# Escribe tu código a continuación
+lenght = len(input_list)
+new_input_list = []
+middle = lenght//2
+if lenght >= 5:
+    new_input_list = input_list[:2]
+    new_input_list = input_list[-2:]
+else:
+    new_input_list = input_list[0]
+    new_input_list = input_list[-1]
 
-list_numbers = numbers.split()
-new_numbers = " ".join([prefix + num for num in list_numbers])
-print(new_numbers)
+print(new_input_list)
+
+# lst = input().split(",")
+# # Escribe tu código a continuación
+# new_lst = []
+# length = len(lst)
+# middle = length//2
+# if len(lst) % 2 == 0:
+#     new_lst = lst[middle-1:middle+1]
+# elif len(lst) %2 != 0:
+#     new_lst = lst[middle-1: middle+2]
+#     new_lst.sort()
+# else:
+#     new_lst.append(lst[middle]) 
+
+# print(new_lst)
+
+# numbers = input()
+# prefix = input()
+
+# list_numbers = numbers.split()
+# new_numbers = " ".join([prefix + num for num in list_numbers])
+# print(new_numbers)
 
 # text = input()
 # delimiter = input()
