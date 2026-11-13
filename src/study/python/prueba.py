@@ -2,13 +2,11 @@ input_list = input().split(', ')
 # Escribe tu código a continuación
 lenght = len(input_list)
 new_input_list = []
-middle = lenght//2
 if lenght >= 5:
-    new_input_list = input_list[:2]
-    new_input_list = input_list[-2:]
+    new_input_list = input_list[:2] + input_list[-2:]
 else:
-    new_input_list = input_list[0]
-    new_input_list = input_list[-1]
+    new_input_list.append(input_list[0])
+    new_input_list.append(input_list[-1])
 
 print(new_input_list)
 
