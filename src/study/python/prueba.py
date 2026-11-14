@@ -1,14 +1,35 @@
-input_list = input().split(', ')
-# Escribe tu código a continuación
-lenght = len(input_list)
-new_input_list = []
-if lenght >= 5:
-    new_input_list = input_list[:2] + input_list[-2:]
-else:
-    new_input_list.append(input_list[0])
-    new_input_list.append(input_list[-1])
+original_list = input().split(',')
+# Escribe tu código debajo
+list1 = original_list[2::4]
+list2 = original_list[2:-2:1]
+list3 = original_list[-1::-2]
+list4 = original_list[:3] + original_list[-3:]
 
-print(new_input_list)
+
+# No cambies nada debajo de esta línea
+print("List 1:", list1)
+print("List 2:", list2)
+print("List 3:", list3)
+print("List 4:", list4)
+
+# lst = input().split(",")
+# # Escribe tu código a continuación
+# middle = len(lst)//2
+# print(lst[1::3])
+# print(lst[5::-1])
+# print(lst[middle::2])
+
+# input_list = input().split(', ')
+# # Escribe tu código a continuación
+# lenght = len(input_list)
+# new_input_list = []
+# if lenght >= 5:
+#     new_input_list = input_list[:2] + input_list[-2:]
+# else:
+#     new_input_list.append(input_list[0])
+#     new_input_list.append(input_list[-1])
+
+# print(new_input_list)
 
 # lst = input().split(",")
 # # Escribe tu código a continuación
