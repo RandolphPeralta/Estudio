@@ -1,16 +1,48 @@
-original_list = input().split(',')
-# Escribe tu código debajo
-list1 = original_list[2::4]
-list2 = original_list[2:-2:1]
-list3 = original_list[-1::-2]
-list4 = original_list[:3] + original_list[-3:]
+def not_mutual_friends(list1, list2):
+    # Escribe tu código debajo
+    lst3 = []
+    for element in list1:
+        if element not in list2:
+            lst3 += [element]
+    for element in list2:
+        if element not in list1:
+            lst3 += [element]
+    
+    return lst3
+
+print(not_mutual_friends(["John", "Emma", "Mike", "Sarah"], ["Emma", "Tom", "Sarah", "Peter"]))
+
+# # Divide cada cadena de entrada en una lista, usando comas como separadores
+# lst1 = input().split(",")
+# lst2 = input().split(",")
+# # Escribe tu código a continuación
+# lst3 = []
+# for element in lst1:
+#     if element not in lst2:
+#         lst3 += [element]
+
+# print(lst3)
+
+# numbers = input().split()
+# # Escribe tu código debajo
+# new_numbers = [numbers[0]] + numbers + numbers[::-1] + [numbers[-1]]
+# new_numbers = new_numbers*2
+# print(new_numbers)
+
+# #Sliging
+# original_list = input().split(',')
+# # Escribe tu código debajo
+# list1 = original_list[2::4]
+# list2 = original_list[2:-2:1]
+# list3 = original_list[-1::-2]
+# list4 = original_list[:3] + original_list[-3:]
 
 
-# No cambies nada debajo de esta línea
-print("List 1:", list1)
-print("List 2:", list2)
-print("List 3:", list3)
-print("List 4:", list4)
+# # No cambies nada debajo de esta línea
+# print("List 1:", list1)
+# print("List 2:", list2)
+# print("List 3:", list3)
+# print("List 4:", list4)
 
 # lst = input().split(",")
 # # Escribe tu código a continuación
