@@ -1,3 +1,44 @@
+print("Welcome to the Daily Expense Tracker!")
+print()
+print("Menu: ")
+menu = ["Add a new expense", "View all expenses", "Calculate total and average expense", "Clear all expenses", "Exit"]
+for index, element in enumerate(menu, start=1):
+    print(f"{index}. {element}")
+
+expenses = []
+while True:
+    option = int(input())
+    if option == 1:
+        value = float(input())
+        expenses += [value]
+        print("Expense added successfully!")
+    elif option == 2:
+        lenght_expenses = len(expenses)
+        if lenght_expenses == 0:
+            print("No expenses recorded yet.")
+        else:
+            print("Your expenses: ")
+            for index, item in enumerate(expenses, start=1):
+                print(f"{index}. {item}")
+    elif option == 3:
+        total = 0
+        for item in expenses:
+                total += item
+        lenght_expenses = len(expenses)
+        if lenght_expenses == 0:
+            print("No expenses recorded yet.")
+        else:
+            print(f"Total expense: {total}")
+            average = total/lenght_expenses
+            print(f"Average expense: {average}")
+    elif option == 4:
+        expenses.clear()
+        expenses == []
+        print("All expenses cleared.")
+    elif option == 5:
+        print("Exiting the Daily Expense Tracker. Goodbye!")
+        break
+
 # print("Welcome to the Daily Expense Tracker!")
 # print()
 # print("Menu: ")
@@ -5,28 +46,28 @@
 # for index, element in enumerate(menu, start=1):
 #     print(f"{index}. {element}")
 
-# bills = []
+# expenses = []
 # while True:
 #     option = int(input())
 #     if option == 1:
 #         value = float(input())
-#         bills += [value]
+#         expenses += [value]
 #         print("Expense added successfully!")
 #     elif option == 2:
-#         lenght_bills = len(bills)
-#         if lenght_bills == 0:
+#         lenght_expenses = len(expenses)
+#         if lenght_expenses == 0:
 #             print("No expenses recorded yet.")
 #         else:
 #             print("Your expenses: ")
-#             for index, item in enumerate(bills, start=1):
+#             for index, item in enumerate(expenses, start=1):
 #                 print(f"{index}. {item}")
 #     elif option == 3:
 #         total = 0
-#         for item in bills:
+#         for item in expenses:
 #                 total += item
-#         lenght_bills = len(bills)
-#         average = total/lenght_bills
-#         if lenght_bills == 0:
+#         lenght_expenses = len(expenses)
+#         average = total/lenght_expenses
+#         if lenght_expenses == 0:
 #             print("No expenses recorded yet.")
 #         else:
 #             print(f"Total expense: {total}")
