@@ -1,43 +1,59 @@
-print("Welcome to the Daily Expense Tracker!")
-print()
-print("Menu: ")
-menu = ["Add a new expense", "View all expenses", "Calculate total and average expense", "Clear all expenses", "Exit"]
-for index, element in enumerate(menu, start=1):
-    print(f"{index}. {element}")
+def find_occurrences(text: str, pattern: str):
+    # Escribe tu código aquí
+    list_pattern = pattern.split(",")
+    count = 0
+    for index, text in enumerate(list_pattern, start=1):
+        print(index, text[index])
+    pass
 
-expenses = []
-while True:
-    option = int(input())
-    if option == 1:
-        value = float(input())
-        expenses += [value]
-        print("Expense added successfully!")
-    elif option == 2:
-        lenght_expenses = len(expenses)
-        if lenght_expenses == 0:
-            print("No expenses recorded yet.")
-        else:
-            print("Your expenses: ")
-            for index, item in enumerate(expenses, start=1):
-                print(f"{index}. {item}")
-    elif option == 3:
-        total = 0
-        for item in expenses:
-                total += item
-        lenght_expenses = len(expenses)
-        if lenght_expenses == 0:
-            print("No expenses recorded yet.")
-        else:
-            print(f"Total expense: {total}")
-            average = total/lenght_expenses
-            print(f"Average expense: {average}")
-    elif option == 4:
-        expenses.clear()
-        expenses == []
-        print("All expenses cleared.")
-    elif option == 5:
-        print("Exiting the Daily Expense Tracker. Goodbye!")
-        break
+print(find_occurrences("aba", "abababab"))
+
+# n = int(input())
+# for i in range(1, n+1 ,2):
+#     print(i*"*")
+
+# print("Welcome to the Daily Expense Tracker!")
+# print()
+# print("Menu: ")
+# menu = ["Add a new expense", "View all expenses", "Calculate total and average expense", "Clear all expenses", "Exit"]
+# for index, element in enumerate(menu, start=1):
+#     print(f"{index}. {element}")
+
+# expenses = []
+# while True:
+#     option = int(input())
+#     if option == 1:
+#         value = float(input())
+#         expenses += [value]
+#         print("Expense added successfully!")
+#     elif option == 2:
+#         lenght_expenses = len(expenses)
+#         if lenght_expenses == 0:
+#             print("No expenses recorded yet.")
+#         else:
+#             print("Your expenses: ")
+#             for index, item in enumerate(expenses, start=1):
+#                 print(f"{index}. {item}")
+#     elif option == 3:
+#         total = 0
+#         for item in expenses:
+#                 total += item
+#         lenght_expenses = len(expenses)
+#         if lenght_expenses == 0:
+#             print("No expenses recorded yet.")
+#         else:
+#             print(f"Total expense: {total}")
+#             average = total/lenght_expenses
+#             print(f"Average expense: {average}")
+#     elif option == 4:
+#         expenses.clear()
+#         expenses == []
+#         print("All expenses cleared.")
+#     elif option == 5:
+#         print("Exiting the Daily Expense Tracker. Goodbye!")
+#         break
+#     else:
+#         print("Invalid choice. Please try again.")
 
 # print("Welcome to the Daily Expense Tracker!")
 # print()
