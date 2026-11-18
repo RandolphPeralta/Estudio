@@ -1,12 +1,57 @@
-def find_occurrences(text: str, pattern: str):
-    # Escribe tu código aquí
-    list_pattern = pattern.split(",")
-    count = 0
-    for index, text in enumerate(list_pattern, start=1):
-        print(index, text[index])
-    pass
+prices = input().split(",")
+for i in range(len(prices)):
+    prices[i] = int(prices[i])
 
-print(find_occurrences("aba", "abababab"))
+items = input().split(",")
+budget_per_item = int(input())
+
+affordable_items = []
+cant_afford = 0
+total_needed = 0
+
+for i in range(len(prices)):
+    if prices[i] <= budget_per_item:
+        affordable_items.append(items[i])
+        total_needed += prices[i]
+    else:
+        cant_afford += 1
+
+print("Can buy:", affordable_items)
+print("Total budget needed:", total_needed)
+print("Can't afford:", cant_afford)
+#----------------------------
+# def find_occurrences(text: str, pattern: str):
+#     count = 0
+#     positions = []
+
+#     if pattern == "":
+#         return (False, 0, [])
+
+#     start = 0
+
+#     while True:
+#         index = text.find(pattern, start)
+
+#         if index == -1:
+#             break
+
+#         count += 1
+#         positions.append(index)
+
+#         start = index + 1
+
+#     return (count > 0, count, positions)
+
+# try:
+#     text = input()
+#     pattern = input()
+# except EOFError:
+#     pass
+# else:
+#     result = find_occurrences(text, pattern)
+#     print(result)
+
+#-------------------------
 
 # n = int(input())
 # for i in range(1, n+1 ,2):
