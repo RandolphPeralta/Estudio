@@ -1,24 +1,40 @@
-prices = input().split(",")
-for i in range(len(prices)):
-    prices[i] = int(prices[i])
+def calculate_discount(price, discount_percentage):
+    # Escribe el código aquí
+    amount = price*(discount_percentage/100)
+    final_price = price - amount
 
-items = input().split(",")
-budget_per_item = int(input())
+    return round(final_price, 2)
 
-affordable_items = []
-cant_afford = 0
-total_needed = 0
+print(calculate_discount(75.5, 10))
 
-for i in range(len(prices)):
-    if prices[i] <= budget_per_item:
-        affordable_items.append(items[i])
-        total_needed += prices[i]
-    else:
-        cant_afford += 1
+# print(round(4.5))
+# print(round(7.892, 1))
+# print(round(456.78, -1))
 
-print("Can buy:", affordable_items)
-print("Total budget needed:", total_needed)
-print("Can't afford:", cant_afford)
+# for _ in range(3):
+#     print(_)
+
+# prices = input().split(",")
+# for i in range(len(prices)):
+#     prices[i] = int(prices[i])
+
+# items = input().split(",")
+# budget_per_item = int(input())
+
+# affordable_items = []
+# cant_afford = 0
+# total_needed = 0
+
+# for i in range(len(prices)):
+#     if prices[i] <= budget_per_item:
+#         affordable_items.append(items[i])
+#         total_needed += prices[i]
+#     else:
+#         cant_afford += 1
+
+# print("Can buy:", affordable_items)
+# print("Total budget needed:", total_needed)
+# print("Can't afford:", cant_afford)
 #----------------------------
 # def find_occurrences(text: str, pattern: str):
 #     count = 0
