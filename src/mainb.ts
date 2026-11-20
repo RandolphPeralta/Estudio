@@ -62,7 +62,7 @@ export type Loan = {
 }
 
 export class PostgreSQLPersistence<T extends { id: string }> implements IRepository<T> {
-    constructor(private pool: Pool, private tableName: string) {}
+    constructor(private pool: Pool, private tableName: string) { }
 
     async create(item: T): Promise<boolean> {
         try {
@@ -93,14 +93,14 @@ export class PostgreSQLPersistence<T extends { id: string }> implements IReposit
         return (result.rowCount ?? 0) > 0;
     }
 
-    async read(): Promise<T[]>{
+    async read(): Promise<T[]> {
         const result = await this.pool.query(`SELECT data FROM ${this.tableName}`);
         return result.rows.map(row => row.data as T);
     }
 }
 
 export class Service<T> implements IService<T> {
-    constructor(private repository: IRepository<T>){}
+    constructor(private repository: IRepository<T>) { }
 
     async create(item: T): Promise<boolean> {
         return await this.repository.create(item);
@@ -132,7 +132,7 @@ export const config = {
     port: 5433,
     user: "postgres",
     password: "1234",
-    database: "library" 
+    database: "library"
 };
 
 export class StudentWeb implements IStudentview {
@@ -629,12 +629,12 @@ export class LoanWeb implements ILoanview {
 
         const readstudents = await this.studentservice.read()
         const students = readstudents.filter(student =>
-                student.name.toLowerCase().includes(value) ||
-                student.identification.includes(value)
-            )
+            student.name.toLowerCase().includes(value) ||
+            student.identification.includes(value)
+        )
             .slice(0, 8);
 
-        
+
         results.innerHTML = students.map(student => `
             <button
                 type="button"
@@ -670,10 +670,10 @@ export class LoanWeb implements ILoanview {
 
         const booksread = await this.bookservice.read()
         let books = booksread.filter(book =>
-                book.available &&
-                (book.title.toLowerCase().includes(value) ||
-                    book.author.toLowerCase().includes(value))
-            )
+            book.available &&
+            (book.title.toLowerCase().includes(value) ||
+                book.author.toLowerCase().includes(value))
+        )
             .slice(0, 8);
 
         results.innerHTML = books.map(book => `
@@ -688,7 +688,7 @@ export class LoanWeb implements ILoanview {
         results.querySelectorAll("button").forEach(button => {
             button.addEventListener("click", async () => {
                 const id = button.getAttribute("data-id")!;
-                let  bookread = await this.bookservice.read()
+                let bookread = await this.bookservice.read()
                 const book = bookread.find(book => book.id === id);
                 if (!book) return;
 
@@ -888,7 +888,7 @@ export class LoginWeb implements IView {
             }
         });
 
-         document.getElementById("btnLogout")!.addEventListener("click", async () => {
+        document.getElementById("btnLogout")!.addEventListener("click", async () => {
 
             document.getElementById("dashboard")!.classList.add("d-none");
             document.getElementById("login")!.classList.remove("d-none");
