@@ -1,11 +1,15 @@
-def calculate_discount(price, discount_percentage):
-    # Escribe el código aquí
-    amount = price*(discount_percentage/100)
-    final_price = price - amount
+print(list((10,20,30)))
+print(list("python"))
+print(list(range(1,6)))
 
-    return round(final_price, 2)
+# def calculate_discount(price, discount_percentage):
+#     # Escribe el código aquí
+#     amount = price*(discount_percentage/100)
+#     final_price = price - amount
 
-print(calculate_discount(75.5, 10))
+#     return round(final_price, 2)
+
+# print(calculate_discount(75.5, 10))
 
 # print(round(4.5))
 # print(round(7.892, 1))
