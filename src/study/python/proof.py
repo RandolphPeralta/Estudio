@@ -1,6 +1,13 @@
-print(list((10,20,30)))
-print(list("python"))
-print(list(range(1,6)))
+info = {"city": "Paris"}
+info["city"] = "London"
+info["country"] = "UK"
+print(len(info))
+
+# scores = {"math": 95, "science": 88}
+# print(scores["history"])
+# print(list((10,20,30)))
+# print(list("python"))
+# print(list(range(1,6)))
 
 # def calculate_discount(price, discount_percentage):
 #     # Escribe el código aquí
