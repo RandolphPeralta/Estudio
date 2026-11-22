@@ -1,7 +1,20 @@
-info = {"city": "Paris"}
-info["city"] = "London"
-info["country"] = "UK"
-print(len(info))
+def update_inventory(inventory_dict, item, quantity):
+    # Escribe el código aquí
+    if item in inventory_dict:
+        inventory_dict[item] += quantity
+    else:
+        inventory_dict[item] = quantity
+    return inventory_dict
+
+def update_employee_info(employee_dict, key, value):
+    # Escribe el código aquí
+    employee_dict[key] = value
+    return employee_dict
+
+# info = {"city": "Paris"}
+# info["city"] = "London"
+# info["country"] = "UK"
+# print(len(info))
 
 # scores = {"math": 95, "science": 88}
 # print(scores["history"])
