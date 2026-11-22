@@ -1,15 +1,28 @@
-def update_inventory(inventory_dict, item, quantity):
-    # Escribe el código aquí
-    if item in inventory_dict:
-        inventory_dict[item] += quantity
-    else:
-        inventory_dict[item] = quantity
-    return inventory_dict
+recipe_book = {
+    "Pancakes": ["flour", "milk", "eggs", "sugar"],
+    "Salad": ["lettuce", "tomato", "cucumber", "olive oil"]
+}
 
-def update_employee_info(employee_dict, key, value):
-    # Escribe el código aquí
-    employee_dict[key] = value
-    return employee_dict
+print(recipe_book["Pancakes"])
+
+recipe_book["Smoothie"] = ["banana", "milk", "honey"]
+
+recipe_book["Smoothie"].append("blueberries")
+
+print(recipe_book)
+
+# def update_inventory(inventory_dict, item, quantity):
+#     # Escribe el código aquí
+#     if item in inventory_dict:
+#         inventory_dict[item] += quantity
+#     else:
+#         inventory_dict[item] = quantity
+#     return inventory_dict
+
+# def update_employee_info(employee_dict, key, value):
+#     # Escribe el código aquí
+#     employee_dict[key] = value
+#     return employee_dict
 
 # info = {"city": "Paris"}
 # info["city"] = "London"
