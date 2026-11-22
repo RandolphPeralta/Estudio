@@ -1,15 +1,19 @@
-recipe_book = {
-    "Pancakes": ["flour", "milk", "eggs", "sugar"],
-    "Salad": ["lettuce", "tomato", "cucumber", "olive oil"]
-}
+my_dict = {}
+age = my_dict.get('age')
+print(age)
 
-print(recipe_book["Pancakes"])
+# recipe_book = {
+#     "Pancakes": ["flour", "milk", "eggs", "sugar"],
+#     "Salad": ["lettuce", "tomato", "cucumber", "olive oil"]
+# }
 
-recipe_book["Smoothie"] = ["banana", "milk", "honey"]
+# print(recipe_book["Pancakes"])
 
-recipe_book["Smoothie"].append("blueberries")
+# recipe_book["Smoothie"] = ["banana", "milk", "honey"]
 
-print(recipe_book)
+# recipe_book["Smoothie"].append("blueberries")
+
+# print(recipe_book)
 
 # def update_inventory(inventory_dict, item, quantity):
 #     # Escribe el código aquí
