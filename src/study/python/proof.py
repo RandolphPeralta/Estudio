@@ -1,6 +1,17 @@
-my_dict = {}
-age = my_dict.get('age')
-print(age)
+def check_inventory(inventory, item):
+    # Escribe el código aquí
+    value = inventory[f"{item}"]
+    if item in inventory:
+        value = inventory[f"{item}"]
+        return f"{item} is in stock. Quantity: {value}"
+    else:
+        return f"{item} is not in stock"
+
+print(check_inventory({"apple":10,"banana":5,"orange":7}, 'banana'))
+
+# my_dict = {}
+# age = my_dict.get('age')
+# print(age)
 
 # recipe_book = {
 #     "Pancakes": ["flour", "milk", "eggs", "sugar"],
