@@ -9,6 +9,7 @@ def check_inventory(inventory, item):
 
 print(check_inventory({"apple":10,"banana":5,"orange":7}, 'banana'))
 
+
 # my_dict = {}
 # age = my_dict.get('age')
 # print(age)
