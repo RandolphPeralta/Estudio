@@ -1,19 +1,34 @@
-def frequency_counter(data_list):
-    frequency = {}
+def display_menu():
+    menu = [
+        "1. Add Contact",
+        "2. View Contact",
+        "3. Edit Contact",
+        "4. Delete Contact",
+        "5. List All Contacts",
+        "6. Exit"
+    ]
+    print("Contact Book Menu")
+    for item in menu:
+        print(item)
 
-    for item in data_list:
-        if item in frequency:
-            frequency[item] += 1
-        else:
-            frequency[item] = 1
+display_menu()
 
-    return frequency
+# def frequency_counter(data_list):
+#     frequency = {}
 
-numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+#     for item in data_list:
+#         if item in frequency:
+#             frequency[item] += 1
+#         else:
+#             frequency[item] = 1
 
-result = frequency_counter(numbers)
+#     return frequency
 
-print(result)
+# numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+
+# result = frequency_counter(numbers)
+
+# print(result)
 
 # def print_product_details(product_data):
 #     # Escribe el código aquí
