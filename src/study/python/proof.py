@@ -1,12 +1,29 @@
-def print_product_details(product_data):
-    # Escribe el código aquí
-    if product_data == {}:
-        print('No product information available')
-    else:
-        for key, value in product_data.items():
-            print(f"{key.capitalize()}: {value}")
+def frequency_counter(data_list):
+    frequency = {}
 
-print(print_product_details({"name":"Laptop","brand":"Dell","price":799.99,"stock":15}))
+    for item in data_list:
+        if item in frequency:
+            frequency[item] += 1
+        else:
+            frequency[item] = 1
+
+    return frequency
+
+numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+
+result = frequency_counter(numbers)
+
+print(result)
+
+# def print_product_details(product_data):
+#     # Escribe el código aquí
+#     if product_data == {}:
+#         print('No product information available')
+#     else:
+#         for key, value in product_data.items():
+#             print(f"{key.capitalize()}: {value}")
+
+# print(print_product_details({"name":"Laptop","brand":"Dell","price":799.99,"stock":15}))
 
 # d = {'x': 10}
 # for k, v in d.items():
