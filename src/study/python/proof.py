@@ -1,13 +1,27 @@
-def check_inventory(inventory, item):
+def print_product_details(product_data):
     # Escribe el código aquí
-    value = inventory[f"{item}"]
-    if item in inventory:
-        value = inventory[f"{item}"]
-        return f"{item} is in stock. Quantity: {value}"
+    if product_data == {}:
+        print('No product information available')
     else:
-        return f"{item} is not in stock"
+        for key, value in product_data.items():
+            print(f"{key.capitalize()}: {value}")
 
-print(check_inventory({"apple":10,"banana":5,"orange":7}, 'banana'))
+print(print_product_details({"name":"Laptop","brand":"Dell","price":799.99,"stock":15}))
+
+# d = {'x': 10}
+# for k, v in d.items():
+#     print(v)
+
+# def check_inventory(inventory, item):
+#     # Escribe el código aquí
+#     value = inventory[f"{item}"]
+#     if item in inventory:
+#         value = inventory[f"{item}"]
+#         return f"{item} is in stock. Quantity: {value}"
+#     else:
+#         return f"{item} is not in stock"
+
+# print(check_inventory({"apple":10,"banana":5,"orange":7}, 'banana'))
 
 # my_dict = {}
 # age = my_dict.get('age')
