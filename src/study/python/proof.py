@@ -7,11 +7,27 @@ def display_menu():
         "5. List All Contacts",
         "6. Exit"
     ]
-    print("Contact Book Menu")
+    print("Contact Book Menu:")
     for item in menu:
         print(item)
 
-display_menu()
+
+def add_contact(contact_book):
+    name = input()
+    phone = input()
+    email = input()
+    address = input()
+
+    if name in contact_book:
+        print("Contact already exists!")
+    else:
+        contact_book[name] = {
+            "phone": phone,
+            "email": email,
+            "address": address
+        }
+
+        print("Contact added successfully!")
 
 # def frequency_counter(data_list):
 #     frequency = {}
