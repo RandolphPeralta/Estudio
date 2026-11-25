@@ -81,6 +81,36 @@ def list_all_contacts(contact_book):
             print(f"Address: {details['address']}")
             print()
 
+contact_book = {}
+
+while True:
+    display_menu()
+
+    choice = input()
+
+    if choice == "1":
+        add_contact(contact_book)
+
+    elif choice == "2":
+        view_contact(contact_book)
+
+    elif choice == "3":
+        edit_contact(contact_book)
+
+    elif choice == "4":
+        delete_contact(contact_book)
+
+    elif choice == "5":
+        list_all_contacts(contact_book)
+
+    elif choice == "6":
+        break
+
+    else:
+        print("Invalid choice. Please try again.")
+    
+
+
 
 # def frequency_counter(data_list):
 #     frequency = {}
