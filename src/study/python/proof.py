@@ -81,7 +81,6 @@ def list_all_contacts(contact_book):
             print(f"Address: {details['address']}")
             print()
 
-print(list_all_contacts({"Alice": {"phone": "123-456-7890", "email": "alice@example.com", "address": "123 Main St"}}))
 
 # def frequency_counter(data_list):
 #     frequency = {}
