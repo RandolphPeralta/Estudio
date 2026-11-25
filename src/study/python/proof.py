@@ -29,6 +29,60 @@ def add_contact(contact_book):
 
         print("Contact added successfully!")
 
+def view_contact(contact_book):
+    name = input()
+
+    if name in contact_book:
+        print(f"Name: {name}")
+        print(f"Phone: {contact_book[name]['phone']}")
+        print(f"Email: {contact_book[name]['email']}")
+        print(f"Address: {contact_book[name]['address']}")
+    else:
+        print("Contact not found!")
+
+def edit_contact(contact_book):
+    name = input()
+
+    if name in contact_book:
+        phone = input()
+        email = input()
+        address = input()
+
+        if phone != "":
+            contact_book[name]["phone"] = phone
+
+        if email != "":
+            contact_book[name]["email"] = email
+
+        if address != "":
+            contact_book[name]["address"] = address
+
+        print("Contact updated successfully!")
+    else:
+        print("Contact not found!")
+
+def delete_contact(contact_book):
+    name = input()
+
+    if name in contact_book:
+        contact_book.pop(f'{name}')
+        print("Contact deleted successfully!")
+    else:
+        print("Contact not found!")
+
+def list_all_contacts(contact_book):
+    if not contact_book:
+        print("No contacts available.")
+    else:
+        for name, details in contact_book.items():
+            print(f"Name: {name}")
+            print(f"Phone: {details['phone']}")
+            print(f"Email: {details['email']}")
+            print(f"Address: {details['address']}")
+            print()
+
+print(list_all_contacts({"Alice": {"phone": "123-456-7890", "email": "alice@example.com", "address": "123 Main St"}}))
+
 # def frequency_counter(data_list):
 #     frequency = {}
 
