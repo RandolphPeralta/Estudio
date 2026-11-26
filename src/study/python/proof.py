@@ -1,6 +1,35 @@
-num = 7
-result = "even" if num % 2 == 0 else "odd"
-print(result)
+def compare_strings(str1: str, str2: str):
+    # Escribe el código aquí
+    dictionary = {}
+    dictionary['is_substring'] = str1 in str2
+    dictionary['starts_with'] = str2.startswith(str1)
+    dictionary['ends_with'] = str2.endswith(str1)
+    dictionary['is_equal'] = str1.lower() == str2.lower()
+    return dictionary
+
+print(compare_strings('hello', 'HELLO'))
+
+# def check_inventory(products, quantities):
+#     if 'Apples' in products:
+#         print("Apples are in stock.")
+
+#     if 'Oranges' not in products:
+#         print("Oranges are not in stock.")
+
+#     if 'Bananas' in quantities:
+#         print("Bananas quantity is tracked.")
+
+#     if 'Grapes' not in quantities:
+#         print("Grapes quantity is not tracked.")
+
+# products = ["Cherries", "Oranges", "Watermelons", "Apples"]
+# quantities = {"Pears": 15, "Cherries": 40, "Apples": 25}
+
+# check_inventory(products, quantities)
+
+# num = 7
+# result = "even" if num % 2 == 0 else "odd"
+# print(result)
 #------------------------------------
 # def display_menu():
 #     menu = [
