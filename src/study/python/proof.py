@@ -605,5 +605,3 @@ print(result)
 #         continue
 #     print(i)
 #     x=i*2
-    
-
