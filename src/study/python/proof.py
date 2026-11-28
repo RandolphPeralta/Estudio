@@ -1,13 +1,27 @@
-def compare_strings(str1: str, str2: str):
+def manage_list(list1, element_to_append, index_to_remove):
     # Escribe el código aquí
-    dictionary = {}
-    dictionary['is_substring'] = str1 in str2
-    dictionary['starts_with'] = str2.startswith(str1)
-    dictionary['ends_with'] = str2.endswith(str1)
-    dictionary['is_equal'] = str1.lower() == str2.lower()
-    return dictionary
+    list1.append(element_to_append)
+    lenght = len(list1)
+    if index_to_remove < lenght:
+        list1.pop(index_to_remove)
+    new_lenght = len(list1)
+    if new_lenght > 3:
+        return "The list has more than 3 elements"
+    else:
+        return "The list has 3 or fewer elements"
 
-print(compare_strings('hello', 'HELLO'))
+print(manage_list([1,2,3],4,0))
+
+# def compare_strings(str1: str, str2: str):
+#     # Escribe el código aquí
+#     dictionary = {}
+#     dictionary['is_substring'] = str1 in str2
+#     dictionary['starts_with'] = str2.startswith(str1)
+#     dictionary['ends_with'] = str2.endswith(str1)
+#     dictionary['is_equal'] = str1.lower() == str2.lower()
+#     return dictionary
+
+# print(compare_strings('hello', 'HELLO'))
 
 # def check_inventory(products, quantities):
 #     if 'Apples' in products:
